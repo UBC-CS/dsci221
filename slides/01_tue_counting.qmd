@@ -1,0 +1,407 @@
+---
+title: "Counting Steps"
+subtitle: "Week 1, Tuesday"
+date: 2026-01-06
+---
+
+# From Monday
+
+## The Shazam lesson
+
+::: {.r-fit-text}
+The **naive approach** checks every song: O(n)
+
+The **clever approach** uses hashing: O(1)
+
+Same problem, wildly different performance.
+:::
+
+. . .
+
+Today: How do we make "fast" and "slow" precise?
+
+## Quick check
+
+Which is faster?
+
+```{pyodide}
+#| autorun: false
+# Version A
+for i in range(n):
+    for j in range(n):
+        do_something()
+
+# Version B
+for i in range(n):
+    do_something()
+for j in range(n):
+    do_something()
+```
+
+. . .
+
+A does n² things. B does 2n things. **B is faster for large n.**
+
+# Counting Operations
+
+## What counts as a "step"?
+
+We count **primitive operations**:
+
+- Arithmetic: `+`, `-`, `*`, `/`
+- Comparisons: `<`, `>`, `==`
+- Assignment: `x = 5`
+- Array/list access: `arr[i]`
+- Function calls (not counting the work inside)
+
+. . .
+
+Key insight: Each takes roughly constant time.
+
+## Example: Finding the maximum
+
+```{pyodide}
+#| autorun: false
+def find_max(arr):
+    max_val = arr[0]       # 1 assignment
+    for x in arr:          # n iterations
+        if x > max_val:    # 1 comparison per iteration
+            max_val = x    # at most 1 assignment per iteration
+    return max_val         # 1 return
+```
+
+. . .
+
+Total: 1 + n comparisons + (up to n assignments) + 1
+
+. . .
+
+Roughly **2n + 2** operations. We say this is **O(n)**.
+
+## Why "roughly"?
+
+We don't care about:
+
+- **Constants**: 2n vs 3n vs 100n — all O(n)
+- **Lower-order terms**: n² + 5n + 17 — just O(n²)
+
+. . .
+
+We care about: **How does the count grow as n grows?**
+
+## The formal definition
+
+::: {.callout-note}
+## Big-O Notation
+
+f(n) is **O(g(n))** if there exist constants c > 0 and n₀ ≥ 0 such that:
+
+$$f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0$$
+:::
+
+. . .
+
+In words: f(n) grows **no faster than** g(n), once n is big enough.
+
+## Picture this
+
+For n ≥ 3, we have 2n + 3 ≤ 3n. So f(n) = O(n).
+
+Choose c = 3, n₀ = 3.
+
+# Analyzing Loops
+
+## Single loops
+
+```{pyodide}
+#| autorun: false
+for i in range(n):
+    # O(1) work
+    print(i)
+```
+
+. . .
+
+n iterations × O(1) work = **O(n)**
+
+## Nested loops
+
+```{pyodide}
+#| autorun: false
+for i in range(n):
+    for j in range(n):
+        # O(1) work
+        print(i, j)
+```
+
+. . .
+
+n iterations × n iterations × O(1) work = **O(n²)**
+
+## Nested loops (variant)
+
+```{pyodide}
+#| autorun: false
+for i in range(n):
+    for j in range(i):  # Note: j goes up to i, not n
+        print(i, j)
+```
+
+. . .
+
+Iteration 0: 0 prints
+Iteration 1: 1 print
+Iteration 2: 2 prints
+...
+Iteration n-1: n-1 prints
+
+. . .
+
+Total: 0 + 1 + 2 + ... + (n-1) = **n(n-1)/2** = O(n²)
+
+## The triangle sum
+
+::: {.callout-tip}
+## Useful formula
+
+$$1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2}$$
+
+This is O(n²), not O(n).
+:::
+
+. . .
+
+Whenever you see "for each pair" or "compare all pairs," expect O(n²).
+
+## Sequential code
+
+```{pyodide}
+#| autorun: false
+# Part 1: O(n)
+for i in range(n):
+    print(i)
+
+# Part 2: O(n²)
+for i in range(n):
+    for j in range(n):
+        print(i, j)
+
+# Part 3: O(n)
+for i in range(n):
+    print(i)
+```
+
+. . .
+
+Total: O(n) + O(n²) + O(n) = **O(n²)**
+
+The largest term dominates.
+
+# Big-O in Practice
+
+## Common patterns
+
+| Code pattern | Big-O |
+|--------------|-------|
+| Single loop over n items | O(n) |
+| Nested loop (both over n) | O(n²) |
+| Loop that halves each time | O(log n) |
+| Nested: outer halves, inner is n | O(n log n) |
+
+## The halving pattern
+
+```{pyodide}
+#| autorun: false
+i = n
+while i > 1:
+    print(i)
+    i = i // 2
+```
+
+. . .
+
+How many times can you halve n before reaching 1?
+
+. . .
+
+log₂(n) times. This is **O(log n)**.
+
+## Let's trace it
+
+```{pyodide}
+import math
+
+n = 1000
+i = n
+count = 0
+while i > 1:
+    print(f"i = {i}")
+    i = i // 2
+    count += 1
+print(f"\nTotal iterations: {count}")
+print(f"log₂({n}) ≈ {math.log2(n):.1f}")
+```
+
+# DataFrame Operations
+
+## What's the Big-O?
+
+Let's analyze pandas operations on a DataFrame with n rows:
+
+```{pyodide}
+#| autorun: false
+df['col'].sum()          # ?
+df[df['col'] > 5]        # ?
+df.iterrows()            # ?
+df.loc[12345]            # ?
+df.merge(other_df)       # ?
+```
+
+## Let's reason through them
+
+```{pyodide}
+#| autorun: false
+df['col'].sum()          # Must touch every value: O(n)
+```
+
+. . .
+
+```{pyodide}
+#| autorun: false
+df[df['col'] > 5]        # Check every row: O(n)
+```
+
+. . .
+
+```{pyodide}
+#| autorun: false
+df.iterrows()            # Visit every row: O(n)
+```
+
+. . .
+
+```{pyodide}
+#| autorun: false
+df.loc[12345]            # With integer index: O(1)!
+```
+
+. . .
+
+```{pyodide}
+#| autorun: false
+df.merge(other_df)       # Compare rows... O(n²)? O(n)? 🤔
+```
+
+## The merge mystery
+
+`df.merge()` uses hashing internally!
+
+Time roughly doubles when n doubles → **O(n)**, not O(n²)!
+
+## Same Big-O, different speed
+
+Remember Monday's comparison?
+
+Both `iterrows()` and `.sum()` are O(n).
+
+But vectorized operations have **tiny constant factors** (compiled C code).
+
+Loop operations have **large constant factors** (Python overhead per iteration).
+
+## The constant factor
+
+::: {.callout-important}
+## Big-O tells you *scaling*, not *speed*
+
+Both `iterrows()` and `.sum()` are O(n).
+
+But vectorized operations have **tiny constant factors** (compiled C code).
+
+Loop operations have **large constant factors** (Python overhead per iteration).
+:::
+
+. . .
+
+For practical performance: **Big-O first, then worry about constants.**
+
+# Formalizing Big-O
+
+## Other notations (preview)
+
+| Notation | Meaning | Analogy |
+|----------|---------|---------|
+| O(g(n)) | ≤ g(n) (upper bound) | "at most" |
+| Ω(g(n)) | ≥ g(n) (lower bound) | "at least" |
+| Θ(g(n)) | = g(n) (tight bound) | "exactly" |
+
+. . .
+
+We'll use O most of the time. It's the "worst-case guarantee."
+
+## Proving Big-O
+
+To prove f(n) = O(g(n)), find constants c and n₀:
+
+. . .
+
+**Example**: Prove 3n² + 5n + 2 = O(n²)
+
+. . .
+
+For n ≥ 1:
+- 3n² + 5n + 2 ≤ 3n² + 5n² + 2n² = 10n²
+
+. . .
+
+Choose c = 10, n₀ = 1. ✓
+
+## Common Big-O facts
+
+::: {.callout-tip}
+## Useful rules
+
+1. **Constants don't matter**: 5n = O(n)
+2. **Lower terms don't matter**: n² + n = O(n²)
+3. **Logs don't matter for base**: log₂(n) = O(log₁₀(n))
+4. **Polynomials**: nᵃ = O(nᵇ) if a ≤ b
+5. **Exponentials dominate polynomials**: n¹⁰⁰ = O(2ⁿ)
+:::
+
+# Looking Ahead
+
+## Wednesday
+
+We'll explore the **hierarchy of growth rates**:
+
+$$O(1) < O(\log n) < O(n) < O(n \log n) < O(n^2) < O(2^n)$$
+
+And see why the gaps matter enormously at scale.
+
+## Try before Wednesday
+
+Which grows faster? Try to figure out *why*.
+
+```{pyodide}
+#| autorun: false
+# A: n log n
+# B: n^1.5  (n to the power 1.5)
+# C: n² / log n
+```
+
+. . .
+
+Think about what happens when n = 1,000,000.
+
+## The Shazam connection
+
+::: {.r-fit-text}
+**Monday**: Naive search is O(n). Too slow.
+
+**Today**: We can count and compare growth rates.
+
+**Wednesday**: O(1) lookup via hashing—how is that even possible?
+:::
+
+. . .
+
+We'll peek at hashing, then dive deep in Week 5.
