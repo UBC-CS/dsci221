@@ -48,7 +48,7 @@ jobs:
         unlink(".Rprofile")
 
         install.packages("pak", repos = "https://cloud.r-project.org")
-        pak::pkg_install(c("conflicted", "dplyr", "fontawesome", "fs", "glue", "gt", "gtExtras", "here", "lubridate", "readr", "stringr", "tidyr"))
+        pak::pkg_install(c("knitr", "rmarkdown", "conflicted", "dplyr", "fontawesome", "fs", "glue", "gt", "gtExtras", "here", "lubridate", "readr", "stringr", "tidyr"))
       shell: Rscript {0}
 
     - name: Install Python dependencies and render Quarto
