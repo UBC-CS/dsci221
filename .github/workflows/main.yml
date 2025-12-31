@@ -36,9 +36,18 @@ jobs:
       with:
         r-version: '4.4'
 
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libharfbuzz-dev libfribidi-dev libpng-dev libtiff5-dev libjpeg-dev
+
     - name: Install R dependencies
       run: |
-        install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")
+        # Deactivate renv to install packages directly
+        Sys.unsetenv("RENV_PROJECT")
+        unlink(".Rprofile")
+
+        install.packages("pak", repos = "https://cloud.r-project.org")
         pak::pkg_install(c("conflicted", "dplyr", "fontawesome", "fs", "glue", "gt", "gtExtras", "here", "lubridate", "readr", "stringr", "tidyr"))
       shell: Rscript {0}
 
