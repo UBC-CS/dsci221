@@ -47,8 +47,16 @@ jobs:
         Sys.unsetenv("RENV_PROJECT")
         unlink(".Rprofile")
 
-        install.packages("pak", repos = "https://cloud.r-project.org")
-        pak::pkg_install(c("knitr", "rmarkdown", "conflicted", "dplyr", "fontawesome", "fs", "glue", "gt", "gtExtras", "here", "lubridate", "readr", "stringr", "tidyr"))
+        # Install to the R_LIBS_USER directory set by setup-r action
+        lib <- Sys.getenv("R_LIBS_USER")
+        dir.create(lib, recursive = TRUE, showWarnings = FALSE)
+
+        install.packages(
+          c("knitr", "rmarkdown", "conflicted", "dplyr", "fontawesome", "fs",
+            "glue", "gt", "gtExtras", "here", "lubridate", "readr", "stringr", "tidyr"),
+          lib = lib,
+          repos = "https://cloud.r-project.org"
+        )
       shell: Rscript {0}
 
     - name: Install Python dependencies and render Quarto
