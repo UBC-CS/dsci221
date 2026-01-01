@@ -59,8 +59,18 @@ jobs:
         )
       shell: Rscript {0}
 
+    - name: Verify R packages
+      run: |
+        .libPaths()
+        library(knitr)
+        library(rmarkdown)
+        cat("R packages verified successfully\n")
+      shell: Rscript {0}
+
     - name: Install Python dependencies and render Quarto
       run: uv run quarto render
+      env:
+        R_LIBS_USER: ${{ runner.temp }}/Library
 
     - name: Publish Quarto project
       uses: quarto-dev/quarto-actions/publish@v2
