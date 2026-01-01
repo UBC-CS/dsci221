@@ -38,7 +38,6 @@ Livestream <a href="https://canvas.ubc.ca/courses/176610/external_tools/61556"><
 #| label: setup
 #| echo: false
 #| message: false
-#| warning: false
 
 library(conflicted)
 library(dplyr)
@@ -81,7 +80,25 @@ resources <-
 
 current_date <- today()
 
-schedule <- read_csv(here("data", "schedule.csv"), show_col_types = FALSE, skip_empty_rows = TRUE) |>
+schedule <- read_csv(
+  here("data", "schedule.csv"),
+  col_types = cols(
+    part = col_character(),
+    week = col_character(),
+    date = col_date(),
+    mon_activity = col_character(),
+    mon_video = col_character(),
+    tue_video = col_character(),
+    wed_activity = col_character(),
+    wed_video = col_character(),
+    lab = col_character(),
+    assignment = col_character(),
+    assignment_due = col_character(),
+    exam = col_character(),
+    exam_available = col_date(),
+    exam_practice = col_character()
+  )
+) |>
   left_join(resources, by = join_by(week), na_matches = "never") |>
   # Add missing slide columns if they don't exist (no slides yet)
   mutate(
@@ -128,7 +145,6 @@ schedule <- read_csv(here("data", "schedule.csv"), show_col_types = FALSE, skip_
 ```{r}
 #| label: schedule
 #| echo: false
-#| warning: false
 
 schedule |>
   mutate(
