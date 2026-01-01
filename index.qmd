@@ -38,6 +38,7 @@ Livestream <a href="https://canvas.ubc.ca/courses/176610/external_tools/61556"><
 #| label: setup
 #| echo: false
 #| message: false
+#| warning: false
 
 library(conflicted)
 library(dplyr)
@@ -127,6 +128,7 @@ schedule <- read_csv(here("data", "schedule.csv"), show_col_types = FALSE, skip_
 ```{r}
 #| label: schedule
 #| echo: false
+#| warning: false
 
 schedule |>
   mutate(
