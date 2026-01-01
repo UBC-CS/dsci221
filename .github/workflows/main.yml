@@ -43,29 +43,19 @@ jobs:
 
     - name: Install R dependencies
       run: |
-        # Deactivate renv to install packages directly
-        Sys.unsetenv("RENV_PROJECT")
-        unlink(".Rprofile")
+        # Remove .Rprofile to prevent renv from activating
+        rm -f .Rprofile
 
-        # Install to the R_LIBS_USER directory set by setup-r action
-        lib <- Sys.getenv("R_LIBS_USER")
-        dir.create(lib, recursive = TRUE, showWarnings = FALSE)
-
-        install.packages(
-          c("knitr", "rmarkdown", "conflicted", "dplyr", "fontawesome", "fs",
-            "glue", "gt", "gtExtras", "here", "lubridate", "readr", "stringr", "tidyr"),
-          lib = lib,
-          repos = "https://cloud.r-project.org"
-        )
-      shell: Rscript {0}
+        # Install R packages
+        R --vanilla -e "install.packages(c('knitr', 'rmarkdown', 'conflicted', 'dplyr', 'fontawesome', 'fs', 'glue', 'gt', 'gtExtras', 'here', 'lubridate', 'readr', 'stringr', 'tidyr'), repos = 'https://cloud.r-project.org')"
+      env:
+        R_LIBS_USER: ${{ runner.temp }}/Library
 
     - name: Verify R packages
       run: |
-        .libPaths()
-        library(knitr)
-        library(rmarkdown)
-        cat("R packages verified successfully\n")
-      shell: Rscript {0}
+        R --vanilla -e ".libPaths(); library(knitr); library(rmarkdown); cat('R packages verified successfully\n')"
+      env:
+        R_LIBS_USER: ${{ runner.temp }}/Library
 
     - name: Install Python dependencies and render Quarto
       run: uv run quarto render
