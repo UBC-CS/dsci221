@@ -11,6 +11,33 @@
 <description>Course website for DSCI 221 of the Department of Computer Science at the University of British Columbia
 </description>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Thu, 01 Jan 2026 00:42:30 GMT</lastBuildDate>
+<lastBuildDate>Mon, 05 Jan 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Welcome to DSCI 221!</title>
+  <dc:creator>{{&lt; var instructor.name &gt;}}</dc:creator>
+  <link>https://ubc-cs.github.io/dsci221/posts/00_welcome/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Welcome to DSCI 221: Data Structures and Algorithms for Data Science!</p>
+<p>In this course, we’ll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what’s the cheapest flight to Tokyo?), you’ll develop the algorithmic thinking that separates good programmers from great ones.</p>
+<p><strong>Getting started:</strong></p>
+<ul>
+<li>Read the <a href="../../syllabus.html">syllabus</a> for course policies and requirements</li>
+<li>Check the schedule on the <a href="../..">home page</a> to see what’s coming up</li>
+<li>Come to class ready to think about puzzles!</li>
+</ul>
+<p>See you in class!</p>
+
+
+
+ ]]></description>
+  <category>orientation</category>
+  <guid>https://ubc-cs.github.io/dsci221/posts/00_welcome/</guid>
+  <pubDate>Mon, 05 Jan 2026 00:00:00 GMT</pubDate>
+</item>
 </channel>
 </rss>
