@@ -80,14 +80,14 @@ resources <-
 
 current_date <- today()
 
-schedule <- read_csv(here("data", "schedule.csv"), show_col_types = FALSE) |>
+schedule <- read_csv(here("data", "schedule.csv"), show_col_types = FALSE, skip_empty_rows = TRUE) |>
   left_join(resources, by = join_by(week), na_matches = "never") |>
   # Add missing slide columns if they don't exist (no slides yet)
   mutate(
-    mon_slides = if ("mon_slides" %in% names(cur_data())) mon_slides else NA_character_,
-    tue_slides = if ("tue_slides" %in% names(cur_data())) tue_slides else NA_character_,
-    wed_slides = if ("wed_slides" %in% names(cur_data())) wed_slides else NA_character_,
-    weekly_summaries = if ("weekly_summaries" %in% names(cur_data())) weekly_summaries else NA_character_
+    mon_slides = if ("mon_slides" %in% names(pick(everything()))) mon_slides else NA_character_,
+    tue_slides = if ("tue_slides" %in% names(pick(everything()))) tue_slides else NA_character_,
+    wed_slides = if ("wed_slides" %in% names(pick(everything()))) wed_slides else NA_character_,
+    weekly_summaries = if ("weekly_summaries" %in% names(pick(everything()))) weekly_summaries else NA_character_
   ) |>
   relocate(mon_slides, .before = mon_activity) |>
   relocate(wed_slides, .before = wed_activity) |>
