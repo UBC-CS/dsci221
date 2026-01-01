@@ -1,0 +1,8 @@
+---
+title: ""
+---
+
+## About
+
+DSCI 221 is a new course developed by [Dr. Cinda Heeren](https://www.cs.ubc.ca/people/cinda-heeren).
+The website is built with [Quarto](https://quarto.org/), adapted from the CPSC 203 course website by [Dr. Stephan Koenig](https://stephankoenig.io).

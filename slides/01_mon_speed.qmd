@@ -1,0 +1,566 @@
+---
+title: "What Makes Code Fast?"
+subtitle: "Week 1, Monday"
+date: 2026-01-05
+pyodide:
+  - pandas
+  - numpy
+---
+
+# Welcome to DSCI 221
+
+## Where to Start? 
+
+Canvas: [canvas.ubc.ca/courses/176610](https://canvas.ubc.ca/courses/176610)
+
+Course Website: [ubc-cs.github.io/dsci221](https://ubc-cs.github.io/dsci221)
+
+Piazza: [piazza.com/ubc.ca/winterterm22025/dsci221](https://piazza.com/ubc.ca/winterterm22025/dsci221)
+
+## Term Structure
+
+<!-- CSS: include once -->
+<style>
+  .pill{display:inline-block; min-width:28px; padding:2px 6px; border-radius:4px; text-align:center; font-weight:600; line-height:1;}
+  .pill--off{background:#ddd; color:#111;}
+  .pill--class{background:purple; color:#fff;}
+  .pill--video{background:gold; color:#111;}
+  .pill--lab{background:dodgerblue; color:#fff;}
+  .pill--exam{background:seagreen; color:#fff;}
+  .pill--hw{background:#f97316; color:#fff;}
+  .pill--pa{background:#ec4899; color:#fff;}
+</style>
+
+::::: columns
+::: {.column style="width: 85%; font-size: 50%;"}
+
+| Week | Sunday     | M | T | W | Lab | HW/PA | Examlet |
+|:---:|------------|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1  | 1/4/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> |  |  |  |
+| 2  | 1/11/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  |  |
+| 3  | 1/18/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--hw">HW1</span> |  |
+| 4  | 1/25/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  | <span class="pill pill--exam">🤩</span> |
+| 5  | 2/1/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--pa">PA1</span> |  |
+| 6  | 2/8/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--hw">HW2</span> | <span class="pill pill--exam">🤩</span> |
+| 7  | 2/15/2026  | <span class="pill pill--off">&nbsp;</span> | <span class="pill pill--off">&nbsp;</span> | <span class="pill pill--off">&nbsp;</span> |  |  |  |
+| 8  | 2/22/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  |  |
+| 9  | 3/1/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--pa">PA2</span> | <span class="pill pill--exam">🤩</span> |
+| 10 | 3/8/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  |  |
+| 11 | 3/15/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  | <span class="pill pill--exam">🤩</span> |
+| 12 | 3/22/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--pa">PA3</span> |  |
+| 13 | 3/29/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  | <span class="pill pill--exam">🤩</span> |
+| 14 | 4/5/2026   | <span class="pill pill--off">&nbsp;</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> |  | <span class="pill pill--hw">HW3</span> |  |
+
+:::
+:::::
+
+## Where's Scott? {.center}
+
+![Taylor Swift's Eras Tour, Nashville, TN](/images/bigcrowd.jpeg){fig-align="center" width="80%"}
+
+. . .
+
+**How would you find Scott in this crowd?**
+
+## Which closet? {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+![](/images/messy.png){width="100%"}
+
+:::
+
+::: {.column width="50%"}
+![](/images/tidy.png){width="100%"}
+
+:::
+:::
+
+## The Shazam Mystery {.center}
+
+::: {.r-fit-text}
+How does Shazam identify a song from 3 seconds of noisy audio...
+
+...searching through **100 million songs**...
+
+...in **under a second**?
+:::
+
+## The puzzle
+
+- Shazam's database: ~100 million songs
+- Each song: ~3 minutes = 180 seconds of audio
+- Your sample: 3 seconds of noisy, distorted audio
+
+. . .
+
+Suppose checking one song against your sample takes 0.001 seconds.
+
+. . .
+
+**How long would it take to check all 100 million songs?**
+
+
+## Should we be willing to wait?
+
+100,000,000 songs × 0.001 sec = ?
+
+. . .
+
+= **\_\_\_\_\_\_\_\_\_\_\_\_\_\_ seconds**
+
+. . .
+
+How many hours is that?
+
+. . .
+
+= **\_\_\_\_\_\_\_\_\_\_\_\_\_\_ hours**
+
+. . .
+
+But Shazam answers in < 1 second. *Something clever is happening.*
+
+## The naive approach
+
+```{pyodide}
+#| autorun: false
+def find_song_naive(sample, database):
+    """Check every song, one by one."""
+    for song in database:
+        if matches(sample, song):
+            return song
+    return None
+```
+
+```{dot}
+//| fig-width: 9
+//| fig-height: 1.2
+digraph database {
+    rankdir=LR
+    node [shape=box, style=filled, fillcolor="#e3f2fd", fontname="Courier", fontsize=14, height=0.5, width=0.7]
+    edge [style=invis]
+
+    s0 [label="song₀"]
+    s1 [label="song₁"]
+    s2 [label="song₂"]
+    dots [label="···", shape=plaintext, fontsize=20, fillcolor=transparent]
+    sn1 [label="song_{n-2}", fontsize=12]
+    sn [label="song_{n-1}", fontsize=12]
+
+    s0 -> s1 -> s2 -> dots -> sn1 -> sn
+
+    // Arrow showing iteration
+    check [label="check each", shape=plaintext, fontsize=12, fillcolor=transparent]
+    check -> s0 [style=dashed, constraint=false]
+}
+```
+
+. . .
+
+How long does this take?
+
+. . .
+
+**It depends.** On what?
+
+## What does running time depend on? {.smaller}
+
+Work with your neighbor. What factors affect how long `find_song_naive` takes?
+
+. . .
+
+::: {.columns}
+::: {.column width="33%"}
+**Machine speed**
+
+A faster computer runs the same code faster.
+
+::: notes
+*But that's not about the algorithm.*
+:::
+
+:::
+
+::: {.column width="33%"}
+**Location of song**
+
+At the front? Quick!
+
+At the end? Slow.
+
+Not there at all? Slowest.
+:::
+
+::: {.column width="33%"}
+**Size of database**
+
+100 songs vs 100 million songs
+
+::: notes
+This is the big one.
+:::
+
+:::
+:::
+
+. . .
+
+We want to characterize *the algorithm*, not the machine or the luck.
+
+## Counting the work
+
+```{pyodide}
+#| autorun: false
+def find_song_naive(sample, database):
+    for song in database:
+        if matches(sample, song):
+            return song
+    return None
+```
+
+What should we count? 
+
+. . .
+
+**$T(n) =$**
+
+## Why constants don't matter
+
+$T(n) = 2n + 1$?
+
+. . .
+
+- The "2" depends on what we count as an operation
+- The "+1" is negligible when n = 100,000,000
+- Different machines have different "costs" per operation
+
+. . .
+
+What matters is the **shape**: time grows *linearly* with n.
+
+We write this as **O(n)** — "order n" or "linear time"
+
+## The scale problem
+
+::: {.columns}
+::: {.column width="50%"}
+**Small data**
+
+- 100 songs
+- 100 × 0.001 = 0.1 seconds
+- No problem!
+:::
+
+::: {.column width="50%"}
+**Big data**
+
+- 100,000,000 songs
+- 100,000,000 × 0.001 = 27 hours
+- Completely unusable
+:::
+:::
+
+. . .
+
+The same algorithm that works fine on small data can be **catastrophically slow** on big data.
+
+# Shazam is Everywhere
+
+## Speed matters in surprising places {.smaller}
+
+::: {.columns}
+::: {.column width="33%"}
+**YouTube**
+
+800 million videos
+
+Every search: < 0.5 sec
+
+Linear search would take hours
+:::
+
+::: {.column width="33%"}
+**Genomics**
+
+Human genome: 3 billion base pairs
+
+Finding a gene sequence
+
+Naive: days → Real tools: seconds
+:::
+
+::: {.column width="33%"}
+**Pandemic response**
+
+330 million people
+
+Contact tracing within 2 connections
+
+Relationships grow exponentially
+:::
+:::
+
+. . .
+
+::: {.r-fit-text}
+**As data grows, bad algorithms become impossible.**
+:::
+
+# Measuring "Fast"
+
+## Growth rate matters {.smaller}
+
+::: {.columns}
+::: {.column width="45%"}
+**Algorithm A**
+
+| n | time |
+|---|------|
+| 10 | 1 sec |
+| 50 | 5 sec |
+| 100 | 10 sec |
+
+*Time grows with n*
+
+**Algorithm B**
+
+| n | time |
+|---|------|
+| 10 | 1 sec |
+| 50 | 25 sec |
+| 100 | 100 sec |
+
+*Time grows with ???*
+:::
+
+::: {.column width="55%"}
+```{pyodide}
+#| echo: false
+import matplotlib.pyplot as plt
+import numpy as np
+
+n = np.linspace(1, 100, 100)
+algo_a = n * 0.1
+algo_b = (n ** 2) * 0.01
+
+plt.figure(figsize=(5, 4))
+plt.plot(n, algo_a, 'b-', linewidth=2, label='Algorithm A')
+plt.plot(n, algo_b, 'r-', linewidth=2, label='Algorithm B')
+plt.xlabel('Input size (n)')
+plt.ylabel('Time (seconds)')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+## Big-O notation (preview) {.smaller}
+
+::: {.columns}
+::: {.column width="55%"}
+We describe growth rates with "Big-O" notation:
+
+| Notation | Name | Example |
+|----------|------|---------|
+| $O(1)$ | Constant | Dictionary lookup |
+| $O(\log n)$ | Logarithmic | Binary search |
+| $O(n)$ | Linear | Finding max in list |
+| $O(n \log n)$ | Linearithmic | Good sorting |
+| $O(n^2)$ | Quadratic | Comparing all pairs |
+| $O(2^n)$ | Exponential | All subsets |
+
+We'll make this precise on Tuesday.
+:::
+
+::: {.column width="45%"}
+```{pyodide}
+#| echo: false
+import matplotlib.pyplot as plt
+import numpy as np
+
+n = np.linspace(1, 15, 100)
+const = np.ones_like(n) * 1
+log_n = np.log2(n) * 2
+linear = n * 1.5
+n_log_n = n * np.log2(n) * 0.8
+quadratic = n ** 2 / 4
+exponential = 2 ** (n / 2.5)
+
+plt.figure(figsize=(5, 4))
+plt.plot(n, const, '-', linewidth=2.5, label='O(1)')
+plt.plot(n, log_n, '-', linewidth=2.5, label='O(log n)')
+plt.plot(n, linear, '-', linewidth=2.5, label='O(n)')
+plt.plot(n, n_log_n, '-', linewidth=2.5, label='O(n log n)')
+plt.plot(n, quadratic, '-', linewidth=2.5, label='O(n²)')
+plt.plot(n, exponential, '-', linewidth=2.5, label='O(2ⁿ)')
+plt.xlabel('Input size (n)')
+plt.ylabel('Time')
+plt.ylim(0, 70)
+plt.xlim(1, 15)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+## What about pandas?
+
+The Galactic Pizza Delivery Corporation tracks **every pizza** delivered across the galaxy.
+
+```{pyodide}
+#| echo: false
+import pandas as pd
+import numpy as np
+import time
+
+n = 500_000
+np.random.seed(42)
+
+df = pd.DataFrame({
+    'delivery_time_minutes': np.random.exponential(scale=30, size=n),
+    'planet': np.random.choice(['Earth', 'Mars', 'Europa', 'Titan', 'Kepler-442b'], n),
+    'pizza_type': np.random.choice(['Pepperoni', 'Margherita', 'Funghi Nebula', 'Asteroid Chunks'], n)
+})
+
+print(f"Total deliveries: {len(df):,}")
+print(df.head(10))
+```
+
+## Computing average delivery time {.smaller .small-code}
+
+```{pyodide}
+# Method 1: Our own mean function
+def iter_mean(df, col):
+    total = 0
+    for idx, row in df.iterrows():
+        total += row[col]
+    return total / len(df)
+
+start = time.time()
+avg_ours = iter_mean(df, 'delivery_time_minutes')
+our_time = time.time() - start
+
+# Method 2: DataFrame's built-in mean
+start = time.time()
+avg_df = df['delivery_time_minutes'].mean()
+df_time = time.time() - start
+
+print(f"Our iter_mean:   {avg_ours:.2f} min ({our_time:.4f} sec)")
+print(f"DataFrame mean:  {avg_df:.2f} min ({df_time:.4f} sec)")
+print(f"Speedup:         {our_time/df_time:,.0f}x")
+```
+
+## The pandas lesson
+
+::: {.callout-important}
+## Why DataFrame operations are faster
+
+Our `iter_mean()` is **O(n)** with a large constant factor (Python overhead per row).
+
+`df['col'].mean()` is **O(n)** with a tiny constant factor (compiled C code).
+
+Same Big-O, but **100-1000× faster** in practice.
+:::
+
+. . .
+
+Big-O tells you how things *scale*. Constants matter for real performance.
+
+# Back to Shazam
+
+## How does it actually work?
+
+```{dot}
+//| fig-width: 8
+//| fig-height: 6
+digraph shazam {
+    rankdir=TB
+    node [shape=box, style=filled, fontname="Helvetica", fontsize=14, height=0.5]
+    edge [penwidth=2]
+    compound=true
+
+    audio [label="3 sec audio (from your phone)", fillcolor="#a8d8ea", width=4]
+
+    subgraph cluster_fingerprint {
+        label="Audio Fingerprinting"
+        style=filled
+        fillcolor="#fff3e0"
+        fontname="Helvetica"
+        fontsize=14
+        rankdir=LR
+
+        {rank=same; spec; land; hash}
+        spec [label="1. Spectrogram", fillcolor="#ffcc80", width=1.5]
+        land [label="2. Landmarks", fillcolor="#ffcc80", width=1.5]
+        hash [label="3. Hash", fillcolor="#ffcc80", width=1.5]
+
+        spec -> land -> hash
+    }
+
+    table [label="Hash Table Lookup", fillcolor="#a5d6a7", shape=cylinder, width=4, height=0.6]
+    result [label="🎵 Song Found!", fillcolor="#81c784", fontsize=16, width=4]
+
+    audio -> land [lhead=cluster_fingerprint]
+    hash -> table
+    table -> result
+}
+```
+
+. . .
+
+Hash table lookup is **O(1)** — constant time, regardless of database size!
+
+## The magic of O(1)
+
+| Database size | Linear search | Hash lookup |
+|---------------|---------------|-------------|
+| 1,000 | 1 sec | 0.001 sec |
+| 1,000,000 | 1000 sec | 0.001 sec |
+| 100,000,000 | 100000 sec | 0.001 sec |
+
+. . .
+
+The lookup goes *directly* to the right place. No searching required.
+
+We'll learn how hash tables achieve this in **Week 5**.
+
+## This course in one slide {.smaller}
+
+**Data structures** are clever ways to organize data so that **algorithms** can access it quickly.
+
+. . .
+
+::: {.r-fit-text}
+**The right data structure**
+
+can turn an impossible problem into a trivial one.
+:::
+
+# What's Next
+
+## This week
+
+| Day | Topic |
+|-----|-------|
+| **Tuesday** | Big-O notation: making "fast" precise |
+| **Wednesday** | The hierarchy of speed: O(1) to O(2ⁿ) |
+
+## Course overview
+
+- **Weeks 1-4**: Foundations (speed, recursion, stacks/queues)
+- **Weeks 5-8**: Lookup & Order (dictionaries, sorting, trees)
+- **Weeks 9-12**: Connections (graphs, shortest paths, limits)
+
+## Questions?
+
+::: {.r-fit-text}
+**The Shazam Problem**
+
+100 million songs → < 1 second
+
+How? The right data structure.
+:::

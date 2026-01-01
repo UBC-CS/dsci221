@@ -1,0 +1,14 @@
+---
+title: "Week 6"
+description: >
+  Version control with {{< iconify fa6-brands git-alt >}} Git and
+  {{< iconify fa6-brands github >}} GitHub
+author: "{{< var instructor.name >}}"
+date: 2025-10-06
+categories:
+  - "weekly announcement"
+draft: true
+---
+
+This week we will start introducing a new tool in our course, Git and GitHub!
+
