@@ -1,19 +1,20 @@
 ---
 title: "Welcome to {{< var course.code >}}!"
-description: "Getting your bearings in {{< var course.code >}}"
+description: "Data Structures for Data Science"
 author: "{{< var instructor.name >}}"
-date: 2025-09-01
+date: 2026-01-05
 categories:
   - orientation
-  - resource
-draft: true
 ---
 
-I am excited to welcome you to {{< var course.code >}}!
-This short announcement is here to get you oriented to this course website and point out some important resources.
-The landing page contains the [schedule](/index.qmd) where you can see all the things happening in the weeks to come and the most recent post in [announcements](/announcements.qmd).
-Then take a look at the [syllabus](/syllabus.qmd) to gain an overview of the course and its requirements, but we will discuss it in the first class.
+Welcome to {{< var course.code >}}: Data Structures and Algorithms for Data Science!
 
-Oh, and if you have a [GitHub.com](https://github/com) account, please feel free to introduce yourself in the comment section.
-If you do not have an account yet, don't worry!
-We will learn soon how to set one up!
+In this course, we'll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what's the cheapest flight to Tokyo?), you'll develop the algorithmic thinking that separates good programmers from great ones.
+
+**Getting started:**
+
+- Read the [syllabus](/syllabus.qmd) for course policies and requirements
+- Check the schedule on the [home page](/) to see what's coming up
+- Come to class ready to think about puzzles!
+
+See you in class!
