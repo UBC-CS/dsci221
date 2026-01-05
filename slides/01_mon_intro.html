@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="dcterms.date" content="2026-01-05">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – What Makes an Algorithm Good?</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7e745c094e38f47e1e49ac7c09d7c9b4.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-drop/drop-runtime.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<meta property="og:title" content="What Makes an Algorithm Good? – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 1, Monday">
+<meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:title" content="What Makes an Algorithm Good? – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 1, Monday">
+<meta name="twitter:card" content="summary">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">What Makes an Algorithm Good?</h1>
+  <p class="subtitle">Week 1, Monday</p>
+
+<div class="quarto-title-authors">
+</div>
+
+  <p class="date">January 5, 2026</p>
+</section>
+<section>
+<section id="welcome-to-dsci-221" class="title-slide slide level1 center" data-background-image="../images/wave.png" data-background-opacity="0.3">
+<h1>Welcome to DSCI 221</h1>
+
+</section>
+<section id="where-to-start" class="slide level2" data-background-image="../images/wave.png" data-background-opacity="0.3">
+<h2>Where to Start?</h2>
+<p>Canvas: <a href="https://canvas.ubc.ca/courses/176610">canvas.ubc.ca/courses/176610</a></p>
+<p>Course Website: <a href="https://ubc-cs.github.io/dsci221">ubc-cs.github.io/dsci221</a></p>
+<p>Piazza: <a href="https://piazza.com/ubc.ca/winterterm22025/dsci221">piazza.com/ubc.ca/winterterm22025/dsci221</a></p>
+</section>
+<section id="term-structure" class="slide level2" data-background-image="../images/wave.png" data-background-opacity="0.3">
+<h2>Term Structure</h2>
+<!-- CSS: include once -->
+<style>
+  .pill{display:inline-block; min-width:28px; padding:2px 6px; border-radius:4px; text-align:center; font-weight:600; line-height:1;}
+  .pill--off{background:#ddd; color:#111;}
+  .pill--class{background:purple; color:#fff;}
+  .pill--video{background:gold; color:#111;}
+  .pill--lab{background:dodgerblue; color:#fff;}
+  .pill--exam{background:seagreen; color:#fff;}
+  .pill--hw{background:#f97316; color:#fff;}
+  .pill--pa{background:#ec4899; color:#fff;}
+</style>
+<div class="columns">
+<div class="column" style="width: 85%; font-size: 50%;">
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 25%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Week</th>
+<th>Sunday</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">T</th>
+<th style="text-align: center;">W</th>
+<th style="text-align: center;">Lab</th>
+<th style="text-align: center;">HW/PA</th>
+<th style="text-align: center;">Examlet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td>1/4/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td>1/11/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td>1/18/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"><span class="pill pill--hw">HW1</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td>1/25/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="pill pill--exam">🤩</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td>2/1/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"><span class="pill pill--pa">PA1</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td>2/8/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"><span class="pill pill--hw">HW2</span></td>
+<td style="text-align: center;"><span class="pill pill--exam">🤩</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td>2/15/2026</td>
+<td style="text-align: center;"><span class="pill pill--off">&nbsp;</span></td>
+<td style="text-align: center;"><span class="pill pill--off">&nbsp;</span></td>
+<td style="text-align: center;"><span class="pill pill--off">&nbsp;</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td>2/22/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">9</td>
+<td>3/1/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"><span class="pill pill--pa">PA2</span></td>
+<td style="text-align: center;"><span class="pill pill--exam">🤩</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td>3/8/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">11</td>
+<td>3/15/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="pill pill--exam">🤩</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">12</td>
+<td>3/22/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"><span class="pill pill--pa">PA3</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">13</td>
+<td>3/29/2026</td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"><span class="pill pill--lab">🪄</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="pill pill--exam">🤩</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">14</td>
+<td>4/5/2026</td>
+<td style="text-align: center;"><span class="pill pill--off">&nbsp;</span></td>
+<td style="text-align: center;"><span class="pill pill--video">📺</span></td>
+<td style="text-align: center;"><span class="pill pill--class">🎉</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="pill pill--hw">HW3</span></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="wheres-scott" class="slide level2" data-background-image="../images/wave.png" data-background-opacity="0.3">
+<h2>Where’s Scott?</h2>
+
+<img data-src="../images/bigcrowd.jpeg" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Taylor Swift’s Eras Tour, Nashville, TN</p><aside class="notes">
+<p>“How would you find Scott in this crowd?”</p>
+<p>Students will say: scan from front, shout his name, call his phone…</p>
+<p>Guide toward: some methods check everyone (slow), some go direct (fast).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="which-closet" class="slide level2" data-background-image="../images/wave.png" data-background-opacity="0.3">
+<h2>Which closet?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="../images/messy.png" style="width:100.0%"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="../images/tidy.png" style="width:100.0%"></p>
+</div></div>
+<aside class="notes">
+<p>“Which closet?” / “What’s the tradeoff?”</p>
+<p>Students will get: messy = fast to put away, slow to find. Tidy = opposite.</p>
+<p>Key insight: you can’t optimize everything at once.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="whats-this-course-about" class="slide level2" data-background-image="../images/wave.png" data-background-opacity="0.3">
+<h2>What’s this course about?</h2>
+<aside class="notes">
+<p>Pause. Let them guess. They’ll say “data structures”, “algorithms”, “efficiency”…</p>
+<p>Then: “Let’s look at the goals.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="course-goals" class="slide level2" data-background-image="../images/wave.png" data-background-opacity="0.3">
+<h2>Course Goals</h2>
+<ul>
+<li>Become familiar with fundamental <span class="red">data structures</span> and <span class="red">algorithms</span>
+<ul>
+<li>Learn when to use them</li>
+</ul></li>
+<li>Improve your ability to <span class="orange">solve problems abstractly</span>
+<ul>
+<li>Data structures and algorithms are the building blocks</li>
+</ul></li>
+<li>Improve your ability to <span class="blue">analyze algorithms</span>
+<ul>
+<li>Prove <span class="green">correctness</span></li>
+<li>Gauge, compare, and improve <span class="blue">time</span> and <span class="purple">space</span> complexity</li>
+</ul></li>
+<li>Develop <strong>Python fluency</strong> for implementing solutions</li>
+</ul>
+<aside class="notes">
+<p>“Which of these is different from your other courses?”</p>
+<p>They’ll identify “analyze algorithms.” “What does ‘analyze’ mean?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="algorithm-analysis" class="slide level2">
+<h2>Algorithm Analysis</h2>
+<p>What does it mean to <strong>analyze</strong> an algorithm?</p>
+<aside class="notes">
+<p>Let them generate ideas. They’ll say: “see if it works”, “how fast”, “how much memory”…</p>
+<p>Then reveal: correctness, time complexity, space complexity.</p>
+<p>“This is THE frame for the entire course.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="correctness" class="slide level2">
+<h2>Correctness</h2>
+<ul>
+<li>What does it mean for an algorithm to be <em>correct</em>?</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>If an algorithm is <em>not</em> correct, is its value 0?</li>
+</ul>
+<aside class="notes">
+<p>Discussion. Then ask:</p>
+<p>Let them debate. Plant seeds: - Approximation (close enough) - Heuristics (usually right) - Probabilistic (correct with high probability)</p>
+<p>“We’ll learn to <em>prove</em> correctness in Week 2.”</p>
+<p><strong>SEED PLANTED</strong> for Week 5 (hash tables) and Week 12 (NP-hardness).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="efficiency" class="slide level2">
+<h2>Efficiency</h2>
+<p>Once we know it’s correct…</p>
+<ul>
+<li>How <strong>long</strong> does it take?</li>
+<li>How much <strong>memory</strong> does it use?</li>
+</ul>
+<aside class="notes">
+<p>“This week: efficiency. Next week: proving correctness.”</p>
+<p>Notice that these two things are related – if you use a lot of memory, you WILL spend a long time writing to that memory!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="shazam-demo" class="slide level2">
+<h2>Shazam! demo</h2>
+<ul>
+<li><p>3 seconds of audio</p></li>
+<li><p>100 million songs</p></li>
+<li><p>less than 1 second</p></li>
+</ul>
+<aside class="notes">
+<p>“How is this possible?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="shazam" class="slide level2">
+<h2>Shazam!</h2>
+<ul>
+<li>Shazam’s database: ~100 million songs</li>
+<li>Your sample: 3 seconds of noisy audio</li>
+<li>Checking one song: ~0.001 seconds</li>
+</ul>
+<p>How long to check all songs?</p>
+<aside class="notes">
+<p>Let them calculate: 100,000,000 × 0.001 = 100,000 seconds ≈ 27.8 hours</p>
+<p>“But Shazam answers in under a second. Something clever is happening.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="an-algorithmic-approach" class="slide level2">
+<h2>An Algorithmic Approach</h2>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2ZShzYW1wbGUsIGRhdGFiYXNlKTpcbiAgICBmb3Igc29uZyBpbiBkYXRhYmFzZTpcbiAgICAgICAgaWYgbWF0Y2hlcyhzYW1wbGUsIHNvbmcpOlxuICAgICAgICAgICAgcmV0dXJuIHNvbmdcbiAgICByZXR1cm4gTm9uZSJ9
+</script>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">…</th>
+<th style="text-align: center;">99,999,999</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">🎵</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>Is this correct?</p></li>
+<li><p>How long does it take to run?</p></li>
+</ul>
+<aside class="notes">
+<p>“Is this correct?” (Yes)</p>
+<p>“Is this efficient?” (Let’s see…)</p>
+<p>“How long does it take?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-factors-might-determine-the-running-time" class="slide level2">
+<h2>What factors might determine the running time?</h2>
+<p>Work with your neighbor: What factors affect how long <code>find_song_naive</code> takes?</p>
+<aside class="notes">
+<p>They’ll say: “It depends!”</p>
+<p>“What does it depend on?”</p>
+<p>Let them generate: size of database, where the song is, machine speed…</p>
+<p>Guide to: we care about SIZE. That’s the input to our algorithm.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="discussion-results" class="slide level2">
+<h2>Discussion results…</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Machine speed</strong></p>
+<p>A faster computer runs the same code faster.</p>
+<aside class="notes">
+<p><em>But that’s not about the algorithm.</em></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div><div class="column" style="width:33%;">
+<p><strong>Location of song</strong></p>
+<p>At the front? Quick!</p>
+<p>At the end? Slow.</p>
+<p>Not there at all? Slowest.</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Size of database</strong></p>
+<p>100 songs vs 100 million songs</p>
+<aside class="notes">
+<p>This is the big one.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div></div>
+<div class="fragment">
+<p>We want to characterize <em>the algorithm</em>, not the machine or our <em>luck</em>.</p>
+<aside class="notes">
+<p>“Which should we focus on for algorithm analysis?”</p>
+<p>Machine speed varies (not about the algorithm). Location varies (best case vs worst case). Size is the INPUT.</p>
+<p>“We parameterize by n.”</p>
+<p>write T(n) running time on input of size n.&nbsp; T(n) is a function!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="the-scale-issue" class="slide level2">
+<h2>The Scale Issue</h2>
+<p>Suppose our code requires ~0.001 second per song.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>n = 100</strong></p>
+<p>100 × 0.001 = 0.1 sec</p>
+</div><div class="column" style="width:50%;">
+<p><strong>n = 100,000,000</strong></p>
+<p>100M × 0.001 = 27.8 hours</p>
+</div></div>
+<aside class="notes">
+<p>“Same algorithm. Same code. Wildly different outcomes.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-does-shazam-actually-work" class="slide level2">
+<h2>How does Shazam actually work?</h2>
+<div class="cell" data-fig-width="8" data-fig-height="5" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<svg width="768" height="480" viewbox="0.00 0.00 224.00 430.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 426)">
+<title>shazam</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-426 220,-426 220,4 -4,4"></polygon>
+<g id="clust1" class="cluster">
+<title>cluster_fingerprint</title>
+<polygon fill="#fff3e0" stroke="black" points="38,-157.2 38,-378 179,-378 179,-157.2 38,-157.2"></polygon>
+<text text-anchor="middle" x="108.5" y="-361.4" font-family="Helvetica,sans-Serif" font-size="14.00">Audio Fingerprinting</text>
+</g>
+<!-- audio -->
+<g id="node1" class="node">
+<title>audio</title>
+<polygon fill="#a8d8ea" stroke="black" points="216,-422 0,-422 0,-386 216,-386 216,-422"></polygon>
+<text text-anchor="middle" x="108" y="-399.8" font-family="Helvetica,sans-Serif" font-size="14.00">3 sec audio</text>
+</g>
+<!-- spec -->
+<g id="node2" class="node">
+<title>spec</title>
+<polygon fill="#ffcc80" stroke="black" points="162,-345.2 54,-345.2 54,-309.2 162,-309.2 162,-345.2"></polygon>
+<text text-anchor="middle" x="108" y="-323" font-family="Helvetica,sans-Serif" font-size="14.00">Spectrogram</text>
+</g>
+<!-- audio&#45;&gt;spec -->
+<g id="edge3" class="edge">
+<title>audio-&gt;spec</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-385.65C108,-376.78 108,-365.76 108,-355.76"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-355.45 108,-345.45 104.5,-355.45 111.5,-355.45"></polygon>
+</g>
+<!-- land -->
+<g id="node3" class="node">
+<title>land</title>
+<polygon fill="#ffcc80" stroke="black" points="162,-273.2 54,-273.2 54,-237.2 162,-237.2 162,-273.2"></polygon>
+<text text-anchor="middle" x="108" y="-251" font-family="Helvetica,sans-Serif" font-size="14.00">Landmarks</text>
+</g>
+<!-- spec&#45;&gt;land -->
+<g id="edge1" class="edge">
+<title>spec-&gt;land</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-308.9C108,-301.18 108,-291.91 108,-283.31"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-283.3 108,-273.3 104.5,-283.3 111.5,-283.3"></polygon>
+</g>
+<!-- hash -->
+<g id="node4" class="node">
+<title>hash</title>
+<polygon fill="#ffcc80" stroke="black" points="162,-201.2 54,-201.2 54,-165.2 162,-165.2 162,-201.2"></polygon>
+<text text-anchor="middle" x="108" y="-179" font-family="Helvetica,sans-Serif" font-size="14.00">Hash</text>
+</g>
+<!-- land&#45;&gt;hash -->
+<g id="edge2" class="edge">
+<title>land-&gt;hash</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-236.9C108,-229.18 108,-219.91 108,-211.31"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-211.3 108,-201.3 104.5,-211.3 111.5,-211.3"></polygon>
+</g>
+<!-- table -->
+<g id="node5" class="node">
+<title>table</title>
+<path fill="#a5d6a7" stroke="black" d="M216,-124.08C216,-126.96 167.59,-129.3 108,-129.3 48.41,-129.3 0,-126.96 0,-124.08 0,-124.08 0,-77.12 0,-77.12 0,-74.24 48.41,-71.9 108,-71.9 167.59,-71.9 216,-74.24 216,-77.12 216,-77.12 216,-124.08 216,-124.08"></path>
+<path fill="none" stroke="black" d="M216,-124.08C216,-121.2 167.59,-118.86 108,-118.86 48.41,-118.86 0,-121.2 0,-124.08"></path>
+<text text-anchor="middle" x="108" y="-104.8" font-family="Helvetica,sans-Serif" font-size="14.00">Hash Table</text>
+<text text-anchor="middle" x="108" y="-88" font-family="Helvetica,sans-Serif" font-size="14.00">Lookup</text>
+</g>
+<!-- hash&#45;&gt;table -->
+<g id="edge4" class="edge">
+<title>hash-&gt;table</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-165.11C108,-157.67 108,-148.63 108,-139.73"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-139.45 108,-129.45 104.5,-139.45 111.5,-139.45"></polygon>
+</g>
+<!-- result -->
+<g id="node6" class="node">
+<title>result</title>
+<polygon fill="#81c784" stroke="black" points="216,-36 0,-36 0,0 216,0 216,-36"></polygon>
+<text text-anchor="middle" x="108" y="-13.2" font-family="Helvetica,sans-Serif" font-size="16.00">Song Found!</text>
+</g>
+<!-- table&#45;&gt;result -->
+<g id="edge5" class="edge">
+<title>table-&gt;result</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-71.86C108,-63.63 108,-54.62 108,-46.41"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-46.21 108,-36.21 104.5,-46.21 111.5,-46.21"></polygon>
+</g>
+</g>
+</svg>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>“Hash table lookup doesn’t depend on the size of the database.”</p>
+<p>O(1) — constant time.</p>
+<p>“We’ll learn how in Week 5.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="constant-vs.-linear" class="slide level2">
+<h2>Constant vs.&nbsp;Linear</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Database size</th>
+<th>Linear search</th>
+<th>Hash lookup</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1,000</td>
+<td>1 sec</td>
+<td>0.001 sec</td>
+</tr>
+<tr class="even">
+<td>1,000,000</td>
+<td>1000 sec</td>
+<td>0.001 sec</td>
+</tr>
+<tr class="odd">
+<td>100,000,000</td>
+<td>27 hours</td>
+<td>0.001 sec</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>“The right data structure changes everything.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="speed-matters-in-surprising-places" class="slide level2 smaller">
+<h2>Speed matters in surprising places</h2>
+<p>It’s not just Shazam!</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>YouTube</strong></p>
+<p>800 million videos</p>
+<p>Every search: &lt; 0.5 sec</p>
+<p>Linear search would take hours</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Genomics</strong></p>
+<p>Human genome: 3 billion base pairs</p>
+<p>Finding a gene sequence</p>
+<p>Naive: days → Real tools: seconds</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Pandemic response</strong></p>
+<p>330 million people</p>
+<p>Contact tracing within 2 connections</p>
+<p>Relationships grow exponentially</p>
+</div></div>
+<div class="fragment">
+<div class="r-fit-text">
+<p><strong>As data grows, bad algorithms become impossible.</strong></p>
+</div>
+</div>
+</section>
+<section id="this-course" class="slide level2">
+<h2>This Course</h2>
+<p><strong>Data structures</strong> are clever ways to organize data so that <strong>algorithms</strong> can access it quickly.</p>
+<aside class="notes">
+<p>“The right data structure can turn an impossible problem into a trivial one.”</p>
+<p>Tie together: must be CORRECT and EFFICIENT.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="whats-next" class="title-slide slide level1 center">
+<h1>What’s Next</h1>
+
+</section>
+<section id="this-week" class="slide level2">
+<h2>This Week</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Day</th>
+<th>Topic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Tuesday</strong></td>
+<td>Counting steps, discovering patterns</td>
+</tr>
+<tr class="even">
+<td><strong>Wednesday</strong></td>
+<td>The hierarchy: O(1) to O(2ⁿ)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="questions" class="slide level2">
+<h2>Questions?</h2>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-drop/drop-runtime.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'drop': {"button":true,"shortcut":"`","engine":"pyodide","webr":{"packages":[]},"pyodide":{"packages":[]}},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: false,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, RevealDrop, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W119
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../../slides";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "..";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/ubc-cs\.github\.io\/dsci221");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
