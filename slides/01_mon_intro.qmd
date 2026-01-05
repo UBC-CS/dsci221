@@ -1,0 +1,424 @@
+---
+title: "What Makes an Algorithm Good?"
+subtitle: "Week 1, Monday"
+date: 2026-01-05
+---
+
+# Welcome to DSCI 221 {background-image="/images/wave.png" background-opacity="0.3"}
+
+## Where to Start? {background-image="/images/wave.png" background-opacity="0.3"}
+
+Canvas: [canvas.ubc.ca/courses/176610](https://canvas.ubc.ca/courses/176610)
+
+Course Website: [ubc-cs.github.io/dsci221](https://ubc-cs.github.io/dsci221)
+
+Piazza: [piazza.com/ubc.ca/winterterm22025/dsci221](https://piazza.com/ubc.ca/winterterm22025/dsci221)
+
+## Term Structure {background-image="/images/wave.png" background-opacity="0.3"}
+
+<!-- CSS: include once -->
+<style>
+  .pill{display:inline-block; min-width:28px; padding:2px 6px; border-radius:4px; text-align:center; font-weight:600; line-height:1;}
+  .pill--off{background:#ddd; color:#111;}
+  .pill--class{background:purple; color:#fff;}
+  .pill--video{background:gold; color:#111;}
+  .pill--lab{background:dodgerblue; color:#fff;}
+  .pill--exam{background:seagreen; color:#fff;}
+  .pill--hw{background:#f97316; color:#fff;}
+  .pill--pa{background:#ec4899; color:#fff;}
+</style>
+
+::::: columns
+::: {.column style="width: 85%; font-size: 50%;"}
+
+| Week | Sunday     | M | T | W | Lab | HW/PA | Examlet |
+|:---:|------------|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1  | 1/4/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> |  |  |  |
+| 2  | 1/11/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  |  |
+| 3  | 1/18/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--hw">HW1</span> |  |
+| 4  | 1/25/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  | <span class="pill pill--exam">🤩</span> |
+| 5  | 2/1/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--pa">PA1</span> |  |
+| 6  | 2/8/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--hw">HW2</span> | <span class="pill pill--exam">🤩</span> |
+| 7  | 2/15/2026  | <span class="pill pill--off">&nbsp;</span> | <span class="pill pill--off">&nbsp;</span> | <span class="pill pill--off">&nbsp;</span> |  |  |  |
+| 8  | 2/22/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  |  |
+| 9  | 3/1/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--pa">PA2</span> | <span class="pill pill--exam">🤩</span> |
+| 10 | 3/8/2026   | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  |  |
+| 11 | 3/15/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  | <span class="pill pill--exam">🤩</span> |
+| 12 | 3/22/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> | <span class="pill pill--pa">PA3</span> |  |
+| 13 | 3/29/2026  | <span class="pill pill--class">🎉</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> | <span class="pill pill--lab">🪄</span> |  | <span class="pill pill--exam">🤩</span> |
+| 14 | 4/5/2026   | <span class="pill pill--off">&nbsp;</span> | <span class="pill pill--video">📺</span> | <span class="pill pill--class">🎉</span> |  | <span class="pill pill--hw">HW3</span> |  |
+
+:::
+:::::
+
+## Where's Scott? {background-image="/images/wave.png" background-opacity="0.3"} 
+
+![Taylor Swift's Eras Tour, Nashville, TN](/images/bigcrowd.jpeg){fig-align="center" width="80%"}
+
+:::{.notes}
+"How would you find Scott in this crowd?"
+
+Students will say: scan from front, shout his name, call his phone...
+
+Guide toward: some methods check everyone (slow), some go direct (fast).
+:::
+
+## Which closet? {background-image="/images/wave.png" background-opacity="0.3"} 
+
+::: {.columns}
+::: {.column width="50%"}
+![](/images/messy.png){width="100%"}
+:::
+
+::: {.column width="50%"}
+![](/images/tidy.png){width="100%"}
+:::
+:::
+
+:::{.notes}
+"Which closet?" / "What's the tradeoff?"
+
+Students will get: messy = fast to put away, slow to find. Tidy = opposite.
+
+Key insight: you can't optimize everything at once.
+:::
+
+## What's this course about? {background-image="/images/wave.png" background-opacity="0.3"}
+
+:::{.notes}
+Pause. Let them guess. They'll say "data structures", "algorithms", "efficiency"...
+
+Then: "Let's look at the goals."
+:::
+
+## Course Goals {background-image="/images/wave.png" background-opacity="0.3"}
+
+- Become familiar with fundamental [data structures]{.red} and [algorithms]{.red}
+  - Learn when to use them
+- Improve your ability to [solve problems abstractly]{.orange}
+  - Data structures and algorithms are the building blocks
+- Improve your ability to [analyze algorithms]{.blue}
+  - Prove [correctness]{.green}
+  - Gauge, compare, and improve [time]{.blue} and [space]{.purple} complexity
+- Develop **Python fluency** for implementing solutions
+
+:::{.notes}
+"Which of these is different from your other courses?"
+
+They'll identify "analyze algorithms." "What does 'analyze' mean?"
+:::
+
+## Algorithm Analysis 
+
+What does it mean to **analyze** an algorithm? 
+
+:::{.notes}
+Let them generate ideas. They'll say: "see if it works", "how fast", "how much memory"...
+
+Then reveal: correctness, time complexity, space complexity.
+
+"This is THE frame for the entire course."
+:::
+
+## Correctness
+
+- What does it mean for an algorithm to be *correct*?
+
+\ 
+
+- If an algorithm is *not* correct, is its value 0?
+
+
+:::{.notes}
+Discussion. Then ask:
+
+Let them debate. Plant seeds:
+- Approximation (close enough)
+- Heuristics (usually right)
+- Probabilistic (correct with high probability)
+
+"We'll learn to *prove* correctness in Week 2."
+
+**SEED PLANTED** for Week 5 (hash tables) and Week 12 (NP-hardness).
+:::
+
+## Efficiency
+
+Once we know it's correct...
+
+- How **long** does it take?
+- How much **memory** does it use?
+
+:::{.notes}
+"This week: efficiency. Next week: proving correctness."
+
+Notice that these two things are related -- if you use a lot of memory,
+you WILL spend a long time writing to that memory! 
+:::
+
+
+## Shazam! demo 
+
+
+- 3 seconds of audio
+
+- 100 million songs
+
+- less than 1 second
+
+
+:::{.notes}
+"How is this possible?"
+:::
+
+## Shazam!
+
+- Shazam's database: ~100 million songs
+- Your sample: 3 seconds of noisy audio
+- Checking one song: ~0.001 seconds
+
+How long to check all songs?
+
+:::{.notes}
+Let them calculate: 100,000,000 × 0.001 = 100,000 seconds ≈ 27.8 hours
+
+"But Shazam answers in under a second. Something clever is happening."
+:::
+
+## An Algorithmic Approach
+
+``` {pyodide}
+def find_song_naive(sample, database):
+    for song in database:
+        if matches(sample, song):
+            return song
+    return None
+```
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | ... | 99,999,999 |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | ... | 🎵 |
+
+- Is this correct?
+
+- How long does it take to run?
+
+:::{.notes}
+"Is this correct?" (Yes)
+
+"Is this efficient?" (Let's see...)
+
+"How long does it take?"
+:::
+
+## What factors might determine the running time?
+
+Work with your neighbor: What factors affect how long `find_song_naive` takes?
+
+:::{.notes}
+They'll say: "It depends!"
+
+"What does it depend on?"
+
+Let them generate: size of database, where the song is, machine speed...
+
+Guide to: we care about SIZE. That's the input to our algorithm.
+:::
+
+## Discussion results...
+
+::: {.columns}
+::: {.column width="33%"}
+**Machine speed**
+
+A faster computer runs the same code faster.
+
+::: notes
+*But that's not about the algorithm.*
+:::
+
+:::
+
+::: {.column width="33%"}
+**Location of song**
+
+At the front? Quick!
+
+At the end? Slow.
+
+Not there at all? Slowest.
+:::
+
+::: {.column width="33%"}
+**Size of database**
+
+100 songs vs 100 million songs
+
+::: notes
+This is the big one.
+:::
+
+:::
+:::
+
+. . .
+
+We want to characterize *the algorithm*, not the machine or our *luck*.
+
+:::{.notes}
+"Which should we focus on for algorithm analysis?"
+
+Machine speed varies (not about the algorithm).
+Location varies (best case vs worst case).
+Size is the INPUT.
+
+"We parameterize by n."
+
+write T(n) running time on input of size n. 
+T(n) is a function!
+
+:::
+
+## The Scale Issue
+
+Suppose our code requires ~0.001 second per song. 
+
+::: {.columns}
+::: {.column width="50%"}
+**n = 100**
+
+100 × 0.001 = 0.1 sec
+:::
+
+::: {.column width="50%"}
+**n = 100,000,000**
+
+100M × 0.001 = 27.8 hours
+:::
+:::
+
+:::{.notes}
+"Same algorithm. Same code. Wildly different outcomes."
+:::
+
+## How does Shazam actually work?
+
+```{dot}
+//| fig-width: 8
+//| fig-height: 5
+digraph shazam {
+    rankdir=TB
+    node [shape=box, style=filled, fontname="Helvetica", fontsize=14, height=0.5]
+    edge [penwidth=2]
+    compound=true
+
+    audio [label="3 sec audio", fillcolor="#a8d8ea", width=3]
+
+    subgraph cluster_fingerprint {
+        label="Audio Fingerprinting"
+        style=filled
+        fillcolor="#fff3e0"
+        fontname="Helvetica"
+        fontsize=14
+
+        spec [label="Spectrogram", fillcolor="#ffcc80", width=1.5]
+        land [label="Landmarks", fillcolor="#ffcc80", width=1.5]
+        hash [label="Hash", fillcolor="#ffcc80", width=1.5]
+
+        spec -> land -> hash
+    }
+
+    table [label="Hash Table\nLookup", fillcolor="#a5d6a7", shape=cylinder, width=3, height=0.6]
+    result [label="Song Found!", fillcolor="#81c784", fontsize=16, width=3]
+
+    audio -> spec
+    hash -> table
+    table -> result
+}
+```
+
+:::{.notes}
+"Hash table lookup doesn't depend on the size of the database."
+
+O(1) — constant time.
+
+"We'll learn how in Week 5."
+:::
+
+## Constant vs. Linear
+
+| Database size | Linear search | Hash lookup |
+|---------------|---------------|-------------|
+| 1,000 | 1 sec | 0.001 sec |
+| 1,000,000 | 1000 sec | 0.001 sec |
+| 100,000,000 | 27 hours | 0.001 sec |
+
+:::{.notes}
+"The right data structure changes everything."
+:::
+
+## Speed matters in surprising places {.smaller}
+
+It's not just Shazam!
+
+::: {.columns}
+::: {.column width="33%"}
+**YouTube**
+
+800 million videos
+
+Every search: < 0.5 sec
+
+Linear search would take hours
+:::
+
+::: {.column width="33%"}
+**Genomics**
+
+Human genome: 3 billion base pairs
+
+Finding a gene sequence
+
+Naive: days → Real tools: seconds
+:::
+
+::: {.column width="33%"}
+**Pandemic response**
+
+330 million people
+
+Contact tracing within 2 connections
+
+Relationships grow exponentially
+:::
+:::
+
+. . .
+
+::: {.r-fit-text}
+**As data grows, bad algorithms become impossible.**
+:::
+
+## This Course
+
+**Data structures** are clever ways to organize data so that **algorithms** can access it quickly.
+
+:::{.notes}
+"The right data structure can turn an impossible problem into a trivial one."
+
+Tie together: must be CORRECT and EFFICIENT.
+:::
+
+# What's Next
+
+## This Week
+
+| Day | Topic |
+|-----|-------|
+| **Tuesday** | Counting steps, discovering patterns |
+| **Wednesday** | The hierarchy: O(1) to O(2ⁿ) |
+
+## Questions?
+
+
+
