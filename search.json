@@ -22,7 +22,7 @@
     "href": "slides/01_mon_intro.html#where-to-start",
     "title": "What Makes an Algorithm Good?",
     "section": "Where to Start?",
-    "text": "Where to Start?\nCanvas: canvas.ubc.ca/courses/176610\nCourse Website: ubc-cs.github.io/dsci221\nPiazza: piazza.com/ubc.ca/winterterm22025/dsci221"
+    "text": "Where to Start?\nCanvas: canvas.ubc.ca/courses/182082\nCourse Website: ubc-cs.github.io/dsci221\nPiazza: piazza.com/ubc.ca/winterterm22025/dsci221"
   },
   {
     "objectID": "slides/01_mon_intro.html#term-structure",
@@ -733,7 +733,7 @@
     "href": "syllabus.html#communication",
     "title": "Syllabus",
     "section": "Communication",
-    "text": "Communication\n\nPiazza: piazza.com/ubc.ca/winterterm22025/dsci221 — Use Piazza for all course-related questions. You’ll get faster responses here than via email, and your classmates benefit from seeing the answers too.\nCanvas: canvas.ubc.ca/courses/176610 — Grades, announcements, and course materials.\nEmail: Reserve email for private matters (accommodations, personal circumstances). For course content questions, use Piazza.",
+    "text": "Communication\n\nPiazza: piazza.com/ubc.ca/winterterm22025/dsci221 — Use Piazza for all course-related questions. You’ll get faster responses here than via email, and your classmates benefit from seeing the answers too.\nCanvas: canvas.ubc.ca/courses/182082 — Grades, announcements, and course materials.\nEmail: Reserve email for private matters (accommodations, personal circumstances). For course content questions, use Piazza.",
     "crumbs": [
       "Course information",
       "Syllabus"
@@ -777,7 +777,7 @@
     "href": "syllabus.html#grading",
     "title": "Syllabus",
     "section": "Grading",
-    "text": "Grading\n\n\n\nItem\nWeight\n\n\n\n\nProgramming Assignments\n9% (3 × 3%)\n\n\nHomework\n9% (3 × 3%)\n\n\nLabs\n10% (10 × 1%)\n\n\nExamlets\n50% (5 × 10%)\n\n\nFinal Exam\n22%\n\n\n\nYou must pass the final exam (50%) to pass the course.",
+    "text": "Grading\n\n\n\nItem\nWeight\n\n\n\n\nProgramming Assignments\n6% (2 × 3%)\n\n\nHomework\n6% (2 × 3%)\n\n\nLabs\n5% (10 × 0.5%)\n\n\nExamlets\n55% (5 × 11%)\n\n\nFinal Exam\n28%\n\n\n\nYou must pass the final exam (50%) to pass the course.",
     "crumbs": [
       "Course information",
       "Syllabus"
