@@ -8,7 +8,7 @@ date: 2026-01-05
 
 ## Where to Start? {background-image="/images/wave.png" background-opacity="0.3"}
 
-Canvas: [canvas.ubc.ca/courses/176610](https://canvas.ubc.ca/courses/176610)
+Canvas: [canvas.ubc.ca/courses/182082](https://canvas.ubc.ca/courses/182082)
 
 Course Website: [ubc-cs.github.io/dsci221](https://ubc-cs.github.io/dsci221)
 

@@ -19,7 +19,7 @@ Welcome to DSCI 221, where we study the fundamental data structures and algorith
 ## Communication
 
 - **Piazza**: [piazza.com/ubc.ca/winterterm22025/dsci221](https://piazza.com/ubc.ca/winterterm22025/dsci221) — Use Piazza for all course-related questions. You'll get faster responses here than via email, and your classmates benefit from seeing the answers too.
-- **Canvas**: [canvas.ubc.ca/courses/176610](https://canvas.ubc.ca/courses/176610) — Grades, announcements, and course materials.
+- **Canvas**: [canvas.ubc.ca/courses/182082](https://canvas.ubc.ca/courses/182082) — Grades, announcements, and course materials.
 - **Email**: Reserve email for private matters (accommodations, personal circumstances). For course content questions, use Piazza.
 
 ## Course Description and Learning Objectives
@@ -71,11 +71,11 @@ Deliverables for the course include the following components:
 
 | Item                   | Weight          |
 |------------------------|-----------------|
-| Programming Assignments| 9% (3 × 3%)     |
-| Homework               | 9% (3 × 3%)     |
-| Labs                   | 10% (10 × 1%)   |
-| Examlets               | 50% (5 × 10%)   |
-| Final Exam             | 22%             |
+| Programming Assignments| 6% (2 × 3%)     |
+| Homework               | 6% (2 × 3%)     |
+| Labs                   | 5% (10 × 0.5%)  |
+| Examlets               | 55% (5 × 11%)   |
+| Final Exam             | 28%             |
 
 You must pass the final exam (50%) to pass the course.
 
