@@ -339,361 +339,333 @@
     ]
   },
   {
-    "objectID": "slides/01_tue_counting.html#the-shazam-lesson",
-    "href": "slides/01_tue_counting.html#the-shazam-lesson",
+    "objectID": "slides/01_tue_runtime.html#algorithm-analysis",
+    "href": "slides/01_tue_runtime.html#algorithm-analysis",
     "title": "Counting Steps",
-    "section": "The Shazam lesson",
-    "text": "The Shazam lesson\n\nThe naive approach checks every song: O(n)\nThe clever approach uses hashing: O(1)\nSame problem, wildly different performance.\n\n\nToday: How do we make “fast” and “slow” precise?"
+    "section": "Algorithm Analysis",
+    "text": "Algorithm Analysis\n\nCorrectness — Does it work?\nEfficiency — How long? How much memory?\n\n\n“This week: efficiency. Next week: proving correctness.”"
   },
   {
-    "objectID": "slides/01_tue_counting.html#quick-check",
-    "href": "slides/01_tue_counting.html#quick-check",
+    "objectID": "slides/01_tue_runtime.html#the-shazam-lesson",
+    "href": "slides/01_tue_runtime.html#the-shazam-lesson",
     "title": "Counting Steps",
-    "section": "Quick check",
-    "text": "Quick check\nWhich is faster?\n\n\n\n\n\n\n\nA does n² things. B does 2n things. B is faster for large n."
+    "section": "The Shazam Lesson",
+    "text": "The Shazam Lesson\nNaive search: “Linear” — too slow\nHash lookup: “Constant” — instant\n\n“Today: How do we figure out which is which?”"
   },
   {
-    "objectID": "slides/01_tue_counting.html#what-counts-as-a-step",
-    "href": "slides/01_tue_counting.html#what-counts-as-a-step",
+    "objectID": "slides/01_tue_runtime.html#linear-search",
+    "href": "slides/01_tue_runtime.html#linear-search",
     "title": "Counting Steps",
-    "section": "What counts as a “step”?",
-    "text": "What counts as a “step”?\nWe count primitive operations:\n\nArithmetic: +, -, *, /\nComparisons: &lt;, &gt;, ==\nAssignment: x = 5\nArray/list access: arr[i]\nFunction calls (not counting the work inside)\n\n\nKey insight: Each takes roughly constant time."
+    "section": "Linear Search",
+    "text": "Linear Search\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n…\n99,999,999\n\n\n\n\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n…\n🎵\n\n\n\n\nWhat does this do?\nHow many lines of code are executed?\n\n\nwe’ll be more precise now – give a mathematical function."
   },
   {
-    "objectID": "slides/01_tue_counting.html#example-finding-the-maximum",
-    "href": "slides/01_tue_counting.html#example-finding-the-maximum",
+    "objectID": "slides/01_tue_runtime.html#aside-for-cases",
+    "href": "slides/01_tue_runtime.html#aside-for-cases",
     "title": "Counting Steps",
-    "section": "Example: Finding the maximum",
-    "text": "Example: Finding the maximum\n\n\n\n\n\n\n\nTotal: 1 + n comparisons + (up to n assignments) + 1\n\n\nRoughly 2n + 2 operations. We say this is O(n)."
+    "section": "Aside for Cases",
+    "text": "Aside for Cases\n\n\n\n\n\n\n\n\n\nsample is at position…\ntime\n\n\n\n\n0\ninstant\n\n\n5\nlonger\n\n\n15\nlonger\n\n\nnot in array\nlongest\n\n\n\n\nBest case: minimum over all inputs\nWorst case: maximum over all inputs\nAverage case: expected (needs probability)\n\n\n“The answer depends on the input!”\nBest case: 1 Worst case: n Average case: (1+2+…+n)/n = (n+1)/2 ≈ n/2\n“Which should we report?”\nwe will do worst case, almost always."
   },
   {
-    "objectID": "slides/01_tue_counting.html#why-roughly",
-    "href": "slides/01_tue_counting.html#why-roughly",
+    "objectID": "slides/01_tue_runtime.html#counting-everything",
+    "href": "slides/01_tue_runtime.html#counting-everything",
     "title": "Counting Steps",
-    "section": "Why “roughly”?",
-    "text": "Why “roughly”?\nWe don’t care about:\n\nConstants: 2n vs 3n vs 100n — all O(n)\nLower-order terms: n² + 5n + 17 — just O(n²)\n\n\nWe care about: How does the count grow as n grows?"
+    "section": "Counting Everything",
+    "text": "Counting Everything\n\n\n\n\n\n\n\nWhat’s a good name?\nWhat’s a good expression for running time? $T(n) = $\n\n\n“Does the 2 matter?”\nAt n = 1,000,000: 2n ≈ n. Constants are noise.\nThe SHAPE matters: linear."
   },
   {
-    "objectID": "slides/01_tue_counting.html#the-formal-definition",
-    "href": "slides/01_tue_counting.html#the-formal-definition",
+    "objectID": "slides/01_tue_runtime.html#single-loop",
+    "href": "slides/01_tue_runtime.html#single-loop",
     "title": "Counting Steps",
-    "section": "The formal definition",
-    "text": "The formal definition\n\n\n\n\n\n\nBig-O Notation\n\n\nf(n) is O(g(n)) if there exist constants c &gt; 0 and n₀ ≥ 0 such that:\n\\[f(n) \\leq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\n\n\n\nIn words: f(n) grows no faster than g(n), once n is big enough."
+    "section": "Single Loop",
+    "text": "Single Loop\n\n\n\nn\noperations\n\n\n\n\n10\n10\n\n\n100\n100\n\n\n1000\n1000\n\n\n\n\n“What’s the pattern?”\nDouble n → double the work. LINEAR."
   },
   {
-    "objectID": "slides/01_tue_counting.html#picture-this",
-    "href": "slides/01_tue_counting.html#picture-this",
+    "objectID": "slides/01_tue_runtime.html#nested-loops",
+    "href": "slides/01_tue_runtime.html#nested-loops",
     "title": "Counting Steps",
-    "section": "Picture this",
-    "text": "Picture this\nFor n ≥ 3, we have 2n + 3 ≤ 3n. So f(n) = O(n).\nChoose c = 3, n₀ = 3."
+    "section": "Nested Loops",
+    "text": "Nested Loops\nTrace for n = 4. How many increments?\n\nLet them trace: 16\n“Predict for n = 8?” (64)\nDouble n → QUADRUPLE the work. QUADRATIC."
   },
   {
-    "objectID": "slides/01_tue_counting.html#single-loops",
-    "href": "slides/01_tue_counting.html#single-loops",
+    "objectID": "slides/01_tue_runtime.html#nested-loops-variant",
+    "href": "slides/01_tue_runtime.html#nested-loops-variant",
     "title": "Counting Steps",
-    "section": "Single loops",
-    "text": "Single loops\n\n\n\n\n\n\n\nn iterations × O(1) work = O(n)"
+    "section": "Nested Loops (variant)",
+    "text": "Nested Loops (variant)\nTrace for n = 5.\n\ni=0: 0. i=1: 1. i=2: 2. i=3: 3. i=4: 4. Total: 10.\n0 + 1 + 2 + … + (n-1) = n(n-1)/2\nStill quadratic!"
   },
   {
-    "objectID": "slides/01_tue_counting.html#nested-loops",
-    "href": "slides/01_tue_counting.html#nested-loops",
+    "objectID": "slides/01_tue_runtime.html#the-triangle-sum",
+    "href": "slides/01_tue_runtime.html#the-triangle-sum",
     "title": "Counting Steps",
-    "section": "Nested loops",
-    "text": "Nested loops\n\n\n\n\n\n\n\nn iterations × n iterations × O(1) work = O(n²)"
+    "section": "The Triangle Sum",
+    "text": "The Triangle Sum\n\\[1 + 2 + 3 + \\ldots + n = \\frac{n(n+1)}{2}\\]\n\n“This is O(n²), not O(n).”\nWhenever you see “all pairs” — expect quadratic."
   },
   {
-    "objectID": "slides/01_tue_counting.html#nested-loops-variant",
-    "href": "slides/01_tue_counting.html#nested-loops-variant",
+    "objectID": "slides/01_tue_runtime.html#the-halving-pattern",
+    "href": "slides/01_tue_runtime.html#the-halving-pattern",
     "title": "Counting Steps",
-    "section": "Nested loops (variant)",
-    "text": "Nested loops (variant)\n\n\n\n\n\n\n\nIteration 0: 0 prints Iteration 1: 1 print Iteration 2: 2 prints … Iteration n-1: n-1 prints\n\n\nTotal: 0 + 1 + 2 + … + (n-1) = n(n-1)/2 = O(n²)"
+    "section": "The Halving Pattern",
+    "text": "The Halving Pattern\nTrace for n = 1000.\n\n1000 → 500 → 250 → 125 → 62 → 31 → 15 → 7 → 3 → 1\nAbout 10 iterations. log₂(1000) ≈ 10.\n“What if n = 1,000,000?” (≈20)\nDouble n → ONE more step. LOGARITHMIC."
   },
   {
-    "objectID": "slides/01_tue_counting.html#the-triangle-sum",
-    "href": "slides/01_tue_counting.html#the-triangle-sum",
+    "objectID": "slides/01_tue_runtime.html#lets-verify",
+    "href": "slides/01_tue_runtime.html#lets-verify",
     "title": "Counting Steps",
-    "section": "The triangle sum",
-    "text": "The triangle sum\n\n\n\n\n\n\nUseful formula\n\n\n\\[1 + 2 + 3 + \\ldots + n = \\frac{n(n+1)}{2}\\]\nThis is O(n²), not O(n).\n\n\n\n\nWhenever you see “for each pair” or “compare all pairs,” expect O(n²)."
+    "section": "Let’s verify",
+    "text": "Let’s verify"
   },
   {
-    "objectID": "slides/01_tue_counting.html#sequential-code",
-    "href": "slides/01_tue_counting.html#sequential-code",
+    "objectID": "slides/01_tue_runtime.html#pattern-summary",
+    "href": "slides/01_tue_runtime.html#pattern-summary",
     "title": "Counting Steps",
-    "section": "Sequential code",
-    "text": "Sequential code\n\n\n\n\n\n\n\nTotal: O(n) + O(n²) + O(n) = O(n²)\nThe largest term dominates."
+    "section": "Pattern Summary",
+    "text": "Pattern Summary\n\n\n\nPattern\nWhat happens when n doubles?\nName\n\n\n\n\nSingle loop\nWork doubles\nO(n)\n\n\nNested loops\nWork quadruples\nO(n²)\n\n\nHalving\nOne more step\nO(log n)\n\n\n\n\n“These are the building blocks.”"
   },
   {
-    "objectID": "slides/01_tue_counting.html#common-patterns",
-    "href": "slides/01_tue_counting.html#common-patterns",
+    "objectID": "slides/01_tue_runtime.html#big-o-notation",
+    "href": "slides/01_tue_runtime.html#big-o-notation",
     "title": "Counting Steps",
-    "section": "Common patterns",
-    "text": "Common patterns\n\n\n\nCode pattern\nBig-O\n\n\n\n\nSingle loop over n items\nO(n)\n\n\nNested loop (both over n)\nO(n²)\n\n\nLoop that halves each time\nO(log n)\n\n\nNested: outer halves, inner is n\nO(n log n)"
+    "section": "Big-O Notation",
+    "text": "Big-O Notation\n\n\n\n\n\nNotation\nName\n\n\n\n\nO(1)\nConstant\n\n\nO(log n)\nLogarithmic\n\n\nO(n)\nLinear\n\n\nO(n log n)\nLinearithmic\n\n\nO(n²)\nQuadratic\n\n\nO(2ⁿ)\nExponential\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n“We’ll formalize this Wednesday.”"
   },
   {
-    "objectID": "slides/01_tue_counting.html#the-halving-pattern",
-    "href": "slides/01_tue_counting.html#the-halving-pattern",
+    "objectID": "slides/01_tue_runtime.html#which-pattern",
+    "href": "slides/01_tue_runtime.html#which-pattern",
     "title": "Counting Steps",
-    "section": "The halving pattern",
-    "text": "The halving pattern\n\n\n\n\n\n\n\nHow many times can you halve n before reaching 1?\n\n\nlog₂(n) times. This is O(log n)."
+    "section": "Which pattern?",
+    "text": "Which pattern?\n\nLet them reason:\n\nsum: touch every value → O(n)\nfilter: check every row → O(n)\nloc: direct access → O(1)\nmerge: ???\n\n“Is merge O(n²)? It compares rows…”"
   },
   {
-    "objectID": "slides/01_tue_counting.html#lets-trace-it",
-    "href": "slides/01_tue_counting.html#lets-trace-it",
+    "objectID": "slides/01_tue_runtime.html#the-merge-mystery",
+    "href": "slides/01_tue_runtime.html#the-merge-mystery",
     "title": "Counting Steps",
-    "section": "Let’s trace it",
-    "text": "Let’s trace it"
+    "section": "The Merge Mystery",
+    "text": "The Merge Mystery\ndf.merge() uses hashing internally.\nO(n), not O(n²).\n\n“We’ll learn how in Week 5.”"
   },
   {
-    "objectID": "slides/01_tue_counting.html#whats-the-big-o",
-    "href": "slides/01_tue_counting.html#whats-the-big-o",
+    "objectID": "slides/01_tue_runtime.html#galactic-pizza",
+    "href": "slides/01_tue_runtime.html#galactic-pizza",
     "title": "Counting Steps",
-    "section": "What’s the Big-O?",
-    "text": "What’s the Big-O?\nLet’s analyze pandas operations on a DataFrame with n rows:"
+    "section": "Galactic Pizza",
+    "text": "Galactic Pizza"
   },
   {
-    "objectID": "slides/01_tue_counting.html#lets-reason-through-them",
-    "href": "slides/01_tue_counting.html#lets-reason-through-them",
+    "objectID": "slides/01_tue_runtime.html#two-ways-to-compute-the-mean",
+    "href": "slides/01_tue_runtime.html#two-ways-to-compute-the-mean",
     "title": "Counting Steps",
-    "section": "Let’s reason through them",
-    "text": "Let’s reason through them"
+    "section": "Two ways to compute the mean",
+    "text": "Two ways to compute the mean\n\n\n\n\n\n\n\n“Both are O(n). Why the difference?”"
   },
   {
-    "objectID": "slides/01_tue_counting.html#the-merge-mystery",
-    "href": "slides/01_tue_counting.html#the-merge-mystery",
+    "objectID": "slides/01_tue_runtime.html#same-big-o-different-speed",
+    "href": "slides/01_tue_runtime.html#same-big-o-different-speed",
     "title": "Counting Steps",
-    "section": "The merge mystery",
-    "text": "The merge mystery\ndf.merge() uses hashing internally!\nTime roughly doubles when n doubles → O(n), not O(n²)!"
+    "section": "Same Big-O, Different Speed",
+    "text": "Same Big-O, Different Speed\nBoth touch every row: O(n)\nBut:\n\nVectorized: tiny constants (compiled C)\nPython loop: large constants (interpreter overhead)\n\n\n“Big-O tells you SCALING, not SPEED.”"
   },
   {
-    "objectID": "slides/01_tue_counting.html#same-big-o-different-speed",
-    "href": "slides/01_tue_counting.html#same-big-o-different-speed",
+    "objectID": "slides/01_tue_runtime.html#what-we-learned",
+    "href": "slides/01_tue_runtime.html#what-we-learned",
     "title": "Counting Steps",
-    "section": "Same Big-O, different speed",
-    "text": "Same Big-O, different speed\nRemember Monday’s comparison?\nBoth iterrows() and .sum() are O(n).\nBut vectorized operations have tiny constant factors (compiled C code).\nLoop operations have large constant factors (Python overhead per iteration)."
+    "section": "What we learned",
+    "text": "What we learned\n\nTrace code to count operations\nCases: best, worst, average\nPatterns: linear, quadratic, logarithmic\nBig-O describes the shape"
   },
   {
-    "objectID": "slides/01_tue_counting.html#the-constant-factor",
-    "href": "slides/01_tue_counting.html#the-constant-factor",
-    "title": "Counting Steps",
-    "section": "The constant factor",
-    "text": "The constant factor\n\n\n\n\n\n\nBig-O tells you scaling, not speed\n\n\nBoth iterrows() and .sum() are O(n).\nBut vectorized operations have tiny constant factors (compiled C code).\nLoop operations have large constant factors (Python overhead per iteration).\n\n\n\n\nFor practical performance: Big-O first, then worry about constants."
-  },
-  {
-    "objectID": "slides/01_tue_counting.html#other-notations-preview",
-    "href": "slides/01_tue_counting.html#other-notations-preview",
-    "title": "Counting Steps",
-    "section": "Other notations (preview)",
-    "text": "Other notations (preview)\n\n\n\nNotation\nMeaning\nAnalogy\n\n\n\n\nO(g(n))\n≤ g(n) (upper bound)\n“at most”\n\n\nΩ(g(n))\n≥ g(n) (lower bound)\n“at least”\n\n\nΘ(g(n))\n= g(n) (tight bound)\n“exactly”\n\n\n\n\nWe’ll use O most of the time. It’s the “worst-case guarantee.”"
-  },
-  {
-    "objectID": "slides/01_tue_counting.html#proving-big-o",
-    "href": "slides/01_tue_counting.html#proving-big-o",
-    "title": "Counting Steps",
-    "section": "Proving Big-O",
-    "text": "Proving Big-O\nTo prove f(n) = O(g(n)), find constants c and n₀:\n\nExample: Prove 3n² + 5n + 2 = O(n²)\n\n\nFor n ≥ 1: - 3n² + 5n + 2 ≤ 3n² + 5n² + 2n² = 10n²\n\n\nChoose c = 10, n₀ = 1. ✓"
-  },
-  {
-    "objectID": "slides/01_tue_counting.html#common-big-o-facts",
-    "href": "slides/01_tue_counting.html#common-big-o-facts",
-    "title": "Counting Steps",
-    "section": "Common Big-O facts",
-    "text": "Common Big-O facts\n\n\n\n\n\n\nUseful rules\n\n\n\nConstants don’t matter: 5n = O(n)\nLower terms don’t matter: n² + n = O(n²)\nLogs don’t matter for base: log₂(n) = O(log₁₀(n))\nPolynomials: nᵃ = O(nᵇ) if a ≤ b\nExponentials dominate polynomials: n¹⁰⁰ = O(2ⁿ)"
-  },
-  {
-    "objectID": "slides/01_tue_counting.html#wednesday",
-    "href": "slides/01_tue_counting.html#wednesday",
+    "objectID": "slides/01_tue_runtime.html#wednesday",
+    "href": "slides/01_tue_runtime.html#wednesday",
     "title": "Counting Steps",
     "section": "Wednesday",
-    "text": "Wednesday\nWe’ll explore the hierarchy of growth rates:\n\\[O(1) &lt; O(\\log n) &lt; O(n) &lt; O(n \\log n) &lt; O(n^2) &lt; O(2^n)\\]\nAnd see why the gaps matter enormously at scale."
+    "text": "Wednesday\nThe full hierarchy. Racing algorithms. Feeling the difference.\n\n“And we’ll finally see how Shazam’s O(1) lookup works.”"
   },
   {
-    "objectID": "slides/01_tue_counting.html#try-before-wednesday",
-    "href": "slides/01_tue_counting.html#try-before-wednesday",
-    "title": "Counting Steps",
-    "section": "Try before Wednesday",
-    "text": "Try before Wednesday\nWhich grows faster? Try to figure out why.\n\n\n\n\n\n\n\nThink about what happens when n = 1,000,000."
-  },
-  {
-    "objectID": "slides/01_tue_counting.html#the-shazam-connection",
-    "href": "slides/01_tue_counting.html#the-shazam-connection",
-    "title": "Counting Steps",
-    "section": "The Shazam connection",
-    "text": "The Shazam connection\n\nMonday: Naive search is O(n). Too slow.\nToday: We can count and compare growth rates.\nWednesday: O(1) lookup via hashing—how is that even possible?\n\n\nWe’ll peek at hashing, then dive deep in Week 5."
-  },
-  {
-    "objectID": "slides/01_wed_hierarchy.html#from-tuesday",
-    "href": "slides/01_wed_hierarchy.html#from-tuesday",
+    "objectID": "slides/01_wed_hierarchy.html#patterns",
+    "href": "slides/01_wed_hierarchy.html#patterns",
     "title": "The Hierarchy of Speed",
-    "section": "From Tuesday",
-    "text": "From Tuesday\nWe learned to count operations and express them as Big-O.\n\nToday: Which Big-O classes matter, and why?"
+    "section": "Patterns",
+    "text": "Patterns\n\n\n\nPattern\nWhen n doubles…\n\n\n\n\nSingle loop\nWork doubles\n\n\nNested loops\nWork quadruples\n\n\nHalving\nOne more step\n\n\n\n\n“Today: formalize this, then FEEL the difference.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#the-hierarchy",
-    "href": "slides/01_wed_hierarchy.html#the-hierarchy",
+    "objectID": "slides/01_wed_hierarchy.html#the-definition",
+    "href": "slides/01_wed_hierarchy.html#the-definition",
     "title": "The Hierarchy of Speed",
-    "section": "The hierarchy",
-    "text": "The hierarchy\n\\[O(1) \\quad &lt; \\quad O(\\log n) \\quad &lt; \\quad O(n) \\quad &lt; \\quad O(n \\log n) \\quad &lt; \\quad O(n^2) \\quad &lt; \\quad O(2^n)\\]\n\nLet’s see what these actually mean at scale."
+    "section": "The Definition",
+    "text": "The Definition\nf(n) is O(g(n)) if there exist constants c &gt; 0 and n₀ ≥ 0 such that:\n\\[f(n) \\leq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\n“In words: f grows no faster than g, once n is big enough.”"
+  },
+  {
+    "objectID": "slides/01_wed_hierarchy.html#picture",
+    "href": "slides/01_wed_hierarchy.html#picture",
+    "title": "The Hierarchy of Speed",
+    "section": "Picture",
+    "text": "Picture\n\n\n\n\n\n\n\n\n\n\nFor n ≥ 3: 2n + 3 ≤ 3n\nChoose c = 3, n₀ = 3."
+  },
+  {
+    "objectID": "slides/01_wed_hierarchy.html#other-notations",
+    "href": "slides/01_wed_hierarchy.html#other-notations",
+    "title": "The Hierarchy of Speed",
+    "section": "Other Notations",
+    "text": "Other Notations\n\n\n\nNotation\nMeaning\n\n\n\n\nO(g(n))\n≤ c·g(n) — upper bound\n\n\nΩ(g(n))\n≥ c·g(n) — lower bound\n\n\nΘ(g(n))\nboth — tight bound\n\n\n\n\n“We mostly use O — the worst-case guarantee.”"
+  },
+  {
+    "objectID": "slides/01_wed_hierarchy.html#prove-it",
+    "href": "slides/01_wed_hierarchy.html#prove-it",
+    "title": "The Hierarchy of Speed",
+    "section": "Prove It",
+    "text": "Prove It\nShow that 3n² + 5n + 2 = O(n²)\n\nLet them try.\nFor n ≥ 1: - 3n² ≤ 3n² - 5n ≤ 5n² - 2 ≤ 2n²\nSo: 3n² + 5n + 2 ≤ 10n²\nChoose c = 10, n₀ = 1. ✓"
+  },
+  {
+    "objectID": "slides/01_wed_hierarchy.html#rules",
+    "href": "slides/01_wed_hierarchy.html#rules",
+    "title": "The Hierarchy of Speed",
+    "section": "Rules",
+    "text": "Rules\n\nConstants don’t matter: 5n = O(n)\nLower terms don’t matter: n² + n = O(n²)\nLog base doesn’t matter: log₂n = O(log₁₀n)\n\n\n“What’s the intuition for #3?”\nAll logs differ by a constant factor. log₂n = log₁₀n / log₁₀2"
+  },
+  {
+    "objectID": "slides/01_wed_hierarchy.html#the-ladder",
+    "href": "slides/01_wed_hierarchy.html#the-ladder",
+    "title": "The Hierarchy of Speed",
+    "section": "The Ladder",
+    "text": "The Ladder\n\\[O(1) &lt; O(\\log n) &lt; O(n) &lt; O(n \\log n) &lt; O(n^2) &lt; O(2^n)\\]\n\n“Let’s see what these mean at scale.”"
   },
   {
     "objectID": "slides/01_wed_hierarchy.html#at-n-1000000",
     "href": "slides/01_wed_hierarchy.html#at-n-1000000",
     "title": "The Hierarchy of Speed",
     "section": "At n = 1,000,000",
-    "text": "At n = 1,000,000\n\n\n\nBig-O\nOperations\nTime at 1 billion ops/sec\n\n\n\n\nO(1)\n1\n1 nanosecond\n\n\nO(log n)\n20\n20 nanoseconds\n\n\nO(n)\n1,000,000\n1 millisecond\n\n\nO(n log n)\n20,000,000\n20 milliseconds\n\n\nO(n²)\n1,000,000,000,000\n16 minutes\n\n\nO(2ⁿ)\n10³⁰⁰’⁰⁰⁰\nheat death of universe"
+    "text": "At n = 1,000,000\n\n\n\nBig-O\nOperations\nTime @ 1B ops/sec\n\n\n\n\nO(1)\n1\n1 nanosecond\n\n\nO(log n)\n20\n20 nanoseconds\n\n\nO(n)\n1,000,000\n1 millisecond\n\n\nO(n log n)\n20,000,000\n20 milliseconds\n\n\nO(n²)\n10¹²\n16 minutes\n\n\nO(2ⁿ)\n10³⁰⁰’⁰⁰⁰\nheat death of universe"
   },
   {
     "objectID": "slides/01_wed_hierarchy.html#the-cliff",
     "href": "slides/01_wed_hierarchy.html#the-cliff",
     "title": "The Hierarchy of Speed",
-    "section": "The cliff",
-    "text": "The cliff\nOn a log scale, even n² looks gentle. But 2ⁿ goes vertical."
+    "section": "The Cliff",
+    "text": "The Cliff\n\n\n\n\n\n\n\n“2ⁿ goes vertical.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#o1-constant-time",
-    "href": "slides/01_wed_hierarchy.html#o1-constant-time",
+    "objectID": "slides/01_wed_hierarchy.html#o1-constant",
+    "href": "slides/01_wed_hierarchy.html#o1-constant",
     "title": "The Hierarchy of Speed",
-    "section": "O(1): Constant time",
-    "text": "O(1): Constant time\n\n\n\n\n\n\n\nNo matter how big the input, same time.\n\nDictionary/set lookup\nArray access by index\nStack push/pop"
+    "section": "O(1): Constant",
+    "text": "O(1): Constant\n\n“No matter how big the input, same time.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#olog-n-logarithmic-time",
-    "href": "slides/01_wed_hierarchy.html#olog-n-logarithmic-time",
+    "objectID": "slides/01_wed_hierarchy.html#olog-n-logarithmic",
+    "href": "slides/01_wed_hierarchy.html#olog-n-logarithmic",
     "title": "The Hierarchy of Speed",
-    "section": "O(log n): Logarithmic time",
-    "text": "O(log n): Logarithmic time\n\n\n\n\n\n\n\nHalving at each step. Grows incredibly slowly.\nlog₂(1 billion) ≈ 30"
+    "section": "O(log n): Logarithmic",
+    "text": "O(log n): Logarithmic\n\n“Halving at each step. log₂(1 billion) ≈ 30.”\nWe’ll prove this correct next week."
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#on-linear-time",
-    "href": "slides/01_wed_hierarchy.html#on-linear-time",
+    "objectID": "slides/01_wed_hierarchy.html#on-linear",
+    "href": "slides/01_wed_hierarchy.html#on-linear",
     "title": "The Hierarchy of Speed",
-    "section": "O(n): Linear time",
-    "text": "O(n): Linear time\n\n\n\n\n\n\n\nMust look at every element once.\n\nFinding min/max\nCounting occurrences\ndf[‘col’].sum()"
+    "section": "O(n): Linear",
+    "text": "O(n): Linear\n\n“Must look at every element.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#on-log-n-linearithmic-time",
-    "href": "slides/01_wed_hierarchy.html#on-log-n-linearithmic-time",
+    "objectID": "slides/01_wed_hierarchy.html#on²-quadratic",
+    "href": "slides/01_wed_hierarchy.html#on²-quadratic",
     "title": "The Hierarchy of Speed",
-    "section": "O(n log n): Linearithmic time",
-    "text": "O(n log n): Linearithmic time\n\n\n\n\n\n\n\nThe sweet spot for sorting.\n\nMerge sort, quicksort (average)\nsorted() in Python\ndf.sort_values()"
+    "section": "O(n²): Quadratic",
+    "text": "O(n²): Quadratic\n\n“All pairs. Gets painful quickly.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#on²-quadratic-time",
-    "href": "slides/01_wed_hierarchy.html#on²-quadratic-time",
+    "objectID": "slides/01_wed_hierarchy.html#o2ⁿ-exponential",
+    "href": "slides/01_wed_hierarchy.html#o2ⁿ-exponential",
     "title": "The Hierarchy of Speed",
-    "section": "O(n²): Quadratic time",
-    "text": "O(n²): Quadratic time\n\n\n\n\n\n\n\nAll pairs. Gets painful quickly.\n\nNaive duplicate detection\nBubble sort\nSome matrix operations"
+    "section": "O(2ⁿ): Exponential",
+    "text": "O(2ⁿ): Exponential\n\n“Doubles with each element. Often intractable.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#o2ⁿ-exponential-time",
-    "href": "slides/01_wed_hierarchy.html#o2ⁿ-exponential-time",
+    "objectID": "slides/01_wed_hierarchy.html#the-setup",
+    "href": "slides/01_wed_hierarchy.html#the-setup",
     "title": "The Hierarchy of Speed",
-    "section": "O(2ⁿ): Exponential time",
-    "text": "O(2ⁿ): Exponential time\n\n\n\n\n\n\n\nDoubles with each element. Often intractable.\n\nGenerating all subsets\nBrute-force combinatorics\nMany NP-hard problems"
-  },
-  {
-    "objectID": "slides/01_wed_hierarchy.html#lets-race-some-algorithms",
-    "href": "slides/01_wed_hierarchy.html#lets-race-some-algorithms",
-    "title": "The Hierarchy of Speed",
-    "section": "Let’s race some algorithms",
-    "text": "Let’s race some algorithms"
+    "section": "The Setup",
+    "text": "The Setup\n\n\n\n\n\n\n\n“Same problem, two approaches.”"
   },
   {
     "objectID": "slides/01_wed_hierarchy.html#the-race",
     "href": "slides/01_wed_hierarchy.html#the-race",
     "title": "The Hierarchy of Speed",
-    "section": "The race",
-    "text": "The race"
+    "section": "The Race",
+    "text": "The Race\n\n\n\n\n\n\n\n“What do you notice?”\nO(n²): 4× slower when n doubles O(n): barely changes\n“The set gives O(1) lookup — transforms O(n²) into O(n).”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#what-just-happened",
-    "href": "slides/01_wed_hierarchy.html#what-just-happened",
+    "objectID": "slides/01_wed_hierarchy.html#what-happened",
+    "href": "slides/01_wed_hierarchy.html#what-happened",
     "title": "The Hierarchy of Speed",
-    "section": "What just happened?",
-    "text": "What just happened?\n\n\nO(n²)\n\n1000 → 2000: ~4× slower\n2000 → 4000: ~4× slower\nGrows fast!\n\n\nO(n)\n\nTime barely changes\nOrders of magnitude faster\n\n\n\nThe set gives us O(1) lookup → transforms O(n²) into O(n)."
+    "section": "What Happened",
+    "text": "What Happened\nO(n²) → O(n)\nThe set provides O(1) lookup.\n\n“This is the power of data structures.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#the-crossover-point",
-    "href": "slides/01_wed_hierarchy.html#the-crossover-point",
+    "objectID": "slides/01_wed_hierarchy.html#small-n",
+    "href": "slides/01_wed_hierarchy.html#small-n",
     "title": "The Hierarchy of Speed",
-    "section": "The crossover point",
-    "text": "The crossover point\nAt small n, constants dominate:"
+    "section": "Small n",
+    "text": "Small n\n\n\n\n\n\n\n\n“At small n, constants dominate.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#small-n-constants-win",
-    "href": "slides/01_wed_hierarchy.html#small-n-constants-win",
+    "objectID": "slides/01_wed_hierarchy.html#large-n",
+    "href": "slides/01_wed_hierarchy.html#large-n",
     "title": "The Hierarchy of Speed",
-    "section": "Small n: constants win",
-    "text": "Small n: constants win\n\n\n\n\n\n\n\nAt n=10, the “O(1)” algorithm is slower due to its 10ms constant!"
-  },
-  {
-    "objectID": "slides/01_wed_hierarchy.html#large-n-big-o-wins",
-    "href": "slides/01_wed_hierarchy.html#large-n-big-o-wins",
-    "title": "The Hierarchy of Speed",
-    "section": "Large n: Big-O wins",
-    "text": "Large n: Big-O wins\n\n\n\n\n\n\n\nAt n=1,000,000, Big-O dominates. The linear algorithm is 100× slower."
+    "section": "Large n",
+    "text": "Large n\n\n\n\n\n\n\n\n“At large n, Big-O dominates.”"
   },
   {
     "objectID": "slides/01_wed_hierarchy.html#the-lesson",
     "href": "slides/01_wed_hierarchy.html#the-lesson",
     "title": "The Hierarchy of Speed",
-    "section": "The lesson",
-    "text": "The lesson\n\n\n\n\n\n\nBig-O matters when n is large\n\n\nFor small data: just write clear code.\nFor big data: Big-O is destiny.\nKnow your data size. Choose accordingly."
+    "section": "The Lesson",
+    "text": "The Lesson\nSmall data: write clear code.\nBig data: Big-O is destiny."
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#the-three-act-structure",
-    "href": "slides/01_wed_hierarchy.html#the-three-act-structure",
+    "objectID": "slides/01_wed_hierarchy.html#the-full-picture",
+    "href": "slides/01_wed_hierarchy.html#the-full-picture",
     "title": "The Hierarchy of Speed",
-    "section": "The three-act structure",
-    "text": "The three-act structure\n\nNaive search: Compare sample to every song → O(n) where n = 100 million\nSmarter search: Sort songs somehow? Binary search? → O(log n)?\nBrilliant insight: Convert audio to fingerprint, use hash table → O(1)"
+    "section": "The Full Picture",
+    "text": "The Full Picture\n\nNaive: O(n) — check every song\nSmarter: O(log n) — binary search?\nBrilliant: O(1) — hash table\n\n\n“How does O(1) lookup work?”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#how-it-works-preview",
-    "href": "slides/01_wed_hierarchy.html#how-it-works-preview",
+    "objectID": "slides/01_wed_hierarchy.html#hash-tables",
+    "href": "slides/01_wed_hierarchy.html#hash-tables",
     "title": "The Hierarchy of Speed",
-    "section": "How it works (preview)",
-    "text": "How it works (preview)\n\nConvert audio to spectrogram (time × frequency)\nFind peaks — these are robust to noise\nTurn pairs of peaks into a hash (a number)\nLook up that hash in a hash table\n\n\nHash table lookup is O(1) → doesn’t matter if database has 1 million or 100 million songs!"
+    "section": "Hash Tables",
+    "text": "Hash Tables\nAudio → spectrogram → landmarks → hash\nHash → direct lookup in table\n\n“Doesn’t matter if 1 million or 100 million songs.”\n“We’ll learn how in Week 5.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#the-magic-formula",
-    "href": "slides/01_wed_hierarchy.html#the-magic-formula",
+    "objectID": "slides/01_wed_hierarchy.html#the-magic",
+    "href": "slides/01_wed_hierarchy.html#the-magic",
     "title": "The Hierarchy of Speed",
-    "section": "The magic formula",
-    "text": "The magic formula\n\nRight data structure + Right algorithm\n= Impossible becomes instant\n\n\nThis is what DSCI 221 is about."
+    "section": "The Magic",
+    "text": "The Magic\n\n\n\nDatabase\nLinear\nHash\n\n\n\n\n1,000\n1 sec\n0.001 sec\n\n\n1,000,000\n1000 sec\n0.001 sec\n\n\n100,000,000\n27 hours\n0.001 sec"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#timing-experiments",
-    "href": "slides/01_wed_hierarchy.html#timing-experiments",
+    "objectID": "slides/01_wed_hierarchy.html#the-two-pillars",
+    "href": "slides/01_wed_hierarchy.html#the-two-pillars",
     "title": "The Hierarchy of Speed",
-    "section": "Timing experiments",
-    "text": "Timing experiments\nYou’ll:\n\nImplement O(n) and O(n²) solutions to the same problem\nPredict their running times at various sizes\nMeasure actual times\nExplain any discrepancies\n\n\nScience mode: hypothesis → experiment → analysis"
+    "section": "The Two Pillars",
+    "text": "The Two Pillars\n\nCorrectness — Does it work?\nEfficiency — How fast?\n\n\n“An algorithm must be correct AND efficient.”"
   },
   {
-    "objectID": "slides/01_wed_hierarchy.html#predictions-matter",
-    "href": "slides/01_wed_hierarchy.html#predictions-matter",
+    "objectID": "slides/01_wed_hierarchy.html#what-we-learned",
+    "href": "slides/01_wed_hierarchy.html#what-we-learned",
     "title": "The Hierarchy of Speed",
-    "section": "Predictions matter",
-    "text": "Predictions matter\n\n\n\n\n\n\nThe prediction game\n\n\nBefore you run code, write down what you expect.\nIf n doubles and your algorithm is O(n²), time should ~4×.\nIf your prediction is wrong, you learn something!"
-  },
-  {
-    "objectID": "slides/01_wed_hierarchy.html#the-hierarchy-1",
-    "href": "slides/01_wed_hierarchy.html#the-hierarchy-1",
-    "title": "The Hierarchy of Speed",
-    "section": "The hierarchy",
-    "text": "The hierarchy\n\n\n\nClass\nName\nExample\n\n\n\n\nO(1)\nConstant\nDictionary lookup\n\n\nO(log n)\nLogarithmic\nBinary search\n\n\nO(n)\nLinear\nFinding maximum\n\n\nO(n log n)\nLinearithmic\nSorting\n\n\nO(n²)\nQuadratic\nComparing all pairs\n\n\nO(2ⁿ)\nExponential\nAll subsets"
-  },
-  {
-    "objectID": "slides/01_wed_hierarchy.html#the-takeaways",
-    "href": "slides/01_wed_hierarchy.html#the-takeaways",
-    "title": "The Hierarchy of Speed",
-    "section": "The takeaways",
-    "text": "The takeaways\n\nBig-O tells you how things scale, not absolute speed\nAt large n, Big-O dominates — constants become irrelevant\nThe right data structure can drop you down the hierarchy (O(n²) → O(n))\nThis is why data structures matter — they enable faster algorithms"
+    "section": "What We Learned",
+    "text": "What We Learned\n\nCounting operations, discovering patterns\nBig-O as formal notation\nThe hierarchy: O(1) to O(2ⁿ)\nData structures change everything"
   },
   {
     "objectID": "slides/01_wed_hierarchy.html#next-week",
     "href": "slides/01_wed_hierarchy.html#next-week",
     "title": "The Hierarchy of Speed",
-    "section": "Next week",
-    "text": "Next week\nBinary search: the power of sorted data.\nCan you guess a number from 1 to 1,000,000 in 20 questions?\n\n\nSpoiler: Yes, and we’ll prove it works."
+    "section": "Next Week",
+    "text": "Next Week\nBinary search: the power of sorted data.\nLoop invariants: proving correctness.\n\n“Remember the halving pattern? Binary search IS that pattern.”\n“And we’ll finally prove that algorithms work — not just hope.”"
+  },
+  {
+    "objectID": "slides/01_wed_hierarchy.html#questions",
+    "href": "slides/01_wed_hierarchy.html#questions",
+    "title": "The Hierarchy of Speed",
+    "section": "Questions?",
+    "text": "Questions?\n\nThe right data structure\n+\nThe right algorithm\n=\nImpossible → Instant"
   },
   {
     "objectID": "syllabus.html",
