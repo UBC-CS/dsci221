@@ -4,74 +4,154 @@ subtitle: "Week 1, Wednesday"
 date: 2026-01-07
 ---
 
-# The Growth Rate Ladder
+# From Tuesday
 
-## From Tuesday
+## Patterns
 
-We learned to count operations and express them as Big-O.
+| Pattern | When n doubles... |
+|---------|-------------------|
+| Single loop | Work doubles |
+| Nested loops | Work quadruples |
+| Halving | One more step |
 
-. . .
+:::{.notes}
+"Today: formalize this, then FEEL the difference."
+:::
 
-Today: **Which Big-O classes matter, and why?**
+# Formalizing Big-O
 
-## The hierarchy
+## The Definition
 
-$$O(1) \quad < \quad O(\log n) \quad < \quad O(n) \quad < \quad O(n \log n) \quad < \quad O(n^2) \quad < \quad O(2^n)$$
+f(n) is **O(g(n))** if there exist constants c > 0 and n₀ ≥ 0 such that:
 
-. . .
+$$f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0$$
 
-Let's see what these actually *mean* at scale.
+:::{.notes}
+"In words: f grows no faster than g, once n is big enough."
+:::
+
+## Picture
+
+```{python}
+#| echo: false
+import matplotlib.pyplot as plt
+import numpy as np
+
+n = np.linspace(1, 20, 100)
+f_n = 2*n + 3
+g_n = 3*n
+
+plt.figure(figsize=(8, 5))
+plt.plot(n, f_n, 'b-', linewidth=2, label='f(n) = 2n + 3')
+plt.plot(n, g_n, 'r--', linewidth=2, label='c·g(n) = 3n')
+plt.axvline(x=3, color='green', linestyle=':', linewidth=2, label='n₀ = 3')
+plt.fill_between(n[n >= 3], f_n[n >= 3], g_n[n >= 3], alpha=0.3, color='green')
+plt.xlabel('n', fontsize=12)
+plt.ylabel('Operations', fontsize=12)
+plt.legend(fontsize=11)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+
+:::{.notes}
+For n ≥ 3: 2n + 3 ≤ 3n
+
+Choose c = 3, n₀ = 3.
+:::
+
+## Other Notations
+
+| Notation | Meaning |
+|----------|---------|
+| O(g(n)) | ≤ c·g(n) — upper bound |
+| Ω(g(n)) | ≥ c·g(n) — lower bound |
+| Θ(g(n)) | both — tight bound |
+
+:::{.notes}
+"We mostly use O — the worst-case guarantee."
+:::
+
+## Prove It
+
+Show that 3n² + 5n + 2 = O(n²)
+
+:::{.notes}
+Let them try.
+
+For n ≥ 1:
+- 3n² ≤ 3n²
+- 5n ≤ 5n²
+- 2 ≤ 2n²
+
+So: 3n² + 5n + 2 ≤ 10n²
+
+Choose c = 10, n₀ = 1. ✓
+:::
+
+## Rules
+
+1. Constants don't matter: 5n = O(n)
+2. Lower terms don't matter: n² + n = O(n²)
+3. Log base doesn't matter: log₂n = O(log₁₀n)
+
+:::{.notes}
+"What's the intuition for #3?"
+
+All logs differ by a constant factor. log₂n = log₁₀n / log₁₀2
+:::
+
+# The Hierarchy
+
+## The Ladder
+
+$$O(1) < O(\log n) < O(n) < O(n \log n) < O(n^2) < O(2^n)$$
+
+:::{.notes}
+"Let's see what these mean at scale."
+:::
 
 ## At n = 1,000,000
 
-| Big-O | Operations | Time at 1 billion ops/sec |
-|-------|------------|---------------------------|
+| Big-O | Operations | Time @ 1B ops/sec |
+|-------|------------|-------------------|
 | O(1) | 1 | 1 nanosecond |
 | O(log n) | 20 | 20 nanoseconds |
 | O(n) | 1,000,000 | 1 millisecond |
 | O(n log n) | 20,000,000 | 20 milliseconds |
-| O(n²) | 1,000,000,000,000 | 16 minutes |
+| O(n²) | 10¹² | 16 minutes |
 | O(2ⁿ) | 10³⁰⁰'⁰⁰⁰ | heat death of universe |
 
-## The cliff
-
-On a log scale, even n² looks gentle. But 2ⁿ goes vertical.
+## The Cliff
 
 ```{pyodide}
-import math
-
-# Let's compute actual values for different n
-for n in [10, 20, 30, 40]:
-    ops_n2 = n**2
-    ops_2n = 2**n
-    print(f"n={n:2}: n²={ops_n2:>12,}    2ⁿ={ops_2n:>15,}")
+for n in [10, 20, 30, 40, 50]:
+    print(f"n={n:2}:  n²={n**2:>10,}    2ⁿ={2**n:>20,}")
 ```
+
+:::{.notes}
+"2ⁿ goes vertical."
+:::
 
 # The Practical Classes
 
-## O(1): Constant time
+## O(1): Constant
 
-```{pyodide}
-#| autorun: false
-def get_first(arr):
-    return arr[0]
-
-def dict_lookup(d, key):
-    return d[key]
+```{python}
+#| eval: false
+arr[0]
+d[key]
+stack.pop()
 ```
 
-. . .
+:::{.notes}
+"No matter how big the input, same time."
+:::
 
-**No matter how big the input, same time.**
+## O(log n): Logarithmic
 
-- Dictionary/set lookup
-- Array access by index
-- Stack push/pop
-
-## O(log n): Logarithmic time
-
-```{pyodide}
-#| autorun: false
+```{python}
+#| eval: false
 def binary_search(arr, target):
     lo, hi = 0, len(arr) - 1
     while lo <= hi:
@@ -85,16 +165,16 @@ def binary_search(arr, target):
     return -1
 ```
 
-. . .
+:::{.notes}
+"Halving at each step. log₂(1 billion) ≈ 30."
 
-**Halving at each step.** Grows incredibly slowly.
+We'll prove this correct next week.
+:::
 
-log₂(1 billion) ≈ 30
+## O(n): Linear
 
-## O(n): Linear time
-
-```{pyodide}
-#| autorun: false
+```{python}
+#| eval: false
 def find_max(arr):
     max_val = arr[0]
     for x in arr:
@@ -103,40 +183,15 @@ def find_max(arr):
     return max_val
 ```
 
-. . .
+:::{.notes}
+"Must look at every element."
+:::
 
-**Must look at every element once.**
+## O(n²): Quadratic
 
-- Finding min/max
-- Counting occurrences
-- df['col'].sum()
-
-## O(n log n): Linearithmic time
-
-```{pyodide}
-#| autorun: false
-def merge_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    mid = len(arr) // 2
-    left = merge_sort(arr[:mid])
-    right = merge_sort(arr[mid:])
-    return merge(left, right)
-```
-
-. . .
-
-**The sweet spot for sorting.**
-
-- Merge sort, quicksort (average)
-- `sorted()` in Python
-- `df.sort_values()`
-
-## O(n²): Quadratic time
-
-```{pyodide}
-#| autorun: false
-def has_duplicate_naive(arr):
+```{python}
+#| eval: false
+def has_duplicate(arr):
     for i in range(len(arr)):
         for j in range(i + 1, len(arr)):
             if arr[i] == arr[j]:
@@ -144,18 +199,14 @@ def has_duplicate_naive(arr):
     return False
 ```
 
-. . .
+:::{.notes}
+"All pairs. Gets painful quickly."
+:::
 
-**All pairs.** Gets painful quickly.
+## O(2ⁿ): Exponential
 
-- Naive duplicate detection
-- Bubble sort
-- Some matrix operations
-
-## O(2ⁿ): Exponential time
-
-```{pyodide}
-#| autorun: false
+```{python}
+#| eval: false
 def all_subsets(arr):
     if not arr:
         return [[]]
@@ -163,27 +214,17 @@ def all_subsets(arr):
     return rest + [[arr[0]] + s for s in rest]
 ```
 
-. . .
+:::{.notes}
+"Doubles with each element. Often intractable."
+:::
 
-**Doubles with each element.** Often intractable.
+# Racing Algorithms
 
-- Generating all subsets
-- Brute-force combinatorics
-- Many NP-hard problems
-
-# Feeling the Difference
-
-## Let's race some algorithms
+## The Setup
 
 ```{pyodide}
 import time
 
-def time_it(func, *args):
-    start = time.time()
-    result = func(*args)
-    return time.time() - start
-
-# O(n²) duplicate check
 def has_dup_quadratic(arr):
     for i in range(len(arr)):
         for j in range(i+1, len(arr)):
@@ -191,7 +232,6 @@ def has_dup_quadratic(arr):
                 return True
     return False
 
-# O(n) duplicate check with set
 def has_dup_linear(arr):
     seen = set()
     for x in arr:
@@ -201,199 +241,162 @@ def has_dup_linear(arr):
     return False
 ```
 
-## The race
+:::{.notes}
+"Same problem, two approaches."
+:::
+
+## The Race
 
 ```{pyodide}
-sizes = [500, 1000, 2000, 4000]
-print("Size     O(n²)      O(n)     Ratio")
-print("-" * 40)
+def time_it(func, arr):
+    start = time.time()
+    func(arr)
+    return time.time() - start
 
-for n in sizes:
-    arr = list(range(n))  # No duplicates (worst case)
-
-    t_quad = time_it(has_dup_quadratic, arr)
-    t_lin = time_it(has_dup_linear, arr)
-
-    if t_lin > 0:
-        ratio = t_quad/t_lin
-        print(f"{n:5}   {t_quad:.4f}s   {t_lin:.5f}s   {ratio:6.0f}x")
-    else:
-        print(f"{n:5}   {t_quad:.4f}s   {t_lin:.5f}s   (very fast)")
+print("Size     O(n²)      O(n)")
+print("-" * 35)
+for n in [1000, 2000, 4000, 8000]:
+    arr = list(range(n))
+    t1 = time_it(has_dup_quadratic, arr)
+    t2 = time_it(has_dup_linear, arr)
+    print(f"{n:5}   {t1:.4f}s   {t2:.5f}s")
 ```
 
-## What just happened?
+:::{.notes}
+"What do you notice?"
 
-::: {.columns}
-::: {.column width="50%"}
-**O(n²)**
+O(n²): 4× slower when n doubles
+O(n): barely changes
 
-- 1000 → 2000: ~4× slower
-- 2000 → 4000: ~4× slower
-- Grows fast!
+"The set gives O(1) lookup — transforms O(n²) into O(n)."
 :::
 
-::: {.column width="50%"}
-**O(n)**
+## What Happened
 
-- Time barely changes
-- **Orders of magnitude faster**
+O(n²) → O(n)
+
+The **set** provides O(1) lookup.
+
+:::{.notes}
+"This is the power of data structures."
 :::
-:::
-
-. . .
-
-The set gives us O(1) lookup → transforms O(n²) into O(n).
 
 # When Does It Matter?
 
-## The crossover point
-
-At small n, constants dominate:
+## Small n
 
 ```{pyodide}
-import time
-
 def slow_constant(n):
-    """O(1) but with large constant"""
-    time.sleep(0.01)  # 10ms of "setup"
+    time.sleep(0.01)  # 10ms setup
     return 42
 
 def fast_linear(n):
-    """O(n) but with tiny constant"""
     total = 0
     for i in range(n):
         total += i
     return total
-```
 
-## Small n: constants win
-
-```{pyodide}
 for n in [10, 100, 1000]:
     t1 = time_it(slow_constant, n)
     t2 = time_it(fast_linear, n)
-    print(f"n={n:4}: O(1)={t1:.4f}s  O(n)={t2:.6f}s  Winner: {'O(1)' if t1 < t2 else 'O(n)'}")
+    print(f"n={n:4}: O(1)={t1:.3f}s  O(n)={t2:.5f}s")
 ```
 
-. . .
+:::{.notes}
+"At small n, constants dominate."
+:::
 
-At n=10, the "O(1)" algorithm is slower due to its 10ms constant!
-
-## Large n: Big-O wins
+## Large n
 
 ```{pyodide}
 for n in [10000, 100000, 1000000]:
     t1 = time_it(slow_constant, n)
     t2 = time_it(fast_linear, n)
-    print(f"n={n:7}: O(1)={t1:.4f}s  O(n)={t2:.4f}s  Winner: {'O(1)' if t1 < t2 else 'O(n)'}")
+    print(f"n={n:7}: O(1)={t1:.3f}s  O(n)={t2:.3f}s")
 ```
 
-. . .
-
-At n=1,000,000, Big-O dominates. The linear algorithm is 100× slower.
-
-## The lesson
-
-::: {.callout-important}
-## Big-O matters when n is large
-
-For small data: just write clear code.
-
-For big data: **Big-O is destiny.**
-
-Know your data size. Choose accordingly.
+:::{.notes}
+"At large n, Big-O dominates."
 :::
+
+## The Lesson
+
+Small data: write clear code.
+
+Big data: **Big-O is destiny.**
 
 # Back to Shazam
 
-## The three-act structure
+## The Full Picture
 
-::: {.incremental}
-1. **Naive search**: Compare sample to every song → O(n) where n = 100 million
-2. **Smarter search**: Sort songs somehow? Binary search? → O(log n)?
-3. **Brilliant insight**: Convert audio to fingerprint, use hash table → O(1)
+1. Naive: O(n) — check every song
+2. Smarter: O(log n) — binary search?
+3. Brilliant: O(1) — hash table
+
+:::{.notes}
+"How does O(1) lookup work?"
 :::
 
-## How it works (preview)
+## Hash Tables
 
-1. Convert audio to spectrogram (time × frequency)
-2. Find **peaks** — these are robust to noise
-3. Turn pairs of peaks into a **hash** (a number)
-4. Look up that hash in a **hash table**
+Audio → spectrogram → landmarks → **hash**
 
-. . .
+Hash → **direct lookup** in table
 
-Hash table lookup is O(1) → **doesn't matter if database has 1 million or 100 million songs!**
+:::{.notes}
+"Doesn't matter if 1 million or 100 million songs."
 
-## The magic formula
-
-::: {.r-fit-text}
-**Right data structure** + **Right algorithm**
-
-= **Impossible becomes instant**
+"We'll learn how in Week 5."
 :::
 
-. . .
+## The Magic
 
-This is what DSCI 221 is about.
+| Database | Linear | Hash |
+|----------|--------|------|
+| 1,000 | 1 sec | 0.001 sec |
+| 1,000,000 | 1000 sec | 0.001 sec |
+| 100,000,000 | 27 hours | 0.001 sec |
 
-# This Week's Lab
+# Week 1 Complete
 
-## Timing experiments
+## The Two Pillars
 
-You'll:
+1. **Correctness** — Does it work?
+2. **Efficiency** — How fast?
 
-1. Implement O(n) and O(n²) solutions to the same problem
-2. Predict their running times at various sizes
-3. Measure actual times
-4. Explain any discrepancies
-
-. . .
-
-Science mode: hypothesis → experiment → analysis
-
-## Predictions matter
-
-::: {.callout-tip}
-## The prediction game
-
-Before you run code, **write down what you expect**.
-
-If n doubles and your algorithm is O(n²), time should ~4×.
-
-If your prediction is wrong, you learn something!
+:::{.notes}
+"An algorithm must be correct AND efficient."
 :::
 
-# Summary
+## What We Learned
 
-## The hierarchy
+- Counting operations, discovering patterns
+- Big-O as formal notation
+- The hierarchy: O(1) to O(2ⁿ)
+- Data structures change everything
 
-| Class | Name | Example |
-|-------|------|---------|
-| O(1) | Constant | Dictionary lookup |
-| O(log n) | Logarithmic | Binary search |
-| O(n) | Linear | Finding maximum |
-| O(n log n) | Linearithmic | Sorting |
-| O(n²) | Quadratic | Comparing all pairs |
-| O(2ⁿ) | Exponential | All subsets |
-
-## The takeaways
-
-::: {.incremental}
-1. **Big-O tells you how things scale**, not absolute speed
-2. **At large n, Big-O dominates** — constants become irrelevant
-3. **The right data structure can drop you down the hierarchy** (O(n²) → O(n))
-4. **This is why data structures matter** — they enable faster algorithms
-:::
-
-## Next week
+## Next Week
 
 **Binary search**: the power of sorted data.
 
-Can you guess a number from 1 to 1,000,000 in 20 questions?
+**Loop invariants**: proving correctness.
 
-. . .
+:::{.notes}
+"Remember the halving pattern? Binary search IS that pattern."
+
+"And we'll finally prove that algorithms work — not just hope."
+:::
+
+## Questions?
 
 ::: {.r-fit-text}
-**Spoiler**: Yes, and we'll prove it works.
+The right data structure
+
+\+
+
+The right algorithm
+
+\=
+
+Impossible → Instant
 :::
