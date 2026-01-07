@@ -450,7 +450,9 @@ Double n → QUADRUPLE the work. QUADRATIC. $O(n^2)$
 
 ::: {.columns}
 ::: {.column width="50%"}
-```{python}
+
+``` {pyodide}
+
 count = 0
 for i in range(n):
     for j in range(i):
