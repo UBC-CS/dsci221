@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.26">
 
-  <meta name="dcterms.date" content="2026-01-06">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – Counting Steps</title>
+  <meta name="dcterms.date" content="2026-01-07">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Analysis</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -129,11 +129,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="Counting Steps – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 1, Tuesday">
+<meta property="og:title" content="Analysis – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 1, Wednesday">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="Counting Steps – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 1, Tuesday">
+<meta name="twitter:title" content="Analysis – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 1, Wednesday">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -141,13 +141,19 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Counting Steps</h1>
-  <p class="subtitle">Week 1, Tuesday</p>
+  <h1 class="title">Analysis</h1>
+  <p class="subtitle">Week 1, Wednesday</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 6, 2026</p>
+  <p class="date">January 7, 2026</p>
+</section>
+<section id="announcements" class="slide level2">
+<h2>Announcements</h2>
+<ul>
+<li>Labs begin next week.</li>
+</ul>
 </section>
 <section>
 <section id="from-monday" class="title-slide slide level1 center">
@@ -174,10 +180,36 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-shazam-lesson" class="slide level2">
-<h2>The Shazam Lesson</h2>
+<section id="the-shazam-lesson-fin" class="slide level2">
+<h2>The Shazam Lesson – Fin</h2>
 <p>Naive search: “Linear” — too slow</p>
 <p>Hash lookup: “Constant” — instant</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Database size</th>
+<th>Linear search</th>
+<th>Hash lookup</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1,000</td>
+<td>1 sec</td>
+<td>0.001 sec</td>
+</tr>
+<tr class="even">
+<td>1,000,000</td>
+<td>1000 sec</td>
+<td>0.001 sec</td>
+</tr>
+<tr class="odd">
+<td>100,000,000</td>
+<td>27 hours</td>
+<td>0.001 sec</td>
+</tr>
+</tbody>
+</table>
 <aside class="notes">
 <p>“Today: How do we figure out which is which?”</p>
 <style type="text/css">
@@ -192,8 +224,174 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="linear-search" class="slide level2">
-<h2>Linear Search</h2>
+<section id="how-does-shazam-actually-work" class="slide level2">
+<h2>How does Shazam actually work?</h2>
+<div class="cell" data-fig-width="8" data-fig-height="5" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<svg width="768" height="480" viewbox="0.00 0.00 224.00 430.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 426)">
+<title>shazam</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-426 220,-426 220,4 -4,4"></polygon>
+<g id="clust1" class="cluster">
+<title>cluster_fingerprint</title>
+<polygon fill="#fff3e0" stroke="black" points="38,-157.2 38,-378 179,-378 179,-157.2 38,-157.2"></polygon>
+<text text-anchor="middle" x="108.5" y="-361.4" font-family="Helvetica,sans-Serif" font-size="14.00">Audio Fingerprinting</text>
+</g>
+<!-- audio -->
+<g id="node1" class="node">
+<title>audio</title>
+<polygon fill="#a8d8ea" stroke="black" points="216,-422 0,-422 0,-386 216,-386 216,-422"></polygon>
+<text text-anchor="middle" x="108" y="-399.8" font-family="Helvetica,sans-Serif" font-size="14.00">3 sec audio</text>
+</g>
+<!-- spec -->
+<g id="node2" class="node">
+<title>spec</title>
+<polygon fill="#ffcc80" stroke="black" points="162,-345.2 54,-345.2 54,-309.2 162,-309.2 162,-345.2"></polygon>
+<text text-anchor="middle" x="108" y="-323" font-family="Helvetica,sans-Serif" font-size="14.00">Spectrogram</text>
+</g>
+<!-- audio&#45;&gt;spec -->
+<g id="edge3" class="edge">
+<title>audio-&gt;spec</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-385.65C108,-376.78 108,-365.76 108,-355.76"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-355.45 108,-345.45 104.5,-355.45 111.5,-355.45"></polygon>
+</g>
+<!-- land -->
+<g id="node3" class="node">
+<title>land</title>
+<polygon fill="#ffcc80" stroke="black" points="162,-273.2 54,-273.2 54,-237.2 162,-237.2 162,-273.2"></polygon>
+<text text-anchor="middle" x="108" y="-251" font-family="Helvetica,sans-Serif" font-size="14.00">Landmarks</text>
+</g>
+<!-- spec&#45;&gt;land -->
+<g id="edge1" class="edge">
+<title>spec-&gt;land</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-308.9C108,-301.18 108,-291.91 108,-283.31"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-283.3 108,-273.3 104.5,-283.3 111.5,-283.3"></polygon>
+</g>
+<!-- hash -->
+<g id="node4" class="node">
+<title>hash</title>
+<polygon fill="#ffcc80" stroke="black" points="162,-201.2 54,-201.2 54,-165.2 162,-165.2 162,-201.2"></polygon>
+<text text-anchor="middle" x="108" y="-179" font-family="Helvetica,sans-Serif" font-size="14.00">Hash</text>
+</g>
+<!-- land&#45;&gt;hash -->
+<g id="edge2" class="edge">
+<title>land-&gt;hash</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-236.9C108,-229.18 108,-219.91 108,-211.31"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-211.3 108,-201.3 104.5,-211.3 111.5,-211.3"></polygon>
+</g>
+<!-- table -->
+<g id="node5" class="node">
+<title>table</title>
+<path fill="#a5d6a7" stroke="black" d="M216,-124.08C216,-126.96 167.59,-129.3 108,-129.3 48.41,-129.3 0,-126.96 0,-124.08 0,-124.08 0,-77.12 0,-77.12 0,-74.24 48.41,-71.9 108,-71.9 167.59,-71.9 216,-74.24 216,-77.12 216,-77.12 216,-124.08 216,-124.08"></path>
+<path fill="none" stroke="black" d="M216,-124.08C216,-121.2 167.59,-118.86 108,-118.86 48.41,-118.86 0,-121.2 0,-124.08"></path>
+<text text-anchor="middle" x="108" y="-104.8" font-family="Helvetica,sans-Serif" font-size="14.00">Hash Table</text>
+<text text-anchor="middle" x="108" y="-88" font-family="Helvetica,sans-Serif" font-size="14.00">Lookup</text>
+</g>
+<!-- hash&#45;&gt;table -->
+<g id="edge4" class="edge">
+<title>hash-&gt;table</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-165.11C108,-157.67 108,-148.63 108,-139.73"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-139.45 108,-129.45 104.5,-139.45 111.5,-139.45"></polygon>
+</g>
+<!-- result -->
+<g id="node6" class="node">
+<title>result</title>
+<polygon fill="#81c784" stroke="black" points="216,-36 0,-36 0,0 216,0 216,-36"></polygon>
+<text text-anchor="middle" x="108" y="-13.2" font-family="Helvetica,sans-Serif" font-size="16.00">Song Found!</text>
+</g>
+<!-- table&#45;&gt;result -->
+<g id="edge5" class="edge">
+<title>table-&gt;result</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108,-71.86C108,-63.63 108,-54.62 108,-46.41"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-46.21 108,-36.21 104.5,-46.21 111.5,-46.21"></polygon>
+</g>
+</g>
+</svg>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>“Hash table lookup doesn’t depend on the size of the database.”</p>
+<p>O(1) — constant time.</p>
+<p>“We’ll learn how in Week 5.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="speed-matters-in-surprising-places" class="slide level2 smaller">
+<h2>Speed matters in surprising places</h2>
+<p>It’s not just Shazam!</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>YouTube</strong></p>
+<p>800 million videos</p>
+<p>Every search: &lt; 0.5 sec</p>
+<p>Linear search would take hours</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Genomics</strong></p>
+<p>Human genome: 3 billion base pairs</p>
+<p>Finding a gene sequence</p>
+<p>Naive: days → Real tools: seconds</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Pandemic response</strong></p>
+<p>330 million people</p>
+<p>Contact tracing within 2 connections</p>
+<p>Relationships grow exponentially</p>
+</div></div>
+<div class="fragment">
+<div class="r-fit-text">
+<p><strong>As data grows, bad algorithms become impossible.</strong></p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="analysis" class="title-slide slide level1 center">
+<h1>Analysis</h1>
+
+</section>
+<section id="measuring-the-value-of-algorithms" class="slide level2">
+<h2>Measuring the value of algorithms</h2>
+<p>Suppose you have two correct algorithms that solve the same problem — which is better?</p>
+<ul>
+<li>Use different metrics — <span style="color: #e67e22;">time</span>, <span style="color: #27ae60;">space</span> most common</li>
+<li>Express ________ as a (positive) <span style="color: #e67e22;">function</span>:</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<ul>
+<li>Form of function depends on structure of the algorithm:</li>
+</ul>
+<aside class="notes">
+<p>“time” and “space” are the two main metrics.</p>
+<p>“Express WHAT as a function?” → Let them say “running time” or “work”</p>
+<p>We’ll write T(n) — running time as a function of input size n.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="intro-to-analysis" class="slide level2">
+<h2>Intro to Analysis</h2>
 <div>
 <div id="pyodide-1" class="exercise-cell">
 
@@ -233,11 +431,13 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2
 </tbody>
 </table>
 <ul>
-<li><p>What does this do?</p></li>
-<li><p>How many <span class="red">lines of code</span> are executed?</p></li>
+<li><p>Do you have any questions about the <code>Python</code>?</p></li>
+<li><p>How long does it take to run (in seconds)?</p></li>
 </ul>
 <aside class="notes">
-<p>we’ll be more precise now – give a mathematical function.</p>
+<p>“Is this correct?” (Yes)</p>
+<p>“Is this efficient?” (Let’s see…)</p>
+<p>“How long does it take?”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -250,8 +450,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2
           display:block!important;
       }</style></aside>
 </section>
-<section id="aside-for-cases" class="slide level2">
-<h2>Aside for Cases</h2>
+<section id="what-might-determine-the-running-time" class="slide level2">
+<h2>What might determine the running time?</h2>
 <div>
 <div id="pyodide-2" class="exercise-cell">
 
@@ -263,33 +463,131 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th><code>sample</code> is at position…</th>
-<th>time</th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">…</th>
+<th style="text-align: center;">99,999,999</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>0</td>
-<td>instant</td>
-</tr>
-<tr class="even">
-<td>5</td>
-<td>longer</td>
-</tr>
-<tr class="odd">
-<td>15</td>
-<td>longer</td>
-</tr>
-<tr class="even">
-<td>not in array</td>
-<td>longest</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">🎵</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">🎵</td>
 </tr>
 </tbody>
 </table>
+<p>What factors affect how long <code>find_song_naive</code> takes?</p>
 <ul>
-<li><strong>Best case</strong>: minimum over all inputs</li>
-<li><strong>Worst case</strong>: maximum over all inputs</li>
-<li><strong>Average case</strong>: expected (needs probability)</li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<aside class="notes">
+<p>They’ll say: “It depends!”</p>
+<p>“What does it depend on?”</p>
+<p>Let them generate: size of database, where the song is, machine speed…</p>
+<p>Guide to: we care about SIZE. That’s the input to our algorithm.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="discussion-results" class="slide level2">
+<h2>Discussion results…</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Machine speed</strong></p>
+<p>A faster computer runs the same code faster.</p>
+<aside class="notes">
+<p><em>But that’s not about the algorithm.</em></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div><div class="column" style="width:33%;">
+<p><strong>Location of song</strong></p>
+<p>At the front? Quick!</p>
+<p>At the end? Slow.</p>
+<p>Not there at all? Slowest.</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Size of database</strong></p>
+<p>100 songs vs 100 million songs</p>
+<aside class="notes">
+<p>This is the big one.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div></div>
+<div class="fragment">
+<p>We want to characterize <em>the algorithm</em>, not the machine or our <em>luck</em>.</p>
+<aside class="notes">
+<p>“Which should we focus on for algorithm analysis?”</p>
+<p>Machine speed varies (not about the algorithm). Location varies (best case vs worst case). Size is the INPUT.</p>
+<p>“We parameterize by n.”</p>
+<p>write T(n) running time on input of size n.&nbsp; T(n) is a function!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="aside-for-cases" class="slide level2">
+<h2>Aside for Cases</h2>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2ZShzYW1wbGUsIGRhdGFiYXNlKTpcbiAgICBmb3Igc29uZyBpbiBkYXRhYmFzZTpcbiAgICAgICAgaWYgbWF0Y2hlcyhzYW1wbGUsIHNvbmcpOlxuICAgICAgICAgICAgcmV0dXJuIHNvbmdcbiAgICByZXR1cm4gTm9uZSJ9
+</script>
+</div>
+<ul>
+<li><strong>Best case</strong>: minimum running time over all inputs</li>
+<li><strong>Worst case</strong>: maximum running time over all inputs</li>
+<li><strong>Average case</strong>: expected running time (needs probability)</li>
 </ul>
 <aside class="notes">
 <p>“The answer depends on the input!”</p>
@@ -308,24 +606,27 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2
           display:block!important;
       }</style></aside>
 </section>
-<section id="counting-everything" class="slide level2">
-<h2>Counting Everything</h2>
+<section id="back-to-tn" class="slide level2">
+<h2>Back to <span class="math inline">\(T(n)\)</span></h2>
 <div>
-<div id="pyodide-3" class="exercise-cell">
+<div id="pyodide-4" class="exercise-cell">
 
 </div>
-<script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIFxcX1xcX1xcX1xcX1xcX1xcX1xcX1xcXyhhcnIpOlxuICAgIHRlbXAgPSBhcnJbMF0gICAgICBcbiAgICBmb3IgeCBpbiBhcnI6ICAgICAgICAgIFxuICAgICAgICBpZiB4ID4gdGVtcDogICBcbiAgICAgICAgICAgIHRlbXAgPSB4ICAgIFxuICAgIHJldHVybiB0ZW1wICAgICAgICAifQ==
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIF9fX19fX19fX19fX19fX19fX19fKGFycik6XG4gICAgdGVtcCA9IGFyclswXSAgICAgIFxuICAgIGZvciB4IGluIGFycjogICAgICAgICAgXG4gICAgICAgIGlmIHggPiB0ZW1wOiAgIFxuICAgICAgICAgICAgdGVtcCA9IHggICAgXG4gICAgcmV0dXJuIHRlbXAgICAgICAgICJ9
 </script>
 </div>
 <ul>
 <li><p>What’s a good name?</p></li>
-<li><p>What’s a good expression for running time? $T(n) = $</p></li>
+<li><p>What’s a good expression for running time? <span class="math inline">\(T(n) =\)</span></p></li>
 </ul>
+<div class="fragment">
+<p>What construct do we have that characterizes functions in a way that ignores constants?</p>
 <aside class="notes">
 <p>“Does the 2 matter?”</p>
 <p>At n = 1,000,000: 2n ≈ n.&nbsp;Constants are noise.</p>
 <p>The SHAPE matters: linear.</p>
+<p>what construct do we have that characterizes functions in a way that ignores constants?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -337,39 +638,23 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIFxcX1xcX1xcX1xcX1xc
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section></section>
-<section>
-<section id="discovering-patterns" class="title-slide slide level1 center">
-<h1>Discovering Patterns</h1>
-
+</div>
 </section>
-<section id="single-loop" class="slide level2">
-<h2>Single Loop</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>n</th>
-<th>operations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>10</td>
-<td>10</td>
-</tr>
-<tr class="even">
-<td>100</td>
-<td>100</td>
-</tr>
-<tr class="odd">
-<td>1000</td>
-<td>1000</td>
-</tr>
-</tbody>
-</table>
+<section id="the-definition-of-big-o" class="slide level2">
+<h2>The Definition of Big-O</h2>
+<p><span class="math inline">\(f(n)\)</span> is <span class="math inline">\(O(g(n))\)</span> if there exist constants <span class="math inline">\(c &gt; 0\)</span> and <span class="math inline">\(n_0 \geq 0\)</span> such that:</p>
+<p><span class="math display">\[f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0\]</span></p>
+<div id="8f7bc2db" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="01_wed_runtime_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="470" height="357"></p>
+</figure>
+</div>
+</div>
+</div>
 <aside class="notes">
-<p>“What’s the pattern?”</p>
-<p>Double n → double the work. LINEAR.</p>
+<p>“In words: f grows no faster than g, once n is big enough.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -382,13 +667,89 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIFxcX1xcX1xcX1xcX1xc
           display:block!important;
       }</style></aside>
 </section>
-<section id="nested-loops" class="slide level2">
-<h2>Nested Loops</h2>
-<p>Trace for n = 4. How many increments?</p>
+<section id="other-definitions" class="slide level2">
+<h2>Other Definitions</h2>
+<p><span class="math inline">\(f(n)\)</span> is <span class="math inline">\(O(g(n))\)</span> if there exist constants <span class="math inline">\(c &gt; 0\)</span> and <span class="math inline">\(n_0 \geq 0\)</span> such that:</p>
+<p><span class="math display">\[f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0\]</span></p>
+<p><span class="math inline">\(f(n)\)</span> is <span class="math inline">\(\Omega(g(n))\)</span> if there exist constants <span class="math inline">\(c &gt; 0\)</span> and <span class="math inline">\(n_0 \geq 0\)</span> such that:</p>
+<p><span class="math display">\[f(n) \geq c \cdot g(n) \quad \text{for all } n \geq n_0\]</span></p>
+<p><span class="math inline">\(f(n)\)</span> is <span class="math inline">\(\Theta(g(n))\)</span> iff it is both <span class="math inline">\(O(g(n))\)</span> and <span class="math inline">\(\Omega(g(n))\)</span>.</p>
+<aside class="notes">
+<p>“We mostly use O, though we usually mean Θ.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-1" class="slide level2">
+<h2>Example 1</h2>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiXG5kZWYgY29tcHV0ZU1lYW4oYXJyKTpcbiAgICB0b3RhbCA9IDBcbiAgICBmb3IgeCBpbiBhcnI6XG4gICAgICAgIHRvdGFsICs9IHhcbiAgICByZXR1cm4gdG90YWwgLyBsZW4oYXJyKSJ9
+</script>
+</div>
+<ul>
+<li>Python questions?</li>
+<li>What’s the Big-O?</li>
+</ul>
+<aside class="notes">
+<p>One pass through the array. <span class="math inline">\(O(n)\)</span>.</p>
+<p>“We’ll see this again Monday with pandas.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2" class="slide level2">
+<h2>Example 2</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiY291bnQgPSAwXG5mb3IgaSBpbiByYW5nZShuKTpcbiAgICBmb3IgaiBpbiByYW5nZShuKTpcbiAgICAgICAgY291bnQgKz0gMSJ9
+</script>
+</div>
+<p>For <span class="math inline">\(n = 6\)</span>:</p>
+<ul>
+<li><p>What are the values of <code>i</code> and <code>j</code> for the 17th element counted?</p></li>
+<li><p>What are the values of <code>i</code> and <code>j</code> for the 32nd element counted?</p></li>
+<li><p>What’s the Big-O?</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div id="ecec83d6" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="01_wed_runtime_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
 <aside class="notes">
 <p>Let them trace: 16</p>
 <p>“Predict for n = 8?” (64)</p>
-<p>Double n → QUADRUPLE the work. QUADRATIC.</p>
+<p>Double n → QUADRUPLE the work. QUADRATIC. <span class="math inline">\(O(n^2)\)</span></p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -401,13 +762,31 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIFxcX1xcX1xcX1xcX1xc
           display:block!important;
       }</style></aside>
 </section>
-<section id="nested-loops-variant" class="slide level2">
-<h2>Nested Loops (variant)</h2>
-<p>Trace for n = 5.</p>
+<section id="example-3" class="slide level2">
+<h2>Example 3</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>For <span class="math inline">\(n = 6\)</span>:</p>
+<ul>
+<li><p>What are the values of <code>i</code> and <code>j</code> for the 4th element counted?</p></li>
+<li><p>What are the values of <code>i</code> and <code>j</code> for the 12th element counted?</p></li>
+<li><p>What’s the Big-O?</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div id="8a74323a" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="01_wed_runtime_files/figure-revealjs/cell-5-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
 <aside class="notes">
 <p>i=0: 0. i=1: 1. i=2: 2. i=3: 3. i=4: 4. Total: 10.</p>
-<p>0 + 1 + 2 + … + (n-1) = n(n-1)/2</p>
-<p>Still quadratic!</p>
+<p><span class="math inline">\(0 + 1 + 2 + \ldots + (n-1) = \frac{n(n-1)}{2}\)</span></p>
+<p>Still quadratic! <span class="math inline">\(O(n^2)\)</span></p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -424,7 +803,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIFxcX1xcX1xcX1xcX1xc
 <h2>The Triangle Sum</h2>
 <p><span class="math display">\[1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2}\]</span></p>
 <aside class="notes">
-<p>“This is O(n²), not O(n).”</p>
+<p>“This is <span class="math inline">\(O(n^2)\)</span>, not <span class="math inline">\(O(n)\)</span>.”</p>
 <p>Whenever you see “all pairs” — expect quadratic.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -438,360 +817,16 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIFxcX1xcX1xcX1xcX1xc
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-halving-pattern" class="slide level2">
-<h2>The Halving Pattern</h2>
-<p>Trace for n = 1000.</p>
-<aside class="notes">
-<p>1000 → 500 → 250 → 125 → 62 → 31 → 15 → 7 → 3 → 1</p>
-<p>About 10 iterations. log₂(1000) ≈ 10.</p>
-<p>“What if n = 1,000,000?” (≈20)</p>
-<p>Double n → ONE more step. LOGARITHMIC.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="lets-verify" class="slide level2">
-<h2>Let’s verify</h2>
-<div>
-<div id="pyodide-4" class="exercise-cell">
-
-</div>
-<script type="pyodide-4-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxubiA9IDEwMDBcbmkgPSBuXG5jb3VudCA9IDBcbndoaWxlIGkgPiAxOlxuICAgIHByaW50KGZcImkgPSB7aX1cIilcbiAgICBpID0gaSAvLyAyXG4gICAgY291bnQgKz0gMVxuXG5wcmludChmXCJcXG5JdGVyYXRpb25zOiB7Y291bnR9XCIpXG5wcmludChmXCJsb2figoIoe259KSA9IHttYXRoLmxvZzIobik6LjFmfVwiKSJ9
-</script>
-</div>
-</section>
-<section id="pattern-summary" class="slide level2">
-<h2>Pattern Summary</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Pattern</th>
-<th>What happens when n doubles?</th>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Single loop</td>
-<td>Work doubles</td>
-<td>O(n)</td>
-</tr>
-<tr class="even">
-<td>Nested loops</td>
-<td>Work quadruples</td>
-<td>O(n²)</td>
-</tr>
-<tr class="odd">
-<td>Halving</td>
-<td>One more step</td>
-<td>O(log n)</td>
-</tr>
-</tbody>
-</table>
-<aside class="notes">
-<p>“These are the building blocks.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="big-o-notation" class="slide level2 smaller">
-<h2>Big-O Notation</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Notation</th>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>O(1)</td>
-<td>Constant</td>
-</tr>
-<tr class="even">
-<td>O(log n)</td>
-<td>Logarithmic</td>
-</tr>
-<tr class="odd">
-<td>O(n)</td>
-<td>Linear</td>
-</tr>
-<tr class="even">
-<td>O(n log n)</td>
-<td>Linearithmic</td>
-</tr>
-<tr class="odd">
-<td>O(n²)</td>
-<td>Quadratic</td>
-</tr>
-<tr class="even">
-<td>O(2ⁿ)</td>
-<td>Exponential</td>
-</tr>
-</tbody>
-</table>
-</div><div class="column" style="width:45%;">
-<div id="59ed6578" class="cell" data-execution_count="5">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="01_tue_runtime_files/figure-revealjs/cell-6-output-1.png" width="470" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-<aside class="notes">
-<p>“We’ll formalize this Wednesday.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="dataframe-operations" class="title-slide slide level1 center">
-<h1>DataFrame Operations</h1>
-
-</section>
-<section id="which-pattern" class="slide level2">
-<h2>Which pattern?</h2>
-<aside class="notes">
-<p>Let them reason:</p>
-<ul>
-<li>sum: touch every value → O(n)</li>
-<li>filter: check every row → O(n)</li>
-<li>loc: direct access → O(1)</li>
-<li>merge: ???</li>
-</ul>
-<p>“Is merge O(n²)? It compares rows…”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-merge-mystery" class="slide level2">
-<h2>The Merge Mystery</h2>
-<p><code>df.merge()</code> uses hashing internally.</p>
-<p>O(n), not O(n²).</p>
-<aside class="notes">
-<p>“We’ll learn how in Week 5.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="galactic-pizza" class="slide level2">
-<h2>Galactic Pizza</h2>
-<div>
-<div id="pyodide-5" class="exercise-cell">
-
-</div>
-<script type="pyodide-5-contents">
-eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZX0sImNvZGUiOiJpbXBvcnQgcGFuZGFzIGFzIHBkXG5pbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCB0aW1lXG5cbm4gPSA1MDBfMDAwXG5ucC5yYW5kb20uc2VlZCg0MilcblxuZGYgPSBwZC5EYXRhRnJhbWUoe1xuICAgICdkZWxpdmVyeV90aW1lJzogbnAucmFuZG9tLmV4cG9uZW50aWFsKHNjYWxlPTMwLCBzaXplPW4pLFxuICAgICdwbGFuZXQnOiBucC5yYW5kb20uY2hvaWNlKFsnRWFydGgnLCAnTWFycycsICdFdXJvcGEnLCAnVGl0YW4nXSwgbiksXG59KVxuXG5wcmludChmXCJSb3dzOiB7bGVuKGRmKTosfVwiKVxucHJpbnQoZGYuaGVhZCg4KSkifQ==
-</script>
-</div>
-</section>
-<section id="two-ways-to-compute-the-mean" class="slide level2">
-<h2>Two ways to compute the mean</h2>
-<div>
-<div id="pyodide-6" class="exercise-cell">
-
-</div>
-<script type="pyodide-6-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGl0ZXJfbWVhbihkZiwgY29sKTpcbiAgICB0b3RhbCA9IDBcbiAgICBmb3IgaWR4LCByb3cgaW4gZGYuaXRlcnJvd3MoKTpcbiAgICAgICAgdG90YWwgKz0gcm93W2NvbF1cbiAgICByZXR1cm4gdG90YWwgLyBsZW4oZGYpXG5cbnN0YXJ0ID0gdGltZS50aW1lKClcbmF2ZzEgPSBpdGVyX21lYW4oZGYsICdkZWxpdmVyeV90aW1lJylcbnQxID0gdGltZS50aW1lKCkgLSBzdGFydFxuXG5zdGFydCA9IHRpbWUudGltZSgpXG5hdmcyID0gZGZbJ2RlbGl2ZXJ5X3RpbWUnXS5tZWFuKClcbnQyID0gdGltZS50aW1lKCkgLSBzdGFydFxuXG5wcmludChmXCJMb29wOiAgICAgICB7dDE6LjNmfSBzZWNcIilcbnByaW50KGZcIlZlY3Rvcml6ZWQ6IHt0MjouNWZ9IHNlY1wiKVxucHJpbnQoZlwiU3BlZWR1cDogICAge3QxL3QyOiwuMGZ9eFwiKSJ9
-</script>
-</div>
-<aside class="notes">
-<p>“Both are O(n). Why the difference?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="same-big-o-different-speed" class="slide level2">
-<h2>Same Big-O, Different Speed</h2>
-<p>Both touch every row: O(n)</p>
-<p>But:</p>
-<ul>
-<li><strong>Vectorized</strong>: tiny constants (compiled C)</li>
-<li><strong>Python loop</strong>: large constants (interpreter overhead)</li>
-</ul>
-<aside class="notes">
-<p>“Big-O tells you SCALING, not SPEED.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
-
-</section>
-<section id="what-we-learned" class="slide level2">
-<h2>What we learned</h2>
-<ol type="1">
-<li>Trace code to count operations</li>
-<li>Cases: best, worst, average</li>
-<li>Patterns: linear, quadratic, logarithmic</li>
-<li>Big-O describes the shape</li>
-</ol>
-</section>
-<section id="wednesday" class="slide level2">
-<h2>Wednesday</h2>
-<p>The full hierarchy. Racing algorithms. Feeling the difference.</p>
-<aside class="notes">
-<p>“And we’ll finally see how Shazam’s O(1) lookup works.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<!-- from Monday: 
-
-
-## Constants Don't Matter
-
-T(n) = 2n + 1?
-
-:::{.notes}
-"Does the 2 matter? Does the +1 matter?"
-
-At n = 100,000,000, the constants are noise.
-
-What matters is the SHAPE: linear growth.
-
-"We write this as O(n)."
-:::
-
-## Growth Rates {.smaller}
-
-::: {.columns}
-::: {.column width="45%"}
-**Algorithm A**
-
-| n | time |
-|---|------|
-| 10 | 1 sec |
-| 50 | 5 sec |
-| 100 | 10 sec |
-
-**Algorithm B**
-
-| n | time |
-|---|------|
-| 10 | 1 sec |
-| 50 | 25 sec |
-| 100 | 100 sec |
-:::
-
-::: {.column width="55%"}
-
-::: {#05bd2004 .cell execution_count=7}
-
-::: {.cell-output .cell-output-display}
-![](01_tue_runtime_files/figure-revealjs/cell-8-output-1.png){width=470 height=374}
-:::
-:::
-
-
-:::
-:::
-
-:::{.notes}
-"What's the pattern for A? For B?"
-
-A: linear (time ∝ n)
-B: quadratic (time ∝ n²)
-:::
-
-## What about pandas?
-
-You'll work with DataFrames that have **millions of rows**.
-
-Some operations are fast. Others are slow.
-
-:::{.notes}
-"Why?"
-
-- `df['col'].sum()` — must touch every value
-- `df.loc[12345]` — goes directly to one row
-- `df.iterrows()` — visits every row, with Python overhead
-
-"We'll learn to predict which is which."
-:::
-
-# Back to Shazam
-
-
--->
+<section id="next-week" class="slide level2">
+<h2>Next week</h2>
+<p>More analysis</p>
 
 
 <script type="pyodide-data">
 eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfNSA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtNS1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7fSk7XG5cbiAgLy8gRWFybHkgeWllbGQgd2hpbGUgd2Ugd2FpdCBmb3IgdGhlIGZpcnN0IGV2YWx1YXRpb24gYW5kIHJlbmRlclxuICBpZiAob3B0aW9ucy5vdXRwdXQgJiYgIShcIjVcIiBpbiBweW9kaWRlT2pzLnJlbmRlcmVkT2pzKSkge1xuICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG4gICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG5cbiAgICBpZiAob3B0aW9ucy5lY2hvKSB7XG4gICAgICAvLyBTaG93IG91dHB1dCBhcyBoaWdobGlnaHRlZCBzb3VyY2VcbiAgICAgIGNvbnN0IHByZUVsZW0gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwicHJlXCIpO1xuICAgICAgY29udGFpbmVyLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZVwiO1xuICAgICAgcHJlRWxlbS5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGUgcHl0aG9uXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFB5dGhvbihibG9jay5jb2RlKSk7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ncm93IHNwaW5uZXItZ3Jvdy1zbSBtLTIgcG9zaXRpb24tYWJzb2x1dGUgdG9wLTAgZW5kLTBcIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQocHJlRWxlbSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWJvcmRlciBzcGlubmVyLWJvcmRlci1zbVwiO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgIH1cblxuICAgIHlpZWxkIGNvbnRhaW5lcjtcbiAgfVxuXG4gIHB5b2RpZGVPanMucmVuZGVyZWRPanNbXCI1XCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtNCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3B5b2RpZGVfZWRpdG9yXzQgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTQtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgcHlvZGlkZS00LWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFB5b2RpZGVFeGVyY2lzZUVkaXRvcihcbiAgICBweW9kaWRlT2pzLnB5b2RpZGVQcm9taXNlLFxuICAgIGJsb2NrLmNvZGUsXG4gICAgb3B0aW9uc1xuICApO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3B5b2RpZGVfdmFsdWVfNCA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfNCwge30pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtMyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3B5b2RpZGVfZWRpdG9yXzMgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTMtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgcHlvZGlkZS0zLWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFB5b2RpZGVFeGVyY2lzZUVkaXRvcihcbiAgICBweW9kaWRlT2pzLnB5b2RpZGVQcm9taXNlLFxuICAgIGJsb2NrLmNvZGUsXG4gICAgb3B0aW9uc1xuICApO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3B5b2RpZGVfdmFsdWVfMyA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMywge30pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3B5b2RpZGVfZWRpdG9yXzIgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTItY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgcHlvZGlkZS0yLWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFB5b2RpZGVFeGVyY2lzZUVkaXRvcihcbiAgICBweW9kaWRlT2pzLnB5b2RpZGVQcm9taXNlLFxuICAgIGJsb2NrLmNvZGUsXG4gICAgb3B0aW9uc1xuICApO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3B5b2RpZGVfdmFsdWVfMiA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMiwge30pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3B5b2RpZGVfZWRpdG9yXzEgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTEtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgcHlvZGlkZS0xLWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFB5b2RpZGVFeGVyY2lzZUVkaXRvcihcbiAgICBweW9kaWRlT2pzLnB5b2RpZGVQcm9taXNlLFxuICAgIGJsb2NrLmNvZGUsXG4gICAgb3B0aW9uc1xuICApO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3B5b2RpZGVfdmFsdWVfMSA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMSwge30pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InB5b2RpZGVPanMgPSB7XG4gIGNvbnN0IHtcbiAgICBQeW9kaWRlRXZhbHVhdG9yLFxuICAgIFB5b2RpZGVFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBQeXRob24sXG4gICAgc3RhcnRQeW9kaWRlV29ya2VyLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGgsXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyBQeW9kaWRlIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIGxldCBweW9kaWRlUHJvbWlzZSA9IChhc3luYyAoKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBQeW9kaWRlYDtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgc3RhcnRQeW9kaWRlV29ya2VyKGRhdGEub3B0aW9ucyk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6IG1pY3JvcGlwYDtcbiAgICBhd2FpdCBweW9kaWRlLmxvYWRQYWNrYWdlKFwibWljcm9waXBcIik7XG4gICAgY29uc3QgbWljcm9waXAgPSBhd2FpdCBweW9kaWRlLnB5aW1wb3J0KFwibWljcm9waXBcIik7XG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gbWljcm9waXAuaW5zdGFsbChwa2cpO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuICAgIGF3YWl0IG1pY3JvcGlwLmRlc3Ryb3koKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICB0cnkge1xuICAgICAgICAgIGF3YWl0IHB5b2RpZGUuRlMubWtkaXIocGF0aCk7XG4gICAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgICBpZiAoZS5lcnJubyAhPT0gMjApIHtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgdHJ5IHtcbiAgICAgICAgcmV0dXJuIGF3YWl0IHB5b2RpZGUuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgUHlvZGlkZSBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBQeXRob24ocHlvZGlkZSk7XG5cbiAgICBzdGF0dXNUZXh0LnJlbW92ZSgpO1xuICAgIGlmIChzdGF0dXNDb250YWluZXIuY2hpbGRyZW4ubGVuZ3RoID09IDApIHtcbiAgICAgIHN0YXR1c0NvbnRhaW5lci5wYXJlbnROb2RlLnJlbW92ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gcHlvZGlkZTtcbiAgfSkoKS5jYXRjaCgoZXJyKSA9PiB7XG4gICAgc3RhdHVzVGV4dC5zdHlsZS5jb2xvciA9IFwidmFyKC0tZXhlcmNpc2UtZWRpdG9yLWhsLWVyLCAjQUQwMDAwKVwiO1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBlcnIubWVzc2FnZTtcbiAgICAvL2luZGljYXRvckNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKFwiLnNwaW5uZXItZ3Jvd1wiKS5jbGFzc0xpc3QuYWRkKFwiZC1ub25lXCIpO1xuICAgIHRocm93IGVycjtcbiAgfSk7XG5cbiAgLy8gS2VlcCB0cmFjayBvZiBpbml0aWFsIE9KUyBibG9jayByZW5kZXJcbiAgY29uc3QgcmVuZGVyZWRPanMgPSB7fTtcblxuICBjb25zdCBwcm9jZXNzID0gYXN5bmMgKGNvbnRleHQsIGlucHV0cykgPT4ge1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBweW9kaWRlUHJvbWlzZTtcbiAgICBjb25zdCBldmFsdWF0b3IgPSBuZXcgUHlvZGlkZUV2YWx1YXRvcihweW9kaWRlLCBjb250ZXh0KTtcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBweW9kaWRlUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgICBwcm9jZXNzLFxuICB9O1xufVxuIn1dfQ==
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">

@@ -217,11 +217,11 @@
 </section>
 <section id="picture" class="slide level2">
 <h2>Picture</h2>
-<div id="b041d0a1" class="cell" data-execution_count="1">
+<div id="807ec4d4" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="01_wed_hierarchy_files/figure-revealjs/cell-2-output-1.png" width="759" height="471"></p>
+<p><img data-src="01_XXX_hierarchy_files/figure-revealjs/cell-2-output-1.png" width="759" height="471"></p>
 </figure>
 </div>
 </div>
@@ -764,6 +764,311 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZm9yIG4gaW4gWzEwMDAwLCAx
 <p>=</p>
 <p>Impossible → Instant</p>
 </div>
+<!-- extra slides to fit into narrative:
+
+## Example: Nested Loops
+
+``` fqrvegjto
+count = 0
+for i in range(n):
+    for j in range(n):
+        count += 1
+```
+
+Trace for n = 4. How many increments?
+
+:::{.notes}
+Let them trace: 16
+
+"Predict for n = 8?" (64)
+
+Double n → QUADRUPLE the work. QUADRATIC.
+:::
+
+## Nested Loops (variant)
+
+
+
+Trace for n = 5.
+
+:::{.notes}
+i=0: 0. i=1: 1. i=2: 2. i=3: 3. i=4: 4. Total: 10.
+
+0 + 1 + 2 + ... + (n-1) = n(n-1)/2
+
+Still quadratic!
+:::
+
+## The Triangle Sum
+
+$$1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2}$$
+
+:::{.notes}
+"This is O(n²), not O(n)."
+
+Whenever you see "all pairs" — expect quadratic.
+:::
+
+## The Halving Pattern
+
+
+
+Trace for n = 1000.
+
+:::{.notes}
+1000 → 500 → 250 → 125 → 62 → 31 → 15 → 7 → 3 → 1
+
+About 10 iterations. log₂(1000) ≈ 10.
+
+"What if n = 1,000,000?" (≈20)
+
+Double n → ONE more step. LOGARITHMIC.
+:::
+
+## Let's verify
+
+```fqrvegjto
+import math
+
+n = 1000
+i = n
+count = 0
+while i > 1:
+    print(f"i = {i}")
+    i = i // 2
+    count += 1
+
+print(f"\nIterations: {count}")
+print(f"log₂({n}) = {math.log2(n):.1f}")
+```
+
+## Pattern Summary
+
+| Pattern | What happens when n doubles? | Name |
+|---------|------------------------------|------|
+| Single loop | Work doubles | O(n) |
+| Nested loops | Work quadruples | O(n²) |
+| Halving | One more step | O(log n) |
+
+:::{.notes}
+"These are the building blocks."
+:::
+
+## Big-O Notation {.smaller}
+
+::: {.columns}
+::: {.column width="55%"}
+
+| Notation | Name |
+|----------|------|
+| O(1) | Constant |
+| O(log n) | Logarithmic |
+| O(n) | Linear |
+| O(n log n) | Linearithmic |
+| O(n²) | Quadratic |
+| O(2ⁿ) | Exponential |
+
+:::
+
+::: {.column width="45%"}
+
+::: {#ed218176 .cell execution_count=9}
+
+::: {.cell-output .cell-output-display}
+![](01_XXX_hierarchy_files/figure-revealjs/cell-10-output-1.png){width=470 height=374}
+:::
+:::
+
+
+:::
+:::
+
+:::{.notes}
+"We'll formalize this Wednesday."
+:::
+
+# DataFrame Operations
+
+## Which pattern?
+
+
+
+:::{.notes}
+Let them reason:
+
+- sum: touch every value → O(n)
+- filter: check every row → O(n)
+- loc: direct access → O(1)
+- merge: ???
+
+"Is merge O(n²)? It compares rows..."
+:::
+
+## The Merge Mystery
+
+`df.merge()` uses hashing internally.
+
+O(n), not O(n²).
+
+:::{.notes}
+"We'll learn how in Week 5."
+:::
+
+## Galactic Pizza
+
+```fqrvegjto
+#| echo: false
+import pandas as pd
+import numpy as np
+import time
+
+n = 500_000
+np.random.seed(42)
+
+df = pd.DataFrame({
+    'delivery_time': np.random.exponential(scale=30, size=n),
+    'planet': np.random.choice(['Earth', 'Mars', 'Europa', 'Titan'], n),
+})
+
+print(f"Rows: {len(df):,}")
+print(df.head(8))
+```
+
+## Two ways to compute the mean
+
+```fqrvegjto
+def iter_mean(df, col):
+    total = 0
+    for idx, row in df.iterrows():
+        total += row[col]
+    return total / len(df)
+
+start = time.time()
+avg1 = iter_mean(df, 'delivery_time')
+t1 = time.time() - start
+
+start = time.time()
+avg2 = df['delivery_time'].mean()
+t2 = time.time() - start
+
+print(f"Loop:       {t1:.3f} sec")
+print(f"Vectorized: {t2:.5f} sec")
+print(f"Speedup:    {t1/t2:,.0f}x")
+```
+
+:::{.notes}
+"Both are O(n). Why the difference?"
+:::
+
+## Same Big-O, Different Speed
+
+Both touch every row: O(n)
+
+But:
+
+- **Vectorized**: tiny constants (compiled C)
+- **Python loop**: large constants (interpreter overhead)
+
+:::{.notes}
+"Big-O tells you SCALING, not SPEED."
+:::
+
+# Summary
+
+## What we learned
+
+1. Trace code to count operations
+2. Cases: best, worst, average
+3. Patterns: linear, quadratic, logarithmic
+4. Big-O describes the shape
+
+## Wednesday
+
+The full hierarchy. Racing algorithms. Feeling the difference.
+
+:::{.notes}
+"And we'll finally see how Shazam's O(1) lookup works."
+:::
+
+
+<!-- from Monday: 
+
+
+## Constants Don't Matter
+
+T(n) = 2n + 1?
+
+:::{.notes}
+"Does the 2 matter? Does the +1 matter?"
+
+At n = 100,000,000, the constants are noise.
+
+What matters is the SHAPE: linear growth.
+
+"We write this as O(n)."
+:::
+
+## Growth Rates {.smaller}
+
+::: {.columns}
+::: {.column width="45%"}
+**Algorithm A**
+
+| n | time |
+|---|------|
+| 10 | 1 sec |
+| 50 | 5 sec |
+| 100 | 10 sec |
+
+**Algorithm B**
+
+| n | time |
+|---|------|
+| 10 | 1 sec |
+| 50 | 25 sec |
+| 100 | 100 sec |
+:::
+
+::: {.column width="55%"}
+
+::: {#64c8208b .cell execution_count=11}
+
+::: {.cell-output .cell-output-display}
+![](01_XXX_hierarchy_files/figure-revealjs/cell-12-output-1.png){width=470 height=374}
+:::
+:::
+
+
+:::
+:::
+
+:::{.notes}
+"What's the pattern for A? For B?"
+
+A: linear (time ∝ n)
+B: quadratic (time ∝ n²)
+:::
+
+## What about pandas?
+
+You'll work with DataFrames that have **millions of rows**.
+
+Some operations are fast. Others are slow.
+
+:::{.notes}
+"Why?"
+
+- `df['col'].sum()` — must touch every value
+- `df.loc[12345]` — goes directly to one row
+- `df.iterrows()` — visits every row, with Python overhead
+
+"We'll learn to predict which is which."
+:::
+
+# Back to Shazam
+
+
+-->
 
 
 <script type="pyodide-data">
