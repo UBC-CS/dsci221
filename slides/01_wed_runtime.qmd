@@ -1,0 +1,515 @@
+---
+title: "Analysis"
+subtitle: "Week 1, Wednesday"
+date: 2026-01-07
+---
+
+## Announcements
+
+- Labs begin next week.
+
+# From Monday
+
+## Algorithm Analysis
+
+1. **Correctness** — Does it work?
+2. **Efficiency** — How long? How much memory?
+
+:::{.notes}
+"This week: efficiency. Next week: proving correctness."
+:::
+
+## The Shazam Lesson -- Fin
+
+Naive search: "Linear" — too slow
+
+Hash lookup: "Constant" — instant
+
+
+| Database size | Linear search | Hash lookup |
+|---------------|---------------|-------------|
+| 1,000 | 1 sec | 0.001 sec |
+| 1,000,000 | 1000 sec | 0.001 sec |
+| 100,000,000 | 27 hours | 0.001 sec |
+
+:::{.notes}
+"Today: How do we figure out which is which?"
+:::
+
+## How does Shazam actually work?
+
+```{dot}
+//| fig-width: 8
+//| fig-height: 5
+digraph shazam {
+    rankdir=TB
+    node [shape=box, style=filled, fontname="Helvetica", fontsize=14, height=0.5]
+    edge [penwidth=2]
+    compound=true
+
+    audio [label="3 sec audio", fillcolor="#a8d8ea", width=3]
+
+    subgraph cluster_fingerprint {
+        label="Audio Fingerprinting"
+        style=filled
+        fillcolor="#fff3e0"
+        fontname="Helvetica"
+        fontsize=14
+
+        spec [label="Spectrogram", fillcolor="#ffcc80", width=1.5]
+        land [label="Landmarks", fillcolor="#ffcc80", width=1.5]
+        hash [label="Hash", fillcolor="#ffcc80", width=1.5]
+
+        spec -> land -> hash
+    }
+
+    table [label="Hash Table\nLookup", fillcolor="#a5d6a7", shape=cylinder, width=3, height=0.6]
+    result [label="Song Found!", fillcolor="#81c784", fontsize=16, width=3]
+
+    audio -> spec
+    hash -> table
+    table -> result
+}
+```
+
+:::{.notes}
+"Hash table lookup doesn't depend on the size of the database."
+
+O(1) — constant time.
+
+"We'll learn how in Week 5."
+:::
+
+
+## Speed matters in surprising places {.smaller}
+
+It's not just Shazam!
+
+::: {.columns}
+::: {.column width="33%"}
+**YouTube**
+
+800 million videos
+
+Every search: < 0.5 sec
+
+Linear search would take hours
+:::
+
+::: {.column width="33%"}
+**Genomics**
+
+Human genome: 3 billion base pairs
+
+Finding a gene sequence
+
+Naive: days → Real tools: seconds
+:::
+
+::: {.column width="33%"}
+**Pandemic response**
+
+330 million people
+
+Contact tracing within 2 connections
+
+Relationships grow exponentially
+:::
+:::
+
+. . .
+
+::: {.r-fit-text}
+**As data grows, bad algorithms become impossible.**
+:::
+
+# Analysis
+
+## Measuring the value of algorithms
+
+Suppose you have two correct algorithms that solve the same problem — which is better?
+
+- Use different metrics — [time]{style="color: #e67e22;"}, [space]{style="color: #27ae60;"} most common
+- Express \_\_\_\_\_\_\_\_ as a (positive) [function]{style="color: #e67e22;"}:
+
+\ 
+
+\ 
+
+- Form of function depends on structure of the algorithm:
+
+:::{.notes}
+"time" and "space" are the two main metrics.
+
+"Express WHAT as a function?" → Let them say "running time" or "work"
+
+We'll write T(n) — running time as a function of input size n.
+:::
+
+## Intro to Analysis
+
+``` {pyodide}
+def find_song_naive(sample, database):
+    for song in database:
+        if matches(sample, song):
+            return song
+    return None
+```
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | ... | 99,999,999 |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | ... | 🎵 |
+
+- Do you have any questions about the `Python`?
+
+- How long does it take to run (in seconds)?
+
+:::{.notes}
+"Is this correct?" (Yes)
+
+"Is this efficient?" (Let's see...)
+
+"How long does it take?"
+:::
+
+## What might determine the running time?
+
+``` {pyodide}
+def find_song_naive(sample, database):
+    for song in database:
+        if matches(sample, song):
+            return song
+    return None
+```
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | ... | 99,999,999 |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | 🎵 | ... | 🎵 |
+
+What factors affect how long `find_song_naive` takes?
+
+-  
+
+-  
+
+-  
+
+:::{.notes}
+They'll say: "It depends!"
+
+"What does it depend on?"
+
+Let them generate: size of database, where the song is, machine speed...
+
+Guide to: we care about SIZE. That's the input to our algorithm.
+:::
+
+## Discussion results...
+
+::: {.columns}
+::: {.column width="33%"}
+**Machine speed**
+
+A faster computer runs the same code faster.
+
+::: notes
+*But that's not about the algorithm.*
+:::
+
+:::
+
+::: {.column width="33%"}
+**Location of song**
+
+At the front? Quick!
+
+At the end? Slow.
+
+Not there at all? Slowest.
+:::
+
+::: {.column width="33%"}
+**Size of database**
+
+100 songs vs 100 million songs
+
+::: notes
+This is the big one.
+:::
+
+:::
+:::
+
+. . .
+
+We want to characterize *the algorithm*, not the machine or our *luck*.
+
+:::{.notes}
+"Which should we focus on for algorithm analysis?"
+
+Machine speed varies (not about the algorithm).
+Location varies (best case vs worst case).
+Size is the INPUT.
+
+"We parameterize by n."
+
+write T(n) running time on input of size n. 
+T(n) is a function!
+
+:::
+
+
+
+
+## Aside for Cases
+
+``` {pyodide}
+def find_song_naive(sample, database):
+    for song in database:
+        if matches(sample, song):
+            return song
+    return None
+```
+
+- **Best case**: minimum running time over all inputs
+- **Worst case**: maximum running time over all inputs
+- **Average case**: expected running time (needs probability)
+
+
+:::{.notes}
+"The answer depends on the input!"
+
+Best case: 1
+Worst case: n
+Average case: (1+2+...+n)/n = (n+1)/2 ≈ n/2
+
+"Which should we report?"
+
+we will do worst case, almost always.
+:::
+
+## Back to $T(n)$
+
+``` {pyodide}
+def ____________________(arr):
+    temp = arr[0]      
+    for x in arr:          
+        if x > temp:   
+            temp = x    
+    return temp        
+```
+
+- What's a good name? 
+
+- What's a good expression for running time? $T(n) =$
+
+. . . 
+
+What construct do we have that characterizes functions in a way that ignores constants?
+
+
+:::{.notes}
+"Does the 2 matter?"
+
+At n = 1,000,000: 2n ≈ n. Constants are noise.
+
+The SHAPE matters: linear.
+
+what construct do we have that characterizes functions in a way that ignores constants?
+
+:::
+
+## The Definition of Big-O
+
+$f(n)$ is $O(g(n))$ if there exist constants $c > 0$ and $n_0 \geq 0$ such that:
+
+$$f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0$$
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(5, 4))
+
+# Draw axes
+ax.axhline(0, color='black', linewidth=2.5)
+ax.axvline(0, color='black', linewidth=2.5)
+
+# Labels
+ax.text(10.5, -0.5, r'$n$', fontsize=14, ha='center')
+
+# Set limits (first quadrant only)
+ax.set_xlim(-0.5, 11)
+ax.set_ylim(-0.5, 8)
+
+# Remove all spines and ticks
+ax.set_xticks([])
+ax.set_yticks([])
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+ax.set_aspect('equal')
+plt.tight_layout()
+plt.show()
+```
+
+:::{.notes}
+"In words: f grows no faster than g, once n is big enough."
+:::
+
+## Other Definitions
+
+$f(n)$ is $O(g(n))$ if there exist constants $c > 0$ and $n_0 \geq 0$ such that:
+
+$$f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0$$
+
+$f(n)$ is $\Omega(g(n))$ if there exist constants $c > 0$ and $n_0 \geq 0$ such that:
+
+$$f(n) \geq c \cdot g(n) \quad \text{for all } n \geq n_0$$
+
+$f(n)$ is $\Theta(g(n))$ iff it is both $O(g(n))$ and $\Omega(g(n))$.
+
+:::{.notes}
+"We mostly use O, though we usually mean Θ."
+:::
+
+## Example 1
+
+```{pyodide}
+
+def computeMean(arr):
+    total = 0
+    for x in arr:
+        total += x
+    return total / len(arr)
+```
+
+- Python questions?
+- What's the Big-O?
+
+:::{.notes}
+One pass through the array. $O(n)$.
+
+"We'll see this again Monday with pandas."
+:::
+
+## Example 2
+
+::: {.columns}
+::: {.column width="50%"}
+``` {pyodide}
+count = 0
+for i in range(n):
+    for j in range(n):
+        count += 1
+```
+
+For $n = 6$:
+
+- What are the values of `i` and `j` for the 17th element counted?
+- What are the values of `i` and `j` for the 32nd element counted?
+
+- What's the Big-O?
+:::
+
+::: {.column width="50%"}
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+fig, ax = plt.subplots(figsize=(4, 4))
+n = 8
+for i in range(n):
+    for j in range(n):
+        rect = patches.Rectangle((j, n-1-i), 1, 1, linewidth=1,
+                                   edgecolor='black', facecolor='#3498db')
+        ax.add_patch(rect)
+
+ax.set_xlim(0, n)
+ax.set_ylim(0, n)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+:::{.notes}
+Let them trace: 16
+
+"Predict for n = 8?" (64)
+
+Double n → QUADRUPLE the work. QUADRATIC. $O(n^2)$
+:::
+
+## Example 3
+
+::: {.columns}
+::: {.column width="50%"}
+```{python}
+count = 0
+for i in range(n):
+    for j in range(i):
+        count += 1
+```
+
+For $n = 6$:
+
+- What are the values of `i` and `j` for the 4th element counted?
+- What are the values of `i` and `j` for the 12th element counted?
+
+- What's the Big-O?
+:::
+
+::: {.column width="50%"}
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+fig, ax = plt.subplots(figsize=(4, 4))
+n = 8
+for i in range(n):
+    for j in range(n):
+        rect = patches.Rectangle((j, n-1-i), 1, 1, linewidth=1,
+                                   edgecolor='black', facecolor='#3498db')
+        ax.add_patch(rect)
+
+ax.set_xlim(0, n)
+ax.set_ylim(0, n)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+:::{.notes}
+i=0: 0. i=1: 1. i=2: 2. i=3: 3. i=4: 4. Total: 10.
+
+$0 + 1 + 2 + \ldots + (n-1) = \frac{n(n-1)}{2}$
+
+Still quadratic! $O(n^2)$
+:::
+
+## The Triangle Sum
+
+$$1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2}$$
+
+:::{.notes}
+"This is $O(n^2)$, not $O(n)$."
+
+Whenever you see "all pairs" — expect quadratic.
+:::
+
+## Next week
+
+More analysis
+
+
