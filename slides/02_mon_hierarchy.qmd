@@ -11,6 +11,20 @@ date: 2026-01-12
 
 # Warm-up: Code Analysis
 
+## Rules
+
+For $T(n)$, the running time of an algorithm on input of size $n$...
+
+1. Constants don't matter: $5n = O(n)$
+2. Lower terms don't matter: $n^2 + n = O(n^2)$
+3. Log base doesn't matter: $log_2 n = O(log_{10}n)$
+
+:::{.notes}
+"What's the intuition for #3?"
+
+All logs differ by a constant factor. log₂n = log₁₀n / log₁₀2
+:::
+
 ## Example 1
 
 ```{pyodide}
@@ -152,6 +166,8 @@ Still $\Theta(n^2)$, tight! The triangle is half the square.
 :::{.notes}
 "Last week: efficiency. This week: we add correctness."
 :::
+
+
 
 
 ## The Analysis Recipe
@@ -550,5 +566,75 @@ $\log_2(1{,}000{,}000) \approx 20$
 :::
 
 ## Questions?
+
+
+## The Definition
+
+f(n) is **O(g(n))** if there exist constants c > 0 and n₀ ≥ 0 such that:
+
+$$f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0$$
+
+:::{.notes}
+"In words: f grows no faster than g, once n is big enough."
+:::
+
+## Picture
+
+```{python}
+#| echo: false
+import matplotlib.pyplot as plt
+import numpy as np
+
+n = np.linspace(1, 20, 100)
+f_n = 2*n + 3
+g_n = 3*n
+
+plt.figure(figsize=(8, 5))
+plt.plot(n, f_n, 'b-', linewidth=2, label='f(n) = 2n + 3')
+plt.plot(n, g_n, 'r--', linewidth=2, label='c·g(n) = 3n')
+plt.axvline(x=3, color='green', linestyle=':', linewidth=2, label='n₀ = 3')
+plt.fill_between(n[n >= 3], f_n[n >= 3], g_n[n >= 3], alpha=0.3, color='green')
+plt.xlabel('n', fontsize=12)
+plt.ylabel('Operations', fontsize=12)
+plt.legend(fontsize=11)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+
+:::{.notes}
+For n ≥ 3: 2n + 3 ≤ 3n
+
+Choose c = 3, n₀ = 3.
+:::
+
+## Other Notations
+
+| Notation | Meaning |
+|----------|---------|
+| O(g(n)) | ≤ c·g(n) — upper bound |
+| Ω(g(n)) | ≥ c·g(n) — lower bound |
+| Θ(g(n)) | both — tight bound |
+
+:::{.notes}
+"We mostly use O — the worst-case guarantee."
+:::
+
+## Prove It
+
+Show that 3n² + 5n + 2 = O(n²)
+
+:::{.notes}
+Let them try.
+
+For n ≥ 1:
+- 3n² ≤ 3n²
+- 5n ≤ 5n²
+- 2 ≤ 2n²
+
+So: 3n² + 5n + 2 ≤ 10n²
+
+Choose c = 10, n₀ = 1. ✓
+:::
 
 

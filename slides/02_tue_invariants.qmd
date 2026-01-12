@@ -271,7 +271,9 @@ def selection_sort(arr):
         arr[a], arr[min_idx] = arr[min_idx], arr[a]
 ```
 
-This uses our `find_min` helper!
+- This uses our `find_min` helper!
+
+- Quick check: running time? 
 
 :::{.notes}
 "Selection sort: repeatedly find the minimum of the unsorted portion and swap it to the front."
@@ -303,7 +305,7 @@ Now we can **use that fact** without re-proving it.
 "Both parts matter — sorted isn't enough; they have to be the right elements."
 :::
 
-## The Proof
+## The Proof {.smaller}
 
 1. **Base case**: At $a = 0$, `arr[0:0]` is empty. ✓ (Trivially sorted, trivially smallest.)
 
@@ -401,7 +403,7 @@ The invariant must be:
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | 12 | 25 | 38 | 47 | 59 | 83 | 71 | 6 | 94 | 52 | 15 | 33 |
 
-After iteration $a = 5$, suppose we have:
+At iteration $a = 5$, suppose we have:
 
 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
