@@ -73,8 +73,9 @@ resources <-
       str_extract("\\d+_([:alpha:]+)_.*$", group = 1),
     type = path |> path_dir()
   ) |>
-  # Remove unassigned resources indicated by "tbd"
-  filter(!str_detect(path, "tbd")) |>
+  # Remove unassigned resources (tbd, XXX, or files not starting with digit)
+  filter(!str_detect(path, "tbd|XXX")) |>
+  filter(!is.na(week)) |>
   select(week, type, day, path) |>
   pivot_wider(names_from = c(day, type), names_sep = "_", values_from = path)
 
