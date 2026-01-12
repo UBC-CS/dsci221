@@ -127,7 +127,7 @@
     "href": "slides/02_tue_invariants.html#selection-sort",
     "title": "Loop Invariants",
     "section": "Selection Sort",
-    "text": "Selection Sort\ndef selection_sort(arr):\n    for a in range(len(arr)):\n        min_idx = find_min(arr, a)\n        arr[a], arr[min_idx] = arr[min_idx], arr[a]\nThis uses our find_min helper!\n\n“Selection sort: repeatedly find the minimum of the unsorted portion and swap it to the front.”\n“Notice it calls find_min(arr, a) — exactly the function we just proved correct.”"
+    "text": "Selection Sort\ndef selection_sort(arr):\n    for a in range(len(arr)):\n        min_idx = find_min(arr, a)\n        arr[a], arr[min_idx] = arr[min_idx], arr[a]\n\nThis uses our find_min helper!\nQuick check: running time?\n\n\n“Selection sort: repeatedly find the minimum of the unsorted portion and swap it to the front.”\n“Notice it calls find_min(arr, a) — exactly the function we just proved correct.”"
   },
   {
     "objectID": "slides/02_tue_invariants.html#the-decomposition-principle",
@@ -190,7 +190,7 @@
     "href": "slides/02_tue_invariants.html#a-bad-example",
     "title": "Loop Invariants",
     "section": "A Bad Example",
-    "text": "A Bad Example\nWeak invariant: “At iteration \\(a\\), arr[0:a] is sorted.”\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nAfter iteration \\(a = 5\\), suppose we have:\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nIs arr[0:5] = [12, 25, 38, 47, 59] sorted? Yes!\nBut is this correct? No! The element 6 is smaller than all of them.\n\n“The invariant is TRUE but not STRONG ENOUGH. The first 5 elements happen to be in order, but they’re not the 5 smallest. We need: ‘arr[0:a] is sorted AND contains the a smallest elements.’”"
+    "text": "A Bad Example\nWeak invariant: “At iteration \\(a\\), arr[0:a] is sorted.”\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nAt iteration \\(a = 5\\), suppose we have:\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nIs arr[0:5] = [12, 25, 38, 47, 59] sorted? Yes!\nBut is this correct? No! The element 6 is smaller than all of them.\n\n“The invariant is TRUE but not STRONG ENOUGH. The first 5 elements happen to be in order, but they’re not the 5 smallest. We need: ‘arr[0:a] is sorted AND contains the a smallest elements.’”"
   },
   {
     "objectID": "slides/02_tue_invariants.html#for-your-career",
@@ -682,6 +682,13 @@
     "text": "Announcements\n\nLabs begin this week!\n\nMonday 1-3pm or Tuesday 4-6pm"
   },
   {
+    "objectID": "slides/02_mon_hierarchy.html#rules",
+    "href": "slides/02_mon_hierarchy.html#rules",
+    "title": "The Hierarchy of Speed",
+    "section": "Rules",
+    "text": "Rules\nFor \\(T(n)\\), the running time of an algorithm on input of size \\(n\\)…\n\nConstants don’t matter: \\(5n = O(n)\\)\nLower terms don’t matter: \\(n^2 + n = O(n^2)\\)\nLog base doesn’t matter: \\(log_2 n = O(log_{10}n)\\)\n\n\n“What’s the intuition for #3?”\nAll logs differ by a constant factor. log₂n = log₁₀n / log₁₀2"
+  },
+  {
     "objectID": "slides/02_mon_hierarchy.html#example-1",
     "href": "slides/02_mon_hierarchy.html#example-1",
     "title": "The Hierarchy of Speed",
@@ -876,6 +883,34 @@
     "title": "The Hierarchy of Speed",
     "section": "Questions?",
     "text": "Questions?"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-definition",
+    "href": "slides/02_mon_hierarchy.html#the-definition",
+    "title": "The Hierarchy of Speed",
+    "section": "The Definition",
+    "text": "The Definition\nf(n) is O(g(n)) if there exist constants c &gt; 0 and n₀ ≥ 0 such that:\n\\[f(n) \\leq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\n“In words: f grows no faster than g, once n is big enough.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#picture",
+    "href": "slides/02_mon_hierarchy.html#picture",
+    "title": "The Hierarchy of Speed",
+    "section": "Picture",
+    "text": "Picture\n\n\n\n\n\n\n\n\n\n\nFor n ≥ 3: 2n + 3 ≤ 3n\nChoose c = 3, n₀ = 3."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#other-notations",
+    "href": "slides/02_mon_hierarchy.html#other-notations",
+    "title": "The Hierarchy of Speed",
+    "section": "Other Notations",
+    "text": "Other Notations\n\n\n\nNotation\nMeaning\n\n\n\n\nO(g(n))\n≤ c·g(n) — upper bound\n\n\nΩ(g(n))\n≥ c·g(n) — lower bound\n\n\nΘ(g(n))\nboth — tight bound\n\n\n\n\n“We mostly use O — the worst-case guarantee.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#prove-it",
+    "href": "slides/02_mon_hierarchy.html#prove-it",
+    "title": "The Hierarchy of Speed",
+    "section": "Prove It",
+    "text": "Prove It\nShow that 3n² + 5n + 2 = O(n²)\n\nLet them try.\nFor n ≥ 1: - 3n² ≤ 3n² - 5n ≤ 5n² - 2 ≤ 2n²\nSo: 3n² + 5n + 2 ≤ 10n²\nChoose c = 10, n₀ = 1. ✓"
   },
   {
     "objectID": "slides/AA_XXX_hierarchy.html#patterns",

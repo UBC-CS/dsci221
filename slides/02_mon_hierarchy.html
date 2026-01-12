@@ -229,6 +229,29 @@
 <h1>Warm-up: Code Analysis</h1>
 
 </section>
+<section id="rules" class="slide level2">
+<h2>Rules</h2>
+<p>For <span class="math inline">\(T(n)\)</span>, the running time of an algorithm on input of size <span class="math inline">\(n\)</span>…</p>
+<ol type="1">
+<li>Constants don’t matter: <span class="math inline">\(5n = O(n)\)</span></li>
+<li>Lower terms don’t matter: <span class="math inline">\(n^2 + n = O(n^2)\)</span></li>
+<li>Log base doesn’t matter: <span class="math inline">\(log_2 n = O(log_{10}n)\)</span></li>
+</ol>
+<aside class="notes">
+<p>“What’s the intuition for #3?”</p>
+<p>All logs differ by a constant factor. log₂n = log₁₀n / log₁₀2</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="example-1" class="slide level2">
 <h2>Example 1</h2>
 <div>
@@ -311,7 +334,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxu
 <li><p>What’s the worst-case running time?</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div id="a4616750" class="cell" data-execution_count="1">
+<div id="b9fde3d1" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -356,7 +379,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxu
 <li><p>What’s the worst-case running time?</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div id="f1acff97" class="cell" data-execution_count="2">
+<div id="8bc79bd3" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -949,6 +972,108 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGl0ZXJfbWVhbihkZiwg
 </section>
 <section id="questions" class="slide level2">
 <h2>Questions?</h2>
+</section>
+<section id="the-definition" class="slide level2">
+<h2>The Definition</h2>
+<p>f(n) is <strong>O(g(n))</strong> if there exist constants c &gt; 0 and n₀ ≥ 0 such that:</p>
+<p><span class="math display">\[f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0\]</span></p>
+<aside class="notes">
+<p>“In words: f grows no faster than g, once n is big enough.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="picture" class="slide level2">
+<h2>Picture</h2>
+<div id="9484663b" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="02_mon_hierarchy_files/figure-revealjs/cell-4-output-1.png" width="759" height="471"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>For n ≥ 3: 2n + 3 ≤ 3n</p>
+<p>Choose c = 3, n₀ = 3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="other-notations" class="slide level2">
+<h2>Other Notations</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Notation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>O(g(n))</td>
+<td>≤ c·g(n) — upper bound</td>
+</tr>
+<tr class="even">
+<td>Ω(g(n))</td>
+<td>≥ c·g(n) — lower bound</td>
+</tr>
+<tr class="odd">
+<td>Θ(g(n))</td>
+<td>both — tight bound</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>“We mostly use O — the worst-case guarantee.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="prove-it" class="slide level2">
+<h2>Prove It</h2>
+<p>Show that 3n² + 5n + 2 = O(n²)</p>
+<aside class="notes">
+<p>Let them try.</p>
+<p>For n ≥ 1: - 3n² ≤ 3n² - 5n ≤ 5n² - 2 ≤ 2n²</p>
+<p>So: 3n² + 5n + 2 ≤ 10n²</p>
+<p>Choose c = 10, n₀ = 1. ✓</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 <script type="pyodide-data">

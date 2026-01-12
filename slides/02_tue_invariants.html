@@ -712,7 +712,10 @@
 <span id="cb7-2"><a></a>    <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
 <span id="cb7-3"><a></a>        min_idx <span class="op">=</span> find_min(arr, a)</span>
 <span id="cb7-4"><a></a>        arr[a], arr[min_idx] <span class="op">=</span> arr[min_idx], arr[a]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This uses our <code>find_min</code> helper!</p>
+<ul>
+<li><p>This uses our <code>find_min</code> helper!</p></li>
+<li><p>Quick check: running time?</p></li>
+</ul>
 <aside class="notes">
 <p>“Selection sort: repeatedly find the minimum of the unsorted portion and swap it to the front.”</p>
 <p>“Notice it calls <code>find_min(arr, a)</code> — exactly the function we just proved correct.”</p>
@@ -768,7 +771,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-proof" class="slide level2">
+<section id="the-proof" class="slide level2 smaller">
 <h2>The Proof</h2>
 <ol type="1">
 <li><p><strong>Base case</strong>: At <span class="math inline">\(a = 0\)</span>, <code>arr[0:0]</code> is empty. ✓ (Trivially sorted, trivially smallest.)</p></li>
@@ -992,7 +995,7 @@
 </tr>
 </tbody>
 </table>
-<p>After iteration <span class="math inline">\(a = 5\)</span>, suppose we have:</p>
+<p>At iteration <span class="math inline">\(a = 5\)</span>, suppose we have:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
