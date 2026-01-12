@@ -234,7 +234,7 @@ schedule |>
     wed_activity = "A",
     wed_video = "V",
     lab = "Lab",
-    due_display = "Due Fri",
+    due_display = "Due Sun",
     examlet_display = "Examlet"
   ) |>
   tab_spanner(
