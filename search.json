@@ -18,6 +18,216 @@
     "text": "In text paragraphs, code is always formatted with a monospace font and surrounded by a box like this. Longer examples of code will be in a separate box.\nFirst line of code\nSecond line of code\n...\nIn many cases, the output for code in these boxes will be below them.\nReplace any placeholder indicated by angular brackets &lt;placeholder&gt; with your own code.\nPressing a KeyKey on the keyboard is formatted like that."
   },
   {
+    "objectID": "slides/02_tue_invariants.html#from-monday",
+    "href": "slides/02_tue_invariants.html#from-monday",
+    "title": "Loop Invariants",
+    "section": "From Monday",
+    "text": "From Monday\nWe now have two pillars:\n\nEfficiency — How fast? (Big-\\(O\\))\nCorrectness — Does it work?\n\nToday: a technique to prove correctness.\n\n“Efficiency is about scaling. Correctness is about trust. Today: how do we PROVE an algorithm works?”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#trusting-your-code",
+    "href": "slides/02_tue_invariants.html#trusting-your-code",
+    "title": "Loop Invariants",
+    "section": "Trusting Your Code",
+    "text": "Trusting Your Code\ndef ________________(arr, a):\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\nWhat does this function do?\nDoes it work?\nHow do you know?\n\n\n“You might say ‘I tested it.’ But testing checks examples, not all inputs.”\n“We want mathematical certainty.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#testing-is-not-proof",
+    "href": "slides/02_tue_invariants.html#testing-is-not-proof",
+    "title": "Loop Invariants",
+    "section": "Testing Is Not Proof",
+    "text": "Testing Is Not Proof\nTesting: “It worked on these 10 inputs.”\nProof: “It works on all valid inputs.”\n\n“Dijkstra: ‘Testing shows the presence of bugs, not their absence.’”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-key-insight",
+    "href": "slides/02_tue_invariants.html#the-key-insight",
+    "title": "Loop Invariants",
+    "section": "The Key Insight",
+    "text": "The Key Insight\nA loop is just induction in disguise.\n\n\n\nInduction\nLoop Invariant\n\n\n\n\nBase case\nInitialization\n\n\nInductive step\nMaintenance\n\n\n“For all \\(n\\)”\nTermination\n\n\n\n\n“You already know induction from discrete math. Loop invariants are the same idea applied to code.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#what-is-an-invariant",
+    "href": "slides/02_tue_invariants.html#what-is-an-invariant",
+    "title": "Loop Invariants",
+    "section": "What Is an Invariant?",
+    "text": "What Is an Invariant?\nAn invariant is a property that remains true.\n“No matter how many times the loop runs, this statement stays true.”\n\n“The word ‘invariant’ = ‘not varying’ = stays the same.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-template-1",
+    "href": "slides/02_tue_invariants.html#the-template-1",
+    "title": "Loop Invariants",
+    "section": "The Template",
+    "text": "The Template\n\n\n\n\n\n\n\nStep\nWhat to show\n\n\n\n\nInvariant\nState \\(P(i)\\) for \\(i \\in \\{0, 1, \\ldots, n\\}\\) (your domain)\n\n\nBase case\n\\(P(0)\\) holds (first value in domain)\n\n\nInductive step\nAssuming \\(P(j)\\) for all \\(j\\) in domain where \\(j &lt; i\\), show \\(P(i)\\)\n\n\nTermination\nPlug in \\(i = n\\) → desired result\n\n\n\n\n“This is just induction on the iteration count. The domain of i depends on your loop — it might be \\(\\{0, \\ldots, n\\}\\) or \\(\\{a+1, \\ldots, n\\}\\) or something else.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-code",
+    "href": "slides/02_tue_invariants.html#the-code",
+    "title": "Loop Invariants",
+    "section": "The Code",
+    "text": "The Code\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n\n\n\n\n32\n11\n73\n21\n29\n86\n81\n17\n\n\n\nIf a = 2, what should find_min return?\n\n“Looking at arr[2:] = [73, 21, 29, 86, 81, 7], the minimum is 7 at index 7.”\n“Let’s prove this function always returns the correct answer.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#step-1-state-the-invariant",
+    "href": "slides/02_tue_invariants.html#step-1-state-the-invariant",
+    "title": "Loop Invariants",
+    "section": "Step 1: State the Invariant",
+    "text": "Step 1: State the Invariant\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n32\n11\n73\n21\n29\n86\n81\n17\n14\n3\n64\n37\n\n\n\nInvariant: At iteration \\(i\\) (for \\(i \\in \\{a+1, \\ldots, n\\}\\)), ret holds the index of the minimum value in arr[a:i].\n\n“The hard part is finding the right invariant. Once you have it, the proof often falls into place.”\n“This invariant captures what we’re maintaining as we go: ret is the min of everything we’ve seen so far.”\n“Note: i ranges from a+1 to n.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#step-2-base-case-i-a1",
+    "href": "slides/02_tue_invariants.html#step-2-base-case-i-a1",
+    "title": "Loop Invariants",
+    "section": "Step 2: Base Case (\\(i = a+1\\))",
+    "text": "Step 2: Base Case (\\(i = a+1\\))\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\nAt the first iteration, i = a+1 and ret = a.\nThe invariant claims ret is the index of the min in arr[a:a+1].\narr[a:a+1] contains only arr[a], and ret = a is its index. ✓\n\n“This is the base case. We’ve ‘seen’ only arr[a], and ret points to it.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#step-3-inductive-step",
+    "href": "slides/02_tue_invariants.html#step-3-inductive-step",
+    "title": "Loop Invariants",
+    "section": "Step 3: Inductive Step",
+    "text": "Step 3: Inductive Step\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n32\n11\n73\n21\n29\n86\n81\n17\n14\n3\n64\n37\n\n\n\nIH: Assume the invariant holds at the start of iteration \\(i\\): ret is the index of min in arr[a:i].\nDuring iteration \\(i\\), we compare arr[i] to arr[ret]:\n\nCase 1: arr[i] &lt; arr[ret] → we set ret = i, the new min\nCase 2: arr[i] &gt;= arr[ret] → we keep ret, still the min\n\nEither way, after iteration \\(i\\), ret is the index of min in arr[a:i+1]. ✓\n\n“The two cases correspond to the if/else. In both cases, ret ends up pointing to the minimum of arr[a:i+1], which is the invariant for iteration i+1.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#step-4-termination",
+    "href": "slides/02_tue_invariants.html#step-4-termination",
+    "title": "Loop Invariants",
+    "section": "Step 4: Termination",
+    "text": "Step 4: Termination\nLoop terminates when i = n (after processing the last element).\nPlug into invariant: ret is index of min in arr[a:n].\nBut arr[a:n] is exactly arr[a:].\nTherefore: ret is the index of the minimum in arr[a:]. ∎\n\n“At i = n, ret is min of arr[a:n] = arr[a:].”\n“The ∎ (tombstone/halmos) marks the end of a proof.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-proof-in-one-slide",
+    "href": "slides/02_tue_invariants.html#the-proof-in-one-slide",
+    "title": "Loop Invariants",
+    "section": "The Proof in One Slide",
+    "text": "The Proof in One Slide\nTheorem: find_min(arr, a) returns the index of the minimum value in arr[a:].\nProof: By induction on iteration count.\n\nInvariant: At iteration \\(i\\) (for \\(i \\in \\{a+1, \\ldots, n\\}\\)), ret is index of min in arr[a:i]\nBase case: At \\(i = a+1\\), ret = a is min of arr[a:a+1] ✓\nInductive step: If true at start of iteration \\(i\\), loop body restores it for \\(i+1\\) ✓\nTermination: Plug in \\(i = n\\) → ret is min of arr[a:n] = arr[a:] ∎"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-code-1",
+    "href": "slides/02_tue_invariants.html#the-code-1",
+    "title": "Loop Invariants",
+    "section": "The Code",
+    "text": "The Code\ndef array_sum(arr):\n    total = 0\n    for i in range(len(arr)):\n        total += arr[i]\n    return total\nWhat’s the invariant?\n\n“Pause the video and try to state the invariant before I reveal it.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-invariant",
+    "href": "slides/02_tue_invariants.html#the-invariant",
+    "title": "Loop Invariants",
+    "section": "The Invariant",
+    "text": "The Invariant\nInvariant: At iteration \\(i\\) (for \\(i \\in \\{0, 1, \\ldots, n\\}\\)), total equals the sum of arr[0:i].\n\n“This captures what we’re building up as we go. Here i ranges from 0 to n.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-proof-quick-version",
+    "href": "slides/02_tue_invariants.html#the-proof-quick-version",
+    "title": "Loop Invariants",
+    "section": "The Proof (Quick Version)",
+    "text": "The Proof (Quick Version)\n\nBase case: At \\(i = 0\\), total = 0 = sum of arr[0:0]. ✓\nInductive step: Assume invariant holds at start of iteration \\(i\\): total = sum of arr[0:i].\nDuring iteration \\(i\\), we add arr[i] to total.\nAfter iteration \\(i\\): total = sum of arr[0:i] + arr[i] = sum of arr[0:i+1]. ✓\nTermination: Plug in \\(i = n\\) → total = sum of arr[0:n] = sum of all. ∎\n\n\n“With practice, these proofs become quick sketches, not page-long arguments.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#selection-sort",
+    "href": "slides/02_tue_invariants.html#selection-sort",
+    "title": "Loop Invariants",
+    "section": "Selection Sort",
+    "text": "Selection Sort\ndef selection_sort(arr):\n    for a in range(len(arr)):\n        min_idx = find_min(arr, a)\n        arr[a], arr[min_idx] = arr[min_idx], arr[a]\nThis uses our find_min helper!\n\n“Selection sort: repeatedly find the minimum of the unsorted portion and swap it to the front.”\n“Notice it calls find_min(arr, a) — exactly the function we just proved correct.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-decomposition-principle",
+    "href": "slides/02_tue_invariants.html#the-decomposition-principle",
+    "title": "Loop Invariants",
+    "section": "The Decomposition Principle",
+    "text": "The Decomposition Principle\nWe already proved find_min(arr, a) returns the index of the minimum in arr[a:].\nNow we can use that fact without re-proving it.\n\nProve small pieces. Compose them into bigger proofs.\n\n\n“This is the software engineering principle of decomposition, applied to proofs.”\n“You don’t re-derive addition every time you use it. Same idea here.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-selection-sort-invariant",
+    "href": "slides/02_tue_invariants.html#the-selection-sort-invariant",
+    "title": "Loop Invariants",
+    "section": "The Selection Sort Invariant",
+    "text": "The Selection Sort Invariant\nInvariant: At iteration \\(a\\) (for \\(a \\in \\{0, 1, \\ldots, n\\}\\)), arr[0:a] is sorted and contains the \\(a\\) smallest elements.\n\n“The first a elements are sorted AND they’re the smallest a elements overall.”\n“Both parts matter — sorted isn’t enough; they have to be the right elements.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-proof",
+    "href": "slides/02_tue_invariants.html#the-proof",
+    "title": "Loop Invariants",
+    "section": "The Proof",
+    "text": "The Proof\n\nBase case: At \\(a = 0\\), arr[0:0] is empty. ✓ (Trivially sorted, trivially smallest.)\nInductive step: Assume invariant holds at start of iteration \\(a\\): arr[0:a] is sorted and contains the \\(a\\) smallest elements.\nDuring iteration \\(a\\):\n\nfind_min(arr, a) returns the index of the minimum in arr[a:] (by our earlier proof!)\nAfter the swap, arr[a] holds the \\((a+1)\\)-th smallest element\n\nAfter iteration \\(a\\): arr[0:a+1] is sorted and contains the \\(a+1\\) smallest elements. ✓\nTermination: Plug in \\(a = n\\) → arr[0:n] is sorted. ∎\n\n\n“See how we just used the find_min correctness? We didn’t re-prove it.”\n“This is the power of decomposition: prove once, use everywhere.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-lesson",
+    "href": "slides/02_tue_invariants.html#the-lesson",
+    "title": "Loop Invariants",
+    "section": "The Lesson",
+    "text": "The Lesson\nDecomposition is good system engineering.\n\n\n\n\n\n\n\n\nSoftware\nProofs\nData Pipelines\n\n\n\n\nWrite small, tested functions\nProve small helper lemmas\nBuild validated transformations\n\n\nCompose into larger programs\nCompose into larger proofs\nChain into workflows\n\n\nReuse without re-implementing\nReuse without re-proving\nReuse without re-validating\n\n\n\n\n“When you write find_min as a separate function, you’re setting yourself up for cleaner code AND cleaner proofs.”\n“Same for data science: build a cleaning step you trust, a feature extraction step you trust, then compose them. You don’t re-check the cleaning every time you use it.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-art",
+    "href": "slides/02_tue_invariants.html#the-art",
+    "title": "Loop Invariants",
+    "section": "The Art",
+    "text": "The Art\nStating the invariant is often the hardest part.\nStrategy: Ask “What property do I maintain that leads to my answer?”\n\n“The invariant should connect the loop’s progress to the final goal.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#common-patterns",
+    "href": "slides/02_tue_invariants.html#common-patterns",
+    "title": "Loop Invariants",
+    "section": "Common Patterns",
+    "text": "Common Patterns\n\n\n\nAlgorithm Type\nInvariant Pattern\n\n\n\n\nAccumulation\n“var holds result for elements seen so far”\n\n\nSearch\n“If target exists, it’s in the remaining range”\n\n\nPartition\n“Elements before \\(i\\) satisfy property P”\n\n\nTwo-pointer\n“Answer is not in the excluded region”\n\n\n\n\n“Wednesday: we’ll use the ‘search’ pattern for binary search.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#design-not-just-proof",
+    "href": "slides/02_tue_invariants.html#design-not-just-proof",
+    "title": "Loop Invariants",
+    "section": "Design, Not Just Proof",
+    "text": "Design, Not Just Proof\nLoop invariants aren’t just for proving code correct.\nThey’re a design tool.\n\n“What should be true at each step?”\n\nIf you can’t state the invariant, you might not understand your own algorithm.\n\n“When you’re stuck debugging, ask: what’s my invariant? Often the bug is that you’re not maintaining it.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#a-warning",
+    "href": "slides/02_tue_invariants.html#a-warning",
+    "title": "Loop Invariants",
+    "section": "A Warning",
+    "text": "A Warning\nA wrong invariant can “prove” incorrect code correct.\nThe invariant must be:\n\nTrue (actually holds at each iteration)\nStrong enough (implies correctness at termination)\nPreserved (maintained by the loop body)\n\n\n“You can’t just make up any statement. It has to capture the actual behavior.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#a-bad-example",
+    "href": "slides/02_tue_invariants.html#a-bad-example",
+    "title": "Loop Invariants",
+    "section": "A Bad Example",
+    "text": "A Bad Example\nWeak invariant: “At iteration \\(a\\), arr[0:a] is sorted.”\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nAfter iteration \\(a = 5\\), suppose we have:\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nIs arr[0:5] = [12, 25, 38, 47, 59] sorted? Yes!\nBut is this correct? No! The element 6 is smaller than all of them.\n\n“The invariant is TRUE but not STRONG ENOUGH. The first 5 elements happen to be in order, but they’re not the 5 smallest. We need: ‘arr[0:a] is sorted AND contains the a smallest elements.’”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#for-your-career",
+    "href": "slides/02_tue_invariants.html#for-your-career",
+    "title": "Loop Invariants",
+    "section": "For Your Career",
+    "text": "For Your Career\nReal bugs in real systems come from:\n\nOff-by-one errors\nEdge cases not handled\n“It usually works” code\n\nLoop invariants catch these before they ship.\n\n“Thinking in invariants makes you a better programmer, even if you don’t write formal proofs.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-mindset",
+    "href": "slides/02_tue_invariants.html#the-mindset",
+    "title": "Loop Invariants",
+    "section": "The Mindset",
+    "text": "The Mindset\nEvery time you write a loop, ask:\n\nWhat’s true at the start?\nWhat stays true each iteration?\nWhat does that give me at the end?\n\n\n“Make this a habit. It prevents bugs.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-loop-invariant-template",
+    "href": "slides/02_tue_invariants.html#the-loop-invariant-template",
+    "title": "Loop Invariants",
+    "section": "The Loop Invariant Template",
+    "text": "The Loop Invariant Template\n\n\n\n\n\n\n\nStep\nWhat to show\n\n\n\n\nInvariant\nState \\(P(i)\\) for \\(i \\in \\{a, a+1, \\ldots, n\\}\\) (your domain)\n\n\nBase case\n\\(P(a)\\) holds (first value in domain)\n\n\nInductive step\nAssuming \\(P(j)\\) for all \\(a \\leq j &lt; i\\), show \\(P(i)\\)\n\n\nTermination\nPlug in \\(i = n\\) → desired result\n\n\n\nThis is induction on the iteration count."
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#looking-ahead",
+    "href": "slides/02_tue_invariants.html#looking-ahead",
+    "title": "Loop Invariants",
+    "section": "Looking Ahead",
+    "text": "Looking Ahead\nWednesday: We’ll use loop invariants to prove a famous algorithm correct — and see why it took 17 years to get a bug-free version."
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#practice-problems",
+    "href": "slides/02_tue_invariants.html#practice-problems",
+    "title": "Loop Invariants",
+    "section": "Practice Problems",
+    "text": "Practice Problems\nBefore Wednesday, try stating invariants for:\n\nreverse(arr) — reverse an array in place\nis_sorted(arr) — check if array is sorted\ncount(arr, target) — count occurrences of target\n\nThink: What’s true after processing \\(i\\) elements?"
+  },
+  {
     "objectID": "slides/01_mon_intro.html#where-to-start",
     "href": "slides/01_mon_intro.html#where-to-start",
     "title": "What Makes an Algorithm Good?",
@@ -165,180 +375,6 @@
     "text": "Questions?"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "about.html#about",
-    "href": "about.html#about",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "LICENSE.html",
-    "href": "LICENSE.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "Attribution-ShareAlike 4.0 International\n=======================================================================\nCreative Commons Corporation (“Creative Commons”) is not a law firm and does not provide legal services or legal advice. Distribution of Creative Commons public licenses does not create a lawyer-client or other relationship. Creative Commons makes its licenses and related information available on an “as-is” basis. Creative Commons gives no warranties regarding its licenses, any material licensed under their terms and conditions, or any related information. Creative Commons disclaims all liability for damages resulting from their use to the fullest extent possible.\nUsing Creative Commons Public Licenses\nCreative Commons public licenses provide a standard set of terms and conditions that creators and other rights holders may use to share original works of authorship and other material subject to copyright and certain other rights specified in the public license below. The following considerations are for informational purposes only, are not exhaustive, and do not form part of our licenses.\n Considerations for licensors: Our public licenses are\n intended for use by those authorized to give the public\n permission to use material in ways otherwise restricted by\n copyright and certain other rights. Our licenses are\n irrevocable. Licensors should read and understand the terms\n and conditions of the license they choose before applying it.\n Licensors should also secure all rights necessary before\n applying our licenses so that the public can reuse the\n material as expected. Licensors should clearly mark any\n material not subject to the license. This includes other CC-\n licensed material, or material used under an exception or\n limitation to copyright. More considerations for licensors:\nwiki.creativecommons.org/Considerations_for_licensors\n\n Considerations for the public: By using one of our public\n licenses, a licensor grants the public permission to use the\n licensed material under specified terms and conditions. If\n the licensor's permission is not necessary for any reason--for\n example, because of any applicable exception or limitation to\n copyright--then that use is not regulated by the license. Our\n licenses grant only permissions under copyright and certain\n other rights that a licensor has authority to grant. Use of\n the licensed material may still be restricted for other\n reasons, including because others have copyright or other\n rights in the material. A licensor may make special requests,\n such as asking that all changes be marked or described.\n Although not required by our licenses, you are encouraged to\n respect those requests where reasonable. More_considerations\n for the public:\nwiki.creativecommons.org/Considerations_for_licensees\n=======================================================================\nCreative Commons Attribution-ShareAlike 4.0 International Public License\nBy exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution-ShareAlike 4.0 International Public License (“Public License”). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.\nSection 1 – Definitions.\n\nAdapted Material means material subject to Copyright and Similar Rights that is derived from or based upon the Licensed Material and in which the Licensed Material is translated, altered, arranged, transformed, or otherwise modified in a manner requiring permission under the Copyright and Similar Rights held by the Licensor. For purposes of this Public License, where the Licensed Material is a musical work, performance, or sound recording, Adapted Material is always produced where the Licensed Material is synched in timed relation with a moving image.\nAdapter’s License means the license You apply to Your Copyright and Similar Rights in Your contributions to Adapted Material in accordance with the terms and conditions of this Public License.\nBY-SA Compatible License means a license listed at creativecommons.org/compatiblelicenses, approved by Creative Commons as essentially the equivalent of this Public License.\nCopyright and Similar Rights means copyright and/or similar rights closely related to copyright including, without limitation, performance, broadcast, sound recording, and Sui Generis Database Rights, without regard to how the rights are labeled or categorized. For purposes of this Public License, the rights specified in Section 2(b)(1)-(2) are not Copyright and Similar Rights.\nEffective Technological Measures means those measures that, in the absence of proper authority, may not be circumvented under laws fulfilling obligations under Article 11 of the WIPO Copyright Treaty adopted on December 20, 1996, and/or similar international agreements.\nExceptions and Limitations means fair use, fair dealing, and/or any other exception or limitation to Copyright and Similar Rights that applies to Your use of the Licensed Material.\nLicense Elements means the license attributes listed in the name of a Creative Commons Public License. The License Elements of this Public License are Attribution and ShareAlike.\nLicensed Material means the artistic or literary work, database, or other material to which the Licensor applied this Public License.\nLicensed Rights means the rights granted to You subject to the terms and conditions of this Public License, which are limited to all Copyright and Similar Rights that apply to Your use of the Licensed Material and that the Licensor has authority to license.\nLicensor means the individual(s) or entity(ies) granting rights under this Public License.\nShare means to provide material to the public by any means or process that requires permission under the Licensed Rights, such as reproduction, public display, public performance, distribution, dissemination, communication, or importation, and to make material available to the public including in ways that members of the public may access the material from a place and at a time individually chosen by them.\nSui Generis Database Rights means rights other than copyright resulting from Directive 96/9/EC of the European Parliament and of the Council of 11 March 1996 on the legal protection of databases, as amended and/or succeeded, as well as other essentially equivalent rights anywhere in the world.\nYou means the individual or entity exercising the Licensed Rights under this Public License. Your has a corresponding meaning.\n\nSection 2 – Scope.\n\nLicense grant.\n\nSubject to the terms and conditions of this Public License, the Licensor hereby grants You a worldwide, royalty-free, non-sublicensable, non-exclusive, irrevocable license to exercise the Licensed Rights in the Licensed Material to:\n\nreproduce and Share the Licensed Material, in whole or in part; and\nproduce, reproduce, and Share Adapted Material.\n\nExceptions and Limitations. For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this Public License does not apply, and You do not need to comply with its terms and conditions.\nTerm. The term of this Public License is specified in Section 6(a).\nMedia and formats; technical modifications allowed. The Licensor authorizes You to exercise the Licensed Rights in all media and formats whether now known or hereafter created, and to make technical modifications necessary to do so. The Licensor waives and/or agrees not to assert any right or authority to forbid You from making technical modifications necessary to exercise the Licensed Rights, including technical modifications necessary to circumvent Effective Technological Measures. For purposes of this Public License, simply making modifications authorized by this Section 2(a)\n\nnever produces Adapted Material.\n\nDownstream recipients.\n\nOffer from the Licensor – Licensed Material. Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.\nAdditional offer from the Licensor – Adapted Material. Every recipient of Adapted Material from You automatically receives an offer from the Licensor to exercise the Licensed Rights in the Adapted Material under the conditions of the Adapter’s License You apply.\nNo downstream restrictions. You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.\n\nNo endorsement. Nothing in this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided in Section 3(a)(1)(A)(i).\n\nOther rights.\n\nMoral rights, such as the right of integrity, are not licensed under this Public License, nor are publicity, privacy, and/or other similar personality rights; however, to the extent possible, the Licensor waives and/or agrees not to assert any such rights held by the Licensor to the limited extent necessary to allow You to exercise the Licensed Rights, but not otherwise.\nPatent and trademark rights are not licensed under this Public License.\nTo the extent possible, the Licensor waives any right to collect royalties from You for the exercise of the Licensed Rights, whether directly or through a collecting society under any voluntary or waivable statutory or compulsory licensing scheme. In all other cases the Licensor expressly reserves any right to collect such royalties.\n\n\nSection 3 – License Conditions.\nYour exercise of the Licensed Rights is expressly made subject to the following conditions.\n\nAttribution.\n\nIf You Share the Licensed Material (including in modified form), You must:\n\nretain the following if it is supplied by the Licensor with the Licensed Material:\n\nidentification of the creator(s) of the Licensed Material and any others designated to receive attribution, in any reasonable manner requested by the Licensor (including by pseudonym if designated);\na copyright notice;\na notice that refers to this Public License;\na notice that refers to the disclaimer of warranties;\na URI or hyperlink to the Licensed Material to the extent reasonably practicable;\n\nindicate if You modified the Licensed Material and retain an indication of any previous modifications; and\nindicate the Licensed Material is licensed under this Public License, and include the text of, or the URI or hyperlink to, this Public License.\n\nYou may satisfy the conditions in Section 3(a)(1) in any reasonable manner based on the medium, means, and context in which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI or hyperlink to a resource that includes the required information.\nIf requested by the Licensor, You must remove any of the information required by Section 3(a)(1)(A) to the extent reasonably practicable.\n\nShareAlike.\nIn addition to the conditions in Section 3(a), if You Share Adapted Material You produce, the following conditions also apply.\n\nThe Adapter’s License You apply must be a Creative Commons license with the same License Elements, this version or later, or a BY-SA Compatible License.\nYou must include the text of, or the URI or hyperlink to, the Adapter’s License You apply. You may satisfy this condition in any reasonable manner based on the medium, means, and context in which You Share Adapted Material.\nYou may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, Adapted Material that restrict exercise of the rights granted under the Adapter’s License You apply.\n\n\nSection 4 – Sui Generis Database Rights.\nWhere the Licensed Rights include Sui Generis Database Rights that apply to Your use of the Licensed Material:\n\nfor the avoidance of doubt, Section 2(a)(1) grants You the right to extract, reuse, reproduce, and Share all or a substantial portion of the contents of the database;\nif You include all or a substantial portion of the database contents in a database in which You have Sui Generis Database Rights, then the database in which You have Sui Generis Database Rights (but not its individual contents) is Adapted Material,\nincluding for purposes of Section 3(b); and\nYou must comply with the conditions in Section 3(a) if You Share all or a substantial portion of the contents of the database.\n\nFor the avoidance of doubt, this Section 4 supplements and does not replace Your obligations under this Public License where the Licensed Rights include other Copyright and Similar Rights.\nSection 5 – Disclaimer of Warranties and Limitation of Liability.\n\nUNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.\nTO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.\nThe disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.\n\nSection 6 – Term and Termination.\n\nThis Public License applies for the term of the Copyright and Similar Rights licensed here. However, if You fail to comply with this Public License, then Your rights under this Public License terminate automatically.\nWhere Your right to use the Licensed Material has terminated under Section 6(a), it reinstates:\n\nautomatically as of the date the violation is cured, provided it is cured within 30 days of Your discovery of the violation; or\nupon express reinstatement by the Licensor.\n\nFor the avoidance of doubt, this Section 6(b) does not affect any right the Licensor may have to seek remedies for Your violations of this Public License.\nFor the avoidance of doubt, the Licensor may also offer the Licensed Material under separate terms or conditions or stop distributing the Licensed Material at any time; however, doing so will not terminate this Public License.\nSections 1, 5, 6, 7, and 8 survive termination of this Public License.\n\nSection 7 – Other Terms and Conditions.\n\nThe Licensor shall not be bound by any additional or different terms or conditions communicated by You unless expressly agreed.\nAny arrangements, understandings, or agreements regarding the Licensed Material not stated herein are separate from and independent of the terms and conditions of this Public License.\n\nSection 8 – Interpretation.\n\nFor the avoidance of doubt, this Public License does not, and shall not be interpreted to, reduce, limit, restrict, or impose conditions on any use of the Licensed Material that could lawfully be made without permission under this Public License.\nTo the extent possible, if any provision of this Public License is deemed unenforceable, it shall be automatically reformed to the minimum extent necessary to make it enforceable. If the provision cannot be reformed, it shall be severed from this Public License without affecting the enforceability of the remaining terms and conditions.\nNo term or condition of this Public License will be waived and no failure to comply consented to unless expressly agreed to by the Licensor.\nNothing in this Public License constitutes or may be interpreted as a limitation upon, or waiver of, any privileges and immunities that apply to the Licensor or You, including from the legal processes of any jurisdiction or authority.\n\n=======================================================================\nCreative Commons is not a party to its public licenses. Notwithstanding, Creative Commons may elect to apply one of its public licenses to material it publishes and in those instances will be considered the “Licensor.” The text of the Creative Commons public licenses is dedicated to the public domain under the CC0 Public Domain Dedication. Except for the limited purpose of indicating that material is shared under a Creative Commons public license or as otherwise permitted by the Creative Commons policies published at creativecommons.org/policies, Creative Commons does not authorize the use of the trademark “Creative Commons” or any other trademark or logo of Creative Commons without its prior written consent including, without limitation, in connection with any unauthorized modifications to any of its public licenses or any other arrangements, understandings, or agreements concerning use of licensed material. For the avoidance of doubt, this paragraph does not form part of the public licenses.\nCreative Commons may be contacted at creativecommons.org."
-  },
-  {
-    "objectID": "labs/02_create-website.html",
-    "href": "labs/02_create-website.html",
-    "title": " Lab: Create your own website!",
-    "section": "",
-    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
-  },
-  {
-    "objectID": "labs/02_create-website.html#basic-structure-of-quarto-document",
-    "href": "labs/02_create-website.html#basic-structure-of-quarto-document",
-    "title": " Lab: Create your own website!",
-    "section": "",
-    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
-  },
-  {
-    "objectID": "labs/02_create-website.html#steps",
-    "href": "labs/02_create-website.html#steps",
-    "title": " Lab: Create your own website!",
-    "section": " Steps",
-    "text": "Steps\n\nOpen your workspace: NA.\nCreate index.qmd.\nClick the “Render” button on top.\nDownload the output directory _site.\nOpen Netlify Drop: app.netlify.com/drop.\nDrag and drop the downloaded _site onto Netlify Drop.\nPost the link to your website in the comments below."
-  },
-  {
-    "objectID": "labs/02_create-website.html#resources",
-    "href": "labs/02_create-website.html#resources",
-    "title": " Lab: Create your own website!",
-    "section": " Resources",
-    "text": "Resources\n\nDaring Fireball: Markdown\nInteractive Commonmark Markdown tutorial\nQuarto documentation\nGet started with Quarto Workshop including the material and this video:"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
-  },
-  {
-    "objectID": "index.html#weekly-announcement",
-    "href": "index.html#weekly-announcement",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "Weekly announcement",
-    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      NA_slides\n      Due Fri\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\n\nHW3",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
-  },
-  {
-    "objectID": "posts/00_welcome/index.html",
-    "href": "posts/00_welcome/index.html",
-    "title": "Welcome to DSCI 221!",
-    "section": "",
-    "text": "Welcome to DSCI 221: Data Structures and Algorithms for Data Science!\nIn this course, we’ll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what’s the cheapest flight to Tokyo?), you’ll develop the algorithmic thinking that separates good programmers from great ones.\nGetting started:\n\nRead the syllabus for course policies and requirements\nCheck the schedule on the home page to see what’s coming up\nCome to class ready to think about puzzles!\n\nSee you in class!"
-  },
-  {
-    "objectID": "TODO.html",
-    "href": "TODO.html",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory\n\n\n\n\n\n\n\nSchedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\n\n\n\n\n\n\n\nCreate labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic\n\n\n\n\n\n\nSet up testing framework within marimo\nSet up autograder for PL programming assignments"
-  },
-  {
-    "objectID": "TODO.html#completed-setup-reference-for-future-terms",
-    "href": "TODO.html#completed-setup-reference-for-future-terms",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory"
-  },
-  {
-    "objectID": "TODO.html#course-setup-canvasinfrastructure",
-    "href": "TODO.html#course-setup-canvasinfrastructure",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Schedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)"
-  },
-  {
-    "objectID": "TODO.html#assessments",
-    "href": "TODO.html#assessments",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Create labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic"
-  },
-  {
-    "objectID": "TODO.html#technical-infrastructure",
-    "href": "TODO.html#technical-infrastructure",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Set up testing framework within marimo\nSet up autograder for PL programming assignments"
-  },
-  {
-    "objectID": "setup.html",
-    "href": "setup.html",
-    "title": "Setup: Tech stack",
-    "section": "",
-    "text": "As with any computer science or data science course, several tools and software packages are needed for this course. These tools are not used by the typical consumer, so most Windows or macOS installations will not include them. Even on machines which do include them (such as many Linux distributions), they may still need some configuration. Below you will find guides to install the tech stack for DSCI 221, with different guides for different operating systems. A tech stack is the complete set of tools and technologies needed to accomplish a particular task; in this case, it is the various programming and data analytics that we will explore in DSCI 221.\nAs you go through the install guides, remember that perhaps the two most important things you will learn in this course is how to troubleshoot things and achieve familiarity and proficiency with your computer. Be patient, read things carefully, do not be afraid to try things, it’s unlikely you will do anything to irreversibly break your computer! Almost everything you do (you’re on your own if you decide to take a hammer to your laptop!) can be undone, don’t be afraid to ask your peers, TAs, and the instructor on Giscus below (you will need to set up an GitHub account first).\nThis is an exciting time for you as you begin your Software Development journey!",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "setup.html#hardware",
-    "href": "setup.html#hardware",
-    "title": "Setup: Tech stack",
-    "section": "Hardware",
-    "text": "Hardware\nBefore starting, ensure that your laptop meets the minimum requirements:\n\nCan connect to networks via a wireless connection.\nHas at least 25 GB disk space available.\nHas at least 4 GB of RAM (more is recommended).\nUses a 64-bit CPU.\nIs at most 6 years old at the start of the course (4 years old or newer is recommended).\nStudent user has full administrative access to the computer.\n\n\n\n\n\n\n\nImportant\n\n\n\nIf your computer does not meet any of the requirements above, please don’t just drop the course!! Let me know first and we can discuss alternate possibilities so you can still take the course.",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "setup.html#software",
-    "href": "setup.html#software",
-    "title": "Setup: Tech stack",
-    "section": "Software",
-    "text": "Software\n\n\n\n\n\n\nTip\n\n\n\nThese installation notes assume you are starting with a fresh install, without any custom setups. Following the instructions below will help you install and configure the tech stack correctly in the same way for our course, enabling us to support you effectively and minimize setup issues and software conflicts.\n\n\n\nWindowsmacOS\n\n\n In all the sections below, if you are presented with the choice to download either a 64-bit (also called x64) or a 32-bit (also called x86) version of the application always choose the 64-bit version.\n\n\nIn all the sections below, if you are presented with the choice to download either a 64-bit (also called x64) or a 32-bit (also called x86) version of the application always choose the 64-bit version. If you purchased a Mac anytime in the last few years, chances are you have an “M1/M2/M3/M4”… Mac, also known as “Apple Silicon”, and “arm64”. When given the option, you should choose to download the “arm64”/Apple Silicon or the “Universal versions—if that choice doesn’t exist, then you can choose the”x86” version which will run in “emulated mode”, which will result in a slight performance penalty.\n\n\n\n\n\nOperating system (OS)\nWe strongly suggest to run the latest version of the operating system (OS) available for your laptop.\n\n\n\n\n\n\nWarning\n\n\n\nIf you update or upgrade your OS you do so on your own risk!\n\n\nIn general, there are many good reasons to update your OS. Some of the software tools or their functionality used in our tutorials will only work on more recent OS versions. Updating your OS will also ensure that you have the latest security updates installed and help prevent unauthorized access to your computer.\nThere a two main reasons that would prevent you from updating your OS:\n\nYour hardware would not support the updated OS.\nSome of your software you depend on might not work on a newer OS.\n\n\nWindowsmacOS\n\n\nThe latest version of Windows 11 available is 24H2 (build 26100.6584). See here on how to update your Windows 11 machine to the latest version. If you do not own Windows 11, currently enrolled UBC students with a valid CWL account qualify for one license of Windows 11 Education.\n\n\nThe latest version of macOS is Tahoe 16.0. Check your current version of macOS. If you do not have the latest version, follow the upgrade instructions on the Apple support page.\nIf you cannot upgrade to the latest version, follow these instructions to find the system requirements and upgrade to latest versions available to you. If you need to maintain 32-bit compatibility for any of your software, then upgrade to no higher than macOS 10.14 Mojave.\n\n\n\n\n\nTerminal\nA terminal program allows you to interact with many different programs using a command line interface. Instead of using graphical elements like in a graphical user interface, you type in commands describing what program you want to use and how you want to use it.\n\nWindowsmacOS\n\n\nThe terminal app Terminal comes preinstalled with Windows. Activate the Windows Start menu, start typing “terminal” and select the Terminal app by pressing EnterEnter.\n\n\nThe terminal app Terminal comes preinstalled with macOS. Activate Spotlight with Command-SpaceCommand-Space, start typing “terminal” and select the Terminal app by pressing EnterEnter.\n\n\n\nYou will need to open the terminal several times in these instructions to install other programs.\n\n\nPackage manager\nA package manager is a program allowing you to install and update programs on your computer, similar to the Microsoft Store on Windows or the App Store on macOS. The main difference of a package manager to these programs is that you use them with a command line interface running in a terminal instead of a graphical user interface.\n\nWindowsmacOS\n\n\nIf you have at least Windows 10 version 1809 (build 17763) or later installed on your machine, you will already have the package manager WinGet available to you. When you use WinGet for the first time, you will be asked to register the Windows Package Manager with the Microsoft Store.\n\n\n\n\n\n\nImportant\n\n\n\nIf you cannot update your Windows to a version that supports WinGet, please reach out to the teaching team.\n\n\n\nResources\n\nUse WinGet to install and manage applications\n\n\n\n\nWe will use one of the most popular package managers on macOS called Homebrew. Open your Terminal, and then enter the following command:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nYou will be asked to enter the password for your computer:\n==&gt; Checking for `sudo` access (which may request your password)...\nEnter your password (it is normal that the cursor will not move as you enter characters for a password) and hit EnterEnter.\nNext, the installation will install the XCode Command Line Tools:\nThe XCode Command Line Tools will be installed.\nA new window will open with the following prompt:\n\nThe “xcode-select” command requires the command line developer tools. Would you like to install the tools now?\nChoose Install to download and install the command line developer tools now.” Confirm by clicking on “Install”.\n\nAfterwards, back in the terminal, you will be informed what steps will be executed:\n==&gt; This script will install:\n/opt/homebrew/bin/brew\n/opt/homebrew/share/doc/homebrew\n/opt/homebrew/share/man/man1/brew.1\n/opt/homebrew/share/zsh/site-functions/_brew\n/opt/homebrew/etc/bash_completion.d/brew\n/opt/homebrew\n/etc/paths.d/homebrew\n\nPress RETURN/ENTER to continue or any other key to abort:\nConfirm with EnterEnter. When the installation is finished, you will be asked to run the following command in the terminal to add Homebrew to your PATH:\necho &gt;&gt; \"${HOME}/.zprofile\"\necho 'eval \"$(/opt/homebrew/bin/brew shellenv)\"' &gt;&gt; \"${HOME}/.zprofile\"\neval \"$(/opt/homebrew/bin/brew shellenv)\"\nNow test if Homebrew works:\nbrew --version\nYou should see the following:\nHomebrew 4.6.11\n\nResources\n\nHomebrew Documentation\n\n\n\n\n\n\n\nPython\n\nInstalling uv\nWe will be using Python for a large part of the course, and uv will be our Python package manager. Instead of installing Python separately on our machine, we will use uv to provision us with Python whenever we need to run it.\n\nWindowsmacOS\n\n\nIn the terminal, install uv with Winget:\nwinget install -e --id=astral-sh.uv\n\n\nIn the terminal install uv with Homebrew:\nbrew install uv\n\n\n\nTo check if uv installed successfully, type in the terminal:\nuv --version\nAnd you should see something like this\nuv 0.8.18 &lt;some-installer-specific-information&gt;\n\nResources\n\nInstallation | uv\n\n\n\n\nmarimo\nWe will be writing our code in a notebook app called marimo. marimo is itself a Python package, so we can use uv to install and run it. In particular, we will use the command uvx which will check if we have the latest version of marimo and everything else necessary to run it, even Python itself!\nuvx marimo --version\nAnd you should see:\n0.16.0\nEven better, try this:\nuvx marimo tutorial intro\nAnd your default browser should open a window showing marimo.\n\nFor now, let’s shut down marimo by clicking on the red x in the top right corner and then on the “Shutdown” button.\nNow you are ready to run Python code on your local machine!!!\n\nResources\n\nInstallation | marimo",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "setup.html#optional-software",
-    "href": "setup.html#optional-software",
-    "title": "Setup: Tech stack",
-    "section": "Optional software",
-    "text": "Optional software\nIf you are interested in using a very common software development tool and platform for version control, check out Git and GitHub. We also have two examples with Zoom or your web browser on how to install and update everyday software with a package manager.\n\nGit and GitHub\nWe will be using the command line version of Git.\n\nWindowsmacOS\n\n\nGit is installed as part of Git Bash. Open your terminal, and install Git Bash with\nwinget install -e --id Git.Git\nRestart your terminal.\n\n\nOpen your terminal, and install Git with:\nbrew install git\n\n\n\nIn the terminal, type the following to check the Git version:\ngit --version\nYou should see something like this if everything is working correctly:\ngit version 2.51.0\n\nGitHub.com account\nSign up for a free account at GitHub.com if you don’t have one already. Your GitHub.com username is important, so here some advice on picking a username and below an image on how to find it again.\n\n\n\nConfiguring Git user info\nNext, we need to configure Git by telling it your name and email. To do this, provide your name and GitHub email by typing into the terminal:\ngit config --global user.name \"&lt;your-name&gt;\"\ngit config --global user.email \"&lt;your-github-email&gt;\"\n\n\n\n\n\n\nNote\n\n\n\nTo ensure that you haven’t made a typo in any of the above, you can view your global Git configurations by either opening the configuration file in a text editor (e.g., via the command code ~/.gitconfig) or by typing git config --list --global. You can quit this view by just pressing the q key on your keyboard.\n\n\n\n\nCreate your GitHub “Personal Access Token”\nThis is a bit tricky, so please make sure you follow these directions carefully.\n\nStart creating a personal access token (PAT) on GitHub.com either by\n\nClicking this link: https://github.com/settings/tokens/new\nNavigating to your tokens by following these steps:\n\nLog in to GitHub.com\nClick your picture in the top right and select “Settings”\nClick on “Developer Settings”\nClick on “Personal access tokens” and then on “Tokens (classic)”\nClick “Generate new token”\n\n\nGive the token a name in the note field, for example, DSCI 221\nChoose for expiration “Custom” and set the date to the end of this term: 2026-04-10\nSet the scope of the token to the “repo” level (see image below):\n\n\n\nPersonal access token settings\n\n\nClick “Generate new token”\nCopy the token that is shown to you. It is essentially a password for apps on your computer (for example, Git) to enable them to take actions on GitHub.com for you (in this case, clone a private repository to your computer). Treat this password like any other of your other passwords, so don’t share your token with anyone.\nSave this token somewhere safe on your computer, such as a password manager. You will not be able to come back to this page to get your token. If you forget or lose a token, you can just delete that token on GitHub.com where you manage all existing tokens and create another one: https://github.com/settings/tokens\n\n\n\n\nClone your first repository on your computer\nOpen the terminal, and then run the following command:\ngit clone https://github.com/firasm/test.git\nHopefully, if things work, you should be able to see a new folder created at that location. We will be talking more about what exactly you did over the next week and a bit, don’t worry!\n\n\n\n\n\n\nTip\n\n\n\nIf after running the code above, you see the error message:\nfatal: destination path 'test' already exists and is not an empty directory. \nIt means that you already attempted a clone before, and there is already a directory called test where you are trying to clone this repository. You will first need to delete that directory to try again. Open an Explorer (Windows) or Finder (macOS) window on your computer, navigate to the directory, right click the test directory and delete it. Alternatively, from the command line you can try:\nrm -rf test\nwhich will “remove” (using the rm command) the directory called test. The- is to specify additional options: r means “recursively” for all the files in the directory, and f means “force” which means don’t ask me for confirmation after deleting each file and folder.\n\n\n\n\n\nZoom\nSo far, we have been using the package manager to install software development tools. We can use the package manager to install other everyday software making it easier to find the correct version for your hardware or update to the latest release. For example, you might attend office hours or a livestream using Zoom Workplace and you should install the Zoom client locally on your machine.\n\nWindowsmacOS\n\n\nIn your terminal, use WinGet to install Zoom:\nwinget install -e --id Zoom.Zoom\n\n\nIn your terminal, use Homebrew to install Zoom:\nbrew install --cask zoom\n\n\n\nIt is important that you have the most recent version of Zoom installed, as we will be using many of the features that are only available in more recent versions. The latest version of Zoom is 6.6.0 (64511). For a lot of software, there is an option to check for updates.\n\nA package manager can directly update any software you have installed with it.\n\nWindowsmacOS\n\n\nwinget upgrade -e --id Zoom.Zoom\n\n\nbrew upgrade --cask zoom\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nPlease note that if you have been relying on the “web version” of Zoom that works only in a browser, this will not work for this course! Please make sure to download the Zoom desktop client for your operating system to fully participate in the course.\n\n\n\n\nWeb browser\nYou are welcome to use most modern browsers that have a WebKit or Gecko backend. Safari (Mac only), Firefox, Vivaldi, Brave, Edge are all recommended. Google Chrome is not recommended because of the well-documented privacy and tracking issues with Google.\nOptional: try to install the browser also with the package manager! Use this website to find the install instruction for the browser of your choice:\n\nWindowsmacOS\n\n\nwinget.run | Finding winget packages made simple.\n\n\nHomebrew Formulae",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "setup.html#attribution",
-    "href": "setup.html#attribution",
-    "title": "Setup: Tech stack",
-    "section": "Attribution",
-    "text": "Attribution\nThese instructions have been adapted and remixed from the original version provided by the UBC-Vancouver MDS Install stack under a CC-BY-SA 4.0 license. They were originally written by Anmol Jawandha but have since been updated by Stephan Koenig, Firas Moosvi, Joel Ostblom, Tomas Beuzen, Rodolfo Lourenzutti, Tiffany Timbers, and others.\n\nHarvard CS109\nUBC STAT 545 licensed under the CC BY-NC 3.0.\nSoftware Carpentry\nOracle - How do I set or change the PATH system variable?\nNumerical Methods - Getting started\nEDUCE setup instructions",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
     "objectID": "slides/01_wed_runtime.html#announcements",
     "href": "slides/01_wed_runtime.html#announcements",
     "title": "Analysis",
@@ -463,6 +499,383 @@
     "title": "Analysis",
     "section": "Next week",
     "text": "Next week\nMore analysis"
+  },
+  {
+    "objectID": "setup.html",
+    "href": "setup.html",
+    "title": "Setup: Tech stack",
+    "section": "",
+    "text": "As with any computer science or data science course, several tools and software packages are needed for this course. These tools are not used by the typical consumer, so most Windows or macOS installations will not include them. Even on machines which do include them (such as many Linux distributions), they may still need some configuration. Below you will find guides to install the tech stack for DSCI 221, with different guides for different operating systems. A tech stack is the complete set of tools and technologies needed to accomplish a particular task; in this case, it is the various programming and data analytics that we will explore in DSCI 221.\nAs you go through the install guides, remember that perhaps the two most important things you will learn in this course is how to troubleshoot things and achieve familiarity and proficiency with your computer. Be patient, read things carefully, do not be afraid to try things, it’s unlikely you will do anything to irreversibly break your computer! Almost everything you do (you’re on your own if you decide to take a hammer to your laptop!) can be undone, don’t be afraid to ask your peers, TAs, and the instructor on Giscus below (you will need to set up an GitHub account first).\nThis is an exciting time for you as you begin your Software Development journey!",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "setup.html#hardware",
+    "href": "setup.html#hardware",
+    "title": "Setup: Tech stack",
+    "section": "Hardware",
+    "text": "Hardware\nBefore starting, ensure that your laptop meets the minimum requirements:\n\nCan connect to networks via a wireless connection.\nHas at least 25 GB disk space available.\nHas at least 4 GB of RAM (more is recommended).\nUses a 64-bit CPU.\nIs at most 6 years old at the start of the course (4 years old or newer is recommended).\nStudent user has full administrative access to the computer.\n\n\n\n\n\n\n\nImportant\n\n\n\nIf your computer does not meet any of the requirements above, please don’t just drop the course!! Let me know first and we can discuss alternate possibilities so you can still take the course.",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "setup.html#software",
+    "href": "setup.html#software",
+    "title": "Setup: Tech stack",
+    "section": "Software",
+    "text": "Software\n\n\n\n\n\n\nTip\n\n\n\nThese installation notes assume you are starting with a fresh install, without any custom setups. Following the instructions below will help you install and configure the tech stack correctly in the same way for our course, enabling us to support you effectively and minimize setup issues and software conflicts.\n\n\n\nWindowsmacOS\n\n\n In all the sections below, if you are presented with the choice to download either a 64-bit (also called x64) or a 32-bit (also called x86) version of the application always choose the 64-bit version.\n\n\nIn all the sections below, if you are presented with the choice to download either a 64-bit (also called x64) or a 32-bit (also called x86) version of the application always choose the 64-bit version. If you purchased a Mac anytime in the last few years, chances are you have an “M1/M2/M3/M4”… Mac, also known as “Apple Silicon”, and “arm64”. When given the option, you should choose to download the “arm64”/Apple Silicon or the “Universal versions—if that choice doesn’t exist, then you can choose the”x86” version which will run in “emulated mode”, which will result in a slight performance penalty.\n\n\n\n\n\nOperating system (OS)\nWe strongly suggest to run the latest version of the operating system (OS) available for your laptop.\n\n\n\n\n\n\nWarning\n\n\n\nIf you update or upgrade your OS you do so on your own risk!\n\n\nIn general, there are many good reasons to update your OS. Some of the software tools or their functionality used in our tutorials will only work on more recent OS versions. Updating your OS will also ensure that you have the latest security updates installed and help prevent unauthorized access to your computer.\nThere a two main reasons that would prevent you from updating your OS:\n\nYour hardware would not support the updated OS.\nSome of your software you depend on might not work on a newer OS.\n\n\nWindowsmacOS\n\n\nThe latest version of Windows 11 available is 24H2 (build 26100.6584). See here on how to update your Windows 11 machine to the latest version. If you do not own Windows 11, currently enrolled UBC students with a valid CWL account qualify for one license of Windows 11 Education.\n\n\nThe latest version of macOS is Tahoe 16.0. Check your current version of macOS. If you do not have the latest version, follow the upgrade instructions on the Apple support page.\nIf you cannot upgrade to the latest version, follow these instructions to find the system requirements and upgrade to latest versions available to you. If you need to maintain 32-bit compatibility for any of your software, then upgrade to no higher than macOS 10.14 Mojave.\n\n\n\n\n\nTerminal\nA terminal program allows you to interact with many different programs using a command line interface. Instead of using graphical elements like in a graphical user interface, you type in commands describing what program you want to use and how you want to use it.\n\nWindowsmacOS\n\n\nThe terminal app Terminal comes preinstalled with Windows. Activate the Windows Start menu, start typing “terminal” and select the Terminal app by pressing EnterEnter.\n\n\nThe terminal app Terminal comes preinstalled with macOS. Activate Spotlight with Command-SpaceCommand-Space, start typing “terminal” and select the Terminal app by pressing EnterEnter.\n\n\n\nYou will need to open the terminal several times in these instructions to install other programs.\n\n\nPackage manager\nA package manager is a program allowing you to install and update programs on your computer, similar to the Microsoft Store on Windows or the App Store on macOS. The main difference of a package manager to these programs is that you use them with a command line interface running in a terminal instead of a graphical user interface.\n\nWindowsmacOS\n\n\nIf you have at least Windows 10 version 1809 (build 17763) or later installed on your machine, you will already have the package manager WinGet available to you. When you use WinGet for the first time, you will be asked to register the Windows Package Manager with the Microsoft Store.\n\n\n\n\n\n\nImportant\n\n\n\nIf you cannot update your Windows to a version that supports WinGet, please reach out to the teaching team.\n\n\n\nResources\n\nUse WinGet to install and manage applications\n\n\n\n\nWe will use one of the most popular package managers on macOS called Homebrew. Open your Terminal, and then enter the following command:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nYou will be asked to enter the password for your computer:\n==&gt; Checking for `sudo` access (which may request your password)...\nEnter your password (it is normal that the cursor will not move as you enter characters for a password) and hit EnterEnter.\nNext, the installation will install the XCode Command Line Tools:\nThe XCode Command Line Tools will be installed.\nA new window will open with the following prompt:\n\nThe “xcode-select” command requires the command line developer tools. Would you like to install the tools now?\nChoose Install to download and install the command line developer tools now.” Confirm by clicking on “Install”.\n\nAfterwards, back in the terminal, you will be informed what steps will be executed:\n==&gt; This script will install:\n/opt/homebrew/bin/brew\n/opt/homebrew/share/doc/homebrew\n/opt/homebrew/share/man/man1/brew.1\n/opt/homebrew/share/zsh/site-functions/_brew\n/opt/homebrew/etc/bash_completion.d/brew\n/opt/homebrew\n/etc/paths.d/homebrew\n\nPress RETURN/ENTER to continue or any other key to abort:\nConfirm with EnterEnter. When the installation is finished, you will be asked to run the following command in the terminal to add Homebrew to your PATH:\necho &gt;&gt; \"${HOME}/.zprofile\"\necho 'eval \"$(/opt/homebrew/bin/brew shellenv)\"' &gt;&gt; \"${HOME}/.zprofile\"\neval \"$(/opt/homebrew/bin/brew shellenv)\"\nNow test if Homebrew works:\nbrew --version\nYou should see the following:\nHomebrew 4.6.11\n\nResources\n\nHomebrew Documentation\n\n\n\n\n\n\n\nPython\n\nInstalling uv\nWe will be using Python for a large part of the course, and uv will be our Python package manager. Instead of installing Python separately on our machine, we will use uv to provision us with Python whenever we need to run it.\n\nWindowsmacOS\n\n\nIn the terminal, install uv with Winget:\nwinget install -e --id=astral-sh.uv\n\n\nIn the terminal install uv with Homebrew:\nbrew install uv\n\n\n\nTo check if uv installed successfully, type in the terminal:\nuv --version\nAnd you should see something like this\nuv 0.8.18 &lt;some-installer-specific-information&gt;\n\nResources\n\nInstallation | uv\n\n\n\n\nmarimo\nWe will be writing our code in a notebook app called marimo. marimo is itself a Python package, so we can use uv to install and run it. In particular, we will use the command uvx which will check if we have the latest version of marimo and everything else necessary to run it, even Python itself!\nuvx marimo --version\nAnd you should see:\n0.16.0\nEven better, try this:\nuvx marimo tutorial intro\nAnd your default browser should open a window showing marimo.\n\nFor now, let’s shut down marimo by clicking on the red x in the top right corner and then on the “Shutdown” button.\nNow you are ready to run Python code on your local machine!!!\n\nResources\n\nInstallation | marimo",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "setup.html#optional-software",
+    "href": "setup.html#optional-software",
+    "title": "Setup: Tech stack",
+    "section": "Optional software",
+    "text": "Optional software\nIf you are interested in using a very common software development tool and platform for version control, check out Git and GitHub. We also have two examples with Zoom or your web browser on how to install and update everyday software with a package manager.\n\nGit and GitHub\nWe will be using the command line version of Git.\n\nWindowsmacOS\n\n\nGit is installed as part of Git Bash. Open your terminal, and install Git Bash with\nwinget install -e --id Git.Git\nRestart your terminal.\n\n\nOpen your terminal, and install Git with:\nbrew install git\n\n\n\nIn the terminal, type the following to check the Git version:\ngit --version\nYou should see something like this if everything is working correctly:\ngit version 2.51.0\n\nGitHub.com account\nSign up for a free account at GitHub.com if you don’t have one already. Your GitHub.com username is important, so here some advice on picking a username and below an image on how to find it again.\n\n\n\nConfiguring Git user info\nNext, we need to configure Git by telling it your name and email. To do this, provide your name and GitHub email by typing into the terminal:\ngit config --global user.name \"&lt;your-name&gt;\"\ngit config --global user.email \"&lt;your-github-email&gt;\"\n\n\n\n\n\n\nNote\n\n\n\nTo ensure that you haven’t made a typo in any of the above, you can view your global Git configurations by either opening the configuration file in a text editor (e.g., via the command code ~/.gitconfig) or by typing git config --list --global. You can quit this view by just pressing the q key on your keyboard.\n\n\n\n\nCreate your GitHub “Personal Access Token”\nThis is a bit tricky, so please make sure you follow these directions carefully.\n\nStart creating a personal access token (PAT) on GitHub.com either by\n\nClicking this link: https://github.com/settings/tokens/new\nNavigating to your tokens by following these steps:\n\nLog in to GitHub.com\nClick your picture in the top right and select “Settings”\nClick on “Developer Settings”\nClick on “Personal access tokens” and then on “Tokens (classic)”\nClick “Generate new token”\n\n\nGive the token a name in the note field, for example, DSCI 221\nChoose for expiration “Custom” and set the date to the end of this term: 2026-04-10\nSet the scope of the token to the “repo” level (see image below):\n\n\n\nPersonal access token settings\n\n\nClick “Generate new token”\nCopy the token that is shown to you. It is essentially a password for apps on your computer (for example, Git) to enable them to take actions on GitHub.com for you (in this case, clone a private repository to your computer). Treat this password like any other of your other passwords, so don’t share your token with anyone.\nSave this token somewhere safe on your computer, such as a password manager. You will not be able to come back to this page to get your token. If you forget or lose a token, you can just delete that token on GitHub.com where you manage all existing tokens and create another one: https://github.com/settings/tokens\n\n\n\n\nClone your first repository on your computer\nOpen the terminal, and then run the following command:\ngit clone https://github.com/firasm/test.git\nHopefully, if things work, you should be able to see a new folder created at that location. We will be talking more about what exactly you did over the next week and a bit, don’t worry!\n\n\n\n\n\n\nTip\n\n\n\nIf after running the code above, you see the error message:\nfatal: destination path 'test' already exists and is not an empty directory. \nIt means that you already attempted a clone before, and there is already a directory called test where you are trying to clone this repository. You will first need to delete that directory to try again. Open an Explorer (Windows) or Finder (macOS) window on your computer, navigate to the directory, right click the test directory and delete it. Alternatively, from the command line you can try:\nrm -rf test\nwhich will “remove” (using the rm command) the directory called test. The- is to specify additional options: r means “recursively” for all the files in the directory, and f means “force” which means don’t ask me for confirmation after deleting each file and folder.\n\n\n\n\n\nZoom\nSo far, we have been using the package manager to install software development tools. We can use the package manager to install other everyday software making it easier to find the correct version for your hardware or update to the latest release. For example, you might attend office hours or a livestream using Zoom Workplace and you should install the Zoom client locally on your machine.\n\nWindowsmacOS\n\n\nIn your terminal, use WinGet to install Zoom:\nwinget install -e --id Zoom.Zoom\n\n\nIn your terminal, use Homebrew to install Zoom:\nbrew install --cask zoom\n\n\n\nIt is important that you have the most recent version of Zoom installed, as we will be using many of the features that are only available in more recent versions. The latest version of Zoom is 6.6.0 (64511). For a lot of software, there is an option to check for updates.\n\nA package manager can directly update any software you have installed with it.\n\nWindowsmacOS\n\n\nwinget upgrade -e --id Zoom.Zoom\n\n\nbrew upgrade --cask zoom\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nPlease note that if you have been relying on the “web version” of Zoom that works only in a browser, this will not work for this course! Please make sure to download the Zoom desktop client for your operating system to fully participate in the course.\n\n\n\n\nWeb browser\nYou are welcome to use most modern browsers that have a WebKit or Gecko backend. Safari (Mac only), Firefox, Vivaldi, Brave, Edge are all recommended. Google Chrome is not recommended because of the well-documented privacy and tracking issues with Google.\nOptional: try to install the browser also with the package manager! Use this website to find the install instruction for the browser of your choice:\n\nWindowsmacOS\n\n\nwinget.run | Finding winget packages made simple.\n\n\nHomebrew Formulae",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "setup.html#attribution",
+    "href": "setup.html#attribution",
+    "title": "Setup: Tech stack",
+    "section": "Attribution",
+    "text": "Attribution\nThese instructions have been adapted and remixed from the original version provided by the UBC-Vancouver MDS Install stack under a CC-BY-SA 4.0 license. They were originally written by Anmol Jawandha but have since been updated by Stephan Koenig, Firas Moosvi, Joel Ostblom, Tomas Beuzen, Rodolfo Lourenzutti, Tiffany Timbers, and others.\n\nHarvard CS109\nUBC STAT 545 licensed under the CC BY-NC 3.0.\nSoftware Carpentry\nOracle - How do I set or change the PATH system variable?\nNumerical Methods - Getting started\nEDUCE setup instructions",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "TODO.html",
+    "href": "TODO.html",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory\n\n\n\n\n\n\n\nSchedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\n\n\n\n\n\n\n\nCreate labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic\n\n\n\n\n\n\nSet up testing framework within marimo\nSet up autograder for PL programming assignments"
+  },
+  {
+    "objectID": "TODO.html#completed-setup-reference-for-future-terms",
+    "href": "TODO.html#completed-setup-reference-for-future-terms",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory"
+  },
+  {
+    "objectID": "TODO.html#course-setup-canvasinfrastructure",
+    "href": "TODO.html#course-setup-canvasinfrastructure",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Schedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)"
+  },
+  {
+    "objectID": "TODO.html#assessments",
+    "href": "TODO.html#assessments",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Create labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic"
+  },
+  {
+    "objectID": "TODO.html#technical-infrastructure",
+    "href": "TODO.html#technical-infrastructure",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Set up testing framework within marimo\nSet up autograder for PL programming assignments"
+  },
+  {
+    "objectID": "posts/00_welcome/index.html",
+    "href": "posts/00_welcome/index.html",
+    "title": "Welcome to DSCI 221!",
+    "section": "",
+    "text": "Welcome to DSCI 221: Data Structures and Algorithms for Data Science!\nIn this course, we’ll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what’s the cheapest flight to Tokyo?), you’ll develop the algorithmic thinking that separates good programmers from great ones.\nGetting started:\n\nRead the syllabus for course policies and requirements\nCheck the schedule on the home page to see what’s coming up\nCome to class ready to think about puzzles!\n\nSee you in class!"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "index.html#weekly-announcement",
+    "href": "index.html#weekly-announcement",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "Weekly announcement",
+    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      Due Fri\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\nHW3",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "labs/02_create-website.html",
+    "href": "labs/02_create-website.html",
+    "title": " Lab: Create your own website!",
+    "section": "",
+    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
+  },
+  {
+    "objectID": "labs/02_create-website.html#basic-structure-of-quarto-document",
+    "href": "labs/02_create-website.html#basic-structure-of-quarto-document",
+    "title": " Lab: Create your own website!",
+    "section": "",
+    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
+  },
+  {
+    "objectID": "labs/02_create-website.html#steps",
+    "href": "labs/02_create-website.html#steps",
+    "title": " Lab: Create your own website!",
+    "section": " Steps",
+    "text": "Steps\n\nOpen your workspace: NA.\nCreate index.qmd.\nClick the “Render” button on top.\nDownload the output directory _site.\nOpen Netlify Drop: app.netlify.com/drop.\nDrag and drop the downloaded _site onto Netlify Drop.\nPost the link to your website in the comments below."
+  },
+  {
+    "objectID": "labs/02_create-website.html#resources",
+    "href": "labs/02_create-website.html#resources",
+    "title": " Lab: Create your own website!",
+    "section": " Resources",
+    "text": "Resources\n\nDaring Fireball: Markdown\nInteractive Commonmark Markdown tutorial\nQuarto documentation\nGet started with Quarto Workshop including the material and this video:"
+  },
+  {
+    "objectID": "LICENSE.html",
+    "href": "LICENSE.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "Attribution-ShareAlike 4.0 International\n=======================================================================\nCreative Commons Corporation (“Creative Commons”) is not a law firm and does not provide legal services or legal advice. Distribution of Creative Commons public licenses does not create a lawyer-client or other relationship. Creative Commons makes its licenses and related information available on an “as-is” basis. Creative Commons gives no warranties regarding its licenses, any material licensed under their terms and conditions, or any related information. Creative Commons disclaims all liability for damages resulting from their use to the fullest extent possible.\nUsing Creative Commons Public Licenses\nCreative Commons public licenses provide a standard set of terms and conditions that creators and other rights holders may use to share original works of authorship and other material subject to copyright and certain other rights specified in the public license below. The following considerations are for informational purposes only, are not exhaustive, and do not form part of our licenses.\n Considerations for licensors: Our public licenses are\n intended for use by those authorized to give the public\n permission to use material in ways otherwise restricted by\n copyright and certain other rights. Our licenses are\n irrevocable. Licensors should read and understand the terms\n and conditions of the license they choose before applying it.\n Licensors should also secure all rights necessary before\n applying our licenses so that the public can reuse the\n material as expected. Licensors should clearly mark any\n material not subject to the license. This includes other CC-\n licensed material, or material used under an exception or\n limitation to copyright. More considerations for licensors:\nwiki.creativecommons.org/Considerations_for_licensors\n\n Considerations for the public: By using one of our public\n licenses, a licensor grants the public permission to use the\n licensed material under specified terms and conditions. If\n the licensor's permission is not necessary for any reason--for\n example, because of any applicable exception or limitation to\n copyright--then that use is not regulated by the license. Our\n licenses grant only permissions under copyright and certain\n other rights that a licensor has authority to grant. Use of\n the licensed material may still be restricted for other\n reasons, including because others have copyright or other\n rights in the material. A licensor may make special requests,\n such as asking that all changes be marked or described.\n Although not required by our licenses, you are encouraged to\n respect those requests where reasonable. More_considerations\n for the public:\nwiki.creativecommons.org/Considerations_for_licensees\n=======================================================================\nCreative Commons Attribution-ShareAlike 4.0 International Public License\nBy exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution-ShareAlike 4.0 International Public License (“Public License”). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.\nSection 1 – Definitions.\n\nAdapted Material means material subject to Copyright and Similar Rights that is derived from or based upon the Licensed Material and in which the Licensed Material is translated, altered, arranged, transformed, or otherwise modified in a manner requiring permission under the Copyright and Similar Rights held by the Licensor. For purposes of this Public License, where the Licensed Material is a musical work, performance, or sound recording, Adapted Material is always produced where the Licensed Material is synched in timed relation with a moving image.\nAdapter’s License means the license You apply to Your Copyright and Similar Rights in Your contributions to Adapted Material in accordance with the terms and conditions of this Public License.\nBY-SA Compatible License means a license listed at creativecommons.org/compatiblelicenses, approved by Creative Commons as essentially the equivalent of this Public License.\nCopyright and Similar Rights means copyright and/or similar rights closely related to copyright including, without limitation, performance, broadcast, sound recording, and Sui Generis Database Rights, without regard to how the rights are labeled or categorized. For purposes of this Public License, the rights specified in Section 2(b)(1)-(2) are not Copyright and Similar Rights.\nEffective Technological Measures means those measures that, in the absence of proper authority, may not be circumvented under laws fulfilling obligations under Article 11 of the WIPO Copyright Treaty adopted on December 20, 1996, and/or similar international agreements.\nExceptions and Limitations means fair use, fair dealing, and/or any other exception or limitation to Copyright and Similar Rights that applies to Your use of the Licensed Material.\nLicense Elements means the license attributes listed in the name of a Creative Commons Public License. The License Elements of this Public License are Attribution and ShareAlike.\nLicensed Material means the artistic or literary work, database, or other material to which the Licensor applied this Public License.\nLicensed Rights means the rights granted to You subject to the terms and conditions of this Public License, which are limited to all Copyright and Similar Rights that apply to Your use of the Licensed Material and that the Licensor has authority to license.\nLicensor means the individual(s) or entity(ies) granting rights under this Public License.\nShare means to provide material to the public by any means or process that requires permission under the Licensed Rights, such as reproduction, public display, public performance, distribution, dissemination, communication, or importation, and to make material available to the public including in ways that members of the public may access the material from a place and at a time individually chosen by them.\nSui Generis Database Rights means rights other than copyright resulting from Directive 96/9/EC of the European Parliament and of the Council of 11 March 1996 on the legal protection of databases, as amended and/or succeeded, as well as other essentially equivalent rights anywhere in the world.\nYou means the individual or entity exercising the Licensed Rights under this Public License. Your has a corresponding meaning.\n\nSection 2 – Scope.\n\nLicense grant.\n\nSubject to the terms and conditions of this Public License, the Licensor hereby grants You a worldwide, royalty-free, non-sublicensable, non-exclusive, irrevocable license to exercise the Licensed Rights in the Licensed Material to:\n\nreproduce and Share the Licensed Material, in whole or in part; and\nproduce, reproduce, and Share Adapted Material.\n\nExceptions and Limitations. For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this Public License does not apply, and You do not need to comply with its terms and conditions.\nTerm. The term of this Public License is specified in Section 6(a).\nMedia and formats; technical modifications allowed. The Licensor authorizes You to exercise the Licensed Rights in all media and formats whether now known or hereafter created, and to make technical modifications necessary to do so. The Licensor waives and/or agrees not to assert any right or authority to forbid You from making technical modifications necessary to exercise the Licensed Rights, including technical modifications necessary to circumvent Effective Technological Measures. For purposes of this Public License, simply making modifications authorized by this Section 2(a)\n\nnever produces Adapted Material.\n\nDownstream recipients.\n\nOffer from the Licensor – Licensed Material. Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.\nAdditional offer from the Licensor – Adapted Material. Every recipient of Adapted Material from You automatically receives an offer from the Licensor to exercise the Licensed Rights in the Adapted Material under the conditions of the Adapter’s License You apply.\nNo downstream restrictions. You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.\n\nNo endorsement. Nothing in this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided in Section 3(a)(1)(A)(i).\n\nOther rights.\n\nMoral rights, such as the right of integrity, are not licensed under this Public License, nor are publicity, privacy, and/or other similar personality rights; however, to the extent possible, the Licensor waives and/or agrees not to assert any such rights held by the Licensor to the limited extent necessary to allow You to exercise the Licensed Rights, but not otherwise.\nPatent and trademark rights are not licensed under this Public License.\nTo the extent possible, the Licensor waives any right to collect royalties from You for the exercise of the Licensed Rights, whether directly or through a collecting society under any voluntary or waivable statutory or compulsory licensing scheme. In all other cases the Licensor expressly reserves any right to collect such royalties.\n\n\nSection 3 – License Conditions.\nYour exercise of the Licensed Rights is expressly made subject to the following conditions.\n\nAttribution.\n\nIf You Share the Licensed Material (including in modified form), You must:\n\nretain the following if it is supplied by the Licensor with the Licensed Material:\n\nidentification of the creator(s) of the Licensed Material and any others designated to receive attribution, in any reasonable manner requested by the Licensor (including by pseudonym if designated);\na copyright notice;\na notice that refers to this Public License;\na notice that refers to the disclaimer of warranties;\na URI or hyperlink to the Licensed Material to the extent reasonably practicable;\n\nindicate if You modified the Licensed Material and retain an indication of any previous modifications; and\nindicate the Licensed Material is licensed under this Public License, and include the text of, or the URI or hyperlink to, this Public License.\n\nYou may satisfy the conditions in Section 3(a)(1) in any reasonable manner based on the medium, means, and context in which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI or hyperlink to a resource that includes the required information.\nIf requested by the Licensor, You must remove any of the information required by Section 3(a)(1)(A) to the extent reasonably practicable.\n\nShareAlike.\nIn addition to the conditions in Section 3(a), if You Share Adapted Material You produce, the following conditions also apply.\n\nThe Adapter’s License You apply must be a Creative Commons license with the same License Elements, this version or later, or a BY-SA Compatible License.\nYou must include the text of, or the URI or hyperlink to, the Adapter’s License You apply. You may satisfy this condition in any reasonable manner based on the medium, means, and context in which You Share Adapted Material.\nYou may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, Adapted Material that restrict exercise of the rights granted under the Adapter’s License You apply.\n\n\nSection 4 – Sui Generis Database Rights.\nWhere the Licensed Rights include Sui Generis Database Rights that apply to Your use of the Licensed Material:\n\nfor the avoidance of doubt, Section 2(a)(1) grants You the right to extract, reuse, reproduce, and Share all or a substantial portion of the contents of the database;\nif You include all or a substantial portion of the database contents in a database in which You have Sui Generis Database Rights, then the database in which You have Sui Generis Database Rights (but not its individual contents) is Adapted Material,\nincluding for purposes of Section 3(b); and\nYou must comply with the conditions in Section 3(a) if You Share all or a substantial portion of the contents of the database.\n\nFor the avoidance of doubt, this Section 4 supplements and does not replace Your obligations under this Public License where the Licensed Rights include other Copyright and Similar Rights.\nSection 5 – Disclaimer of Warranties and Limitation of Liability.\n\nUNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.\nTO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.\nThe disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.\n\nSection 6 – Term and Termination.\n\nThis Public License applies for the term of the Copyright and Similar Rights licensed here. However, if You fail to comply with this Public License, then Your rights under this Public License terminate automatically.\nWhere Your right to use the Licensed Material has terminated under Section 6(a), it reinstates:\n\nautomatically as of the date the violation is cured, provided it is cured within 30 days of Your discovery of the violation; or\nupon express reinstatement by the Licensor.\n\nFor the avoidance of doubt, this Section 6(b) does not affect any right the Licensor may have to seek remedies for Your violations of this Public License.\nFor the avoidance of doubt, the Licensor may also offer the Licensed Material under separate terms or conditions or stop distributing the Licensed Material at any time; however, doing so will not terminate this Public License.\nSections 1, 5, 6, 7, and 8 survive termination of this Public License.\n\nSection 7 – Other Terms and Conditions.\n\nThe Licensor shall not be bound by any additional or different terms or conditions communicated by You unless expressly agreed.\nAny arrangements, understandings, or agreements regarding the Licensed Material not stated herein are separate from and independent of the terms and conditions of this Public License.\n\nSection 8 – Interpretation.\n\nFor the avoidance of doubt, this Public License does not, and shall not be interpreted to, reduce, limit, restrict, or impose conditions on any use of the Licensed Material that could lawfully be made without permission under this Public License.\nTo the extent possible, if any provision of this Public License is deemed unenforceable, it shall be automatically reformed to the minimum extent necessary to make it enforceable. If the provision cannot be reformed, it shall be severed from this Public License without affecting the enforceability of the remaining terms and conditions.\nNo term or condition of this Public License will be waived and no failure to comply consented to unless expressly agreed to by the Licensor.\nNothing in this Public License constitutes or may be interpreted as a limitation upon, or waiver of, any privileges and immunities that apply to the Licensor or You, including from the legal processes of any jurisdiction or authority.\n\n=======================================================================\nCreative Commons is not a party to its public licenses. Notwithstanding, Creative Commons may elect to apply one of its public licenses to material it publishes and in those instances will be considered the “Licensor.” The text of the Creative Commons public licenses is dedicated to the public domain under the CC0 Public Domain Dedication. Except for the limited purpose of indicating that material is shared under a Creative Commons public license or as otherwise permitted by the Creative Commons policies published at creativecommons.org/policies, Creative Commons does not authorize the use of the trademark “Creative Commons” or any other trademark or logo of Creative Commons without its prior written consent including, without limitation, in connection with any unauthorized modifications to any of its public licenses or any other arrangements, understandings, or agreements concerning use of licensed material. For the avoidance of doubt, this paragraph does not form part of the public licenses.\nCreative Commons may be contacted at creativecommons.org."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "about.html#about",
+    "href": "about.html#about",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#announcements",
+    "href": "slides/02_mon_hierarchy.html#announcements",
+    "title": "The Hierarchy of Speed",
+    "section": "Announcements",
+    "text": "Announcements\n\nLabs begin this week!\n\nMonday 1-3pm or Tuesday 4-6pm"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#example-1",
+    "href": "slides/02_mon_hierarchy.html#example-1",
+    "title": "The Hierarchy of Speed",
+    "section": "Example 1",
+    "text": "Example 1\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n3\n7\n2\n9\n1\n8\n4\n6\n5\n2\n7\n3\n\n\n\n\nPython questions?\nWhat’s the worst-case running time?\n\n\nOne pass through the array. \\(\\Theta(n)\\), tight.\n“We’ll see this again later with pandas.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#example-2",
+    "href": "slides/02_mon_hierarchy.html#example-2",
+    "title": "The Hierarchy of Speed",
+    "section": "Example 2",
+    "text": "Example 2\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 17th element counted?\nWhat are the values of i and j for the 32nd element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet them trace: i=2, j=4 for 17th. i=5, j=1 for 32nd.\n“Predict for n = 8?” (64)\nDouble n → QUADRUPLE the work. \\(\\Theta(n^2)\\), tight."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#example-3",
+    "href": "slides/02_mon_hierarchy.html#example-3",
+    "title": "The Hierarchy of Speed",
+    "section": "Example 3",
+    "text": "Example 3\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 4th element counted?\nWhat are the values of i and j for the 12th element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\ni=2: j=0,1 (2 elements). i=3: j=0,1,2 (3 elements). So 4th is i=3, j=0.\n\\(0 + 1 + 2 + \\ldots + (n-1) = n(n-1)/2\\)\nStill \\(\\Theta(n^2)\\), tight! The triangle is half the square."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-two-pillars",
+    "href": "slides/02_mon_hierarchy.html#the-two-pillars",
+    "title": "The Hierarchy of Speed",
+    "section": "The Two Pillars",
+    "text": "The Two Pillars\n\nCorrectness — Does it work?\nEfficiency — How fast?\n\n\n“Last week: efficiency. This week: we add correctness.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-analysis-recipe",
+    "href": "slides/02_mon_hierarchy.html#the-analysis-recipe",
+    "title": "The Hierarchy of Speed",
+    "section": "The Analysis Recipe",
+    "text": "The Analysis Recipe\n\nEstablish the case — usually worst case\nAnalyze the function — count operations for that case\nState the bound:\n\n\\(\\Theta\\) (or “tight \\(O\\)”) if you know it’s exact\n\\(O\\) if you’re only claiming an upper bound\n\\(\\Omega\\) if you’re only claiming a lower bound\n\n\n\n“When we say ‘binary search is \\(O(\\log n)\\)’ we mean it’s tight — \\(\\Theta(\\log n)\\). We’re not hedging.”\n“First: which case? Then: what’s the function? Then: is it tight or just a bound?”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#big-o-is-a-set",
+    "href": "slides/02_mon_hierarchy.html#big-o-is-a-set",
+    "title": "The Hierarchy of Speed",
+    "section": "Big-\\(O\\) is a Set",
+    "text": "Big-\\(O\\) is a Set\n\\(O(g(n))\\) is the set of all functions \\(f(n)\\) satisfying the definition.\n\\[O(n) = \\{f(n) : \\exists c &gt; 0, n_0 \\geq 0 \\text{ such that } f(n) \\leq c \\cdot n \\text{ for all } n \\geq n_0\\}\\]\n\n“From discrete math: Big-O defines a SET of functions.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-ladder",
+    "href": "slides/02_mon_hierarchy.html#the-ladder",
+    "title": "The Hierarchy of Speed",
+    "section": "The Ladder",
+    "text": "The Ladder\n\\[O(1) \\subset O(\\log n) \\subset O(n) \\subset O(n \\log n) \\subset O(n^2) \\subset O(2^n)\\]\nEach class contains all the ones to its left.\n\n“Every \\(O(1)\\) function is also \\(O(n)\\), also \\(O(n^2)\\), etc.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
+    "href": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
+    "title": "The Hierarchy of Speed",
+    "section": "A Common Abuse of Notation",
+    "text": "A Common Abuse of Notation\nWe write: \\(\\quad 4n + 2 = O(n)\\)\nWe mean: \\(\\quad 4n + 2 \\in O(n)\\)\n\n“You’ll see this everywhere. Just remember: we’re really talking about set membership.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#true-or-false",
+    "href": "slides/02_mon_hierarchy.html#true-or-false",
+    "title": "The Hierarchy of Speed",
+    "section": "True or False?",
+    "text": "True or False?\n\n\\(3n + 2 \\in O(n)\\)\n\\(3n + 2 \\in O(n^2)\\)\n\\(n^2 \\in O(n)\\)\n\\(5 \\in O(1)\\)\n\\(5 \\in O(n)\\)\n\n\nT, T, F, T, T\n“If \\(f \\in O(g)\\) and \\(O(g) \\subset O(h)\\), then \\(f \\in O(h)\\).”\n“Let’s see what these mean at scale.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#what-big-o-actually-tells-us",
+    "href": "slides/02_mon_hierarchy.html#what-big-o-actually-tells-us",
+    "title": "The Hierarchy of Speed",
+    "section": "What Big-\\(O\\) Actually Tells Us",
+    "text": "What Big-\\(O\\) Actually Tells Us\nConsider \\(T(n) = 3n^2 + 5n + 7\\). What happens when \\(n\\) doubles?\n\n\n\n\n\n\n\nThe ratio approaches 4. Always. For ANY quadratic.\n“The constant 3, the +5n, the +7 — none of them matter. Doubling n → quadrupling T(n). That’s what \\(O(n^2)\\) means.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-doubling-test",
+    "href": "slides/02_mon_hierarchy.html#the-doubling-test",
+    "title": "The Hierarchy of Speed",
+    "section": "The Doubling Test",
+    "text": "The Doubling Test\n\n\n\nClass\nWhen \\(n\\) doubles, time…\n\n\n\n\n\\(O(1)\\)\nstays the same\n\n\n\\(O(\\log n)\\)\nincreases by a constant\n\n\n\\(O(n)\\)\ndoubles\n\n\n\\(O(n \\log n)\\)\nslightly more than doubles\n\n\n\\(O(n^2)\\)\nquadruples\n\n\n\\(O(2^n)\\)\nsquares (!!)\n\n\n\n\n“This is what Big-O tells us: the SHAPE of growth, not the exact numbers.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#o1-constant",
+    "href": "slides/02_mon_hierarchy.html#o1-constant",
+    "title": "The Hierarchy of Speed",
+    "section": "\\(O(1)\\): Constant",
+    "text": "\\(O(1)\\): Constant\narr[0]\nd[key]\nstack.pop()\n“No matter how big the input, same time.”\n\nDictionary lookup, array access, stack operations."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#olog-n-logarithmic",
+    "href": "slides/02_mon_hierarchy.html#olog-n-logarithmic",
+    "title": "The Hierarchy of Speed",
+    "section": "\\(O(\\log n)\\): Logarithmic",
+    "text": "\\(O(\\log n)\\): Logarithmic\ndef binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\n\n“Halving at each step. \\(\\log_2(1 \\text{ billion}) \\approx 30\\).”\n“Worst case: target not in array. We halve until the range is empty → \\(\\Theta(\\log n)\\).”\nWe’ll prove this correct on Wednesday."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#on-linear",
+    "href": "slides/02_mon_hierarchy.html#on-linear",
+    "title": "The Hierarchy of Speed",
+    "section": "\\(O(n)\\): Linear",
+    "text": "\\(O(n)\\): Linear\ndef find_max(arr):\n    max_val = arr[0]\n    for x in arr:\n        if x &gt; max_val:\n            max_val = x\n    return max_val\n\n“Must look at every element once.”\n“Worst case = every case: we always scan the whole array. \\(\\Theta(n)\\), tight.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#on-log-n-linearithmic",
+    "href": "slides/02_mon_hierarchy.html#on-log-n-linearithmic",
+    "title": "The Hierarchy of Speed",
+    "section": "\\(O(n \\log n)\\): Linearithmic",
+    "text": "\\(O(n \\log n)\\): Linearithmic\nsorted(arr)          # Python's built-in\ndf.sort_values()     # pandas\n\n“The sweet spot for sorting. We’ll see why in Week 6.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#on2-quadratic",
+    "href": "slides/02_mon_hierarchy.html#on2-quadratic",
+    "title": "The Hierarchy of Speed",
+    "section": "\\(O(n^2)\\): Quadratic",
+    "text": "\\(O(n^2)\\): Quadratic\ndef has_duplicate(arr):\n    for i in range(len(arr)):\n        for j in range(i + 1, len(arr)):\n            if arr[i] == arr[j]:\n                return True\n    return False\n\n“All pairs. Gets painful quickly.”\n“Worst case: no duplicates → check all \\(n(n-1)/2\\) pairs. \\(\\Theta(n^2)\\), tight.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#o2n-exponential",
+    "href": "slides/02_mon_hierarchy.html#o2n-exponential",
+    "title": "The Hierarchy of Speed",
+    "section": "\\(O(2^n)\\): Exponential",
+    "text": "\\(O(2^n)\\): Exponential\ndef all_subsets(arr):\n    if not arr:\n        return [[]]\n    rest = all_subsets(arr[1:])\n    return rest + [[arr[0]] + s for s in rest]\n\n\n\n\n\n\n\n“Doubles with each element.”\nn=50: more operations than atoms in a grain of sand. n=100: more operations than atoms in the observable universe.\nAt 1 billion ops/sec, n=100 would take \\(10^{21}\\) years — heat death of universe.\n“Often intractable. We’ll see NP-completeness in Week 12.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-setup",
+    "href": "slides/02_mon_hierarchy.html#the-setup",
+    "title": "The Hierarchy of Speed",
+    "section": "The Setup",
+    "text": "The Setup\n\n\n\n\n\n\n\n“Same problem, two approaches. Let’s race them.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-race",
+    "href": "slides/02_mon_hierarchy.html#the-race",
+    "title": "The Hierarchy of Speed",
+    "section": "The Race",
+    "text": "The Race\n\n\n\n\n\n\n\n“We’re testing worst case: no duplicates, so both algorithms scan everything.”\n“What do you notice?”\n\\(\\Theta(n^2)\\): 4× slower when n doubles — that’s quadratic! \\(\\Theta(n)\\): barely changes — that’s linear!\n“The set gives \\(O(1)\\) lookup — transforms \\(\\Theta(n^2)\\) into \\(\\Theta(n)\\).”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#what-happened",
+    "href": "slides/02_mon_hierarchy.html#what-happened",
+    "title": "The Hierarchy of Speed",
+    "section": "What Happened",
+    "text": "What Happened\nWorst case: \\(\\Theta(n^2) \\to \\Theta(n)\\)\nThe set provides \\(O(1)\\) lookup.\n\n“This is the power of data structures. We’ll learn how sets work in Week 5.”\n“Both bounds are tight. We’re not hedging — we analyzed the worst case and know exactly how it scales.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-crossover",
+    "href": "slides/02_mon_hierarchy.html#the-crossover",
+    "title": "The Hierarchy of Speed",
+    "section": "The Crossover",
+    "text": "The Crossover\n\n\n\n\n\n\n\n“At small n, constants dominate. The ‘\\(O(1)\\)’ algorithm with 10ms overhead is slower!”\nLive demo: add larger n values (10000, 100000, 1000000) to show the crossover where linear catches up and passes."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-lesson",
+    "href": "slides/02_mon_hierarchy.html#the-lesson",
+    "title": "The Hierarchy of Speed",
+    "section": "The Lesson",
+    "text": "The Lesson\nSmall data: write clear code.\nBig data: Big-O is destiny."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#galactic-pizza",
+    "href": "slides/02_mon_hierarchy.html#galactic-pizza",
+    "title": "The Hierarchy of Speed",
+    "section": "Galactic Pizza",
+    "text": "Galactic Pizza"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#two-ways-to-compute-the-mean",
+    "href": "slides/02_mon_hierarchy.html#two-ways-to-compute-the-mean",
+    "title": "The Hierarchy of Speed",
+    "section": "Two Ways to Compute the Mean",
+    "text": "Two Ways to Compute the Mean\n\n\n\n\n\n\n\n“Both are \\(O(n)\\). Why the difference?”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#same-big-o-different-speed",
+    "href": "slides/02_mon_hierarchy.html#same-big-o-different-speed",
+    "title": "The Hierarchy of Speed",
+    "section": "Same Big-\\(O\\), Different Speed",
+    "text": "Same Big-\\(O\\), Different Speed\nBoth touch every row: \\(O(n)\\)\nBut:\n\nVectorized: tiny constants (compiled C)\nPython loop: large constants (interpreter overhead)\n\n\n“Big-O tells you SCALING, not SPEED.”\n“In pandas: prefer vectorized operations. But that’s about constants, not complexity class.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#this-weeks-arc",
+    "href": "slides/02_mon_hierarchy.html#this-weeks-arc",
+    "title": "The Hierarchy of Speed",
+    "section": "This Week’s Arc",
+    "text": "This Week’s Arc\n\nMonday (today): The hierarchy — feel the difference\nTuesday video: Loop invariants — how to prove correctness\nWednesday: Binary search — the power of sorted data + proof"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-twenty-questions-puzzle",
+    "href": "slides/02_mon_hierarchy.html#the-twenty-questions-puzzle",
+    "title": "The Hierarchy of Speed",
+    "section": "The Twenty Questions Puzzle",
+    "text": "The Twenty Questions Puzzle\nI’m thinking of a number between 1 and 1,000,000.\nYou can ask yes/no questions.\nWhat’s your guaranteed winning strategy?\n\n“Think about this before Wednesday.”\n\\(\\log_2(1{,}000{,}000) \\approx 20\\)\n“Binary search IS the optimal strategy for this game.”\n“Is it your phone number? Is it your birthday? Is it 37?” — No. You need a strategy, not lucky guesses."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#questions",
+    "href": "slides/02_mon_hierarchy.html#questions",
+    "title": "The Hierarchy of Speed",
+    "section": "Questions?",
+    "text": "Questions?"
   },
   {
     "objectID": "slides/AA_XXX_hierarchy.html#patterns",
@@ -652,6 +1065,237 @@
     "title": "The Hierarchy of Speed",
     "section": "Questions?",
     "text": "Questions?\n\nThe right data structure\n+\nThe right algorithm\n=\nImpossible → Instant"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#announcements",
+    "href": "slides/02_wed_correctness.html#announcements",
+    "title": "Binary Search",
+    "section": "Announcements",
+    "text": "Announcements\n\nLab 1 this week: Lists and searching\nHW1 assigned Friday"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#timing-experiment",
+    "href": "slides/02_wed_correctness.html#timing-experiment",
+    "title": "Binary Search",
+    "section": "Timing Experiment",
+    "text": "Timing Experiment"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#linear-what-happens-when-n-doubles",
+    "href": "slides/02_wed_correctness.html#linear-what-happens-when-n-doubles",
+    "title": "Binary Search",
+    "section": "Linear: What Happens When \\(n\\) Doubles?",
+    "text": "Linear: What Happens When \\(n\\) Doubles?\n\n\n\n\n\n\n\n“Doubling n → doubling time. That’s \\(\\Theta(n)\\).”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#quadratic-what-happens-when-n-doubles",
+    "href": "slides/02_wed_correctness.html#quadratic-what-happens-when-n-doubles",
+    "title": "Binary Search",
+    "section": "Quadratic: What Happens When \\(n\\) Doubles?",
+    "text": "Quadratic: What Happens When \\(n\\) Doubles?\n\n\n\n\n\n\n\n“Doubling n → quadrupling time. That’s \\(\\Theta(n^2)\\).”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#logarithmic-what-happens-when-n-doubles",
+    "href": "slides/02_wed_correctness.html#logarithmic-what-happens-when-n-doubles",
+    "title": "Binary Search",
+    "section": "Logarithmic: What Happens When \\(n\\) Doubles?",
+    "text": "Logarithmic: What Happens When \\(n\\) Doubles?\n\n\n\n\n\n\n\n“Doubling n → ONE more iteration. That’s \\(\\Theta(\\log n)\\).”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-game",
+    "href": "slides/02_wed_correctness.html#the-game",
+    "title": "Binary Search",
+    "section": "The Game",
+    "text": "The Game\nI’m thinking of a number between 1 and 1,000,000.\nYou can ask yes/no questions.\nWhat’s your guaranteed winning strategy?\n\n“How many questions do you need?”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-optimal-strategy",
+    "href": "slides/02_wed_correctness.html#the-optimal-strategy",
+    "title": "Binary Search",
+    "section": "The Optimal Strategy",
+    "text": "The Optimal Strategy\n“Is it greater than 500,000?”\n\nYes: Search 500,001 to 1,000,000\nNo: Search 1 to 500,000\n\nEach question halves the remaining possibilities.\n\n“This is binary search! And it’s optimal—you can’t do better.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#how-many-questions",
+    "href": "slides/02_wed_correctness.html#how-many-questions",
+    "title": "Binary Search",
+    "section": "How Many Questions?",
+    "text": "How Many Questions?\nStart with \\(n = 1{,}000{,}000\\) possibilities.\nAfter each question: \\(n \\to n/2\\)\nQuestions needed: \\(\\log_2(1{,}000{,}000) \\approx 20\\)\n\n“20 questions for a million possibilities. That’s the power of halving.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-problem",
+    "href": "slides/02_wed_correctness.html#the-problem",
+    "title": "Binary Search",
+    "section": "The Problem",
+    "text": "The Problem\nGiven a sorted array and a target value, find the target’s index (or determine it’s not there).\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n\n\n\nFind target = 23.\n\n“The array must be sorted. That’s the precondition.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#linear-search-the-naive-approach",
+    "href": "slides/02_wed_correctness.html#linear-search-the-naive-approach",
+    "title": "Binary Search",
+    "section": "Linear Search: The Naive Approach",
+    "text": "Linear Search: The Naive Approach\ndef linear_search(arr, target):\n    for i in range(len(arr)):\n        if arr[i] == target:\n            return i\n    return -1\nWorst case: \\(\\Theta(n)\\)\n\n“We might have to check every element.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#binary-search-the-clever-approach",
+    "href": "slides/02_wed_correctness.html#binary-search-the-clever-approach",
+    "title": "Binary Search",
+    "section": "Binary Search: The Clever Approach",
+    "text": "Binary Search: The Clever Approach\ndef binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\nWorst case: \\(\\Theta(\\log n)\\)\n\n“Each iteration halves the search space.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#tracing-binary-search",
+    "href": "slides/02_wed_correctness.html#tracing-binary-search",
+    "title": "Binary Search",
+    "section": "Tracing Binary Search",
+    "text": "Tracing Binary Search\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n\n\n\nFind target = 23:\n\nlo=0, hi=9, mid=4 → arr[4]=16 &lt; 23 → lo=5\nlo=5, hi=9, mid=7 → arr[7]=56 &gt; 23 → hi=6\nlo=5, hi=6, mid=5 → arr[5]=23 ✓ → return 5\n\n\n“Three comparisons instead of six. At scale, the difference is dramatic.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-17-year-bug",
+    "href": "slides/02_wed_correctness.html#the-17-year-bug",
+    "title": "Binary Search",
+    "section": "The 17-Year Bug",
+    "text": "The 17-Year Bug\n\n“I’ve assigned binary search in courses at Bell Labs and IBM… and I’ve studied their solutions… In the history of this exercise, only about ten percent of professional programmers have gotten the program right.”\n— Jon Bentley, Programming Pearls (1986)\n\nThe first correct binary search was published in 1946.\nThe first bug-free implementation? 1962.\n\n“Even experts get it wrong. The loop invariant helps us get it right.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-invariant",
+    "href": "slides/02_wed_correctness.html#the-invariant",
+    "title": "Binary Search",
+    "section": "The Invariant",
+    "text": "The Invariant\nInvariant: At iteration \\(i\\), if target is in arr, then target is in arr[lo:hi+1].\nEquivalently: We haven’t excluded any index where target could be.\n\n“This is the ‘search’ pattern: the answer is still in the remaining range.”\n“The invariant holds at any point we might exit the loop.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#base-case-i-0",
+    "href": "slides/02_wed_correctness.html#base-case-i-0",
+    "title": "Binary Search",
+    "section": "Base Case (\\(i = 0\\))",
+    "text": "Base Case (\\(i = 0\\))\nBefore the first iteration: lo = 0, hi = len(arr) - 1\narr[lo:hi+1] = arr[0:len(arr)] = entire array\nIf target is in arr, it’s in arr[lo:hi+1]. ✓\n\n“We start with the full array. The invariant holds trivially.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#inductive-step-case-1-found-it",
+    "href": "slides/02_wed_correctness.html#inductive-step-case-1-found-it",
+    "title": "Binary Search",
+    "section": "Inductive Step: Case 1 (Found it)",
+    "text": "Inductive Step: Case 1 (Found it)\narr[mid] == target → we return mid.\nThe invariant holds at this exit point: target is indeed in arr[lo:hi+1].\nWe return the correct answer. ✓\n\n“Found it. The invariant tells us we’re returning a valid location.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#inductive-step-case-2",
+    "href": "slides/02_wed_correctness.html#inductive-step-case-2",
+    "title": "Binary Search",
+    "section": "Inductive Step: Case 2",
+    "text": "Inductive Step: Case 2\narr[mid] &lt; target\nSince arr is sorted: everything at indices \\(\\leq\\) mid is \\(\\leq\\) arr[mid] \\(&lt;\\) target.\nSo target can’t be at indices 0 through mid.\nSetting lo = mid + 1 excludes only indices where target can’t be. ✓\n\n“We’re safe to narrow the range because we’re only excluding impossible locations.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#inductive-step-case-3",
+    "href": "slides/02_wed_correctness.html#inductive-step-case-3",
+    "title": "Binary Search",
+    "section": "Inductive Step: Case 3",
+    "text": "Inductive Step: Case 3\narr[mid] &gt; target\nSince arr is sorted: everything at indices \\(\\geq\\) mid is \\(\\geq\\) arr[mid] \\(&gt;\\) target.\nSo target can’t be at indices mid through \\(n-1\\).\nSetting hi = mid - 1 excludes only indices where target can’t be. ✓\n\n“Same reasoning. We only narrow the range safely.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#termination-exit-via-lo-hi",
+    "href": "slides/02_wed_correctness.html#termination-exit-via-lo-hi",
+    "title": "Binary Search",
+    "section": "Termination (Exit via lo > hi)",
+    "text": "Termination (Exit via lo &gt; hi)\nThe loop exits when lo &gt; hi.\nAt this exit point, arr[lo:hi+1] is empty.\nThe invariant says: if target is in arr, it’s in this empty range.\nBut nothing is in an empty range.\nTherefore: target is not in arr. Return -1. ∎\n\n“The invariant holds at this exit point too — it just tells us target isn’t there.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-proof-in-one-slide",
+    "href": "slides/02_wed_correctness.html#the-proof-in-one-slide",
+    "title": "Binary Search",
+    "section": "The Proof in One Slide",
+    "text": "The Proof in One Slide\nTheorem: binary_search(arr, target) returns the index of target if present, else -1.\nProof: By induction on iteration count.\n\nInvariant: At iteration \\(i\\), if target ∈ arr, then target ∈ arr[lo:hi+1]\nBase case: \\(i=0\\), full array satisfies invariant ✓\nInductive step: Each case either exits correctly or safely shrinks range ✓\nTermination: At exit, invariant \\(\\Rightarrow\\) correct answer ∎"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#common-mistakes",
+    "href": "slides/02_wed_correctness.html#common-mistakes",
+    "title": "Binary Search",
+    "section": "Common Mistakes",
+    "text": "Common Mistakes\n# Bug 1: Wrong comparison\nwhile lo &lt; hi:  # Should be lo &lt;= hi\n    ...\n\n# Bug 2: Wrong update\nlo = mid        # Should be mid + 1\nhi = mid        # Should be mid - 1\n\n# Bug 3: Integer overflow (in C/Java)\nmid = (lo + hi) / 2  # Can overflow!\n# Fix: mid = lo + (hi - lo) / 2\n\n“Bug 1: misses the case where lo == hi. Bug 2: can cause infinite loop. Bug 3: famous Java bug, discovered in 2006 in Arrays.binarySearch!”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-java-bug-2006",
+    "href": "slides/02_wed_correctness.html#the-java-bug-2006",
+    "title": "Binary Search",
+    "section": "The Java Bug (2006)",
+    "text": "The Java Bug (2006)\n// This was in java.util.Arrays for 9 years!\nint mid = (low + high) / 2;  // OVERFLOW BUG\nWhen low + high &gt; Integer.MAX_VALUE, this overflows.\nFix:\nint mid = low + (high - low) / 2;\n\n“Joshua Bloch, who wrote the code, wrote about this bug. Even Google engineers get binary search wrong.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-invariant-saves-you",
+    "href": "slides/02_wed_correctness.html#the-invariant-saves-you",
+    "title": "Binary Search",
+    "section": "The Invariant Saves You",
+    "text": "The Invariant Saves You\nWhen you’re unsure about an edge case, ask:\n\n“Does this maintain the invariant?”\n\n\nlo = mid + 1: Does this exclude only impossible locations? Yes.\nhi = mid - 1: Does this exclude only impossible locations? Yes.\nlo &lt;= hi: When does the search space become empty? When lo &gt; hi.\n\n\n“The invariant is your compass. When lost, check the invariant.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#worst-case-running-time",
+    "href": "slides/02_wed_correctness.html#worst-case-running-time",
+    "title": "Binary Search",
+    "section": "Worst-Case Running Time",
+    "text": "Worst-Case Running Time\nEach iteration:\n\nConstant work (comparisons, arithmetic)\nRange shrinks by half: \\((hi - lo + 1) \\to \\lfloor(hi - lo + 1)/2\\rfloor\\)\n\nHow many halvings until range is empty?\n\\(\\log_2(n)\\)\nWorst case: \\(\\Theta(\\log n)\\)\n\n“The halving is the key. That’s what gives us the logarithm.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-scale-comparison",
+    "href": "slides/02_wed_correctness.html#the-scale-comparison",
+    "title": "Binary Search",
+    "section": "The Scale Comparison",
+    "text": "The Scale Comparison\n\n\n\n\\(n\\)\nLinear Search\nBinary Search\n\n\n\n\n1,000\n1,000\n10\n\n\n1,000,000\n1,000,000\n20\n\n\n1,000,000,000\n1,000,000,000\n30\n\n\n\n\n“A billion elements, 30 comparisons. That’s the power of \\(O(\\log n)\\).”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#racing-them",
+    "href": "slides/02_wed_correctness.html#racing-them",
+    "title": "Binary Search",
+    "section": "Racing Them",
+    "text": "Racing Them"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-race",
+    "href": "slides/02_wed_correctness.html#the-race",
+    "title": "Binary Search",
+    "section": "The Race",
+    "text": "The Race\n\n\n\n\n\n\n\n“Linear grows with n. Binary barely budges. That’s \\(O(n)\\) vs \\(O(\\log n)\\).”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-precondition",
+    "href": "slides/02_wed_correctness.html#the-precondition",
+    "title": "Binary Search",
+    "section": "The Precondition",
+    "text": "The Precondition\nBinary search requires the array to be sorted.\nWhat if it’s not sorted?\n\n\n\n\n\n\n\n“Garbage in, garbage out. The invariant assumes sorted order.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#when-to-use-binary-search",
+    "href": "slides/02_wed_correctness.html#when-to-use-binary-search",
+    "title": "Binary Search",
+    "section": "When to Use Binary Search",
+    "text": "When to Use Binary Search\nUse binary search when:\n\nData is sorted (or can be sorted once, searched many times)\nRandom access is \\(O(1)\\) (arrays, not linked lists)\nYou need to find a specific value\n\nDon’t use when:\n\nData is unsorted and searched only once\nData structure doesn’t support random access\nYou need to find all occurrences\n\n\n“Sorting costs \\(O(n \\log n)\\). If you only search once, linear search wins.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#what-we-learned",
+    "href": "slides/02_wed_correctness.html#what-we-learned",
+    "title": "Binary Search",
+    "section": "What We Learned",
+    "text": "What We Learned\n\nBinary search finds a target in \\(\\Theta(\\log n)\\) time (vs \\(\\Theta(n)\\) for linear)\nThe invariant: “If target exists, it’s in arr[lo:hi+1]”\nThe proof: Init, Maintenance (3 cases), Termination\nThe bugs: Off-by-one errors, infinite loops, integer overflow\nThe precondition: Array must be sorted"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-pattern",
+    "href": "slides/02_wed_correctness.html#the-pattern",
+    "title": "Binary Search",
+    "section": "The Pattern",
+    "text": "The Pattern\nBinary search is a divide-and-conquer algorithm:\n\nDivide: Pick the middle\nConquer: Recurse on one half\nCombine: Nothing to combine (we found it or it’s not there)\n\nWe’ll see more divide-and-conquer in Week 6 (sorting)."
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#next-week",
+    "href": "slides/02_wed_correctness.html#next-week",
+    "title": "Binary Search",
+    "section": "Next Week",
+    "text": "Next Week\nWeek 3: Recursion\n\nThinking recursively\nRecurrence relations\nThe fractal coastline puzzle\n\n\n“Binary search can also be written recursively. We’ll explore that next week.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#questions",
+    "href": "slides/02_wed_correctness.html#questions",
+    "title": "Binary Search",
+    "section": "Questions?",
+    "text": "Questions?\n\nBinary search: \\(\\Theta(\\log n)\\)\nThe invariant makes it correct.\nThe halving makes it fast."
   },
   {
     "objectID": "syllabus.html",
