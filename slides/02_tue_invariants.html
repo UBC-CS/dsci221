@@ -222,9 +222,71 @@
 <li><strong>Efficiency</strong> — How fast? (Big-<span class="math inline">\(O\)</span>)</li>
 <li><strong>Correctness</strong> — Does it work?</li>
 </ol>
-<p>Today: a technique to <strong>prove</strong> correctness.</p>
+</section>
+<section id="what-big-o-actually-tells-us" class="slide level2">
+<h2>What Big-<span class="math inline">\(O\)</span> Actually Tells Us</h2>
+<p>Consider <span class="math inline">\(T(n) = 3n^2 + 5n + 7\)</span>. What happens when <span class="math inline">\(n\)</span> doubles?</p>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIFQobik6XG4gICAgcmV0dXJuIDMqbioqMiArIDUqbiArIDdcblxuZm9yIG4gaW4gWzEwMCwgMjAwLCA0MDAsIDgwMCwgMTYwMF06XG4gICAgcHJpbnQoZlwibj17bjo0fTogIFQobik9e1Qobik6PjEwLH0gICBUKDJuKS9UKG4pPXtUKDIqbikvVChuKTouMmZ9XCIpIn0=
+</script>
+</div>
 <aside class="notes">
-<p>“Efficiency is about scaling. Correctness is about trust. Today: how do we PROVE an algorithm works?”</p>
+<p>The ratio approaches 4. Always. For ANY quadratic.</p>
+<p>“The constant 3, the +5n, the +7 — none of them matter. Doubling n → quadrupling T(n). That’s what <span class="math inline">\(O(n^2)\)</span> means.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-doubling-test" class="slide level2">
+<h2>The Doubling Test</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>When <span class="math inline">\(n\)</span> doubles, time…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(O(1)\)</span></td>
+<td>stays the same</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(O(\log n)\)</span></td>
+<td>increases by a constant</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(O(n)\)</span></td>
+<td>doubles</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(O(n \log n)\)</span></td>
+<td>slightly more than doubles</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(O(n^2)\)</span></td>
+<td>quadruples</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(O(2^n)\)</span></td>
+<td>squares (!!)</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>“This is what Big-O tells us: the SHAPE of growth, not the exact numbers.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -238,18 +300,349 @@
       }</style></aside>
 </section>
 <section>
-<section id="the-problem" class="title-slide slide level1 center">
-<h1>The Problem</h1>
+<section id="the-practical-classes" class="title-slide slide level1 center">
+<h1>The Practical Classes</h1>
+
+</section>
+<section id="o1-constant" class="slide level2">
+<h2><span class="math inline">\(O(1)\)</span>: Constant</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>arr[<span class="dv">0</span>]</span>
+<span id="cb1-2"><a></a>d[key]</span>
+<span id="cb1-3"><a></a>stack.pop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>“No matter how big the input, same time.”</p>
+<aside class="notes">
+<p>Dictionary lookup, array access, stack operations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="olog-n-logarithmic" class="slide level2">
+<h2><span class="math inline">\(O(\log n)\)</span>: Logarithmic</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> binary_search(arr, target):</span>
+<span id="cb2-2"><a></a>    lo, hi <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(arr) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb2-3"><a></a>    <span class="cf">while</span> lo <span class="op">&lt;=</span> hi:</span>
+<span id="cb2-4"><a></a>        mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb2-5"><a></a>        <span class="cf">if</span> arr[mid] <span class="op">==</span> target:</span>
+<span id="cb2-6"><a></a>            <span class="cf">return</span> mid</span>
+<span id="cb2-7"><a></a>        <span class="cf">elif</span> arr[mid] <span class="op">&lt;</span> target:</span>
+<span id="cb2-8"><a></a>            lo <span class="op">=</span> mid <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb2-9"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb2-10"><a></a>            hi <span class="op">=</span> mid <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb2-11"><a></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>“Halving at each step. <span class="math inline">\(\log_2(1 \text{ billion}) \approx 30\)</span>.”</p>
+<p>“Worst case: target not in array. We halve until the range is empty → <span class="math inline">\(\Theta(\log n)\)</span>.”</p>
+<p>We’ll prove this correct on Wednesday.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="on-linear" class="slide level2">
+<h2><span class="math inline">\(O(n)\)</span>: Linear</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> find_max(arr):</span>
+<span id="cb3-2"><a></a>    max_val <span class="op">=</span> arr[<span class="dv">0</span>]</span>
+<span id="cb3-3"><a></a>    <span class="cf">for</span> x <span class="kw">in</span> arr:</span>
+<span id="cb3-4"><a></a>        <span class="cf">if</span> x <span class="op">&gt;</span> max_val:</span>
+<span id="cb3-5"><a></a>            max_val <span class="op">=</span> x</span>
+<span id="cb3-6"><a></a>    <span class="cf">return</span> max_val</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>“Must look at every element once.”</p>
+<p>“Worst case = every case: we always scan the whole array. <span class="math inline">\(\Theta(n)\)</span>, tight.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="on-log-n-linearithmic" class="slide level2">
+<h2><span class="math inline">\(O(n \log n)\)</span>: Linearithmic</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="bu">sorted</span>(arr)          <span class="co"># Python's built-in</span></span>
+<span id="cb4-2"><a></a>df.sort_values()     <span class="co"># pandas</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>“The sweet spot for sorting. We’ll see why in Week 6.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="on2-quadratic" class="slide level2">
+<h2><span class="math inline">\(O(n^2)\)</span>: Quadratic</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> has_duplicate(arr):</span>
+<span id="cb5-2"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
+<span id="cb5-3"><a></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(i <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb5-4"><a></a>            <span class="cf">if</span> arr[i] <span class="op">==</span> arr[j]:</span>
+<span id="cb5-5"><a></a>                <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb5-6"><a></a>    <span class="cf">return</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div id="f35b2ced" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="02_tue_invariants_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>why not j in range(n)? “All pairs. Gets painful quickly.”</p>
+<p>“Worst case: no duplicates → check all <span class="math inline">\(n(n-1)/2\)</span> pairs. <span class="math inline">\(\Theta(n^2)\)</span>, tight.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="o2n-exponential" class="slide level2">
+<h2><span class="math inline">\(O(2^n)\)</span>: Exponential</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> all_subsets(arr):</span>
+<span id="cb6-2"><a></a>    <span class="cf">if</span> <span class="kw">not</span> arr:</span>
+<span id="cb6-3"><a></a>        <span class="cf">return</span> [[]]</span>
+<span id="cb6-4"><a></a>    rest <span class="op">=</span> all_subsets(arr[<span class="dv">1</span>:])</span>
+<span id="cb6-5"><a></a>    <span class="cf">return</span> rest <span class="op">+</span> [[arr[<span class="dv">0</span>]] <span class="op">+</span> s <span class="cf">for</span> s <span class="kw">in</span> rest]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZm9yIG4gaW4gWzEwLCAyMCwgMzAsIDQwLCA1MCwgMTAwXTpcbiAgICBwcmludChmXCJuPXtuOjN9OiAgMuKBvyA9IHsyKipuOix9XCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>“Doubles with each element.”</p>
+<p>n=50: more operations than atoms in a grain of sand. n=100: more operations than atoms in the observable universe.</p>
+<p>At 1 billion ops/sec, n=100 would take <span class="math inline">\(10^{21}\)</span> years — heat death of universe.</p>
+<p>“Often intractable. We’ll see NP-completeness in Week 12.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="racing-algorithms" class="title-slide slide level1 center">
+<h1>Racing Algorithms</h1>
+
+</section>
+<section id="the-setup" class="slide level2">
+<h2>The Setup</h2>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHRpbWVcblxuZGVmIGhhc19kdXBfcXVhZHJhdGljKGFycik6XG4gICAgZm9yIGkgaW4gcmFuZ2UobGVuKGFycikpOlxuICAgICAgICBmb3IgaiBpbiByYW5nZShpKzEsIGxlbihhcnIpKTpcbiAgICAgICAgICAgIGlmIGFycltpXSA9PSBhcnJbal06XG4gICAgICAgICAgICAgICAgcmV0dXJuIFRydWVcbiAgICByZXR1cm4gRmFsc2VcblxuZGVmIGhhc19kdXBfbGluZWFyKGFycik6XG4gICAgc2VlbiA9IHNldCgpXG4gICAgZm9yIHggaW4gYXJyOlxuICAgICAgICBpZiB4IGluIHNlZW46XG4gICAgICAgICAgICByZXR1cm4gVHJ1ZVxuICAgICAgICBzZWVuLmFkZCh4KVxuICAgIHJldHVybiBGYWxzZSJ9
+</script>
+</div>
+<aside class="notes">
+<p>“Same problem, two approaches. Let’s race them.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-race" class="slide level2">
+<h2>The Race</h2>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRpbWVfaXQoZnVuYywgYXJyKTpcbiAgICBzdGFydCA9IHRpbWUudGltZSgpXG4gICAgZnVuYyhhcnIpXG4gICAgcmV0dXJuIHRpbWUudGltZSgpIC0gc3RhcnRcblxucHJpbnQoXCJTaXplICAgICDOmChuwrIpICAgICAgIM6YKG4pXCIpXG5wcmludChcIi1cIiAqIDM1KVxuZm9yIG4gaW4gWzEwMDAsIDIwMDAsIDQwMDAsIDgwMDBdOlxuICAgIGFyciA9IGxpc3QocmFuZ2UobikpICAjIE5vIGR1cGxpY2F0ZXMgPSB3b3JzdCBjYXNlIGZvciBib3RoXG4gICAgdDEgPSB0aW1lX2l0KGhhc19kdXBfcXVhZHJhdGljLCBhcnIpXG4gICAgdDIgPSB0aW1lX2l0KGhhc19kdXBfbGluZWFyLCBhcnIpXG4gICAgcHJpbnQoZlwie246NX0gICB7dDE6LjRmfXMgICB7dDI6LjVmfXNcIikifQ==
+</script>
+</div>
+<aside class="notes">
+<p>“We’re testing worst case: no duplicates, so both algorithms scan everything.”</p>
+<p>“What do you notice?”</p>
+<p><span class="math inline">\(\Theta(n^2)\)</span>: 4× slower when n doubles — that’s quadratic! <span class="math inline">\(\Theta(n)\)</span>: barely changes — that’s linear!</p>
+<p>“The set gives <span class="math inline">\(O(1)\)</span> lookup — transforms <span class="math inline">\(\Theta(n^2)\)</span> into <span class="math inline">\(\Theta(n)\)</span>.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-happened" class="slide level2">
+<h2>What Happened</h2>
+<p>Worst case: <span class="math inline">\(\Theta(n^2) \to \Theta(n)\)</span></p>
+<p>The <strong>set</strong> provides <span class="math inline">\(O(1)\)</span> lookup.</p>
+<aside class="notes">
+<p>“This is the power of data structures. We’ll learn how sets work in Week 5.”</p>
+<p>“Both bounds are tight. We’re not hedging — we analyzed the worst case and know exactly how it scales.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="when-does-it-matter" class="title-slide slide level1 center">
+<h1>When Does It Matter?</h1>
+
+</section>
+<section id="the-crossover" class="slide level2">
+<h2>The Crossover</h2>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHNsb3dfY29uc3RhbnQobik6XG4gICAgdGltZS5zbGVlcCgwLjAxKSAgIyAxMG1zIHNldHVwXG4gICAgcmV0dXJuIDQyXG5cbmRlZiBmYXN0X2xpbmVhcihuKTpcbiAgICB0b3RhbCA9IDBcbiAgICBmb3IgaSBpbiByYW5nZShuKTpcbiAgICAgICAgdG90YWwgKz0gaVxuICAgIHJldHVybiB0b3RhbFxuXG5mb3IgbiBpbiBbMTAsIDEwMCwgMTAwMF06XG4gICAgdDEgPSB0aW1lX2l0KHNsb3dfY29uc3RhbnQsIG4pXG4gICAgdDIgPSB0aW1lX2l0KGZhc3RfbGluZWFyLCBuKVxuICAgIHByaW50KGZcIm49e246NH06ICBPKDEpPXt0MTouM2Z9cyAgIE8obik9e3QyOi41Zn1zXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>“At small n, constants dominate. The ‘<span class="math inline">\(O(1)\)</span>’ algorithm with 10ms overhead is slower!”</p>
+<p>Live demo: add larger n values (10000, 100000, 1000000) to show the crossover where linear catches up and passes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-lesson" class="slide level2">
+<h2>The Lesson</h2>
+<p>Small data: write clear code.</p>
+<p>Big data: <strong>Big-O is destiny.</strong></p>
+</section>
+<section id="galactic-pizza" class="slide level2">
+<h2>Galactic Pizza</h2>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHBhbmRhcyBhcyBwZFxuaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgdGltZVxuXG5uID0gNTAwXzAwMFxubnAucmFuZG9tLnNlZWQoNDIpXG5cbmRmID0gcGQuRGF0YUZyYW1lKHtcbiAgICAnZGVsaXZlcnlfdGltZSc6IG5wLnJhbmRvbS5leHBvbmVudGlhbChzY2FsZT0zMCwgc2l6ZT1uKSxcbiAgICAncGxhbmV0JzogbnAucmFuZG9tLmNob2ljZShbJ0VhcnRoJywgJ01hcnMnLCAnRXVyb3BhJywgJ1RpdGFuJ10sIG4pLFxufSlcblxucHJpbnQoZlwiUm93czoge2xlbihkZik6LH1cIilcbnByaW50KGRmLmhlYWQoOCkpIn0=
+</script>
+</div>
+</section>
+<section id="two-ways-to-compute-the-mean" class="slide level2">
+<h2>Two Ways to Compute the Mean</h2>
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGl0ZXJfbWVhbihkZiwgY29sKTpcbiAgICB0b3RhbCA9IDBcbiAgICBmb3IgaWR4LCByb3cgaW4gZGYuaXRlcnJvd3MoKTpcbiAgICAgICAgdG90YWwgKz0gcm93W2NvbF1cbiAgICByZXR1cm4gdG90YWwgLyBsZW4oZGYpXG5cbnN0YXJ0ID0gdGltZS50aW1lKClcbmF2ZzEgPSBpdGVyX21lYW4oZGYsICdkZWxpdmVyeV90aW1lJylcbnQxID0gdGltZS50aW1lKCkgLSBzdGFydFxuXG5zdGFydCA9IHRpbWUudGltZSgpXG5hdmcyID0gZGZbJ2RlbGl2ZXJ5X3RpbWUnXS5tZWFuKClcbnQyID0gdGltZS50aW1lKCkgLSBzdGFydFxuXG5wcmludChmXCJMb29wOiAgICAgICB7dDE6LjNmfSBzZWNcIilcbnByaW50KGZcIlZlY3Rvcml6ZWQ6IHt0MjouNWZ9IHNlY1wiKVxucHJpbnQoZlwiU3BlZWR1cDogICAge3QxL3QyOiwuMGZ9w5dcIikifQ==
+</script>
+</div>
+<aside class="notes">
+<p>“Both are <span class="math inline">\(O(n)\)</span>. Why the difference?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="same-big-o-different-speed" class="slide level2">
+<h2>Same Big-<span class="math inline">\(O\)</span>, Different Speed</h2>
+<p>Both touch every row: <span class="math inline">\(O(n)\)</span></p>
+<p>But:</p>
+<ul>
+<li><strong>Vectorized</strong>: tiny constants (compiled C)</li>
+<li><strong>Python loop</strong>: large constants (interpreter overhead)</li>
+</ul>
+<aside class="notes">
+<p>“Big-O tells you SCALING, not SPEED.”</p>
+<p>“In pandas: prefer vectorized operations. But that’s about constants, not complexity class.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="the-pillar-of-correctness" class="title-slide slide level1 center">
+<h1>The Pillar of Correctness</h1>
 
 </section>
 <section id="trusting-your-code" class="slide level2">
 <h2>Trusting Your Code</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> ________________(arr, a):</span>
-<span id="cb1-2"><a></a>    ret <span class="op">=</span> a</span>
-<span id="cb1-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb1-4"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
-<span id="cb1-5"><a></a>            ret <span class="op">=</span> i</span>
-<span id="cb1-6"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">def</span> ________________(arr, a):</span>
+<span id="cb7-2"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb7-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb7-4"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb7-5"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb7-6"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>What does this function do?</li>
 <li>Does it work?</li>
@@ -403,13 +796,13 @@
 </section>
 <section id="the-code" class="slide level2">
 <h2>The Code</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
-<span id="cb2-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
-<span id="cb2-3"><a></a>    ret <span class="op">=</span> a</span>
-<span id="cb2-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb2-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
-<span id="cb2-6"><a></a>            ret <span class="op">=</span> i</span>
-<span id="cb2-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
+<span id="cb8-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
+<span id="cb8-3"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb8-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb8-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb8-6"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb8-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -454,13 +847,13 @@
 </section>
 <section id="step-1-state-the-invariant" class="slide level2">
 <h2>Step 1: State the Invariant</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
-<span id="cb3-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
-<span id="cb3-3"><a></a>    ret <span class="op">=</span> a</span>
-<span id="cb3-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb3-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
-<span id="cb3-6"><a></a>            ret <span class="op">=</span> i</span>
-<span id="cb3-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
+<span id="cb9-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
+<span id="cb9-3"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb9-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb9-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb9-6"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb9-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -514,13 +907,13 @@
 </section>
 <section id="step-2-base-case-i-a1" class="slide level2">
 <h2>Step 2: Base Case (<span class="math inline">\(i = a+1\)</span>)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
-<span id="cb4-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
-<span id="cb4-3"><a></a>    ret <span class="op">=</span> a</span>
-<span id="cb4-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb4-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
-<span id="cb4-6"><a></a>            ret <span class="op">=</span> i</span>
-<span id="cb4-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
+<span id="cb10-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
+<span id="cb10-3"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb10-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb10-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb10-6"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb10-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>At the first iteration, <code>i = a+1</code> and <code>ret = a</code>.</p>
 <p>The invariant claims <code>ret</code> is the index of the min in <code>arr[a:a+1]</code>.</p>
 <p><code>arr[a:a+1]</code> contains only <code>arr[a]</code>, and <code>ret = a</code> is its index. ✓</p>
@@ -540,13 +933,13 @@
 </section>
 <section id="step-3-inductive-step" class="slide level2 smaller">
 <h2>Step 3: Inductive Step</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
-<span id="cb5-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
-<span id="cb5-3"><a></a>    ret <span class="op">=</span> a</span>
-<span id="cb5-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb5-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
-<span id="cb5-6"><a></a>            ret <span class="op">=</span> i</span>
-<span id="cb5-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
+<span id="cb11-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
+<span id="cb11-3"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb11-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb11-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb11-6"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb11-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -641,11 +1034,11 @@
 </section>
 <section id="the-code-1" class="slide level2">
 <h2>The Code</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> array_sum(arr):</span>
-<span id="cb6-2"><a></a>    total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb6-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
-<span id="cb6-4"><a></a>        total <span class="op">+=</span> arr[i]</span>
-<span id="cb6-5"><a></a>    <span class="cf">return</span> total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="kw">def</span> array_sum(arr):</span>
+<span id="cb12-2"><a></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb12-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
+<span id="cb12-4"><a></a>        total <span class="op">+=</span> arr[i]</span>
+<span id="cb12-5"><a></a>    <span class="cf">return</span> total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>What’s the invariant?</p>
 <aside class="notes">
 <p>“Pause the video and try to state the invariant before I reveal it.”</p>
@@ -708,10 +1101,10 @@
 </section>
 <section id="selection-sort" class="slide level2">
 <h2>Selection Sort</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">def</span> selection_sort(arr):</span>
-<span id="cb7-2"><a></a>    <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
-<span id="cb7-3"><a></a>        min_idx <span class="op">=</span> find_min(arr, a)</span>
-<span id="cb7-4"><a></a>        arr[a], arr[min_idx] <span class="op">=</span> arr[min_idx], arr[a]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="kw">def</span> selection_sort(arr):</span>
+<span id="cb13-2"><a></a>    <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
+<span id="cb13-3"><a></a>        min_idx <span class="op">=</span> find_min(arr, a)</span>
+<span id="cb13-4"><a></a>        arr[a], arr[min_idx] <span class="op">=</span> arr[min_idx], arr[a]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><p>This uses our <code>find_min</code> helper!</p></li>
 <li><p>Quick check: running time?</p></li>
@@ -799,7 +1192,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-lesson" class="slide level2">
+<section id="the-lesson-1" class="slide level2">
 <h2>The Lesson</h2>
 <p><strong>Decomposition</strong> is good <em>system</em> engineering.</p>
 <table class="caption-top">
@@ -1150,8 +1543,11 @@
 <p>Think: What’s true after processing <span class="math inline">\(i\)</span> elements?</p>
 
 
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
+</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W119
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl83ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzcgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">

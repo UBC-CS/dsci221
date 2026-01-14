@@ -22,7 +22,119 @@
     "href": "slides/02_tue_invariants.html#from-monday",
     "title": "Loop Invariants",
     "section": "From Monday",
-    "text": "From Monday\nWe now have two pillars:\n\nEfficiency — How fast? (Big-\\(O\\))\nCorrectness — Does it work?\n\nToday: a technique to prove correctness.\n\n“Efficiency is about scaling. Correctness is about trust. Today: how do we PROVE an algorithm works?”"
+    "text": "From Monday\nWe now have two pillars:\n\nEfficiency — How fast? (Big-\\(O\\))\nCorrectness — Does it work?"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#what-big-o-actually-tells-us",
+    "href": "slides/02_tue_invariants.html#what-big-o-actually-tells-us",
+    "title": "Loop Invariants",
+    "section": "What Big-\\(O\\) Actually Tells Us",
+    "text": "What Big-\\(O\\) Actually Tells Us\nConsider \\(T(n) = 3n^2 + 5n + 7\\). What happens when \\(n\\) doubles?\n\n\n\n\n\n\n\nThe ratio approaches 4. Always. For ANY quadratic.\n“The constant 3, the +5n, the +7 — none of them matter. Doubling n → quadrupling T(n). That’s what \\(O(n^2)\\) means.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-doubling-test",
+    "href": "slides/02_tue_invariants.html#the-doubling-test",
+    "title": "Loop Invariants",
+    "section": "The Doubling Test",
+    "text": "The Doubling Test\n\n\n\nClass\nWhen \\(n\\) doubles, time…\n\n\n\n\n\\(O(1)\\)\nstays the same\n\n\n\\(O(\\log n)\\)\nincreases by a constant\n\n\n\\(O(n)\\)\ndoubles\n\n\n\\(O(n \\log n)\\)\nslightly more than doubles\n\n\n\\(O(n^2)\\)\nquadruples\n\n\n\\(O(2^n)\\)\nsquares (!!)\n\n\n\n\n“This is what Big-O tells us: the SHAPE of growth, not the exact numbers.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#o1-constant",
+    "href": "slides/02_tue_invariants.html#o1-constant",
+    "title": "Loop Invariants",
+    "section": "\\(O(1)\\): Constant",
+    "text": "\\(O(1)\\): Constant\narr[0]\nd[key]\nstack.pop()\n“No matter how big the input, same time.”\n\nDictionary lookup, array access, stack operations."
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#olog-n-logarithmic",
+    "href": "slides/02_tue_invariants.html#olog-n-logarithmic",
+    "title": "Loop Invariants",
+    "section": "\\(O(\\log n)\\): Logarithmic",
+    "text": "\\(O(\\log n)\\): Logarithmic\ndef binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\n\n“Halving at each step. \\(\\log_2(1 \\text{ billion}) \\approx 30\\).”\n“Worst case: target not in array. We halve until the range is empty → \\(\\Theta(\\log n)\\).”\nWe’ll prove this correct on Wednesday."
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#on-linear",
+    "href": "slides/02_tue_invariants.html#on-linear",
+    "title": "Loop Invariants",
+    "section": "\\(O(n)\\): Linear",
+    "text": "\\(O(n)\\): Linear\ndef find_max(arr):\n    max_val = arr[0]\n    for x in arr:\n        if x &gt; max_val:\n            max_val = x\n    return max_val\n\n“Must look at every element once.”\n“Worst case = every case: we always scan the whole array. \\(\\Theta(n)\\), tight.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#on-log-n-linearithmic",
+    "href": "slides/02_tue_invariants.html#on-log-n-linearithmic",
+    "title": "Loop Invariants",
+    "section": "\\(O(n \\log n)\\): Linearithmic",
+    "text": "\\(O(n \\log n)\\): Linearithmic\nsorted(arr)          # Python's built-in\ndf.sort_values()     # pandas\n\n“The sweet spot for sorting. We’ll see why in Week 6.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#on2-quadratic",
+    "href": "slides/02_tue_invariants.html#on2-quadratic",
+    "title": "Loop Invariants",
+    "section": "\\(O(n^2)\\): Quadratic",
+    "text": "\\(O(n^2)\\): Quadratic\n\n\ndef has_duplicate(arr):\n    for i in range(len(arr)):\n        for j in range(i + 1, len(arr)):\n            if arr[i] == arr[j]:\n                return True\n    return False\n\n\n\n\n\n\n\n\n\n\n\n\nwhy not j in range(n)? “All pairs. Gets painful quickly.”\n“Worst case: no duplicates → check all \\(n(n-1)/2\\) pairs. \\(\\Theta(n^2)\\), tight.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#o2n-exponential",
+    "href": "slides/02_tue_invariants.html#o2n-exponential",
+    "title": "Loop Invariants",
+    "section": "\\(O(2^n)\\): Exponential",
+    "text": "\\(O(2^n)\\): Exponential\ndef all_subsets(arr):\n    if not arr:\n        return [[]]\n    rest = all_subsets(arr[1:])\n    return rest + [[arr[0]] + s for s in rest]\n\n\n\n\n\n\n\n“Doubles with each element.”\nn=50: more operations than atoms in a grain of sand. n=100: more operations than atoms in the observable universe.\nAt 1 billion ops/sec, n=100 would take \\(10^{21}\\) years — heat death of universe.\n“Often intractable. We’ll see NP-completeness in Week 12.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-setup",
+    "href": "slides/02_tue_invariants.html#the-setup",
+    "title": "Loop Invariants",
+    "section": "The Setup",
+    "text": "The Setup\n\n\n\n\n\n\n\n“Same problem, two approaches. Let’s race them.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-race",
+    "href": "slides/02_tue_invariants.html#the-race",
+    "title": "Loop Invariants",
+    "section": "The Race",
+    "text": "The Race\n\n\n\n\n\n\n\n“We’re testing worst case: no duplicates, so both algorithms scan everything.”\n“What do you notice?”\n\\(\\Theta(n^2)\\): 4× slower when n doubles — that’s quadratic! \\(\\Theta(n)\\): barely changes — that’s linear!\n“The set gives \\(O(1)\\) lookup — transforms \\(\\Theta(n^2)\\) into \\(\\Theta(n)\\).”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#what-happened",
+    "href": "slides/02_tue_invariants.html#what-happened",
+    "title": "Loop Invariants",
+    "section": "What Happened",
+    "text": "What Happened\nWorst case: \\(\\Theta(n^2) \\to \\Theta(n)\\)\nThe set provides \\(O(1)\\) lookup.\n\n“This is the power of data structures. We’ll learn how sets work in Week 5.”\n“Both bounds are tight. We’re not hedging — we analyzed the worst case and know exactly how it scales.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-crossover",
+    "href": "slides/02_tue_invariants.html#the-crossover",
+    "title": "Loop Invariants",
+    "section": "The Crossover",
+    "text": "The Crossover\n\n\n\n\n\n\n\n“At small n, constants dominate. The ‘\\(O(1)\\)’ algorithm with 10ms overhead is slower!”\nLive demo: add larger n values (10000, 100000, 1000000) to show the crossover where linear catches up and passes."
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-lesson",
+    "href": "slides/02_tue_invariants.html#the-lesson",
+    "title": "Loop Invariants",
+    "section": "The Lesson",
+    "text": "The Lesson\nSmall data: write clear code.\nBig data: Big-O is destiny."
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#galactic-pizza",
+    "href": "slides/02_tue_invariants.html#galactic-pizza",
+    "title": "Loop Invariants",
+    "section": "Galactic Pizza",
+    "text": "Galactic Pizza"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#two-ways-to-compute-the-mean",
+    "href": "slides/02_tue_invariants.html#two-ways-to-compute-the-mean",
+    "title": "Loop Invariants",
+    "section": "Two Ways to Compute the Mean",
+    "text": "Two Ways to Compute the Mean\n\n\n\n\n\n\n\n“Both are \\(O(n)\\). Why the difference?”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#same-big-o-different-speed",
+    "href": "slides/02_tue_invariants.html#same-big-o-different-speed",
+    "title": "Loop Invariants",
+    "section": "Same Big-\\(O\\), Different Speed",
+    "text": "Same Big-\\(O\\), Different Speed\nBoth touch every row: \\(O(n)\\)\nBut:\n\nVectorized: tiny constants (compiled C)\nPython loop: large constants (interpreter overhead)\n\n\n“Big-O tells you SCALING, not SPEED.”\n“In pandas: prefer vectorized operations. But that’s about constants, not complexity class.”"
   },
   {
     "objectID": "slides/02_tue_invariants.html#trusting-your-code",
@@ -151,8 +263,8 @@
     "text": "The Proof\n\nBase case: At \\(a = 0\\), arr[0:0] is empty. ✓ (Trivially sorted, trivially smallest.)\nInductive step: Assume invariant holds at start of iteration \\(a\\): arr[0:a] is sorted and contains the \\(a\\) smallest elements.\nDuring iteration \\(a\\):\n\nfind_min(arr, a) returns the index of the minimum in arr[a:] (by our earlier proof!)\nAfter the swap, arr[a] holds the \\((a+1)\\)-th smallest element\n\nAfter iteration \\(a\\): arr[0:a+1] is sorted and contains the \\(a+1\\) smallest elements. ✓\nTermination: Plug in \\(a = n\\) → arr[0:n] is sorted. ∎\n\n\n“See how we just used the find_min correctness? We didn’t re-prove it.”\n“This is the power of decomposition: prove once, use everywhere.”"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#the-lesson",
-    "href": "slides/02_tue_invariants.html#the-lesson",
+    "objectID": "slides/02_tue_invariants.html#the-lesson-1",
+    "href": "slides/02_tue_invariants.html#the-lesson-1",
     "title": "Loop Invariants",
     "section": "The Lesson",
     "text": "The Lesson\nDecomposition is good system engineering.\n\n\n\n\n\n\n\n\nSoftware\nProofs\nData Pipelines\n\n\n\n\nWrite small, tested functions\nProve small helper lemmas\nBuild validated transformations\n\n\nCompose into larger programs\nCompose into larger proofs\nChain into workflows\n\n\nReuse without re-implementing\nReuse without re-proving\nReuse without re-validating\n\n\n\n\n“When you write find_min as a separate function, you’re setting yourself up for cleaner code AND cleaner proofs.”\n“Same for data science: build a cleaning step you trust, a feature extraction step you trust, then compose them. You don’t re-check the cleaning every time you use it.”"
@@ -750,167 +862,6 @@
     "title": "The Hierarchy of Speed",
     "section": "True or False?",
     "text": "True or False?\n\n\\(3n + 2 \\in O(n)\\)\n\\(3n + 2 \\in O(n^2)\\)\n\\(n^2 \\in O(n)\\)\n\\(5 \\in O(1)\\)\n\\(5 \\in O(n)\\)\n\n\nT, T, F, T, T\n“If \\(f \\in O(g)\\) and \\(O(g) \\subset O(h)\\), then \\(f \\in O(h)\\).”\n“Let’s see what these mean at scale.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#what-big-o-actually-tells-us",
-    "href": "slides/02_mon_hierarchy.html#what-big-o-actually-tells-us",
-    "title": "The Hierarchy of Speed",
-    "section": "What Big-\\(O\\) Actually Tells Us",
-    "text": "What Big-\\(O\\) Actually Tells Us\nConsider \\(T(n) = 3n^2 + 5n + 7\\). What happens when \\(n\\) doubles?\n\n\n\n\n\n\n\nThe ratio approaches 4. Always. For ANY quadratic.\n“The constant 3, the +5n, the +7 — none of them matter. Doubling n → quadrupling T(n). That’s what \\(O(n^2)\\) means.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#the-doubling-test",
-    "href": "slides/02_mon_hierarchy.html#the-doubling-test",
-    "title": "The Hierarchy of Speed",
-    "section": "The Doubling Test",
-    "text": "The Doubling Test\n\n\n\nClass\nWhen \\(n\\) doubles, time…\n\n\n\n\n\\(O(1)\\)\nstays the same\n\n\n\\(O(\\log n)\\)\nincreases by a constant\n\n\n\\(O(n)\\)\ndoubles\n\n\n\\(O(n \\log n)\\)\nslightly more than doubles\n\n\n\\(O(n^2)\\)\nquadruples\n\n\n\\(O(2^n)\\)\nsquares (!!)\n\n\n\n\n“This is what Big-O tells us: the SHAPE of growth, not the exact numbers.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#o1-constant",
-    "href": "slides/02_mon_hierarchy.html#o1-constant",
-    "title": "The Hierarchy of Speed",
-    "section": "\\(O(1)\\): Constant",
-    "text": "\\(O(1)\\): Constant\narr[0]\nd[key]\nstack.pop()\n“No matter how big the input, same time.”\n\nDictionary lookup, array access, stack operations."
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#olog-n-logarithmic",
-    "href": "slides/02_mon_hierarchy.html#olog-n-logarithmic",
-    "title": "The Hierarchy of Speed",
-    "section": "\\(O(\\log n)\\): Logarithmic",
-    "text": "\\(O(\\log n)\\): Logarithmic\ndef binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\n\n“Halving at each step. \\(\\log_2(1 \\text{ billion}) \\approx 30\\).”\n“Worst case: target not in array. We halve until the range is empty → \\(\\Theta(\\log n)\\).”\nWe’ll prove this correct on Wednesday."
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#on-linear",
-    "href": "slides/02_mon_hierarchy.html#on-linear",
-    "title": "The Hierarchy of Speed",
-    "section": "\\(O(n)\\): Linear",
-    "text": "\\(O(n)\\): Linear\ndef find_max(arr):\n    max_val = arr[0]\n    for x in arr:\n        if x &gt; max_val:\n            max_val = x\n    return max_val\n\n“Must look at every element once.”\n“Worst case = every case: we always scan the whole array. \\(\\Theta(n)\\), tight.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#on-log-n-linearithmic",
-    "href": "slides/02_mon_hierarchy.html#on-log-n-linearithmic",
-    "title": "The Hierarchy of Speed",
-    "section": "\\(O(n \\log n)\\): Linearithmic",
-    "text": "\\(O(n \\log n)\\): Linearithmic\nsorted(arr)          # Python's built-in\ndf.sort_values()     # pandas\n\n“The sweet spot for sorting. We’ll see why in Week 6.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#on2-quadratic",
-    "href": "slides/02_mon_hierarchy.html#on2-quadratic",
-    "title": "The Hierarchy of Speed",
-    "section": "\\(O(n^2)\\): Quadratic",
-    "text": "\\(O(n^2)\\): Quadratic\ndef has_duplicate(arr):\n    for i in range(len(arr)):\n        for j in range(i + 1, len(arr)):\n            if arr[i] == arr[j]:\n                return True\n    return False\n\n“All pairs. Gets painful quickly.”\n“Worst case: no duplicates → check all \\(n(n-1)/2\\) pairs. \\(\\Theta(n^2)\\), tight.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#o2n-exponential",
-    "href": "slides/02_mon_hierarchy.html#o2n-exponential",
-    "title": "The Hierarchy of Speed",
-    "section": "\\(O(2^n)\\): Exponential",
-    "text": "\\(O(2^n)\\): Exponential\ndef all_subsets(arr):\n    if not arr:\n        return [[]]\n    rest = all_subsets(arr[1:])\n    return rest + [[arr[0]] + s for s in rest]\n\n\n\n\n\n\n\n“Doubles with each element.”\nn=50: more operations than atoms in a grain of sand. n=100: more operations than atoms in the observable universe.\nAt 1 billion ops/sec, n=100 would take \\(10^{21}\\) years — heat death of universe.\n“Often intractable. We’ll see NP-completeness in Week 12.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#the-setup",
-    "href": "slides/02_mon_hierarchy.html#the-setup",
-    "title": "The Hierarchy of Speed",
-    "section": "The Setup",
-    "text": "The Setup\n\n\n\n\n\n\n\n“Same problem, two approaches. Let’s race them.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#the-race",
-    "href": "slides/02_mon_hierarchy.html#the-race",
-    "title": "The Hierarchy of Speed",
-    "section": "The Race",
-    "text": "The Race\n\n\n\n\n\n\n\n“We’re testing worst case: no duplicates, so both algorithms scan everything.”\n“What do you notice?”\n\\(\\Theta(n^2)\\): 4× slower when n doubles — that’s quadratic! \\(\\Theta(n)\\): barely changes — that’s linear!\n“The set gives \\(O(1)\\) lookup — transforms \\(\\Theta(n^2)\\) into \\(\\Theta(n)\\).”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#what-happened",
-    "href": "slides/02_mon_hierarchy.html#what-happened",
-    "title": "The Hierarchy of Speed",
-    "section": "What Happened",
-    "text": "What Happened\nWorst case: \\(\\Theta(n^2) \\to \\Theta(n)\\)\nThe set provides \\(O(1)\\) lookup.\n\n“This is the power of data structures. We’ll learn how sets work in Week 5.”\n“Both bounds are tight. We’re not hedging — we analyzed the worst case and know exactly how it scales.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#the-crossover",
-    "href": "slides/02_mon_hierarchy.html#the-crossover",
-    "title": "The Hierarchy of Speed",
-    "section": "The Crossover",
-    "text": "The Crossover\n\n\n\n\n\n\n\n“At small n, constants dominate. The ‘\\(O(1)\\)’ algorithm with 10ms overhead is slower!”\nLive demo: add larger n values (10000, 100000, 1000000) to show the crossover where linear catches up and passes."
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#the-lesson",
-    "href": "slides/02_mon_hierarchy.html#the-lesson",
-    "title": "The Hierarchy of Speed",
-    "section": "The Lesson",
-    "text": "The Lesson\nSmall data: write clear code.\nBig data: Big-O is destiny."
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#galactic-pizza",
-    "href": "slides/02_mon_hierarchy.html#galactic-pizza",
-    "title": "The Hierarchy of Speed",
-    "section": "Galactic Pizza",
-    "text": "Galactic Pizza"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#two-ways-to-compute-the-mean",
-    "href": "slides/02_mon_hierarchy.html#two-ways-to-compute-the-mean",
-    "title": "The Hierarchy of Speed",
-    "section": "Two Ways to Compute the Mean",
-    "text": "Two Ways to Compute the Mean\n\n\n\n\n\n\n\n“Both are \\(O(n)\\). Why the difference?”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#same-big-o-different-speed",
-    "href": "slides/02_mon_hierarchy.html#same-big-o-different-speed",
-    "title": "The Hierarchy of Speed",
-    "section": "Same Big-\\(O\\), Different Speed",
-    "text": "Same Big-\\(O\\), Different Speed\nBoth touch every row: \\(O(n)\\)\nBut:\n\nVectorized: tiny constants (compiled C)\nPython loop: large constants (interpreter overhead)\n\n\n“Big-O tells you SCALING, not SPEED.”\n“In pandas: prefer vectorized operations. But that’s about constants, not complexity class.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#this-weeks-arc",
-    "href": "slides/02_mon_hierarchy.html#this-weeks-arc",
-    "title": "The Hierarchy of Speed",
-    "section": "This Week’s Arc",
-    "text": "This Week’s Arc\n\nMonday (today): The hierarchy — feel the difference\nTuesday video: Loop invariants — how to prove correctness\nWednesday: Binary search — the power of sorted data + proof"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#the-twenty-questions-puzzle",
-    "href": "slides/02_mon_hierarchy.html#the-twenty-questions-puzzle",
-    "title": "The Hierarchy of Speed",
-    "section": "The Twenty Questions Puzzle",
-    "text": "The Twenty Questions Puzzle\nI’m thinking of a number between 1 and 1,000,000.\nYou can ask yes/no questions.\nWhat’s your guaranteed winning strategy?\n\n“Think about this before Wednesday.”\n\\(\\log_2(1{,}000{,}000) \\approx 20\\)\n“Binary search IS the optimal strategy for this game.”\n“Is it your phone number? Is it your birthday? Is it 37?” — No. You need a strategy, not lucky guesses."
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#questions",
-    "href": "slides/02_mon_hierarchy.html#questions",
-    "title": "The Hierarchy of Speed",
-    "section": "Questions?",
-    "text": "Questions?"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#the-definition",
-    "href": "slides/02_mon_hierarchy.html#the-definition",
-    "title": "The Hierarchy of Speed",
-    "section": "The Definition",
-    "text": "The Definition\nf(n) is O(g(n)) if there exist constants c &gt; 0 and n₀ ≥ 0 such that:\n\\[f(n) \\leq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\n“In words: f grows no faster than g, once n is big enough.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#picture",
-    "href": "slides/02_mon_hierarchy.html#picture",
-    "title": "The Hierarchy of Speed",
-    "section": "Picture",
-    "text": "Picture\n\n\n\n\n\n\n\n\n\n\nFor n ≥ 3: 2n + 3 ≤ 3n\nChoose c = 3, n₀ = 3."
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#other-notations",
-    "href": "slides/02_mon_hierarchy.html#other-notations",
-    "title": "The Hierarchy of Speed",
-    "section": "Other Notations",
-    "text": "Other Notations\n\n\n\nNotation\nMeaning\n\n\n\n\nO(g(n))\n≤ c·g(n) — upper bound\n\n\nΩ(g(n))\n≥ c·g(n) — lower bound\n\n\nΘ(g(n))\nboth — tight bound\n\n\n\n\n“We mostly use O — the worst-case guarantee.”"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#prove-it",
-    "href": "slides/02_mon_hierarchy.html#prove-it",
-    "title": "The Hierarchy of Speed",
-    "section": "Prove It",
-    "text": "Prove It\nShow that 3n² + 5n + 2 = O(n²)\n\nLet them try.\nFor n ≥ 1: - 3n² ≤ 3n² - 5n ≤ 5n² - 2 ≤ 2n²\nSo: 3n² + 5n + 2 ≤ 10n²\nChoose c = 10, n₀ = 1. ✓"
   },
   {
     "objectID": "slides/AA_XXX_hierarchy.html#patterns",
