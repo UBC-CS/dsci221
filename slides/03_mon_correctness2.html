@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.26">
 
-  <meta name="dcterms.date" content="2026-01-07">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – Analysis</title>
+  <meta name="dcterms.date" content="2026-01-19">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Correctness</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -31,6 +31,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7e745c094e38f47e1e49ac7c09d7c9b4.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -129,11 +195,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="Analysis – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 1, Wednesday">
+<meta property="og:title" content="Correctness – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 3, Monday">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="Analysis – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 1, Wednesday">
+<meta name="twitter:title" content="Correctness – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 3, Monday">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -141,33 +207,42 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Analysis</h1>
-  <p class="subtitle">Week 1, Wednesday</p>
+  <h1 class="title">Correctness</h1>
+  <p class="subtitle">Week 3, Monday</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 7, 2026</p>
-</section>
-<section id="announcements" class="slide level2">
-<h2>Announcements</h2>
-<ul>
-<li>Labs begin next week.</li>
-</ul>
+  <p class="date">January 19, 2026</p>
 </section>
 <section>
-<section id="from-monday" class="title-slide slide level1 center">
-<h1>From Monday</h1>
+<section id="warm-up-feel-the-doubling" class="title-slide slide level1 center">
+<h1>Warm-up: Feel the Doubling</h1>
 
 </section>
-<section id="algorithm-analysis" class="slide level2">
-<h2>Algorithm Analysis</h2>
-<ol type="1">
-<li><strong>Correctness</strong> — Does it work?</li>
-<li><strong>Efficiency</strong> — How long? How much memory?</li>
-</ol>
+<section id="timing-experiment" class="slide level2">
+<h2>Timing Experiment</h2>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHRpbWVcblxuZGVmIHRpbWVfaXQoZnVuYywgKmFyZ3MpOlxuICAgIHN0YXJ0ID0gdGltZS50aW1lKClcbiAgICBmdW5jKCphcmdzKVxuICAgIHJldHVybiB0aW1lLnRpbWUoKSAtIHN0YXJ0XG5cbmRlZiBsaW5lYXJfd29yayhuKTpcbiAgICB0b3RhbCA9IDBcbiAgICBmb3IgaSBpbiByYW5nZShuKTpcbiAgICAgICAgdG90YWwgKz0gaVxuICAgIHJldHVybiB0b3RhbFxuXG5kZWYgcXVhZHJhdGljX3dvcmsobik6XG4gICAgY291bnQgPSAwXG4gICAgZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgICAgIGZvciBqIGluIHJhbmdlKG4pOlxuICAgICAgICAgICAgY291bnQgKz0gMVxuICAgIHJldHVybiBjb3VudCJ9
+</script>
+</div>
+</section>
+<section id="linear-what-happens-when-n-doubles" class="slide level2">
+<h2>Linear: What Happens When <span class="math inline">\(n\)</span> Doubles?</h2>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoXCJuICAgICAgICAgIHRpbWUgICAgICAgcmF0aW9cIilcbnByaW50KFwiLVwiICogMzUpXG5wcmV2ID0gTm9uZVxuZm9yIG4gaW4gWzEwMDAwLCAyMDAwMCwgNDAwMDAsIDgwMDAwXTpcbiAgICB0ID0gdGltZV9pdChsaW5lYXJfd29yaywgbilcbiAgICByYXRpbyA9IGZcInt0L3ByZXY6LjJmfVwiIGlmIHByZXYgZWxzZSBcIuKAlFwiXG4gICAgcHJpbnQoZlwie246Nn0gICAge3Q6LjRmfXMgICAge3JhdGlvfVwiKVxuICAgIHByZXYgPSB0In0=
+</script>
+</div>
 <aside class="notes">
-<p>“This week: efficiency. Next week: proving correctness.”</p>
+<p>“Doubling n → doubling time. That’s <span class="math inline">\(\Theta(n)\)</span>.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -180,38 +255,160 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-shazam-lesson-fin" class="slide level2">
-<h2>The Shazam Lesson – Fin</h2>
-<p>Naive search: “Linear” — too slow</p>
-<p>Hash lookup: “Constant” — instant</p>
+<section id="quadratic-what-happens-when-n-doubles" class="slide level2">
+<h2>Quadratic: What Happens When <span class="math inline">\(n\)</span> Doubles?</h2>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoXCJuICAgICAgICAgIHRpbWUgICAgICAgcmF0aW9cIilcbnByaW50KFwiLVwiICogMzUpXG5wcmV2ID0gTm9uZVxuZm9yIG4gaW4gWzUwMCwgMTAwMCwgMjAwMCwgNDAwMF06XG4gICAgdCA9IHRpbWVfaXQocXVhZHJhdGljX3dvcmssIG4pXG4gICAgcmF0aW8gPSBmXCJ7dC9wcmV2Oi4yZn1cIiBpZiBwcmV2IGVsc2UgXCLigJRcIlxuICAgIHByaW50KGZcIntuOjZ9ICAgIHt0Oi40Zn1zICAgIHtyYXRpb31cIilcbiAgICBwcmV2ID0gdCJ9
+</script>
+</div>
+<aside class="notes">
+<p>“Doubling n → quadrupling time. That’s <span class="math inline">\(\Theta(n^2)\)</span>.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="logarithmic-what-happens-when-n-doubles" class="slide level2">
+<h2>Logarithmic: What Happens When <span class="math inline">\(n\)</span> Doubles?</h2>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVmIGxvZ193b3JrKG4pOlxuICAgIGNvdW50ID0gMFxuICAgIHdoaWxlIG4gPiAxOlxuICAgICAgICBuID0gbiAvLyAyXG4gICAgICAgIGNvdW50ICs9IDFcbiAgICByZXR1cm4gY291bnRcblxucHJpbnQoXCJuICAgICAgICAgICAgICBpdGVyYXRpb25zXCIpXG5wcmludChcIi1cIiAqIDMwKVxuZm9yIG4gaW4gWzEwMDAsIDIwMDAsIDQwMDAsIDgwMDAsIDE2MDAwXTpcbiAgICBpdGVycyA9IGxvZ193b3JrKG4pXG4gICAgcHJpbnQoZlwie246Nn0gICAgICAgICB7aXRlcnN9XCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>“Doubling n → ONE more iteration. That’s <span class="math inline">\(\Theta(\log n)\)</span>.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="the-twenty-questions-puzzle" class="title-slide slide level1 center">
+<h1>The Twenty Questions Puzzle</h1>
+
+</section>
+<section id="the-game" class="slide level2">
+<h2>The Game</h2>
+<p>I’m thinking of a number between 1 and 1,000,000.</p>
+<p>You can ask yes/no questions.</p>
+<p>What’s your <strong>guaranteed</strong> winning strategy?</p>
+<aside class="notes">
+<p>“How many questions do you need?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-optimal-strategy" class="slide level2">
+<h2>The Optimal Strategy</h2>
+<p>“Is it greater than 500,000?”</p>
+<ul>
+<li><strong>Yes</strong>: Search 500,001 to 1,000,000</li>
+<li><strong>No</strong>: Search 1 to 500,000</li>
+</ul>
+<p>Each question <strong>halves</strong> the remaining possibilities.</p>
+<aside class="notes">
+<p>“This is binary search! And it’s optimal—you can’t do better.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-many-questions" class="slide level2">
+<h2>How Many Questions?</h2>
+<p>Start with <span class="math inline">\(n = 1{,}000{,}000\)</span> possibilities.</p>
+<p>After each question: <span class="math inline">\(n \to n/2\)</span></p>
+<p>Questions needed: <span class="math inline">\(\log_2(1{,}000{,}000) \approx 20\)</span></p>
+<aside class="notes">
+<p>“20 questions for a million possibilities. That’s the power of halving.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="binary-search" class="title-slide slide level1 center">
+<h1>Binary Search</h1>
+
+</section>
+<section id="the-problem" class="slide level2">
+<h2>The Problem</h2>
+<p>Given a <strong>sorted</strong> array and a target value, find the target’s index (or determine it’s not there).</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Database size</th>
-<th>Linear search</th>
-<th>Hash lookup</th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">9</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1,000</td>
-<td>1 sec</td>
-<td>0.001 sec</td>
-</tr>
-<tr class="even">
-<td>1,000,000</td>
-<td>1000 sec</td>
-<td>0.001 sec</td>
-</tr>
-<tr class="odd">
-<td>100,000,000</td>
-<td>27 hours</td>
-<td>0.001 sec</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">38</td>
+<td style="text-align: center;">56</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">91</td>
 </tr>
 </tbody>
 </table>
+<p>Find <code>target = 23</code>.</p>
 <aside class="notes">
-<p>“Today: How do we figure out which is which?”</p>
+<p>“The array must be sorted. That’s the precondition.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -224,101 +421,16 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="how-does-shazam-actually-work" class="slide level2">
-<h2>How does Shazam actually work?</h2>
-<div class="cell" data-fig-width="8" data-fig-height="5" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<svg width="768" height="480" viewbox="0.00 0.00 224.00 430.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 426)">
-<title>shazam</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-426 220,-426 220,4 -4,4"></polygon>
-<g id="clust1" class="cluster">
-<title>cluster_fingerprint</title>
-<polygon fill="#fff3e0" stroke="black" points="38,-157.2 38,-378 179,-378 179,-157.2 38,-157.2"></polygon>
-<text text-anchor="middle" x="108.5" y="-361.4" font-family="Helvetica,sans-Serif" font-size="14.00">Audio Fingerprinting</text>
-</g>
-<!-- audio -->
-<g id="node1" class="node">
-<title>audio</title>
-<polygon fill="#a8d8ea" stroke="black" points="216,-422 0,-422 0,-386 216,-386 216,-422"></polygon>
-<text text-anchor="middle" x="108" y="-399.8" font-family="Helvetica,sans-Serif" font-size="14.00">3 sec audio</text>
-</g>
-<!-- spec -->
-<g id="node2" class="node">
-<title>spec</title>
-<polygon fill="#ffcc80" stroke="black" points="162,-345.2 54,-345.2 54,-309.2 162,-309.2 162,-345.2"></polygon>
-<text text-anchor="middle" x="108" y="-323" font-family="Helvetica,sans-Serif" font-size="14.00">Spectrogram</text>
-</g>
-<!-- audio&#45;&gt;spec -->
-<g id="edge3" class="edge">
-<title>audio-&gt;spec</title>
-<path fill="none" stroke="black" stroke-width="2" d="M108,-385.65C108,-376.78 108,-365.76 108,-355.76"></path>
-<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-355.45 108,-345.45 104.5,-355.45 111.5,-355.45"></polygon>
-</g>
-<!-- land -->
-<g id="node3" class="node">
-<title>land</title>
-<polygon fill="#ffcc80" stroke="black" points="162,-273.2 54,-273.2 54,-237.2 162,-237.2 162,-273.2"></polygon>
-<text text-anchor="middle" x="108" y="-251" font-family="Helvetica,sans-Serif" font-size="14.00">Landmarks</text>
-</g>
-<!-- spec&#45;&gt;land -->
-<g id="edge1" class="edge">
-<title>spec-&gt;land</title>
-<path fill="none" stroke="black" stroke-width="2" d="M108,-308.9C108,-301.18 108,-291.91 108,-283.31"></path>
-<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-283.3 108,-273.3 104.5,-283.3 111.5,-283.3"></polygon>
-</g>
-<!-- hash -->
-<g id="node4" class="node">
-<title>hash</title>
-<polygon fill="#ffcc80" stroke="black" points="162,-201.2 54,-201.2 54,-165.2 162,-165.2 162,-201.2"></polygon>
-<text text-anchor="middle" x="108" y="-179" font-family="Helvetica,sans-Serif" font-size="14.00">Hash</text>
-</g>
-<!-- land&#45;&gt;hash -->
-<g id="edge2" class="edge">
-<title>land-&gt;hash</title>
-<path fill="none" stroke="black" stroke-width="2" d="M108,-236.9C108,-229.18 108,-219.91 108,-211.31"></path>
-<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-211.3 108,-201.3 104.5,-211.3 111.5,-211.3"></polygon>
-</g>
-<!-- table -->
-<g id="node5" class="node">
-<title>table</title>
-<path fill="#a5d6a7" stroke="black" d="M216,-124.08C216,-126.96 167.59,-129.3 108,-129.3 48.41,-129.3 0,-126.96 0,-124.08 0,-124.08 0,-77.12 0,-77.12 0,-74.24 48.41,-71.9 108,-71.9 167.59,-71.9 216,-74.24 216,-77.12 216,-77.12 216,-124.08 216,-124.08"></path>
-<path fill="none" stroke="black" d="M216,-124.08C216,-121.2 167.59,-118.86 108,-118.86 48.41,-118.86 0,-121.2 0,-124.08"></path>
-<text text-anchor="middle" x="108" y="-104.8" font-family="Helvetica,sans-Serif" font-size="14.00">Hash Table</text>
-<text text-anchor="middle" x="108" y="-88" font-family="Helvetica,sans-Serif" font-size="14.00">Lookup</text>
-</g>
-<!-- hash&#45;&gt;table -->
-<g id="edge4" class="edge">
-<title>hash-&gt;table</title>
-<path fill="none" stroke="black" stroke-width="2" d="M108,-165.11C108,-157.67 108,-148.63 108,-139.73"></path>
-<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-139.45 108,-129.45 104.5,-139.45 111.5,-139.45"></polygon>
-</g>
-<!-- result -->
-<g id="node6" class="node">
-<title>result</title>
-<polygon fill="#81c784" stroke="black" points="216,-36 0,-36 0,0 216,0 216,-36"></polygon>
-<text text-anchor="middle" x="108" y="-13.2" font-family="Helvetica,sans-Serif" font-size="16.00">Song Found!</text>
-</g>
-<!-- table&#45;&gt;result -->
-<g id="edge5" class="edge">
-<title>table-&gt;result</title>
-<path fill="none" stroke="black" stroke-width="2" d="M108,-71.86C108,-63.63 108,-54.62 108,-46.41"></path>
-<polygon fill="black" stroke="black" stroke-width="2" points="111.5,-46.21 108,-36.21 104.5,-46.21 111.5,-46.21"></polygon>
-</g>
-</g>
-</svg>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
+<section id="linear-search-the-naive-approach" class="slide level2">
+<h2>Linear Search: The Naive Approach</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> linear_search(arr, target):</span>
+<span id="cb1-2"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
+<span id="cb1-3"><a></a>        <span class="cf">if</span> arr[i] <span class="op">==</span> target:</span>
+<span id="cb1-4"><a></a>            <span class="cf">return</span> i</span>
+<span id="cb1-5"><a></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Worst case: <span class="math inline">\(\Theta(n)\)</span></p>
 <aside class="notes">
-<p>“Hash table lookup doesn’t depend on the size of the database.”</p>
-<p>O(1) — constant time.</p>
-<p>“We’ll learn how in Week 5.”</p>
+<p>“We might have to check every element.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -331,53 +443,337 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="speed-matters-in-surprising-places" class="slide level2 smaller">
-<h2>Speed matters in surprising places</h2>
-<p>It’s not just Shazam!</p>
-<div class="columns">
-<div class="column" style="width:33%;">
-<p><strong>YouTube</strong></p>
-<p>800 million videos</p>
-<p>Every search: &lt; 0.5 sec</p>
-<p>Linear search would take hours</p>
-</div><div class="column" style="width:33%;">
-<p><strong>Genomics</strong></p>
-<p>Human genome: 3 billion base pairs</p>
-<p>Finding a gene sequence</p>
-<p>Naive: days → Real tools: seconds</p>
-</div><div class="column" style="width:33%;">
-<p><strong>Pandemic response</strong></p>
-<p>330 million people</p>
-<p>Contact tracing within 2 connections</p>
-<p>Relationships grow exponentially</p>
-</div></div>
-<div class="fragment">
-<div class="r-fit-text">
-<p><strong>As data grows, bad algorithms become impossible.</strong></p>
-</div>
-</div>
+<section id="binary-search-the-clever-approach" class="slide level2">
+<h2>Binary Search: The Clever Approach</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> binary_search(arr, target):</span>
+<span id="cb2-2"><a></a>    lo, hi <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(arr) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb2-3"><a></a>    <span class="cf">while</span> lo <span class="op">&lt;=</span> hi:</span>
+<span id="cb2-4"><a></a>        mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb2-5"><a></a>        <span class="cf">if</span> arr[mid] <span class="op">==</span> target:</span>
+<span id="cb2-6"><a></a>            <span class="cf">return</span> mid</span>
+<span id="cb2-7"><a></a>        <span class="cf">elif</span> arr[mid] <span class="op">&lt;</span> target:</span>
+<span id="cb2-8"><a></a>            lo <span class="op">=</span> mid <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb2-9"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb2-10"><a></a>            hi <span class="op">=</span> mid <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb2-11"><a></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Worst case: <span class="math inline">\(\Theta(\log n)\)</span></p>
+<aside class="notes">
+<p>“Each iteration halves the search space.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tracing-binary-search" class="slide level2">
+<h2>Tracing Binary Search</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">38</td>
+<td style="text-align: center;">56</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">91</td>
+</tr>
+</tbody>
+</table>
+<p>Find <code>target = 23</code>:</p>
+<ol type="1">
+<li><code>lo=0, hi=9, mid=4</code> → <code>arr[4]=16 &lt; 23</code> → <code>lo=5</code></li>
+<li><code>lo=5, hi=9, mid=7</code> → <code>arr[7]=56 &gt; 23</code> → <code>hi=6</code></li>
+<li><code>lo=5, hi=6, mid=5</code> → <code>arr[5]=23</code> ✓ → return 5</li>
+</ol>
+<aside class="notes">
+<p>“Three comparisons instead of six. At scale, the difference is dramatic.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-17-year-bug" class="slide level2">
+<h2>The 17-Year Bug</h2>
+<blockquote>
+<p>“I’ve assigned <a href="#/binary-search">binary search</a> in courses at Bell Labs and IBM… and I’ve studied their solutions… In the history of this exercise, only about ten percent of professional programmers have gotten the program right.”</p>
+<p>— Jon Bentley, <em>Programming Pearls</em> (1986)</p>
+</blockquote>
+<p>The first correct binary search was published in 1946.</p>
+<p>The first <strong>bug-free</strong> implementation? 1962.</p>
+<aside class="notes">
+<p>“Even experts get it wrong. The loop invariant helps us get it right.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="proving-binary-search-correct" class="title-slide slide level1 center">
+<h1>Proving Binary Search Correct</h1>
+
+</section>
+<section id="the-invariant" class="slide level2">
+<h2>The Invariant</h2>
+<p><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, if <code>target</code> is in <code>arr</code>, then <code>target</code> is in <code>arr[lo:hi+1]</code>.</p>
+<p>Equivalently: We haven’t excluded any index where <code>target</code> could be.</p>
+<aside class="notes">
+<p>“This is the ‘search’ pattern: the answer is still in the remaining range.”</p>
+<p>“The invariant holds at any point we might exit the loop.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="base-case-i-0" class="slide level2">
+<h2>Base Case (<span class="math inline">\(i = 0\)</span>)</h2>
+<p>Before the first iteration: <code>lo = 0</code>, <code>hi = len(arr) - 1</code></p>
+<p><code>arr[lo:hi+1]</code> = <code>arr[0:len(arr)]</code> = entire array</p>
+<p>If <code>target</code> is in <code>arr</code>, it’s in <code>arr[lo:hi+1]</code>. ✓</p>
+<aside class="notes">
+<p>“We start with the full array. The invariant holds trivially.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="inductive-step-case-1-found-it" class="slide level2">
+<h2>Inductive Step: Case 1 (Found it)</h2>
+<p><code>arr[mid] == target</code> → we return <code>mid</code>.</p>
+<p>The invariant holds at this exit point: <code>target</code> is indeed in <code>arr[lo:hi+1]</code>.</p>
+<p>We return the correct answer. ✓</p>
+<aside class="notes">
+<p>“Found it. The invariant tells us we’re returning a valid location.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="inductive-step-case-2" class="slide level2">
+<h2>Inductive Step: Case 2</h2>
+<p><code>arr[mid] &lt; target</code></p>
+<p>Since <code>arr</code> is sorted: everything at indices <span class="math inline">\(\leq\)</span> <code>mid</code> is <span class="math inline">\(\leq\)</span> <code>arr[mid]</code> <span class="math inline">\(&lt;\)</span> <code>target</code>.</p>
+<p>So <code>target</code> can’t be at indices 0 through <code>mid</code>.</p>
+<p>Setting <code>lo = mid + 1</code> excludes only indices where <code>target</code> <strong>can’t</strong> be. ✓</p>
+<aside class="notes">
+<p>“We’re safe to narrow the range because we’re only excluding impossible locations.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="inductive-step-case-3" class="slide level2">
+<h2>Inductive Step: Case 3</h2>
+<p><code>arr[mid] &gt; target</code></p>
+<p>Since <code>arr</code> is sorted: everything at indices <span class="math inline">\(\geq\)</span> <code>mid</code> is <span class="math inline">\(\geq\)</span> <code>arr[mid]</code> <span class="math inline">\(&gt;\)</span> <code>target</code>.</p>
+<p>So <code>target</code> can’t be at indices <code>mid</code> through <span class="math inline">\(n-1\)</span>.</p>
+<p>Setting <code>hi = mid - 1</code> excludes only indices where <code>target</code> <strong>can’t</strong> be. ✓</p>
+<aside class="notes">
+<p>“Same reasoning. We only narrow the range safely.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="termination-exit-via-lo-hi" class="slide level2">
+<h2>Termination (Exit via <code>lo &gt; hi</code>)</h2>
+<p>The loop exits when <code>lo &gt; hi</code>.</p>
+<p>At this exit point, <code>arr[lo:hi+1]</code> is <strong>empty</strong>.</p>
+<p>The invariant says: if <code>target</code> is in <code>arr</code>, it’s in this empty range.</p>
+<p>But nothing is in an empty range.</p>
+<p><strong>Therefore</strong>: <code>target</code> is <strong>not</strong> in <code>arr</code>. Return -1. ∎</p>
+<aside class="notes">
+<p>“The invariant holds at this exit point too — it just tells us target isn’t there.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-proof-in-one-slide" class="slide level2">
+<h2>The Proof in One Slide</h2>
+<p><strong>Theorem</strong>: <code>binary_search(arr, target)</code> returns the index of <code>target</code> if present, else -1.</p>
+<p><strong>Proof</strong>: By induction on iteration count.</p>
+<ul>
+<li><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, if <code>target ∈ arr</code>, then <code>target ∈ arr[lo:hi+1]</code></li>
+<li><strong>Base case</strong>: <span class="math inline">\(i=0\)</span>, full array satisfies invariant ✓</li>
+<li><strong>Inductive step</strong>: Each case either exits correctly or safely shrinks range ✓</li>
+<li><strong>Termination</strong>: At exit, invariant <span class="math inline">\(\Rightarrow\)</span> correct answer ∎</li>
+</ul>
+</section></section>
+<section>
+<section id="why-the-bug" class="title-slide slide level1 center">
+<h1>Why the Bug?</h1>
+
+</section>
+<section id="common-mistakes" class="slide level2">
+<h2>Common Mistakes</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="co"># Bug 1: Wrong comparison</span></span>
+<span id="cb3-2"><a></a><span class="cf">while</span> lo <span class="op">&lt;</span> hi:  <span class="co"># Should be lo &lt;= hi</span></span>
+<span id="cb3-3"><a></a>    ...</span>
+<span id="cb3-4"><a></a></span>
+<span id="cb3-5"><a></a><span class="co"># Bug 2: Wrong update</span></span>
+<span id="cb3-6"><a></a>lo <span class="op">=</span> mid        <span class="co"># Should be mid + 1</span></span>
+<span id="cb3-7"><a></a>hi <span class="op">=</span> mid        <span class="co"># Should be mid - 1</span></span>
+<span id="cb3-8"><a></a></span>
+<span id="cb3-9"><a></a><span class="co"># Bug 3: Integer overflow (in C/Java)</span></span>
+<span id="cb3-10"><a></a>mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">/</span> <span class="dv">2</span>  <span class="co"># Can overflow!</span></span>
+<span id="cb3-11"><a></a><span class="co"># Fix: mid = lo + (hi - lo) / 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>“Bug 1: misses the case where lo == hi. Bug 2: can cause infinite loop. Bug 3: famous Java bug, discovered in 2006 in Arrays.binarySearch!”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-java-bug-2006" class="slide level2">
+<h2>The Java Bug (2006)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a></a><span class="co">// This was in java.util.Arrays for 9 years!</span></span>
+<span id="cb4-2"><a></a><span class="dt">int</span> mid <span class="op">=</span> <span class="op">(</span>low <span class="op">+</span> high<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span>  <span class="co">// OVERFLOW </span><span class="al">BUG</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>When <code>low + high &gt; Integer.MAX_VALUE</code>, this overflows.</p>
+<p>Fix:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a></a><span class="dt">int</span> mid <span class="op">=</span> low <span class="op">+</span> <span class="op">(</span>high <span class="op">-</span> low<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>“Joshua Bloch, who wrote the code, wrote about this bug. Even Google engineers get binary search wrong.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-invariant-saves-you" class="slide level2">
+<h2>The Invariant Saves You</h2>
+<p>When you’re unsure about an edge case, ask:</p>
+<blockquote>
+<p>“Does this maintain the invariant?”</p>
+</blockquote>
+<ul>
+<li><code>lo = mid + 1</code>: Does this exclude only impossible locations? <strong>Yes.</strong></li>
+<li><code>hi = mid - 1</code>: Does this exclude only impossible locations? <strong>Yes.</strong></li>
+<li><code>lo &lt;= hi</code>: When does the search space become empty? <strong>When lo &gt; hi.</strong></li>
+</ul>
+<aside class="notes">
+<p>“The invariant is your compass. When lost, check the invariant.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
 <section id="analysis" class="title-slide slide level1 center">
 <h1>Analysis</h1>
 
 </section>
-<section id="measuring-the-value-of-algorithms" class="slide level2">
-<h2>Measuring the value of algorithms</h2>
-<p>Suppose you have two correct algorithms that solve the same problem — which is better?</p>
+<section id="worst-case-running-time" class="slide level2">
+<h2>Worst-Case Running Time</h2>
+<p>Each iteration:</p>
 <ul>
-<li>Use different metrics — <span style="color: #e67e22;">time</span>, <span style="color: #27ae60;">space</span> most common</li>
-<li>Express ________ as a (positive) <span style="color: #e67e22;">function</span>:</li>
+<li>Constant work (comparisons, arithmetic)</li>
+<li>Range shrinks by half: <span class="math inline">\((hi - lo + 1) \to \lfloor(hi - lo + 1)/2\rfloor\)</span></li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<ul>
-<li>Form of function depends on structure of the algorithm:</li>
-</ul>
+<p>How many halvings until range is empty?</p>
+<p><span class="math inline">\(\log_2(n)\)</span></p>
+<p><strong>Worst case</strong>: <span class="math inline">\(\Theta(\log n)\)</span></p>
 <aside class="notes">
-<p>“time” and “space” are the two main metrics.</p>
-<p>“Express WHAT as a function?” → Let them say “running time” or “work”</p>
-<p>We’ll write T(n) — running time as a function of input size n.</p>
+<p>“The halving is the key. That’s what gives us the logarithm.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -390,117 +786,36 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="intro-to-analysis" class="slide level2">
-<h2>Intro to Analysis</h2>
-<div>
-<div id="pyodide-1" class="exercise-cell">
-
-</div>
-<script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2ZShzYW1wbGUsIGRhdGFiYXNlKTpcbiAgICBmb3Igc29uZyBpbiBkYXRhYmFzZTpcbiAgICAgICAgaWYgbWF0Y2hlcyhzYW1wbGUsIHNvbmcpOlxuICAgICAgICAgICAgcmV0dXJuIHNvbmdcbiAgICByZXR1cm4gTm9uZSJ9
-</script>
-</div>
+<section id="the-scale-comparison" class="slide level2">
+<h2>The Scale Comparison</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">…</th>
-<th style="text-align: center;">99,999,999</th>
+<th><span class="math inline">\(n\)</span></th>
+<th>Linear Search</th>
+<th>Binary Search</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;">🎵</td>
+<td>1,000</td>
+<td>1,000</td>
+<td>10</td>
 </tr>
-</tbody>
-</table>
-<ul>
-<li><p>Do you have any questions about the <code>Python</code>?</p></li>
-<li><p>How long does it take to run (in seconds)?</p></li>
-</ul>
-<aside class="notes">
-<p>“Is this correct?” (Yes)</p>
-<p>“Is this efficient?” (Let’s see…)</p>
-<p>“How long does it take?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-might-determine-the-running-time" class="slide level2">
-<h2>What might determine the running time?</h2>
-<div>
-<div id="pyodide-2" class="exercise-cell">
-
-</div>
-<script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2ZShzYW1wbGUsIGRhdGFiYXNlKTpcbiAgICBmb3Igc29uZyBpbiBkYXRhYmFzZTpcbiAgICAgICAgaWYgbWF0Y2hlcyhzYW1wbGUsIHNvbmcpOlxuICAgICAgICAgICAgcmV0dXJuIHNvbmdcbiAgICByZXR1cm4gTm9uZSJ9
-</script>
-</div>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">…</th>
-<th style="text-align: center;">99,999,999</th>
+<tr class="even">
+<td>1,000,000</td>
+<td>1,000,000</td>
+<td>20</td>
 </tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">🎵</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;">🎵</td>
+<td>1,000,000,000</td>
+<td>1,000,000,000</td>
+<td>30</td>
 </tr>
 </tbody>
 </table>
-<p>What factors affect how long <code>find_song_naive</code> takes?</p>
-<ul>
-<li></li>
-<li></li>
-<li></li>
-</ul>
 <aside class="notes">
-<p>They’ll say: “It depends!”</p>
-<p>“What does it depend on?”</p>
-<p>Let them generate: size of database, where the song is, machine speed…</p>
-<p>Guide to: we care about SIZE. That’s the input to our algorithm.</p>
+<p>“A billion elements, 30 comparisons. That’s the power of <span class="math inline">\(O(\log n)\)</span>.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -513,243 +828,29 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2
           display:block!important;
       }</style></aside>
 </section>
-<section id="discussion-results" class="slide level2">
-<h2>Discussion results…</h2>
-<div class="columns">
-<div class="column" style="width:33%;">
-<p><strong>Machine speed</strong></p>
-<p>A faster computer runs the same code faster.</p>
-<aside class="notes">
-<p><em>But that’s not about the algorithm.</em></p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div><div class="column" style="width:33%;">
-<p><strong>Location of song</strong></p>
-<p>At the front? Quick!</p>
-<p>At the end? Slow.</p>
-<p>Not there at all? Slowest.</p>
-</div><div class="column" style="width:33%;">
-<p><strong>Size of database</strong></p>
-<p>100 songs vs 100 million songs</p>
-<aside class="notes">
-<p>This is the big one.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div></div>
-<div class="fragment">
-<p>We want to characterize <em>the algorithm</em>, not the machine or our <em>luck</em>.</p>
-<aside class="notes">
-<p>“Which should we focus on for algorithm analysis?”</p>
-<p>Machine speed varies (not about the algorithm). Location varies (best case vs worst case). Size is the INPUT.</p>
-<p>“We parameterize by n.”</p>
-<p>write T(n) running time on input of size n.&nbsp; T(n) is a function!</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="aside-for-cases" class="slide level2">
-<h2>Aside for Cases</h2>
-<div>
-<div id="pyodide-3" class="exercise-cell">
-
-</div>
-<script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGZpbmRfc29uZ19uYWl2ZShzYW1wbGUsIGRhdGFiYXNlKTpcbiAgICBmb3Igc29uZyBpbiBkYXRhYmFzZTpcbiAgICAgICAgaWYgbWF0Y2hlcyhzYW1wbGUsIHNvbmcpOlxuICAgICAgICAgICAgcmV0dXJuIHNvbmdcbiAgICByZXR1cm4gTm9uZSJ9
-</script>
-</div>
-<ul>
-<li><strong>Best case</strong>: minimum running time over all inputs</li>
-<li><strong>Worst case</strong>: maximum running time over all inputs</li>
-<li><strong>Average case</strong>: expected running time (needs probability)</li>
-</ul>
-<aside class="notes">
-<p>“The answer depends on the input!”</p>
-<p>Best case: 1 Worst case: n Average case: (1+2+…+n)/n = (n+1)/2 ≈ n/2</p>
-<p>“Which should we report?”</p>
-<p>we will do worst case, almost always.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="back-to-tn" class="slide level2">
-<h2>Back to <span class="math inline">\(T(n)\)</span></h2>
-<div>
-<div id="pyodide-4" class="exercise-cell">
-
-</div>
-<script type="pyodide-4-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIF9fX19fX19fX19fX19fX19fX19fKGFycik6XG4gICAgdGVtcCA9IGFyclswXSAgICAgIFxuICAgIGZvciB4IGluIGFycjogICAgICAgICAgXG4gICAgICAgIGlmIHggPiB0ZW1wOiAgIFxuICAgICAgICAgICAgdGVtcCA9IHggICAgXG4gICAgcmV0dXJuIHRlbXAgICAgICAgICJ9
-</script>
-</div>
-<ul>
-<li><p>What’s a good name?</p></li>
-<li><p>What’s a good expression for running time? <span class="math inline">\(T(n) =\)</span></p></li>
-</ul>
-<div class="fragment">
-<p>What construct do we have that characterizes functions in a way that ignores constants?</p>
-<aside class="notes">
-<p>“Does the 2 matter?”</p>
-<p>At n = 1,000,000: 2n ≈ n.&nbsp;Constants are noise.</p>
-<p>The SHAPE matters: linear.</p>
-<p>what construct do we have that characterizes functions in a way that ignores constants?</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="the-definition-of-big-o" class="slide level2">
-<h2>The Definition of Big-O</h2>
-<p><span class="math inline">\(f(n)\)</span> is <span class="math inline">\(O(g(n))\)</span> if there exist constants <span class="math inline">\(c &gt; 0\)</span> and <span class="math inline">\(n_0 \geq 0\)</span> such that:</p>
-<p><span class="math display">\[f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0\]</span></p>
-<div id="48f9f388" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="01_wed_runtime_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="470" height="357"></p>
-</figure>
-</div>
-</div>
-</div>
-<aside class="notes">
-<p>“In words: f grows no faster than g, once n is big enough.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="other-definitions" class="slide level2">
-<h2>Other Definitions</h2>
-<p><span class="math inline">\(f(n)\)</span> is <span class="math inline">\(O(g(n))\)</span> if there exist constants <span class="math inline">\(c &gt; 0\)</span> and <span class="math inline">\(n_0 \geq 0\)</span> such that:</p>
-<p><span class="math display">\[f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0\]</span></p>
-<p><span class="math inline">\(f(n)\)</span> is <span class="math inline">\(\Omega(g(n))\)</span> if there exist constants <span class="math inline">\(c &gt; 0\)</span> and <span class="math inline">\(n_0 \geq 0\)</span> such that:</p>
-<p><span class="math display">\[f(n) \geq c \cdot g(n) \quad \text{for all } n \geq n_0\]</span></p>
-<p><span class="math inline">\(f(n)\)</span> is <span class="math inline">\(\Theta(g(n))\)</span> iff it is both <span class="math inline">\(O(g(n))\)</span> and <span class="math inline">\(\Omega(g(n))\)</span>.</p>
-<aside class="notes">
-<p>“We mostly use O, though we usually mean Θ.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="example-1" class="slide level2">
-<h2>Example 1</h2>
+<section id="racing-them" class="slide level2">
+<h2>Racing Them</h2>
 <div>
 <div id="pyodide-5" class="exercise-cell">
 
 </div>
 <script type="pyodide-5-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiXG5kZWYgY29tcHV0ZU1lYW4oYXJyKTpcbiAgICB0b3RhbCA9IDBcbiAgICBmb3IgeCBpbiBhcnI6XG4gICAgICAgIHRvdGFsICs9IHhcbiAgICByZXR1cm4gdG90YWwgLyBsZW4oYXJyKSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGxpbmVhcl9zZWFyY2goYXJyLCB0YXJnZXQpOlxuICAgIGZvciBpIGluIHJhbmdlKGxlbihhcnIpKTpcbiAgICAgICAgaWYgYXJyW2ldID09IHRhcmdldDpcbiAgICAgICAgICAgIHJldHVybiBpXG4gICAgcmV0dXJuIC0xXG5cbmRlZiBiaW5hcnlfc2VhcmNoKGFyciwgdGFyZ2V0KTpcbiAgICBsbywgaGkgPSAwLCBsZW4oYXJyKSAtIDFcbiAgICB3aGlsZSBsbyA8PSBoaTpcbiAgICAgICAgbWlkID0gKGxvICsgaGkpIC8vIDJcbiAgICAgICAgaWYgYXJyW21pZF0gPT0gdGFyZ2V0OlxuICAgICAgICAgICAgcmV0dXJuIG1pZFxuICAgICAgICBlbGlmIGFyclttaWRdIDwgdGFyZ2V0OlxuICAgICAgICAgICAgbG8gPSBtaWQgKyAxXG4gICAgICAgIGVsc2U6XG4gICAgICAgICAgICBoaSA9IG1pZCAtIDFcbiAgICByZXR1cm4gLTEifQ==
 </script>
 </div>
-<ul>
-<li>Python questions?</li>
-<li>What’s the Big-O?</li>
-</ul>
-<aside class="notes">
-<p>One pass through the array. <span class="math inline">\(O(n)\)</span>.</p>
-<p>“We’ll see this again Monday with pandas.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="example-2" class="slide level2">
-<h2>Example 2</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="the-race" class="slide level2">
+<h2>The Race</h2>
 <div>
 <div id="pyodide-6" class="exercise-cell">
 
 </div>
 <script type="pyodide-6-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiY291bnQgPSAwXG5mb3IgaSBpbiByYW5nZShuKTpcbiAgICBmb3IgaiBpbiByYW5nZShuKTpcbiAgICAgICAgY291bnQgKz0gMSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoXCJuICAgICAgICAgIGxpbmVhciAgICAgIGJpbmFyeVwiKVxucHJpbnQoXCItXCIgKiA0MClcbmZvciBuIGluIFsxMDAwMCwgMTAwMDAwLCAxMDAwMDAwXTpcbiAgICBhcnIgPSBsaXN0KHJhbmdlKG4pKVxuICAgIHRhcmdldCA9IG4gICMgTm90IGluIGFycmF5ID0gd29yc3QgY2FzZVxuXG4gICAgdDEgPSB0aW1lX2l0KGxpbmVhcl9zZWFyY2gsIGFyciwgdGFyZ2V0KVxuICAgIHQyID0gdGltZV9pdChiaW5hcnlfc2VhcmNoLCBhcnIsIHRhcmdldClcblxuICAgIHByaW50KGZcIntuOjd9ICAgIHt0MTouNGZ9cyAgICB7dDI6LjZmfXNcIikifQ==
 </script>
 </div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
-<ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 17th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 32nd element counted?</p></li>
-<li><p>What’s the Big-O?</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div id="2a7d9a71" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="01_wed_runtime_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
 <aside class="notes">
-<p>Let them trace: 16</p>
-<p>“Predict for n = 8?” (64)</p>
-<p>Double n → QUADRUPLE the work. QUADRATIC. <span class="math inline">\(O(n^2)\)</span></p>
+<p>“Linear grows with n.&nbsp;Binary barely budges. That’s <span class="math inline">\(O(n)\)</span> vs <span class="math inline">\(O(\log n)\)</span>.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -761,40 +862,26 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiY291bnQgPSAwXG5mb3IgaSBp
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section></section>
+<section>
+<section id="the-price-of-speed" class="title-slide slide level1 center">
+<h1>The Price of Speed</h1>
+
 </section>
-<section id="example-3" class="slide level2">
-<h2>Example 3</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="the-precondition" class="slide level2">
+<h2>The Precondition</h2>
+<p>Binary search <strong>requires</strong> the array to be sorted.</p>
+<p>What if it’s not sorted?</p>
 <div>
 <div id="pyodide-7" class="exercise-cell">
 
 </div>
 <script type="pyodide-7-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiXG5jb3VudCA9IDBcbmZvciBpIGluIHJhbmdlKG4pOlxuICAgIGZvciBqIGluIHJhbmdlKGkpOlxuICAgICAgICBjb3VudCArPSAxIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzMsIDEsIDQsIDEsIDUsIDksIDIsIDZdXG5wcmludChmXCJMb29raW5nIGZvciA1IGluIHthcnJ9XCIpXG5wcmludChmXCJSZXN1bHQ6IHtiaW5hcnlfc2VhcmNoKGFyciwgNSl9XCIpXG5wcmludChmXCJCdXQgNSBpcyBhdCBpbmRleDoge2Fyci5pbmRleCg1KX1cIikifQ==
 </script>
 </div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
-<ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 4th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 12th element counted?</p></li>
-<li><p>What’s the Big-O?</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div id="3a503437" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="01_wed_runtime_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
 <aside class="notes">
-<p>i=0: 0. i=1: 1. i=2: 2. i=3: 3. i=4: 4. Total: 10.</p>
-<p><span class="math inline">\(0 + 1 + 2 + \ldots + (n-1) = \frac{n(n-1)}{2}\)</span></p>
-<p>Still quadratic! <span class="math inline">\(O(n^2)\)</span></p>
+<p>“Garbage in, garbage out. The invariant assumes sorted order.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -807,12 +894,22 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiXG5jb3VudCA9IDBcbmZvciBp
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-triangle-sum" class="slide level2">
-<h2>The Triangle Sum</h2>
-<p><span class="math display">\[1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2}\]</span></p>
+<section id="when-to-use-binary-search" class="slide level2">
+<h2>When to Use Binary Search</h2>
+<p><strong>Use binary search when:</strong></p>
+<ul>
+<li>Data is sorted (or can be sorted once, searched many times)</li>
+<li>Random access is <span class="math inline">\(O(1)\)</span> (arrays, not linked lists)</li>
+<li>You need to find a specific value</li>
+</ul>
+<p><strong>Don’t use when:</strong></p>
+<ul>
+<li>Data is unsorted and searched only once</li>
+<li>Data structure doesn’t support random access</li>
+<li>You need to find <em>all</em> occurrences</li>
+</ul>
 <aside class="notes">
-<p>“This is <span class="math inline">\(O(n^2)\)</span>, not <span class="math inline">\(O(n)\)</span>.”</p>
-<p>Whenever you see “all pairs” — expect quadratic.</p>
+<p>“Sorting costs <span class="math inline">\(O(n \log n)\)</span>. If you only search once, linear search wins.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -824,10 +921,61 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiXG5jb3VudCA9IDBcbmZvciBp
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
+
+</section>
+<section id="what-we-learned" class="slide level2">
+<h2>What We Learned</h2>
+<ol type="1">
+<li><p><strong>Binary search</strong> finds a target in <span class="math inline">\(\Theta(\log n)\)</span> time (vs <span class="math inline">\(\Theta(n)\)</span> for linear)</p></li>
+<li><p><strong>The invariant</strong>: “If target exists, it’s in <code>arr[lo:hi+1]</code>”</p></li>
+<li><p><strong>The proof</strong>: Init, Maintenance (3 cases), Termination</p></li>
+<li><p><strong>The bugs</strong>: Off-by-one errors, infinite loops, integer overflow</p></li>
+<li><p><strong>The precondition</strong>: Array must be sorted</p></li>
+</ol>
+</section>
+<section id="the-pattern" class="slide level2">
+<h2>The Pattern</h2>
+<p>Binary search is a <strong>divide-and-conquer</strong> algorithm:</p>
+<ol type="1">
+<li><strong>Divide</strong>: Pick the middle</li>
+<li><strong>Conquer</strong>: Recurse on one half</li>
+<li><strong>Combine</strong>: Nothing to combine (we found it or it’s not there)</li>
+</ol>
+<p>We’ll see more divide-and-conquer in Week 6 (sorting).</p>
 </section>
 <section id="next-week" class="slide level2">
-<h2>Next week</h2>
-<p>More analysis</p>
+<h2>Next Week</h2>
+<p><strong>Week 3: Recursion</strong></p>
+<ul>
+<li>Thinking recursively</li>
+<li>Recurrence relations</li>
+<li>The fractal coastline puzzle</li>
+</ul>
+<aside class="notes">
+<p>“Binary search can also be written recursively. We’ll explore that next week.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="questions" class="slide level2">
+<h2>Questions?</h2>
+<div class="r-fit-text">
+<p>Binary search: <span class="math inline">\(\Theta(\log n)\)</span></p>
+<p>The invariant makes it <strong>correct</strong>.</p>
+<p>The halving makes it <strong>fast</strong>.</p>
+</div>
 
 
 <script type="pyodide-data">

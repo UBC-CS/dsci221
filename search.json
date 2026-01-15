@@ -613,6 +613,125 @@
     "text": "Next week\nMore analysis"
   },
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "about.html#about",
+    "href": "about.html#about",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "LICENSE.html",
+    "href": "LICENSE.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "Attribution-ShareAlike 4.0 International\n=======================================================================\nCreative Commons Corporation (“Creative Commons”) is not a law firm and does not provide legal services or legal advice. Distribution of Creative Commons public licenses does not create a lawyer-client or other relationship. Creative Commons makes its licenses and related information available on an “as-is” basis. Creative Commons gives no warranties regarding its licenses, any material licensed under their terms and conditions, or any related information. Creative Commons disclaims all liability for damages resulting from their use to the fullest extent possible.\nUsing Creative Commons Public Licenses\nCreative Commons public licenses provide a standard set of terms and conditions that creators and other rights holders may use to share original works of authorship and other material subject to copyright and certain other rights specified in the public license below. The following considerations are for informational purposes only, are not exhaustive, and do not form part of our licenses.\n Considerations for licensors: Our public licenses are\n intended for use by those authorized to give the public\n permission to use material in ways otherwise restricted by\n copyright and certain other rights. Our licenses are\n irrevocable. Licensors should read and understand the terms\n and conditions of the license they choose before applying it.\n Licensors should also secure all rights necessary before\n applying our licenses so that the public can reuse the\n material as expected. Licensors should clearly mark any\n material not subject to the license. This includes other CC-\n licensed material, or material used under an exception or\n limitation to copyright. More considerations for licensors:\nwiki.creativecommons.org/Considerations_for_licensors\n\n Considerations for the public: By using one of our public\n licenses, a licensor grants the public permission to use the\n licensed material under specified terms and conditions. If\n the licensor's permission is not necessary for any reason--for\n example, because of any applicable exception or limitation to\n copyright--then that use is not regulated by the license. Our\n licenses grant only permissions under copyright and certain\n other rights that a licensor has authority to grant. Use of\n the licensed material may still be restricted for other\n reasons, including because others have copyright or other\n rights in the material. A licensor may make special requests,\n such as asking that all changes be marked or described.\n Although not required by our licenses, you are encouraged to\n respect those requests where reasonable. More_considerations\n for the public:\nwiki.creativecommons.org/Considerations_for_licensees\n=======================================================================\nCreative Commons Attribution-ShareAlike 4.0 International Public License\nBy exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution-ShareAlike 4.0 International Public License (“Public License”). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.\nSection 1 – Definitions.\n\nAdapted Material means material subject to Copyright and Similar Rights that is derived from or based upon the Licensed Material and in which the Licensed Material is translated, altered, arranged, transformed, or otherwise modified in a manner requiring permission under the Copyright and Similar Rights held by the Licensor. For purposes of this Public License, where the Licensed Material is a musical work, performance, or sound recording, Adapted Material is always produced where the Licensed Material is synched in timed relation with a moving image.\nAdapter’s License means the license You apply to Your Copyright and Similar Rights in Your contributions to Adapted Material in accordance with the terms and conditions of this Public License.\nBY-SA Compatible License means a license listed at creativecommons.org/compatiblelicenses, approved by Creative Commons as essentially the equivalent of this Public License.\nCopyright and Similar Rights means copyright and/or similar rights closely related to copyright including, without limitation, performance, broadcast, sound recording, and Sui Generis Database Rights, without regard to how the rights are labeled or categorized. For purposes of this Public License, the rights specified in Section 2(b)(1)-(2) are not Copyright and Similar Rights.\nEffective Technological Measures means those measures that, in the absence of proper authority, may not be circumvented under laws fulfilling obligations under Article 11 of the WIPO Copyright Treaty adopted on December 20, 1996, and/or similar international agreements.\nExceptions and Limitations means fair use, fair dealing, and/or any other exception or limitation to Copyright and Similar Rights that applies to Your use of the Licensed Material.\nLicense Elements means the license attributes listed in the name of a Creative Commons Public License. The License Elements of this Public License are Attribution and ShareAlike.\nLicensed Material means the artistic or literary work, database, or other material to which the Licensor applied this Public License.\nLicensed Rights means the rights granted to You subject to the terms and conditions of this Public License, which are limited to all Copyright and Similar Rights that apply to Your use of the Licensed Material and that the Licensor has authority to license.\nLicensor means the individual(s) or entity(ies) granting rights under this Public License.\nShare means to provide material to the public by any means or process that requires permission under the Licensed Rights, such as reproduction, public display, public performance, distribution, dissemination, communication, or importation, and to make material available to the public including in ways that members of the public may access the material from a place and at a time individually chosen by them.\nSui Generis Database Rights means rights other than copyright resulting from Directive 96/9/EC of the European Parliament and of the Council of 11 March 1996 on the legal protection of databases, as amended and/or succeeded, as well as other essentially equivalent rights anywhere in the world.\nYou means the individual or entity exercising the Licensed Rights under this Public License. Your has a corresponding meaning.\n\nSection 2 – Scope.\n\nLicense grant.\n\nSubject to the terms and conditions of this Public License, the Licensor hereby grants You a worldwide, royalty-free, non-sublicensable, non-exclusive, irrevocable license to exercise the Licensed Rights in the Licensed Material to:\n\nreproduce and Share the Licensed Material, in whole or in part; and\nproduce, reproduce, and Share Adapted Material.\n\nExceptions and Limitations. For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this Public License does not apply, and You do not need to comply with its terms and conditions.\nTerm. The term of this Public License is specified in Section 6(a).\nMedia and formats; technical modifications allowed. The Licensor authorizes You to exercise the Licensed Rights in all media and formats whether now known or hereafter created, and to make technical modifications necessary to do so. The Licensor waives and/or agrees not to assert any right or authority to forbid You from making technical modifications necessary to exercise the Licensed Rights, including technical modifications necessary to circumvent Effective Technological Measures. For purposes of this Public License, simply making modifications authorized by this Section 2(a)\n\nnever produces Adapted Material.\n\nDownstream recipients.\n\nOffer from the Licensor – Licensed Material. Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.\nAdditional offer from the Licensor – Adapted Material. Every recipient of Adapted Material from You automatically receives an offer from the Licensor to exercise the Licensed Rights in the Adapted Material under the conditions of the Adapter’s License You apply.\nNo downstream restrictions. You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.\n\nNo endorsement. Nothing in this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided in Section 3(a)(1)(A)(i).\n\nOther rights.\n\nMoral rights, such as the right of integrity, are not licensed under this Public License, nor are publicity, privacy, and/or other similar personality rights; however, to the extent possible, the Licensor waives and/or agrees not to assert any such rights held by the Licensor to the limited extent necessary to allow You to exercise the Licensed Rights, but not otherwise.\nPatent and trademark rights are not licensed under this Public License.\nTo the extent possible, the Licensor waives any right to collect royalties from You for the exercise of the Licensed Rights, whether directly or through a collecting society under any voluntary or waivable statutory or compulsory licensing scheme. In all other cases the Licensor expressly reserves any right to collect such royalties.\n\n\nSection 3 – License Conditions.\nYour exercise of the Licensed Rights is expressly made subject to the following conditions.\n\nAttribution.\n\nIf You Share the Licensed Material (including in modified form), You must:\n\nretain the following if it is supplied by the Licensor with the Licensed Material:\n\nidentification of the creator(s) of the Licensed Material and any others designated to receive attribution, in any reasonable manner requested by the Licensor (including by pseudonym if designated);\na copyright notice;\na notice that refers to this Public License;\na notice that refers to the disclaimer of warranties;\na URI or hyperlink to the Licensed Material to the extent reasonably practicable;\n\nindicate if You modified the Licensed Material and retain an indication of any previous modifications; and\nindicate the Licensed Material is licensed under this Public License, and include the text of, or the URI or hyperlink to, this Public License.\n\nYou may satisfy the conditions in Section 3(a)(1) in any reasonable manner based on the medium, means, and context in which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI or hyperlink to a resource that includes the required information.\nIf requested by the Licensor, You must remove any of the information required by Section 3(a)(1)(A) to the extent reasonably practicable.\n\nShareAlike.\nIn addition to the conditions in Section 3(a), if You Share Adapted Material You produce, the following conditions also apply.\n\nThe Adapter’s License You apply must be a Creative Commons license with the same License Elements, this version or later, or a BY-SA Compatible License.\nYou must include the text of, or the URI or hyperlink to, the Adapter’s License You apply. You may satisfy this condition in any reasonable manner based on the medium, means, and context in which You Share Adapted Material.\nYou may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, Adapted Material that restrict exercise of the rights granted under the Adapter’s License You apply.\n\n\nSection 4 – Sui Generis Database Rights.\nWhere the Licensed Rights include Sui Generis Database Rights that apply to Your use of the Licensed Material:\n\nfor the avoidance of doubt, Section 2(a)(1) grants You the right to extract, reuse, reproduce, and Share all or a substantial portion of the contents of the database;\nif You include all or a substantial portion of the database contents in a database in which You have Sui Generis Database Rights, then the database in which You have Sui Generis Database Rights (but not its individual contents) is Adapted Material,\nincluding for purposes of Section 3(b); and\nYou must comply with the conditions in Section 3(a) if You Share all or a substantial portion of the contents of the database.\n\nFor the avoidance of doubt, this Section 4 supplements and does not replace Your obligations under this Public License where the Licensed Rights include other Copyright and Similar Rights.\nSection 5 – Disclaimer of Warranties and Limitation of Liability.\n\nUNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.\nTO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.\nThe disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.\n\nSection 6 – Term and Termination.\n\nThis Public License applies for the term of the Copyright and Similar Rights licensed here. However, if You fail to comply with this Public License, then Your rights under this Public License terminate automatically.\nWhere Your right to use the Licensed Material has terminated under Section 6(a), it reinstates:\n\nautomatically as of the date the violation is cured, provided it is cured within 30 days of Your discovery of the violation; or\nupon express reinstatement by the Licensor.\n\nFor the avoidance of doubt, this Section 6(b) does not affect any right the Licensor may have to seek remedies for Your violations of this Public License.\nFor the avoidance of doubt, the Licensor may also offer the Licensed Material under separate terms or conditions or stop distributing the Licensed Material at any time; however, doing so will not terminate this Public License.\nSections 1, 5, 6, 7, and 8 survive termination of this Public License.\n\nSection 7 – Other Terms and Conditions.\n\nThe Licensor shall not be bound by any additional or different terms or conditions communicated by You unless expressly agreed.\nAny arrangements, understandings, or agreements regarding the Licensed Material not stated herein are separate from and independent of the terms and conditions of this Public License.\n\nSection 8 – Interpretation.\n\nFor the avoidance of doubt, this Public License does not, and shall not be interpreted to, reduce, limit, restrict, or impose conditions on any use of the Licensed Material that could lawfully be made without permission under this Public License.\nTo the extent possible, if any provision of this Public License is deemed unenforceable, it shall be automatically reformed to the minimum extent necessary to make it enforceable. If the provision cannot be reformed, it shall be severed from this Public License without affecting the enforceability of the remaining terms and conditions.\nNo term or condition of this Public License will be waived and no failure to comply consented to unless expressly agreed to by the Licensor.\nNothing in this Public License constitutes or may be interpreted as a limitation upon, or waiver of, any privileges and immunities that apply to the Licensor or You, including from the legal processes of any jurisdiction or authority.\n\n=======================================================================\nCreative Commons is not a party to its public licenses. Notwithstanding, Creative Commons may elect to apply one of its public licenses to material it publishes and in those instances will be considered the “Licensor.” The text of the Creative Commons public licenses is dedicated to the public domain under the CC0 Public Domain Dedication. Except for the limited purpose of indicating that material is shared under a Creative Commons public license or as otherwise permitted by the Creative Commons policies published at creativecommons.org/policies, Creative Commons does not authorize the use of the trademark “Creative Commons” or any other trademark or logo of Creative Commons without its prior written consent including, without limitation, in connection with any unauthorized modifications to any of its public licenses or any other arrangements, understandings, or agreements concerning use of licensed material. For the avoidance of doubt, this paragraph does not form part of the public licenses.\nCreative Commons may be contacted at creativecommons.org."
+  },
+  {
+    "objectID": "labs/02_create-website.html",
+    "href": "labs/02_create-website.html",
+    "title": " Lab: Create your own website!",
+    "section": "",
+    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
+  },
+  {
+    "objectID": "labs/02_create-website.html#basic-structure-of-quarto-document",
+    "href": "labs/02_create-website.html#basic-structure-of-quarto-document",
+    "title": " Lab: Create your own website!",
+    "section": "",
+    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
+  },
+  {
+    "objectID": "labs/02_create-website.html#steps",
+    "href": "labs/02_create-website.html#steps",
+    "title": " Lab: Create your own website!",
+    "section": " Steps",
+    "text": "Steps\n\nOpen your workspace: us.prairielearn.com/pl/course_instance/205477/assessment/2633615.\nCreate index.qmd.\nClick the “Render” button on top.\nDownload the output directory _site.\nOpen Netlify Drop: app.netlify.com/drop.\nDrag and drop the downloaded _site onto Netlify Drop.\nPost the link to your website in the comments below."
+  },
+  {
+    "objectID": "labs/02_create-website.html#resources",
+    "href": "labs/02_create-website.html#resources",
+    "title": " Lab: Create your own website!",
+    "section": " Resources",
+    "text": "Resources\n\nDaring Fireball: Markdown\nInteractive Commonmark Markdown tutorial\nQuarto documentation\nGet started with Quarto Workshop including the material and this video:"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "index.html#weekly-announcement",
+    "href": "index.html#weekly-announcement",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "Weekly announcement",
+    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\nHW3",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "posts/00_welcome/index.html",
+    "href": "posts/00_welcome/index.html",
+    "title": "Welcome to DSCI 221!",
+    "section": "",
+    "text": "Welcome to DSCI 221: Data Structures and Algorithms for Data Science!\nIn this course, we’ll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what’s the cheapest flight to Tokyo?), you’ll develop the algorithmic thinking that separates good programmers from great ones.\nGetting started:\n\nRead the syllabus for course policies and requirements\nCheck the schedule on the home page to see what’s coming up\nCome to class ready to think about puzzles!\n\nSee you in class!"
+  },
+  {
+    "objectID": "TODO.html",
+    "href": "TODO.html",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory\n\n\n\n\n\n\n\nSchedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\n\n\n\n\n\n\n\nCreate labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic\n\n\n\n\n\n\nSet up testing framework within marimo\nSet up autograder for PL programming assignments"
+  },
+  {
+    "objectID": "TODO.html#completed-setup-reference-for-future-terms",
+    "href": "TODO.html#completed-setup-reference-for-future-terms",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory"
+  },
+  {
+    "objectID": "TODO.html#course-setup-canvasinfrastructure",
+    "href": "TODO.html#course-setup-canvasinfrastructure",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Schedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)"
+  },
+  {
+    "objectID": "TODO.html#assessments",
+    "href": "TODO.html#assessments",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Create labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic"
+  },
+  {
+    "objectID": "TODO.html#technical-infrastructure",
+    "href": "TODO.html#technical-infrastructure",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Set up testing framework within marimo\nSet up autograder for PL programming assignments"
+  },
+  {
     "objectID": "setup.html",
     "href": "setup.html",
     "title": "Setup: Tech stack",
@@ -668,123 +787,228 @@
     ]
   },
   {
-    "objectID": "TODO.html",
-    "href": "TODO.html",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory\n\n\n\n\n\n\n\nSchedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\n\n\n\n\n\n\n\nCreate labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic\n\n\n\n\n\n\nSet up testing framework within marimo\nSet up autograder for PL programming assignments"
+    "objectID": "slides/03_mon_correctness2.html#timing-experiment",
+    "href": "slides/03_mon_correctness2.html#timing-experiment",
+    "title": "Correctness",
+    "section": "Timing Experiment",
+    "text": "Timing Experiment"
   },
   {
-    "objectID": "TODO.html#completed-setup-reference-for-future-terms",
-    "href": "TODO.html#completed-setup-reference-for-future-terms",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory"
+    "objectID": "slides/03_mon_correctness2.html#linear-what-happens-when-n-doubles",
+    "href": "slides/03_mon_correctness2.html#linear-what-happens-when-n-doubles",
+    "title": "Correctness",
+    "section": "Linear: What Happens When \\(n\\) Doubles?",
+    "text": "Linear: What Happens When \\(n\\) Doubles?\n\n\n\n\n\n\n\n“Doubling n → doubling time. That’s \\(\\Theta(n)\\).”"
   },
   {
-    "objectID": "TODO.html#course-setup-canvasinfrastructure",
-    "href": "TODO.html#course-setup-canvasinfrastructure",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Schedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)"
+    "objectID": "slides/03_mon_correctness2.html#quadratic-what-happens-when-n-doubles",
+    "href": "slides/03_mon_correctness2.html#quadratic-what-happens-when-n-doubles",
+    "title": "Correctness",
+    "section": "Quadratic: What Happens When \\(n\\) Doubles?",
+    "text": "Quadratic: What Happens When \\(n\\) Doubles?\n\n\n\n\n\n\n\n“Doubling n → quadrupling time. That’s \\(\\Theta(n^2)\\).”"
   },
   {
-    "objectID": "TODO.html#assessments",
-    "href": "TODO.html#assessments",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Create labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic"
+    "objectID": "slides/03_mon_correctness2.html#logarithmic-what-happens-when-n-doubles",
+    "href": "slides/03_mon_correctness2.html#logarithmic-what-happens-when-n-doubles",
+    "title": "Correctness",
+    "section": "Logarithmic: What Happens When \\(n\\) Doubles?",
+    "text": "Logarithmic: What Happens When \\(n\\) Doubles?\n\n\n\n\n\n\n\n“Doubling n → ONE more iteration. That’s \\(\\Theta(\\log n)\\).”"
   },
   {
-    "objectID": "TODO.html#technical-infrastructure",
-    "href": "TODO.html#technical-infrastructure",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Set up testing framework within marimo\nSet up autograder for PL programming assignments"
+    "objectID": "slides/03_mon_correctness2.html#the-game",
+    "href": "slides/03_mon_correctness2.html#the-game",
+    "title": "Correctness",
+    "section": "The Game",
+    "text": "The Game\nI’m thinking of a number between 1 and 1,000,000.\nYou can ask yes/no questions.\nWhat’s your guaranteed winning strategy?\n\n“How many questions do you need?”"
   },
   {
-    "objectID": "posts/00_welcome/index.html",
-    "href": "posts/00_welcome/index.html",
-    "title": "Welcome to DSCI 221!",
-    "section": "",
-    "text": "Welcome to DSCI 221: Data Structures and Algorithms for Data Science!\nIn this course, we’ll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what’s the cheapest flight to Tokyo?), you’ll develop the algorithmic thinking that separates good programmers from great ones.\nGetting started:\n\nRead the syllabus for course policies and requirements\nCheck the schedule on the home page to see what’s coming up\nCome to class ready to think about puzzles!\n\nSee you in class!"
+    "objectID": "slides/03_mon_correctness2.html#the-optimal-strategy",
+    "href": "slides/03_mon_correctness2.html#the-optimal-strategy",
+    "title": "Correctness",
+    "section": "The Optimal Strategy",
+    "text": "The Optimal Strategy\n“Is it greater than 500,000?”\n\nYes: Search 500,001 to 1,000,000\nNo: Search 1 to 500,000\n\nEach question halves the remaining possibilities.\n\n“This is binary search! And it’s optimal—you can’t do better.”"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
+    "objectID": "slides/03_mon_correctness2.html#how-many-questions",
+    "href": "slides/03_mon_correctness2.html#how-many-questions",
+    "title": "Correctness",
+    "section": "How Many Questions?",
+    "text": "How Many Questions?\nStart with \\(n = 1{,}000{,}000\\) possibilities.\nAfter each question: \\(n \\to n/2\\)\nQuestions needed: \\(\\log_2(1{,}000{,}000) \\approx 20\\)\n\n“20 questions for a million possibilities. That’s the power of halving.”"
   },
   {
-    "objectID": "index.html#weekly-announcement",
-    "href": "index.html#weekly-announcement",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "Weekly announcement",
-    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\nHW3",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
+    "objectID": "slides/03_mon_correctness2.html#the-problem",
+    "href": "slides/03_mon_correctness2.html#the-problem",
+    "title": "Correctness",
+    "section": "The Problem",
+    "text": "The Problem\nGiven a sorted array and a target value, find the target’s index (or determine it’s not there).\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n\n\n\nFind target = 23.\n\n“The array must be sorted. That’s the precondition.”"
   },
   {
-    "objectID": "labs/02_create-website.html",
-    "href": "labs/02_create-website.html",
-    "title": " Lab: Create your own website!",
-    "section": "",
-    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
+    "objectID": "slides/03_mon_correctness2.html#linear-search-the-naive-approach",
+    "href": "slides/03_mon_correctness2.html#linear-search-the-naive-approach",
+    "title": "Correctness",
+    "section": "Linear Search: The Naive Approach",
+    "text": "Linear Search: The Naive Approach\ndef linear_search(arr, target):\n    for i in range(len(arr)):\n        if arr[i] == target:\n            return i\n    return -1\nWorst case: \\(\\Theta(n)\\)\n\n“We might have to check every element.”"
   },
   {
-    "objectID": "labs/02_create-website.html#basic-structure-of-quarto-document",
-    "href": "labs/02_create-website.html#basic-structure-of-quarto-document",
-    "title": " Lab: Create your own website!",
-    "section": "",
-    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
+    "objectID": "slides/03_mon_correctness2.html#binary-search-the-clever-approach",
+    "href": "slides/03_mon_correctness2.html#binary-search-the-clever-approach",
+    "title": "Correctness",
+    "section": "Binary Search: The Clever Approach",
+    "text": "Binary Search: The Clever Approach\ndef binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\nWorst case: \\(\\Theta(\\log n)\\)\n\n“Each iteration halves the search space.”"
   },
   {
-    "objectID": "labs/02_create-website.html#steps",
-    "href": "labs/02_create-website.html#steps",
-    "title": " Lab: Create your own website!",
-    "section": " Steps",
-    "text": "Steps\n\nOpen your workspace: us.prairielearn.com/pl/course_instance/205477/assessment/2633615.\nCreate index.qmd.\nClick the “Render” button on top.\nDownload the output directory _site.\nOpen Netlify Drop: app.netlify.com/drop.\nDrag and drop the downloaded _site onto Netlify Drop.\nPost the link to your website in the comments below."
+    "objectID": "slides/03_mon_correctness2.html#tracing-binary-search",
+    "href": "slides/03_mon_correctness2.html#tracing-binary-search",
+    "title": "Correctness",
+    "section": "Tracing Binary Search",
+    "text": "Tracing Binary Search\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n\n\n\nFind target = 23:\n\nlo=0, hi=9, mid=4 → arr[4]=16 &lt; 23 → lo=5\nlo=5, hi=9, mid=7 → arr[7]=56 &gt; 23 → hi=6\nlo=5, hi=6, mid=5 → arr[5]=23 ✓ → return 5\n\n\n“Three comparisons instead of six. At scale, the difference is dramatic.”"
   },
   {
-    "objectID": "labs/02_create-website.html#resources",
-    "href": "labs/02_create-website.html#resources",
-    "title": " Lab: Create your own website!",
-    "section": " Resources",
-    "text": "Resources\n\nDaring Fireball: Markdown\nInteractive Commonmark Markdown tutorial\nQuarto documentation\nGet started with Quarto Workshop including the material and this video:"
+    "objectID": "slides/03_mon_correctness2.html#the-17-year-bug",
+    "href": "slides/03_mon_correctness2.html#the-17-year-bug",
+    "title": "Correctness",
+    "section": "The 17-Year Bug",
+    "text": "The 17-Year Bug\n\n“I’ve assigned binary search in courses at Bell Labs and IBM… and I’ve studied their solutions… In the history of this exercise, only about ten percent of professional programmers have gotten the program right.”\n— Jon Bentley, Programming Pearls (1986)\n\nThe first correct binary search was published in 1946.\nThe first bug-free implementation? 1962.\n\n“Even experts get it wrong. The loop invariant helps us get it right.”"
   },
   {
-    "objectID": "LICENSE.html",
-    "href": "LICENSE.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "Attribution-ShareAlike 4.0 International\n=======================================================================\nCreative Commons Corporation (“Creative Commons”) is not a law firm and does not provide legal services or legal advice. Distribution of Creative Commons public licenses does not create a lawyer-client or other relationship. Creative Commons makes its licenses and related information available on an “as-is” basis. Creative Commons gives no warranties regarding its licenses, any material licensed under their terms and conditions, or any related information. Creative Commons disclaims all liability for damages resulting from their use to the fullest extent possible.\nUsing Creative Commons Public Licenses\nCreative Commons public licenses provide a standard set of terms and conditions that creators and other rights holders may use to share original works of authorship and other material subject to copyright and certain other rights specified in the public license below. The following considerations are for informational purposes only, are not exhaustive, and do not form part of our licenses.\n Considerations for licensors: Our public licenses are\n intended for use by those authorized to give the public\n permission to use material in ways otherwise restricted by\n copyright and certain other rights. Our licenses are\n irrevocable. Licensors should read and understand the terms\n and conditions of the license they choose before applying it.\n Licensors should also secure all rights necessary before\n applying our licenses so that the public can reuse the\n material as expected. Licensors should clearly mark any\n material not subject to the license. This includes other CC-\n licensed material, or material used under an exception or\n limitation to copyright. More considerations for licensors:\nwiki.creativecommons.org/Considerations_for_licensors\n\n Considerations for the public: By using one of our public\n licenses, a licensor grants the public permission to use the\n licensed material under specified terms and conditions. If\n the licensor's permission is not necessary for any reason--for\n example, because of any applicable exception or limitation to\n copyright--then that use is not regulated by the license. Our\n licenses grant only permissions under copyright and certain\n other rights that a licensor has authority to grant. Use of\n the licensed material may still be restricted for other\n reasons, including because others have copyright or other\n rights in the material. A licensor may make special requests,\n such as asking that all changes be marked or described.\n Although not required by our licenses, you are encouraged to\n respect those requests where reasonable. More_considerations\n for the public:\nwiki.creativecommons.org/Considerations_for_licensees\n=======================================================================\nCreative Commons Attribution-ShareAlike 4.0 International Public License\nBy exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution-ShareAlike 4.0 International Public License (“Public License”). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.\nSection 1 – Definitions.\n\nAdapted Material means material subject to Copyright and Similar Rights that is derived from or based upon the Licensed Material and in which the Licensed Material is translated, altered, arranged, transformed, or otherwise modified in a manner requiring permission under the Copyright and Similar Rights held by the Licensor. For purposes of this Public License, where the Licensed Material is a musical work, performance, or sound recording, Adapted Material is always produced where the Licensed Material is synched in timed relation with a moving image.\nAdapter’s License means the license You apply to Your Copyright and Similar Rights in Your contributions to Adapted Material in accordance with the terms and conditions of this Public License.\nBY-SA Compatible License means a license listed at creativecommons.org/compatiblelicenses, approved by Creative Commons as essentially the equivalent of this Public License.\nCopyright and Similar Rights means copyright and/or similar rights closely related to copyright including, without limitation, performance, broadcast, sound recording, and Sui Generis Database Rights, without regard to how the rights are labeled or categorized. For purposes of this Public License, the rights specified in Section 2(b)(1)-(2) are not Copyright and Similar Rights.\nEffective Technological Measures means those measures that, in the absence of proper authority, may not be circumvented under laws fulfilling obligations under Article 11 of the WIPO Copyright Treaty adopted on December 20, 1996, and/or similar international agreements.\nExceptions and Limitations means fair use, fair dealing, and/or any other exception or limitation to Copyright and Similar Rights that applies to Your use of the Licensed Material.\nLicense Elements means the license attributes listed in the name of a Creative Commons Public License. The License Elements of this Public License are Attribution and ShareAlike.\nLicensed Material means the artistic or literary work, database, or other material to which the Licensor applied this Public License.\nLicensed Rights means the rights granted to You subject to the terms and conditions of this Public License, which are limited to all Copyright and Similar Rights that apply to Your use of the Licensed Material and that the Licensor has authority to license.\nLicensor means the individual(s) or entity(ies) granting rights under this Public License.\nShare means to provide material to the public by any means or process that requires permission under the Licensed Rights, such as reproduction, public display, public performance, distribution, dissemination, communication, or importation, and to make material available to the public including in ways that members of the public may access the material from a place and at a time individually chosen by them.\nSui Generis Database Rights means rights other than copyright resulting from Directive 96/9/EC of the European Parliament and of the Council of 11 March 1996 on the legal protection of databases, as amended and/or succeeded, as well as other essentially equivalent rights anywhere in the world.\nYou means the individual or entity exercising the Licensed Rights under this Public License. Your has a corresponding meaning.\n\nSection 2 – Scope.\n\nLicense grant.\n\nSubject to the terms and conditions of this Public License, the Licensor hereby grants You a worldwide, royalty-free, non-sublicensable, non-exclusive, irrevocable license to exercise the Licensed Rights in the Licensed Material to:\n\nreproduce and Share the Licensed Material, in whole or in part; and\nproduce, reproduce, and Share Adapted Material.\n\nExceptions and Limitations. For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this Public License does not apply, and You do not need to comply with its terms and conditions.\nTerm. The term of this Public License is specified in Section 6(a).\nMedia and formats; technical modifications allowed. The Licensor authorizes You to exercise the Licensed Rights in all media and formats whether now known or hereafter created, and to make technical modifications necessary to do so. The Licensor waives and/or agrees not to assert any right or authority to forbid You from making technical modifications necessary to exercise the Licensed Rights, including technical modifications necessary to circumvent Effective Technological Measures. For purposes of this Public License, simply making modifications authorized by this Section 2(a)\n\nnever produces Adapted Material.\n\nDownstream recipients.\n\nOffer from the Licensor – Licensed Material. Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.\nAdditional offer from the Licensor – Adapted Material. Every recipient of Adapted Material from You automatically receives an offer from the Licensor to exercise the Licensed Rights in the Adapted Material under the conditions of the Adapter’s License You apply.\nNo downstream restrictions. You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.\n\nNo endorsement. Nothing in this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided in Section 3(a)(1)(A)(i).\n\nOther rights.\n\nMoral rights, such as the right of integrity, are not licensed under this Public License, nor are publicity, privacy, and/or other similar personality rights; however, to the extent possible, the Licensor waives and/or agrees not to assert any such rights held by the Licensor to the limited extent necessary to allow You to exercise the Licensed Rights, but not otherwise.\nPatent and trademark rights are not licensed under this Public License.\nTo the extent possible, the Licensor waives any right to collect royalties from You for the exercise of the Licensed Rights, whether directly or through a collecting society under any voluntary or waivable statutory or compulsory licensing scheme. In all other cases the Licensor expressly reserves any right to collect such royalties.\n\n\nSection 3 – License Conditions.\nYour exercise of the Licensed Rights is expressly made subject to the following conditions.\n\nAttribution.\n\nIf You Share the Licensed Material (including in modified form), You must:\n\nretain the following if it is supplied by the Licensor with the Licensed Material:\n\nidentification of the creator(s) of the Licensed Material and any others designated to receive attribution, in any reasonable manner requested by the Licensor (including by pseudonym if designated);\na copyright notice;\na notice that refers to this Public License;\na notice that refers to the disclaimer of warranties;\na URI or hyperlink to the Licensed Material to the extent reasonably practicable;\n\nindicate if You modified the Licensed Material and retain an indication of any previous modifications; and\nindicate the Licensed Material is licensed under this Public License, and include the text of, or the URI or hyperlink to, this Public License.\n\nYou may satisfy the conditions in Section 3(a)(1) in any reasonable manner based on the medium, means, and context in which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI or hyperlink to a resource that includes the required information.\nIf requested by the Licensor, You must remove any of the information required by Section 3(a)(1)(A) to the extent reasonably practicable.\n\nShareAlike.\nIn addition to the conditions in Section 3(a), if You Share Adapted Material You produce, the following conditions also apply.\n\nThe Adapter’s License You apply must be a Creative Commons license with the same License Elements, this version or later, or a BY-SA Compatible License.\nYou must include the text of, or the URI or hyperlink to, the Adapter’s License You apply. You may satisfy this condition in any reasonable manner based on the medium, means, and context in which You Share Adapted Material.\nYou may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, Adapted Material that restrict exercise of the rights granted under the Adapter’s License You apply.\n\n\nSection 4 – Sui Generis Database Rights.\nWhere the Licensed Rights include Sui Generis Database Rights that apply to Your use of the Licensed Material:\n\nfor the avoidance of doubt, Section 2(a)(1) grants You the right to extract, reuse, reproduce, and Share all or a substantial portion of the contents of the database;\nif You include all or a substantial portion of the database contents in a database in which You have Sui Generis Database Rights, then the database in which You have Sui Generis Database Rights (but not its individual contents) is Adapted Material,\nincluding for purposes of Section 3(b); and\nYou must comply with the conditions in Section 3(a) if You Share all or a substantial portion of the contents of the database.\n\nFor the avoidance of doubt, this Section 4 supplements and does not replace Your obligations under this Public License where the Licensed Rights include other Copyright and Similar Rights.\nSection 5 – Disclaimer of Warranties and Limitation of Liability.\n\nUNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.\nTO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.\nThe disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.\n\nSection 6 – Term and Termination.\n\nThis Public License applies for the term of the Copyright and Similar Rights licensed here. However, if You fail to comply with this Public License, then Your rights under this Public License terminate automatically.\nWhere Your right to use the Licensed Material has terminated under Section 6(a), it reinstates:\n\nautomatically as of the date the violation is cured, provided it is cured within 30 days of Your discovery of the violation; or\nupon express reinstatement by the Licensor.\n\nFor the avoidance of doubt, this Section 6(b) does not affect any right the Licensor may have to seek remedies for Your violations of this Public License.\nFor the avoidance of doubt, the Licensor may also offer the Licensed Material under separate terms or conditions or stop distributing the Licensed Material at any time; however, doing so will not terminate this Public License.\nSections 1, 5, 6, 7, and 8 survive termination of this Public License.\n\nSection 7 – Other Terms and Conditions.\n\nThe Licensor shall not be bound by any additional or different terms or conditions communicated by You unless expressly agreed.\nAny arrangements, understandings, or agreements regarding the Licensed Material not stated herein are separate from and independent of the terms and conditions of this Public License.\n\nSection 8 – Interpretation.\n\nFor the avoidance of doubt, this Public License does not, and shall not be interpreted to, reduce, limit, restrict, or impose conditions on any use of the Licensed Material that could lawfully be made without permission under this Public License.\nTo the extent possible, if any provision of this Public License is deemed unenforceable, it shall be automatically reformed to the minimum extent necessary to make it enforceable. If the provision cannot be reformed, it shall be severed from this Public License without affecting the enforceability of the remaining terms and conditions.\nNo term or condition of this Public License will be waived and no failure to comply consented to unless expressly agreed to by the Licensor.\nNothing in this Public License constitutes or may be interpreted as a limitation upon, or waiver of, any privileges and immunities that apply to the Licensor or You, including from the legal processes of any jurisdiction or authority.\n\n=======================================================================\nCreative Commons is not a party to its public licenses. Notwithstanding, Creative Commons may elect to apply one of its public licenses to material it publishes and in those instances will be considered the “Licensor.” The text of the Creative Commons public licenses is dedicated to the public domain under the CC0 Public Domain Dedication. Except for the limited purpose of indicating that material is shared under a Creative Commons public license or as otherwise permitted by the Creative Commons policies published at creativecommons.org/policies, Creative Commons does not authorize the use of the trademark “Creative Commons” or any other trademark or logo of Creative Commons without its prior written consent including, without limitation, in connection with any unauthorized modifications to any of its public licenses or any other arrangements, understandings, or agreements concerning use of licensed material. For the avoidance of doubt, this paragraph does not form part of the public licenses.\nCreative Commons may be contacted at creativecommons.org."
+    "objectID": "slides/03_mon_correctness2.html#the-invariant",
+    "href": "slides/03_mon_correctness2.html#the-invariant",
+    "title": "Correctness",
+    "section": "The Invariant",
+    "text": "The Invariant\nInvariant: At iteration \\(i\\), if target is in arr, then target is in arr[lo:hi+1].\nEquivalently: We haven’t excluded any index where target could be.\n\n“This is the ‘search’ pattern: the answer is still in the remaining range.”\n“The invariant holds at any point we might exit the loop.”"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
-    "crumbs": [
-      "About"
-    ]
+    "objectID": "slides/03_mon_correctness2.html#base-case-i-0",
+    "href": "slides/03_mon_correctness2.html#base-case-i-0",
+    "title": "Correctness",
+    "section": "Base Case (\\(i = 0\\))",
+    "text": "Base Case (\\(i = 0\\))\nBefore the first iteration: lo = 0, hi = len(arr) - 1\narr[lo:hi+1] = arr[0:len(arr)] = entire array\nIf target is in arr, it’s in arr[lo:hi+1]. ✓\n\n“We start with the full array. The invariant holds trivially.”"
   },
   {
-    "objectID": "about.html#about",
-    "href": "about.html#about",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
-    "crumbs": [
-      "About"
-    ]
+    "objectID": "slides/03_mon_correctness2.html#inductive-step-case-1-found-it",
+    "href": "slides/03_mon_correctness2.html#inductive-step-case-1-found-it",
+    "title": "Correctness",
+    "section": "Inductive Step: Case 1 (Found it)",
+    "text": "Inductive Step: Case 1 (Found it)\narr[mid] == target → we return mid.\nThe invariant holds at this exit point: target is indeed in arr[lo:hi+1].\nWe return the correct answer. ✓\n\n“Found it. The invariant tells us we’re returning a valid location.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#inductive-step-case-2",
+    "href": "slides/03_mon_correctness2.html#inductive-step-case-2",
+    "title": "Correctness",
+    "section": "Inductive Step: Case 2",
+    "text": "Inductive Step: Case 2\narr[mid] &lt; target\nSince arr is sorted: everything at indices \\(\\leq\\) mid is \\(\\leq\\) arr[mid] \\(&lt;\\) target.\nSo target can’t be at indices 0 through mid.\nSetting lo = mid + 1 excludes only indices where target can’t be. ✓\n\n“We’re safe to narrow the range because we’re only excluding impossible locations.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#inductive-step-case-3",
+    "href": "slides/03_mon_correctness2.html#inductive-step-case-3",
+    "title": "Correctness",
+    "section": "Inductive Step: Case 3",
+    "text": "Inductive Step: Case 3\narr[mid] &gt; target\nSince arr is sorted: everything at indices \\(\\geq\\) mid is \\(\\geq\\) arr[mid] \\(&gt;\\) target.\nSo target can’t be at indices mid through \\(n-1\\).\nSetting hi = mid - 1 excludes only indices where target can’t be. ✓\n\n“Same reasoning. We only narrow the range safely.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#termination-exit-via-lo-hi",
+    "href": "slides/03_mon_correctness2.html#termination-exit-via-lo-hi",
+    "title": "Correctness",
+    "section": "Termination (Exit via lo > hi)",
+    "text": "Termination (Exit via lo &gt; hi)\nThe loop exits when lo &gt; hi.\nAt this exit point, arr[lo:hi+1] is empty.\nThe invariant says: if target is in arr, it’s in this empty range.\nBut nothing is in an empty range.\nTherefore: target is not in arr. Return -1. ∎\n\n“The invariant holds at this exit point too — it just tells us target isn’t there.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#the-proof-in-one-slide",
+    "href": "slides/03_mon_correctness2.html#the-proof-in-one-slide",
+    "title": "Correctness",
+    "section": "The Proof in One Slide",
+    "text": "The Proof in One Slide\nTheorem: binary_search(arr, target) returns the index of target if present, else -1.\nProof: By induction on iteration count.\n\nInvariant: At iteration \\(i\\), if target ∈ arr, then target ∈ arr[lo:hi+1]\nBase case: \\(i=0\\), full array satisfies invariant ✓\nInductive step: Each case either exits correctly or safely shrinks range ✓\nTermination: At exit, invariant \\(\\Rightarrow\\) correct answer ∎"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#common-mistakes",
+    "href": "slides/03_mon_correctness2.html#common-mistakes",
+    "title": "Correctness",
+    "section": "Common Mistakes",
+    "text": "Common Mistakes\n# Bug 1: Wrong comparison\nwhile lo &lt; hi:  # Should be lo &lt;= hi\n    ...\n\n# Bug 2: Wrong update\nlo = mid        # Should be mid + 1\nhi = mid        # Should be mid - 1\n\n# Bug 3: Integer overflow (in C/Java)\nmid = (lo + hi) / 2  # Can overflow!\n# Fix: mid = lo + (hi - lo) / 2\n\n“Bug 1: misses the case where lo == hi. Bug 2: can cause infinite loop. Bug 3: famous Java bug, discovered in 2006 in Arrays.binarySearch!”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#the-java-bug-2006",
+    "href": "slides/03_mon_correctness2.html#the-java-bug-2006",
+    "title": "Correctness",
+    "section": "The Java Bug (2006)",
+    "text": "The Java Bug (2006)\n// This was in java.util.Arrays for 9 years!\nint mid = (low + high) / 2;  // OVERFLOW BUG\nWhen low + high &gt; Integer.MAX_VALUE, this overflows.\nFix:\nint mid = low + (high - low) / 2;\n\n“Joshua Bloch, who wrote the code, wrote about this bug. Even Google engineers get binary search wrong.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#the-invariant-saves-you",
+    "href": "slides/03_mon_correctness2.html#the-invariant-saves-you",
+    "title": "Correctness",
+    "section": "The Invariant Saves You",
+    "text": "The Invariant Saves You\nWhen you’re unsure about an edge case, ask:\n\n“Does this maintain the invariant?”\n\n\nlo = mid + 1: Does this exclude only impossible locations? Yes.\nhi = mid - 1: Does this exclude only impossible locations? Yes.\nlo &lt;= hi: When does the search space become empty? When lo &gt; hi.\n\n\n“The invariant is your compass. When lost, check the invariant.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#worst-case-running-time",
+    "href": "slides/03_mon_correctness2.html#worst-case-running-time",
+    "title": "Correctness",
+    "section": "Worst-Case Running Time",
+    "text": "Worst-Case Running Time\nEach iteration:\n\nConstant work (comparisons, arithmetic)\nRange shrinks by half: \\((hi - lo + 1) \\to \\lfloor(hi - lo + 1)/2\\rfloor\\)\n\nHow many halvings until range is empty?\n\\(\\log_2(n)\\)\nWorst case: \\(\\Theta(\\log n)\\)\n\n“The halving is the key. That’s what gives us the logarithm.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#the-scale-comparison",
+    "href": "slides/03_mon_correctness2.html#the-scale-comparison",
+    "title": "Correctness",
+    "section": "The Scale Comparison",
+    "text": "The Scale Comparison\n\n\n\n\\(n\\)\nLinear Search\nBinary Search\n\n\n\n\n1,000\n1,000\n10\n\n\n1,000,000\n1,000,000\n20\n\n\n1,000,000,000\n1,000,000,000\n30\n\n\n\n\n“A billion elements, 30 comparisons. That’s the power of \\(O(\\log n)\\).”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#racing-them",
+    "href": "slides/03_mon_correctness2.html#racing-them",
+    "title": "Correctness",
+    "section": "Racing Them",
+    "text": "Racing Them"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#the-race",
+    "href": "slides/03_mon_correctness2.html#the-race",
+    "title": "Correctness",
+    "section": "The Race",
+    "text": "The Race\n\n\n\n\n\n\n\n“Linear grows with n. Binary barely budges. That’s \\(O(n)\\) vs \\(O(\\log n)\\).”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#the-precondition",
+    "href": "slides/03_mon_correctness2.html#the-precondition",
+    "title": "Correctness",
+    "section": "The Precondition",
+    "text": "The Precondition\nBinary search requires the array to be sorted.\nWhat if it’s not sorted?\n\n\n\n\n\n\n\n“Garbage in, garbage out. The invariant assumes sorted order.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#when-to-use-binary-search",
+    "href": "slides/03_mon_correctness2.html#when-to-use-binary-search",
+    "title": "Correctness",
+    "section": "When to Use Binary Search",
+    "text": "When to Use Binary Search\nUse binary search when:\n\nData is sorted (or can be sorted once, searched many times)\nRandom access is \\(O(1)\\) (arrays, not linked lists)\nYou need to find a specific value\n\nDon’t use when:\n\nData is unsorted and searched only once\nData structure doesn’t support random access\nYou need to find all occurrences\n\n\n“Sorting costs \\(O(n \\log n)\\). If you only search once, linear search wins.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#what-we-learned",
+    "href": "slides/03_mon_correctness2.html#what-we-learned",
+    "title": "Correctness",
+    "section": "What We Learned",
+    "text": "What We Learned\n\nBinary search finds a target in \\(\\Theta(\\log n)\\) time (vs \\(\\Theta(n)\\) for linear)\nThe invariant: “If target exists, it’s in arr[lo:hi+1]”\nThe proof: Init, Maintenance (3 cases), Termination\nThe bugs: Off-by-one errors, infinite loops, integer overflow\nThe precondition: Array must be sorted"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#the-pattern",
+    "href": "slides/03_mon_correctness2.html#the-pattern",
+    "title": "Correctness",
+    "section": "The Pattern",
+    "text": "The Pattern\nBinary search is a divide-and-conquer algorithm:\n\nDivide: Pick the middle\nConquer: Recurse on one half\nCombine: Nothing to combine (we found it or it’s not there)\n\nWe’ll see more divide-and-conquer in Week 6 (sorting)."
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#next-week",
+    "href": "slides/03_mon_correctness2.html#next-week",
+    "title": "Correctness",
+    "section": "Next Week",
+    "text": "Next Week\nWeek 3: Recursion\n\nThinking recursively\nRecurrence relations\nThe fractal coastline puzzle\n\n\n“Binary search can also be written recursively. We’ll explore that next week.”"
+  },
+  {
+    "objectID": "slides/03_mon_correctness2.html#questions",
+    "href": "slides/03_mon_correctness2.html#questions",
+    "title": "Correctness",
+    "section": "Questions?",
+    "text": "Questions?\n\nBinary search: \\(\\Theta(\\log n)\\)\nThe invariant makes it correct.\nThe halving makes it fast."
   },
   {
     "objectID": "slides/02_mon_hierarchy.html#announcements",
