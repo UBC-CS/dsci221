@@ -1,0 +1,512 @@
+---
+title: "Correctness"
+subtitle: "Week 3, Monday"
+date: 2026-01-19
+---
+# Warm-up: Feel the Doubling
+
+## Timing Experiment
+
+```{pyodide}
+import time
+
+def time_it(func, *args):
+    start = time.time()
+    func(*args)
+    return time.time() - start
+
+def linear_work(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
+
+def quadratic_work(n):
+    count = 0
+    for i in range(n):
+        for j in range(n):
+            count += 1
+    return count
+```
+
+## Linear: What Happens When $n$ Doubles?
+
+```{pyodide}
+print("n          time       ratio")
+print("-" * 35)
+prev = None
+for n in [10000, 20000, 40000, 80000]:
+    t = time_it(linear_work, n)
+    ratio = f"{t/prev:.2f}" if prev else "—"
+    print(f"{n:6}    {t:.4f}s    {ratio}")
+    prev = t
+```
+
+:::{.notes}
+"Doubling n → doubling time. That's $\Theta(n)$."
+:::
+
+## Quadratic: What Happens When $n$ Doubles?
+
+```{pyodide}
+print("n          time       ratio")
+print("-" * 35)
+prev = None
+for n in [500, 1000, 2000, 4000]:
+    t = time_it(quadratic_work, n)
+    ratio = f"{t/prev:.2f}" if prev else "—"
+    print(f"{n:6}    {t:.4f}s    {ratio}")
+    prev = t
+```
+
+:::{.notes}
+"Doubling n → quadrupling time. That's $\Theta(n^2)$."
+:::
+
+## Logarithmic: What Happens When $n$ Doubles?
+
+```{pyodide}
+import math
+
+def log_work(n):
+    count = 0
+    while n > 1:
+        n = n // 2
+        count += 1
+    return count
+
+print("n              iterations")
+print("-" * 30)
+for n in [1000, 2000, 4000, 8000, 16000]:
+    iters = log_work(n)
+    print(f"{n:6}         {iters}")
+```
+
+:::{.notes}
+"Doubling n → ONE more iteration. That's $\Theta(\log n)$."
+:::
+
+# The Twenty Questions Puzzle
+
+## The Game
+
+I'm thinking of a number between 1 and 1,000,000.
+
+You can ask yes/no questions.
+
+What's your **guaranteed** winning strategy?
+
+:::{.notes}
+"How many questions do you need?"
+:::
+
+## The Optimal Strategy
+
+"Is it greater than 500,000?"
+
+- **Yes**: Search 500,001 to 1,000,000
+- **No**: Search 1 to 500,000
+
+Each question **halves** the remaining possibilities.
+
+:::{.notes}
+"This is binary search! And it's optimal—you can't do better."
+:::
+
+## How Many Questions?
+
+Start with $n = 1{,}000{,}000$ possibilities.
+
+After each question: $n \to n/2$
+
+Questions needed: $\log_2(1{,}000{,}000) \approx 20$
+
+:::{.notes}
+"20 questions for a million possibilities. That's the power of halving."
+:::
+
+# Binary Search
+
+## The Problem
+
+Given a **sorted** array and a target value, find the target's index (or determine it's not there).
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 2 | 5 | 8 | 12 | 16 | 23 | 38 | 56 | 72 | 91 |
+
+Find `target = 23`.
+
+:::{.notes}
+"The array must be sorted. That's the precondition."
+:::
+
+## Linear Search: The Naive Approach
+
+```python
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1
+```
+
+Worst case: $\Theta(n)$
+
+:::{.notes}
+"We might have to check every element."
+:::
+
+## Binary Search: The Clever Approach
+
+```python
+def binary_search(arr, target):
+    lo, hi = 0, len(arr) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+```
+
+Worst case: $\Theta(\log n)$
+
+:::{.notes}
+"Each iteration halves the search space."
+:::
+
+## Tracing Binary Search
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 2 | 5 | 8 | 12 | 16 | 23 | 38 | 56 | 72 | 91 |
+
+Find `target = 23`:
+
+1. `lo=0, hi=9, mid=4` → `arr[4]=16 < 23` → `lo=5`
+2. `lo=5, hi=9, mid=7` → `arr[7]=56 > 23` → `hi=6`
+3. `lo=5, hi=6, mid=5` → `arr[5]=23` ✓ → return 5
+
+:::{.notes}
+"Three comparisons instead of six. At scale, the difference is dramatic."
+:::
+
+## The 17-Year Bug
+
+> "I've assigned [binary search] in courses at Bell Labs and IBM... and I've studied their solutions... In the history of this exercise, only about ten percent of professional programmers have gotten the program right."
+>
+> — Jon Bentley, *Programming Pearls* (1986)
+
+The first correct binary search was published in 1946.
+
+The first **bug-free** implementation? 1962.
+
+:::{.notes}
+"Even experts get it wrong. The loop invariant helps us get it right."
+:::
+
+# Proving Binary Search Correct
+
+## The Invariant
+
+**Invariant**: At iteration $i$, if `target` is in `arr`, then `target` is in `arr[lo:hi+1]`.
+
+Equivalently: We haven't excluded any index where `target` could be.
+
+:::{.notes}
+"This is the 'search' pattern: the answer is still in the remaining range."
+
+"The invariant holds at any point we might exit the loop."
+:::
+
+## Base Case ($i = 0$)
+
+Before the first iteration: `lo = 0`, `hi = len(arr) - 1`
+
+`arr[lo:hi+1]` = `arr[0:len(arr)]` = entire array
+
+If `target` is in `arr`, it's in `arr[lo:hi+1]`. ✓
+
+:::{.notes}
+"We start with the full array. The invariant holds trivially."
+:::
+
+## Inductive Step: Case 1 (Found it)
+
+`arr[mid] == target` → we return `mid`.
+
+The invariant holds at this exit point: `target` is indeed in `arr[lo:hi+1]`.
+
+We return the correct answer. ✓
+
+:::{.notes}
+"Found it. The invariant tells us we're returning a valid location."
+:::
+
+## Inductive Step: Case 2
+
+`arr[mid] < target`
+
+Since `arr` is sorted: everything at indices $\leq$ `mid` is $\leq$ `arr[mid]` $<$ `target`.
+
+So `target` can't be at indices 0 through `mid`.
+
+Setting `lo = mid + 1` excludes only indices where `target` **can't** be. ✓
+
+:::{.notes}
+"We're safe to narrow the range because we're only excluding impossible locations."
+:::
+
+## Inductive Step: Case 3
+
+`arr[mid] > target`
+
+Since `arr` is sorted: everything at indices $\geq$ `mid` is $\geq$ `arr[mid]` $>$ `target`.
+
+So `target` can't be at indices `mid` through $n-1$.
+
+Setting `hi = mid - 1` excludes only indices where `target` **can't** be. ✓
+
+:::{.notes}
+"Same reasoning. We only narrow the range safely."
+:::
+
+## Termination (Exit via `lo > hi`)
+
+The loop exits when `lo > hi`.
+
+At this exit point, `arr[lo:hi+1]` is **empty**.
+
+The invariant says: if `target` is in `arr`, it's in this empty range.
+
+But nothing is in an empty range.
+
+**Therefore**: `target` is **not** in `arr`. Return -1. ∎
+
+:::{.notes}
+"The invariant holds at this exit point too — it just tells us target isn't there."
+:::
+
+## The Proof in One Slide
+
+**Theorem**: `binary_search(arr, target)` returns the index of `target` if present, else -1.
+
+**Proof**: By induction on iteration count.
+
+- **Invariant**: At iteration $i$, if `target ∈ arr`, then `target ∈ arr[lo:hi+1]`
+- **Base case**: $i=0$, full array satisfies invariant ✓
+- **Inductive step**: Each case either exits correctly or safely shrinks range ✓
+- **Termination**: At exit, invariant $\Rightarrow$ correct answer ∎
+
+# Why the Bug?
+
+## Common Mistakes
+
+```python
+# Bug 1: Wrong comparison
+while lo < hi:  # Should be lo <= hi
+    ...
+
+# Bug 2: Wrong update
+lo = mid        # Should be mid + 1
+hi = mid        # Should be mid - 1
+
+# Bug 3: Integer overflow (in C/Java)
+mid = (lo + hi) / 2  # Can overflow!
+# Fix: mid = lo + (hi - lo) / 2
+```
+
+:::{.notes}
+"Bug 1: misses the case where lo == hi. Bug 2: can cause infinite loop. Bug 3: famous Java bug, discovered in 2006 in Arrays.binarySearch!"
+:::
+
+## The Java Bug (2006)
+
+```java
+// This was in java.util.Arrays for 9 years!
+int mid = (low + high) / 2;  // OVERFLOW BUG
+```
+
+When `low + high > Integer.MAX_VALUE`, this overflows.
+
+Fix:
+```java
+int mid = low + (high - low) / 2;
+```
+
+:::{.notes}
+"Joshua Bloch, who wrote the code, wrote about this bug. Even Google engineers get binary search wrong."
+:::
+
+## The Invariant Saves You
+
+When you're unsure about an edge case, ask:
+
+> "Does this maintain the invariant?"
+
+- `lo = mid + 1`: Does this exclude only impossible locations? **Yes.**
+- `hi = mid - 1`: Does this exclude only impossible locations? **Yes.**
+- `lo <= hi`: When does the search space become empty? **When lo > hi.**
+
+:::{.notes}
+"The invariant is your compass. When lost, check the invariant."
+:::
+
+# Analysis
+
+## Worst-Case Running Time
+
+Each iteration:
+
+- Constant work (comparisons, arithmetic)
+- Range shrinks by half: $(hi - lo + 1) \to \lfloor(hi - lo + 1)/2\rfloor$
+
+How many halvings until range is empty?
+
+$\log_2(n)$
+
+**Worst case**: $\Theta(\log n)$
+
+:::{.notes}
+"The halving is the key. That's what gives us the logarithm."
+:::
+
+## The Scale Comparison
+
+| $n$ | Linear Search | Binary Search |
+|-----|---------------|---------------|
+| 1,000 | 1,000 | 10 |
+| 1,000,000 | 1,000,000 | 20 |
+| 1,000,000,000 | 1,000,000,000 | 30 |
+
+:::{.notes}
+"A billion elements, 30 comparisons. That's the power of $O(\log n)$."
+:::
+
+## Racing Them
+
+```{pyodide}
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1
+
+def binary_search(arr, target):
+    lo, hi = 0, len(arr) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+```
+
+## The Race
+
+```{pyodide}
+print("n          linear      binary")
+print("-" * 40)
+for n in [10000, 100000, 1000000]:
+    arr = list(range(n))
+    target = n  # Not in array = worst case
+
+    t1 = time_it(linear_search, arr, target)
+    t2 = time_it(binary_search, arr, target)
+
+    print(f"{n:7}    {t1:.4f}s    {t2:.6f}s")
+```
+
+:::{.notes}
+"Linear grows with n. Binary barely budges. That's $O(n)$ vs $O(\log n)$."
+:::
+
+# The Price of Speed
+
+## The Precondition
+
+Binary search **requires** the array to be sorted.
+
+What if it's not sorted?
+
+```{pyodide}
+arr = [3, 1, 4, 1, 5, 9, 2, 6]
+print(f"Looking for 5 in {arr}")
+print(f"Result: {binary_search(arr, 5)}")
+print(f"But 5 is at index: {arr.index(5)}")
+```
+
+:::{.notes}
+"Garbage in, garbage out. The invariant assumes sorted order."
+:::
+
+## When to Use Binary Search
+
+**Use binary search when:**
+
+- Data is sorted (or can be sorted once, searched many times)
+- Random access is $O(1)$ (arrays, not linked lists)
+- You need to find a specific value
+
+**Don't use when:**
+
+- Data is unsorted and searched only once
+- Data structure doesn't support random access
+- You need to find *all* occurrences
+
+:::{.notes}
+"Sorting costs $O(n \log n)$. If you only search once, linear search wins."
+:::
+
+# Summary
+
+## What We Learned
+
+1. **Binary search** finds a target in $\Theta(\log n)$ time (vs $\Theta(n)$ for linear)
+
+2. **The invariant**: "If target exists, it's in `arr[lo:hi+1]`"
+
+3. **The proof**: Init, Maintenance (3 cases), Termination
+
+4. **The bugs**: Off-by-one errors, infinite loops, integer overflow
+
+5. **The precondition**: Array must be sorted
+
+## The Pattern
+
+Binary search is a **divide-and-conquer** algorithm:
+
+1. **Divide**: Pick the middle
+2. **Conquer**: Recurse on one half
+3. **Combine**: Nothing to combine (we found it or it's not there)
+
+We'll see more divide-and-conquer in Week 6 (sorting).
+
+## Next Week
+
+**Week 3: Recursion**
+
+- Thinking recursively
+- Recurrence relations
+- The fractal coastline puzzle
+
+:::{.notes}
+"Binary search can also be written recursively. We'll explore that next week."
+:::
+
+## Questions?
+
+::: {.r-fit-text}
+Binary search: $\Theta(\log n)$
+
+The invariant makes it **correct**.
+
+The halving makes it **fast**.
+:::
