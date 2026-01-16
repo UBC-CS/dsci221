@@ -1,5 +1,5 @@
 ---
-title: "Binary Search"
+title: "Correctness"
 subtitle: "Week 2, Wednesday"
 date: 2026-01-14
 ---
@@ -9,510 +9,460 @@ date: 2026-01-14
 - Lab 1 this week: Lists and searching
 - HW1 assigned Friday
 
-# Warm-up: Feel the Doubling
+# The Pillar of Correctness
 
-## Timing Experiment
-
-```{pyodide}
-import time
-
-def time_it(func, *args):
-    start = time.time()
-    func(*args)
-    return time.time() - start
-
-def linear_work(n):
-    total = 0
-    for i in range(n):
-        total += i
-    return total
-
-def quadratic_work(n):
-    count = 0
-    for i in range(n):
-        for j in range(n):
-            count += 1
-    return count
-```
-
-## Linear: What Happens When $n$ Doubles?
-
-```{pyodide}
-print("n          time       ratio")
-print("-" * 35)
-prev = None
-for n in [10000, 20000, 40000, 80000]:
-    t = time_it(linear_work, n)
-    ratio = f"{t/prev:.2f}" if prev else "—"
-    print(f"{n:6}    {t:.4f}s    {ratio}")
-    prev = t
-```
-
-:::{.notes}
-"Doubling n → doubling time. That's $\Theta(n)$."
-:::
-
-## Quadratic: What Happens When $n$ Doubles?
-
-```{pyodide}
-print("n          time       ratio")
-print("-" * 35)
-prev = None
-for n in [500, 1000, 2000, 4000]:
-    t = time_it(quadratic_work, n)
-    ratio = f"{t/prev:.2f}" if prev else "—"
-    print(f"{n:6}    {t:.4f}s    {ratio}")
-    prev = t
-```
-
-:::{.notes}
-"Doubling n → quadrupling time. That's $\Theta(n^2)$."
-:::
-
-## Logarithmic: What Happens When $n$ Doubles?
-
-```{pyodide}
-import math
-
-def log_work(n):
-    count = 0
-    while n > 1:
-        n = n // 2
-        count += 1
-    return count
-
-print("n              iterations")
-print("-" * 30)
-for n in [1000, 2000, 4000, 8000, 16000]:
-    iters = log_work(n)
-    print(f"{n:6}         {iters}")
-```
-
-:::{.notes}
-"Doubling n → ONE more iteration. That's $\Theta(\log n)$."
-:::
-
-# The Twenty Questions Puzzle
-
-## The Game
-
-I'm thinking of a number between 1 and 1,000,000.
-
-You can ask yes/no questions.
-
-What's your **guaranteed** winning strategy?
-
-:::{.notes}
-"How many questions do you need?"
-:::
-
-## The Optimal Strategy
-
-"Is it greater than 500,000?"
-
-- **Yes**: Search 500,001 to 1,000,000
-- **No**: Search 1 to 500,000
-
-Each question **halves** the remaining possibilities.
-
-:::{.notes}
-"This is binary search! And it's optimal—you can't do better."
-:::
-
-## How Many Questions?
-
-Start with $n = 1{,}000{,}000$ possibilities.
-
-After each question: $n \to n/2$
-
-Questions needed: $\log_2(1{,}000{,}000) \approx 20$
-
-:::{.notes}
-"20 questions for a million possibilities. That's the power of halving."
-:::
-
-# Binary Search
-
-## The Problem
-
-Given a **sorted** array and a target value, find the target's index (or determine it's not there).
-
-| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| 2 | 5 | 8 | 12 | 16 | 23 | 38 | 56 | 72 | 91 |
-
-Find `target = 23`.
-
-:::{.notes}
-"The array must be sorted. That's the precondition."
-:::
-
-## Linear Search: The Naive Approach
+## Trusting Your Code
 
 ```python
-def linear_search(arr, target):
-    for i in range(len(arr)):
-        if arr[i] == target:
-            return i
-    return -1
+def ________________(arr, a):
+    ret = a
+    for i in range(a + 1, len(arr)):
+        if arr[i] < arr[ret]:
+            ret = i
+    return ret
 ```
 
-Worst case: $\Theta(n)$
+- What does this function do?
+- Does it work?
+- How do you **know**?
 
 :::{.notes}
-"We might have to check every element."
+"You might say 'I tested it.' But testing checks examples, not all inputs."
+
+"We want mathematical certainty."
 :::
 
-## Binary Search: The Clever Approach
+## Testing Is Not Proof
+
+Testing: "It worked on these 10 inputs."
+
+Proof: "It works on **all** valid inputs."
+
+:::{.notes}
+"Dijkstra: 'Testing shows the presence of bugs, not their absence.'"
+:::
+
+## The Key Insight
+
+A loop is just **induction** in disguise.
+
+| Induction | Loop Invariant |
+|-----------|---------------|
+| Base case | Initialization |
+| Inductive step | Maintenance |
+| "For all $n$" | Termination |
+
+:::{.notes}
+"You already know induction from discrete math. Loop invariants are the same idea applied to code."
+:::
+
+# The Template
+
+## What Is an Invariant?
+
+An **invariant** is a property that remains true.
+
+"No matter how many times the loop runs, this statement stays true."
+
+:::{.notes}
+"The word 'invariant' = 'not varying' = stays the same."
+:::
+
+## The Template
+
+| Step | What to show |
+|------|--------------|
+| **Invariant** | State $P(i)$ for $i \in \{0, 1, \ldots, n\}$ (your domain) |
+| **Base case** | $P(0)$ holds (first value in domain) |
+| **Inductive step** | Assuming $P(j)$ for all $j$ in domain where $j < i$, show $P(i)$ |
+| **Termination** | Plug in $i = n$ → desired result |
+
+:::{.notes}
+"This is just induction on the iteration count. The domain of i depends on your loop — it might be $\{0, \ldots, n\}$ or $\{a+1, \ldots, n\}$ or something else."
+:::
+
+# Example: Find Min
+
+## The Code
 
 ```python
-def binary_search(arr, target):
-    lo, hi = 0, len(arr) - 1
-    while lo <= hi:
-        mid = (lo + hi) // 2
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            lo = mid + 1
-        else:
-            hi = mid - 1
-    return -1
+def find_min(arr, a):
+    """Return index of minimum value in arr[a:]"""
+    ret = a
+    for i in range(a + 1, len(arr)):
+        if arr[i] < arr[ret]:
+            ret = i
+    return ret
 ```
 
-Worst case: $\Theta(\log n)$
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 32 | 11 | 73 | 21 | 29 | 86 | 81 | 17 |
+
+If `a = 2`, what should `find_min` return?
 
 :::{.notes}
-"Each iteration halves the search space."
+"Looking at arr[2:] = [73, 21, 29, 86, 81, 7], the minimum is 7 at index 7."
+
+"Let's prove this function always returns the correct answer."
 :::
 
-## Tracing Binary Search
+## Step 1: State the Invariant
 
-| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| 2 | 5 | 8 | 12 | 16 | 23 | 38 | 56 | 72 | 91 |
+```python
+def find_min(arr, a):
+    """Return index of minimum value in arr[a:]"""
+    ret = a
+    for i in range(a + 1, len(arr)):
+        if arr[i] < arr[ret]:
+            ret = i
+    return ret
+```
 
-Find `target = 23`:
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 32 | 11 | 73 | 21 | 29 | 86 | 81 | 17 | 14 | 3 | 64 | 37 |
 
-1. `lo=0, hi=9, mid=4` → `arr[4]=16 < 23` → `lo=5`
-2. `lo=5, hi=9, mid=7` → `arr[7]=56 > 23` → `hi=6`
-3. `lo=5, hi=6, mid=5` → `arr[5]=23` ✓ → return 5
+**Invariant**: At iteration $i$ (for $i \in \{a+1, \ldots, n\}$), `ret` holds the index of the minimum value in `arr[a:i]`.
 
 :::{.notes}
-"Three comparisons instead of six. At scale, the difference is dramatic."
+"The hard part is finding the right invariant. Once you have it, the proof often falls into place."
+
+"This invariant captures what we're maintaining as we go: ret is the min of everything we've seen so far."
+
+"Note: i ranges from a+1 to n."
 :::
 
-## The 17-Year Bug
+## Step 2: Base Case ($i = a+1$)
 
-> "I've assigned [binary search] in courses at Bell Labs and IBM... and I've studied their solutions... In the history of this exercise, only about ten percent of professional programmers have gotten the program right."
->
-> — Jon Bentley, *Programming Pearls* (1986)
+```python
+def find_min(arr, a):
+    """Return index of minimum value in arr[a:]"""
+    ret = a
+    for i in range(a + 1, len(arr)):
+        if arr[i] < arr[ret]:
+            ret = i
+    return ret
+```
 
-The first correct binary search was published in 1946.
+At the first iteration, `i = a+1` and `ret = a`.
 
-The first **bug-free** implementation? 1962.
+The invariant claims `ret` is the index of the min in `arr[a:a+1]`.
+
+`arr[a:a+1]` contains only `arr[a]`, and `ret = a` is its index. ✓
 
 :::{.notes}
-"Even experts get it wrong. The loop invariant helps us get it right."
+"This is the base case. We've 'seen' only arr[a], and ret points to it."
 :::
 
-# Proving Binary Search Correct
+## Step 3: Inductive Step {.smaller}
 
-## The Invariant
+```python
+def find_min(arr, a):
+    """Return index of minimum value in arr[a:]"""
+    ret = a
+    for i in range(a + 1, len(arr)):
+        if arr[i] < arr[ret]:
+            ret = i
+    return ret
+```
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 32 | 11 | 73 | 21 | 29 | 86 | 81 | 17 | 14 | 3 | 64 | 37 |
 
-**Invariant**: At iteration $i$, if `target` is in `arr`, then `target` is in `arr[lo:hi+1]`.
+**IH**: Assume the invariant holds at the start of iteration $i$: `ret` is the index of min in `arr[a:i]`.
 
-Equivalently: We haven't excluded any index where `target` could be.
+During iteration $i$, we compare `arr[i]` to `arr[ret]`:
+
+- **Case 1**: `arr[i] < arr[ret]` → we set `ret = i`, the new min
+- **Case 2**: `arr[i] >= arr[ret]` → we keep `ret`, still the min
+
+Either way, after iteration $i$, `ret` is the index of min in `arr[a:i+1]`. ✓
 
 :::{.notes}
-"This is the 'search' pattern: the answer is still in the remaining range."
-
-"The invariant holds at any point we might exit the loop."
+"The two cases correspond to the if/else. In both cases, ret ends up pointing to the minimum of arr[a:i+1], which is the invariant for iteration i+1."
 :::
 
-## Base Case ($i = 0$)
+## Step 4: Termination
 
-Before the first iteration: `lo = 0`, `hi = len(arr) - 1`
+Loop terminates when `i = n` (after processing the last element).
 
-`arr[lo:hi+1]` = `arr[0:len(arr)]` = entire array
+Plug into invariant: `ret` is index of min in `arr[a:n]`.
 
-If `target` is in `arr`, it's in `arr[lo:hi+1]`. ✓
+But `arr[a:n]` is exactly `arr[a:]`.
 
-:::{.notes}
-"We start with the full array. The invariant holds trivially."
-:::
-
-## Inductive Step: Case 1 (Found it)
-
-`arr[mid] == target` → we return `mid`.
-
-The invariant holds at this exit point: `target` is indeed in `arr[lo:hi+1]`.
-
-We return the correct answer. ✓
+**Therefore**: `ret` is the index of the minimum in `arr[a:]`. ∎
 
 :::{.notes}
-"Found it. The invariant tells us we're returning a valid location."
-:::
+"At i = n, ret is min of arr[a:n] = arr[a:]."
 
-## Inductive Step: Case 2
-
-`arr[mid] < target`
-
-Since `arr` is sorted: everything at indices $\leq$ `mid` is $\leq$ `arr[mid]` $<$ `target`.
-
-So `target` can't be at indices 0 through `mid`.
-
-Setting `lo = mid + 1` excludes only indices where `target` **can't** be. ✓
-
-:::{.notes}
-"We're safe to narrow the range because we're only excluding impossible locations."
-:::
-
-## Inductive Step: Case 3
-
-`arr[mid] > target`
-
-Since `arr` is sorted: everything at indices $\geq$ `mid` is $\geq$ `arr[mid]` $>$ `target`.
-
-So `target` can't be at indices `mid` through $n-1$.
-
-Setting `hi = mid - 1` excludes only indices where `target` **can't** be. ✓
-
-:::{.notes}
-"Same reasoning. We only narrow the range safely."
-:::
-
-## Termination (Exit via `lo > hi`)
-
-The loop exits when `lo > hi`.
-
-At this exit point, `arr[lo:hi+1]` is **empty**.
-
-The invariant says: if `target` is in `arr`, it's in this empty range.
-
-But nothing is in an empty range.
-
-**Therefore**: `target` is **not** in `arr`. Return -1. ∎
-
-:::{.notes}
-"The invariant holds at this exit point too — it just tells us target isn't there."
+"The ∎ (tombstone/halmos) marks the end of a proof."
 :::
 
 ## The Proof in One Slide
 
-**Theorem**: `binary_search(arr, target)` returns the index of `target` if present, else -1.
+**Theorem**: `find_min(arr, a)` returns the index of the minimum value in `arr[a:]`.
 
 **Proof**: By induction on iteration count.
 
-- **Invariant**: At iteration $i$, if `target ∈ arr`, then `target ∈ arr[lo:hi+1]`
-- **Base case**: $i=0$, full array satisfies invariant ✓
-- **Inductive step**: Each case either exits correctly or safely shrinks range ✓
-- **Termination**: At exit, invariant $\Rightarrow$ correct answer ∎
+- **Invariant**: At iteration $i$ (for $i \in \{a+1, \ldots, n\}$), `ret` is index of min in `arr[a:i]`
+- **Base case**: At $i = a+1$, `ret = a` is min of `arr[a:a+1]` ✓
+- **Inductive step**: If true at start of iteration $i$, loop body restores it for $i+1$ ✓
+- **Termination**: Plug in $i = n$ → `ret` is min of `arr[a:n]` = `arr[a:]` ∎
 
-# Why the Bug?
+# Another Example: Sum
 
-## Common Mistakes
+## The Code
 
 ```python
-# Bug 1: Wrong comparison
-while lo < hi:  # Should be lo <= hi
-    ...
-
-# Bug 2: Wrong update
-lo = mid        # Should be mid + 1
-hi = mid        # Should be mid - 1
-
-# Bug 3: Integer overflow (in C/Java)
-mid = (lo + hi) / 2  # Can overflow!
-# Fix: mid = lo + (hi - lo) / 2
-```
-
-:::{.notes}
-"Bug 1: misses the case where lo == hi. Bug 2: can cause infinite loop. Bug 3: famous Java bug, discovered in 2006 in Arrays.binarySearch!"
-:::
-
-## The Java Bug (2006)
-
-```java
-// This was in java.util.Arrays for 9 years!
-int mid = (low + high) / 2;  // OVERFLOW BUG
-```
-
-When `low + high > Integer.MAX_VALUE`, this overflows.
-
-Fix:
-```java
-int mid = low + (high - low) / 2;
-```
-
-:::{.notes}
-"Joshua Bloch, who wrote the code, wrote about this bug. Even Google engineers get binary search wrong."
-:::
-
-## The Invariant Saves You
-
-When you're unsure about an edge case, ask:
-
-> "Does this maintain the invariant?"
-
-- `lo = mid + 1`: Does this exclude only impossible locations? **Yes.**
-- `hi = mid - 1`: Does this exclude only impossible locations? **Yes.**
-- `lo <= hi`: When does the search space become empty? **When lo > hi.**
-
-:::{.notes}
-"The invariant is your compass. When lost, check the invariant."
-:::
-
-# Analysis
-
-## Worst-Case Running Time
-
-Each iteration:
-
-- Constant work (comparisons, arithmetic)
-- Range shrinks by half: $(hi - lo + 1) \to \lfloor(hi - lo + 1)/2\rfloor$
-
-How many halvings until range is empty?
-
-$\log_2(n)$
-
-**Worst case**: $\Theta(\log n)$
-
-:::{.notes}
-"The halving is the key. That's what gives us the logarithm."
-:::
-
-## The Scale Comparison
-
-| $n$ | Linear Search | Binary Search |
-|-----|---------------|---------------|
-| 1,000 | 1,000 | 10 |
-| 1,000,000 | 1,000,000 | 20 |
-| 1,000,000,000 | 1,000,000,000 | 30 |
-
-:::{.notes}
-"A billion elements, 30 comparisons. That's the power of $O(\log n)$."
-:::
-
-## Racing Them
-
-```{pyodide}
-def linear_search(arr, target):
+def array_sum(arr):
+    total = 0
     for i in range(len(arr)):
-        if arr[i] == target:
-            return i
-    return -1
-
-def binary_search(arr, target):
-    lo, hi = 0, len(arr) - 1
-    while lo <= hi:
-        mid = (lo + hi) // 2
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            lo = mid + 1
-        else:
-            hi = mid - 1
-    return -1
+        total += arr[i]
+    return total
 ```
 
-## The Race
-
-```{pyodide}
-print("n          linear      binary")
-print("-" * 40)
-for n in [10000, 100000, 1000000]:
-    arr = list(range(n))
-    target = n  # Not in array = worst case
-
-    t1 = time_it(linear_search, arr, target)
-    t2 = time_it(binary_search, arr, target)
-
-    print(f"{n:7}    {t1:.4f}s    {t2:.6f}s")
-```
+What's the invariant?
 
 :::{.notes}
-"Linear grows with n. Binary barely budges. That's $O(n)$ vs $O(\log n)$."
+"Pause the video and try to state the invariant before I reveal it."
 :::
 
-# The Price of Speed
+## The Invariant
 
-## The Precondition
-
-Binary search **requires** the array to be sorted.
-
-What if it's not sorted?
-
-```{pyodide}
-arr = [3, 1, 4, 1, 5, 9, 2, 6]
-print(f"Looking for 5 in {arr}")
-print(f"Result: {binary_search(arr, 5)}")
-print(f"But 5 is at index: {arr.index(5)}")
-```
+**Invariant**: At iteration $i$ (for $i \in \{0, 1, \ldots, n\}$), `total` equals the sum of `arr[0:i]`.
 
 :::{.notes}
-"Garbage in, garbage out. The invariant assumes sorted order."
+"This captures what we're building up as we go. Here i ranges from 0 to n."
 :::
 
-## When to Use Binary Search
+## The Proof (Quick Version)
 
-**Use binary search when:**
+1. **Base case**: At $i = 0$, `total = 0` = sum of `arr[0:0]`. ✓
 
-- Data is sorted (or can be sorted once, searched many times)
-- Random access is $O(1)$ (arrays, not linked lists)
-- You need to find a specific value
+2. **Inductive step**: Assume invariant holds at start of iteration $i$: `total` = sum of `arr[0:i]`.
 
-**Don't use when:**
+   During iteration $i$, we add `arr[i]` to `total`.
 
-- Data is unsorted and searched only once
-- Data structure doesn't support random access
-- You need to find *all* occurrences
+   After iteration $i$: `total` = sum of `arr[0:i]` + `arr[i]` = sum of `arr[0:i+1]`. ✓
+
+3. **Termination**: Plug in $i = n$ → `total` = sum of `arr[0:n]` = sum of all. ∎
 
 :::{.notes}
-"Sorting costs $O(n \log n)$. If you only search once, linear search wins."
+"With practice, these proofs become quick sketches, not page-long arguments."
+:::
+
+# Composing Proofs
+
+## Selection Sort
+
+```python
+def selection_sort(arr):
+    for a in range(len(arr)):
+        min_idx = find_min(arr, a)
+        arr[a], arr[min_idx] = arr[min_idx], arr[a]
+```
+
+- This uses our `find_min` helper!
+
+- Quick check: running time? 
+
+:::{.notes}
+"Selection sort: repeatedly find the minimum of the unsorted portion and swap it to the front."
+
+"Notice it calls `find_min(arr, a)` — exactly the function we just proved correct."
+:::
+
+## The Decomposition Principle
+
+We already proved `find_min(arr, a)` returns the index of the minimum in `arr[a:]`.
+
+Now we can **use that fact** without re-proving it.
+
+> Prove small pieces. Compose them into bigger proofs.
+
+:::{.notes}
+"This is the software engineering principle of decomposition, applied to proofs."
+
+"You don't re-derive addition every time you use it. Same idea here."
+:::
+
+## The Selection Sort Invariant
+
+**Invariant**: At iteration $a$ (for $a \in \{0, 1, \ldots, n\}$), `arr[0:a]` is sorted and contains the $a$ smallest elements.
+
+:::{.notes}
+"The first a elements are sorted AND they're the smallest a elements overall."
+
+"Both parts matter — sorted isn't enough; they have to be the right elements."
+:::
+
+## The Proof {.smaller}
+
+1. **Base case**: At $a = 0$, `arr[0:0]` is empty. ✓ (Trivially sorted, trivially smallest.)
+
+2. **Inductive step**: Assume invariant holds at start of iteration $a$: `arr[0:a]` is sorted and contains the $a$ smallest elements.
+
+   During iteration $a$:
+
+   - `find_min(arr, a)` returns the index of the minimum in `arr[a:]` *(by our earlier proof!)*
+   - After the swap, `arr[a]` holds the $(a+1)$-th smallest element
+
+   After iteration $a$: `arr[0:a+1]` is sorted and contains the $a+1$ smallest elements. ✓
+
+3. **Termination**: Plug in $a = n$ → `arr[0:n]` is sorted. ∎
+
+:::{.notes}
+"See how we just *used* the find_min correctness? We didn't re-prove it."
+
+"This is the power of decomposition: prove once, use everywhere."
+:::
+
+## The Lesson
+
+**Decomposition** is good *system* engineering.
+
+| Software | Proofs | Data Pipelines |
+|----------|--------|----------------|
+| Write small, tested functions | Prove small helper lemmas | Build validated transformations |
+| Compose into larger programs | Compose into larger proofs | Chain into workflows |
+| Reuse without re-implementing | Reuse without re-proving | Reuse without re-validating |
+
+:::{.notes}
+"When you write `find_min` as a separate function, you're setting yourself up for cleaner code AND cleaner proofs."
+
+"Same for data science: build a cleaning step you trust, a feature extraction step you trust, then compose them. You don't re-check the cleaning every time you use it."
+:::
+
+# Finding the Invariant
+
+## The Art
+
+Stating the invariant is often the hardest part.
+
+**Strategy**: Ask "What property do I maintain that leads to my answer?"
+
+:::{.notes}
+"The invariant should connect the loop's progress to the final goal."
+:::
+
+## Common Patterns
+
+| Algorithm Type | Invariant Pattern |
+|---------------|-------------------|
+| Accumulation | "`var` holds result for elements seen so far" |
+| Search | "If target exists, it's in the remaining range" |
+| Partition | "Elements before $i$ satisfy property P" |
+| Two-pointer | "Answer is not in the excluded region" |
+
+:::{.notes}
+"Wednesday: we'll use the 'search' pattern for binary search."
+:::
+
+## Design, Not Just Proof
+
+Loop invariants aren't just for proving code correct.
+
+They're a **design tool**.
+
+> "What should be true at each step?"
+
+If you can't state the invariant, you might not understand your own algorithm.
+
+:::{.notes}
+"When you're stuck debugging, ask: what's my invariant? Often the bug is that you're not maintaining it."
+:::
+
+## A Warning
+
+A **wrong** invariant can "prove" incorrect code correct.
+
+The invariant must be:
+
+1. **True** (actually holds at each iteration)
+2. **Strong enough** (implies correctness at termination)
+3. **Preserved** (maintained by the loop body)
+
+:::{.notes}
+"You can't just make up any statement. It has to capture the actual behavior."
+:::
+
+## A Bad Example {.smaller}
+
+**Weak invariant**: "At iteration $a$, `arr[0:a]` is sorted."
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 12 | 25 | 38 | 47 | 59 | 83 | 71 | 6 | 94 | 52 | 15 | 33 |
+
+At iteration $a = 5$, suppose we have:
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| 12 | 25 | 38 | 47 | 59 | 83 | 71 | 6 | 94 | 52 | 15 | 33 |
+
+Is `arr[0:5]` = `[12, 25, 38, 47, 59]` sorted? **Yes!**
+
+But is this correct? **No!** The element 6 is smaller than all of them.
+
+:::{.notes}
+"The invariant is TRUE but not STRONG ENOUGH. The first 5 elements happen to be in order, but they're not the 5 smallest. We need: 'arr[0:a] is sorted AND contains the a smallest elements.'"
+:::
+
+# Why This Matters
+
+## For Your Career
+
+Real bugs in real systems come from:
+
+- Off-by-one errors
+- Edge cases not handled
+- "It usually works" code
+
+Loop invariants catch these **before** they ship.
+
+:::{.notes}
+"Thinking in invariants makes you a better programmer, even if you don't write formal proofs."
+:::
+
+## The Mindset
+
+Every time you write a loop, ask:
+
+1. What's true at the start?
+2. What stays true each iteration?
+3. What does that give me at the end?
+
+:::{.notes}
+"Make this a habit. It prevents bugs."
 :::
 
 # Summary
 
-## What We Learned
+## The Loop Invariant Template
 
-1. **Binary search** finds a target in $\Theta(\log n)$ time (vs $\Theta(n)$ for linear)
+| Step | What to show |
+|------|--------------|
+| **Invariant** | State $P(i)$ for $i \in \{a, a+1, \ldots, n\}$ (your domain) |
+| **Base case** | $P(a)$ holds (first value in domain) |
+| **Inductive step** | Assuming $P(j)$ for all $a \leq j < i$, show $P(i)$ |
+| **Termination** | Plug in $i = n$ → desired result |
 
-2. **The invariant**: "If target exists, it's in `arr[lo:hi+1]`"
+This is **induction** on the iteration count.
 
-3. **The proof**: Init, Maintenance (3 cases), Termination
+## Looking Ahead
 
-4. **The bugs**: Off-by-one errors, infinite loops, integer overflow
+**Wednesday**: We'll use loop invariants to prove a famous algorithm correct — and see why it took 17 years to get a bug-free version.
 
-5. **The precondition**: Array must be sorted
+## Practice Problems
 
-## The Pattern
+Before Wednesday, try stating invariants for:
 
-Binary search is a **divide-and-conquer** algorithm:
+1. `reverse(arr)` — reverse an array in place
 
-1. **Divide**: Pick the middle
-2. **Conquer**: Recurse on one half
-3. **Combine**: Nothing to combine (we found it or it's not there)
+2. `is_sorted(arr)` — check if array is sorted
 
-We'll see more divide-and-conquer in Week 6 (sorting).
+3. `count(arr, target)` — count occurrences of target
 
-## Next Week
+Think: What's true after processing $i$ elements?
 
-**Week 3: Recursion**
-
-- Thinking recursively
-- Recurrence relations
-- The fractal coastline puzzle
-
-:::{.notes}
-"Binary search can also be written recursively. We'll explore that next week."
-:::
-
-## Questions?
-
-::: {.r-fit-text}
-Binary search: $\Theta(\log n)$
-
-The invariant makes it **correct**.
-
-The halving makes it **fast**.
-:::
