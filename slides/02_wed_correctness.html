@@ -6,14 +6,14 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="dcterms.date" content="2026-01-14">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – Binary Search</title>
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Correctness</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -195,10 +195,10 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="Binary Search – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:title" content="Correctness – DSCI 221: Data Structures and Algorithms for Data Science">
 <meta property="og:description" content="Week 2, Wednesday">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="Binary Search – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:title" content="Correctness – DSCI 221: Data Structures and Algorithms for Data Science">
 <meta name="twitter:description" content="Week 2, Wednesday">
 <meta name="twitter:card" content="summary">
 </head>
@@ -207,7 +207,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Binary Search</h1>
+  <h1 class="title">Correctness</h1>
   <p class="subtitle">Week 2, Wednesday</p>
 
 <div class="quarto-title-authors">
@@ -223,127 +223,26 @@
 </ul>
 </section>
 <section>
-<section id="warm-up-feel-the-doubling" class="title-slide slide level1 center">
-<h1>Warm-up: Feel the Doubling</h1>
+<section id="the-pillar-of-correctness" class="title-slide slide level1 center">
+<h1>The Pillar of Correctness</h1>
 
 </section>
-<section id="timing-experiment" class="slide level2">
-<h2>Timing Experiment</h2>
-<div>
-<div id="pyodide-1" class="exercise-cell">
-
-</div>
-<script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHRpbWVcblxuZGVmIHRpbWVfaXQoZnVuYywgKmFyZ3MpOlxuICAgIHN0YXJ0ID0gdGltZS50aW1lKClcbiAgICBmdW5jKCphcmdzKVxuICAgIHJldHVybiB0aW1lLnRpbWUoKSAtIHN0YXJ0XG5cbmRlZiBsaW5lYXJfd29yayhuKTpcbiAgICB0b3RhbCA9IDBcbiAgICBmb3IgaSBpbiByYW5nZShuKTpcbiAgICAgICAgdG90YWwgKz0gaVxuICAgIHJldHVybiB0b3RhbFxuXG5kZWYgcXVhZHJhdGljX3dvcmsobik6XG4gICAgY291bnQgPSAwXG4gICAgZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgICAgIGZvciBqIGluIHJhbmdlKG4pOlxuICAgICAgICAgICAgY291bnQgKz0gMVxuICAgIHJldHVybiBjb3VudCJ9
-</script>
-</div>
-</section>
-<section id="linear-what-happens-when-n-doubles" class="slide level2">
-<h2>Linear: What Happens When <span class="math inline">\(n\)</span> Doubles?</h2>
-<div>
-<div id="pyodide-2" class="exercise-cell">
-
-</div>
-<script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoXCJuICAgICAgICAgIHRpbWUgICAgICAgcmF0aW9cIilcbnByaW50KFwiLVwiICogMzUpXG5wcmV2ID0gTm9uZVxuZm9yIG4gaW4gWzEwMDAwLCAyMDAwMCwgNDAwMDAsIDgwMDAwXTpcbiAgICB0ID0gdGltZV9pdChsaW5lYXJfd29yaywgbilcbiAgICByYXRpbyA9IGZcInt0L3ByZXY6LjJmfVwiIGlmIHByZXYgZWxzZSBcIuKAlFwiXG4gICAgcHJpbnQoZlwie246Nn0gICAge3Q6LjRmfXMgICAge3JhdGlvfVwiKVxuICAgIHByZXYgPSB0In0=
-</script>
-</div>
-<aside class="notes">
-<p>“Doubling n → doubling time. That’s <span class="math inline">\(\Theta(n)\)</span>.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="quadratic-what-happens-when-n-doubles" class="slide level2">
-<h2>Quadratic: What Happens When <span class="math inline">\(n\)</span> Doubles?</h2>
-<div>
-<div id="pyodide-3" class="exercise-cell">
-
-</div>
-<script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoXCJuICAgICAgICAgIHRpbWUgICAgICAgcmF0aW9cIilcbnByaW50KFwiLVwiICogMzUpXG5wcmV2ID0gTm9uZVxuZm9yIG4gaW4gWzUwMCwgMTAwMCwgMjAwMCwgNDAwMF06XG4gICAgdCA9IHRpbWVfaXQocXVhZHJhdGljX3dvcmssIG4pXG4gICAgcmF0aW8gPSBmXCJ7dC9wcmV2Oi4yZn1cIiBpZiBwcmV2IGVsc2UgXCLigJRcIlxuICAgIHByaW50KGZcIntuOjZ9ICAgIHt0Oi40Zn1zICAgIHtyYXRpb31cIilcbiAgICBwcmV2ID0gdCJ9
-</script>
-</div>
-<aside class="notes">
-<p>“Doubling n → quadrupling time. That’s <span class="math inline">\(\Theta(n^2)\)</span>.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="logarithmic-what-happens-when-n-doubles" class="slide level2">
-<h2>Logarithmic: What Happens When <span class="math inline">\(n\)</span> Doubles?</h2>
-<div>
-<div id="pyodide-4" class="exercise-cell">
-
-</div>
-<script type="pyodide-4-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVmIGxvZ193b3JrKG4pOlxuICAgIGNvdW50ID0gMFxuICAgIHdoaWxlIG4gPiAxOlxuICAgICAgICBuID0gbiAvLyAyXG4gICAgICAgIGNvdW50ICs9IDFcbiAgICByZXR1cm4gY291bnRcblxucHJpbnQoXCJuICAgICAgICAgICAgICBpdGVyYXRpb25zXCIpXG5wcmludChcIi1cIiAqIDMwKVxuZm9yIG4gaW4gWzEwMDAsIDIwMDAsIDQwMDAsIDgwMDAsIDE2MDAwXTpcbiAgICBpdGVycyA9IGxvZ193b3JrKG4pXG4gICAgcHJpbnQoZlwie246Nn0gICAgICAgICB7aXRlcnN9XCIpIn0=
-</script>
-</div>
-<aside class="notes">
-<p>“Doubling n → ONE more iteration. That’s <span class="math inline">\(\Theta(\log n)\)</span>.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="the-twenty-questions-puzzle" class="title-slide slide level1 center">
-<h1>The Twenty Questions Puzzle</h1>
-
-</section>
-<section id="the-game" class="slide level2">
-<h2>The Game</h2>
-<p>I’m thinking of a number between 1 and 1,000,000.</p>
-<p>You can ask yes/no questions.</p>
-<p>What’s your <strong>guaranteed</strong> winning strategy?</p>
-<aside class="notes">
-<p>“How many questions do you need?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-optimal-strategy" class="slide level2">
-<h2>The Optimal Strategy</h2>
-<p>“Is it greater than 500,000?”</p>
+<section id="trusting-your-code" class="slide level2">
+<h2>Trusting Your Code</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> ________________(arr, a):</span>
+<span id="cb1-2"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb1-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb1-4"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb1-5"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb1-6"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><strong>Yes</strong>: Search 500,001 to 1,000,000</li>
-<li><strong>No</strong>: Search 1 to 500,000</li>
+<li>What does this function do?</li>
+<li>Does it work?</li>
+<li>How do you <strong>know</strong>?</li>
 </ul>
-<p>Each question <strong>halves</strong> the remaining possibilities.</p>
 <aside class="notes">
-<p>“This is binary search! And it’s optimal—you can’t do better.”</p>
+<p>“You might say ‘I tested it.’ But testing checks examples, not all inputs.”</p>
+<p>“We want mathematical certainty.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -356,13 +255,51 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
           display:block!important;
       }</style></aside>
 </section>
-<section id="how-many-questions" class="slide level2">
-<h2>How Many Questions?</h2>
-<p>Start with <span class="math inline">\(n = 1{,}000{,}000\)</span> possibilities.</p>
-<p>After each question: <span class="math inline">\(n \to n/2\)</span></p>
-<p>Questions needed: <span class="math inline">\(\log_2(1{,}000{,}000) \approx 20\)</span></p>
+<section id="testing-is-not-proof" class="slide level2">
+<h2>Testing Is Not Proof</h2>
+<p>Testing: “It worked on these 10 inputs.”</p>
+<p>Proof: “It works on <strong>all</strong> valid inputs.”</p>
 <aside class="notes">
-<p>“20 questions for a million possibilities. That’s the power of halving.”</p>
+<p>“Dijkstra: ‘Testing shows the presence of bugs, not their absence.’”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-key-insight" class="slide level2">
+<h2>The Key Insight</h2>
+<p>A loop is just <strong>induction</strong> in disguise.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Induction</th>
+<th>Loop Invariant</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Base case</td>
+<td>Initialization</td>
+</tr>
+<tr class="even">
+<td>Inductive step</td>
+<td>Maintenance</td>
+</tr>
+<tr class="odd">
+<td>“For all <span class="math inline">\(n\)</span>”</td>
+<td>Termination</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>“You already know induction from discrete math. Loop invariants are the same idea applied to code.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -376,170 +313,62 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
       }</style></aside>
 </section></section>
 <section>
-<section id="binary-search" class="title-slide slide level1 center">
-<h1>Binary Search</h1>
+<section id="the-template" class="title-slide slide level1 center">
+<h1>The Template</h1>
 
 </section>
-<section id="the-problem" class="slide level2">
-<h2>The Problem</h2>
-<p>Given a <strong>sorted</strong> array and a target value, find the target’s index (or determine it’s not there).</p>
+<section id="what-is-an-invariant" class="slide level2">
+<h2>What Is an Invariant?</h2>
+<p>An <strong>invariant</strong> is a property that remains true.</p>
+<p>“No matter how many times the loop runs, this statement stays true.”</p>
+<aside class="notes">
+<p>“The word ‘invariant’ = ‘not varying’ = stays the same.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-template-1" class="slide level2">
+<h2>The Template</h2>
 <table class="caption-top">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 70%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">8</th>
-<th style="text-align: center;">9</th>
+<th>Step</th>
+<th>What to show</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">12</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">23</td>
-<td style="text-align: center;">38</td>
-<td style="text-align: center;">56</td>
-<td style="text-align: center;">72</td>
-<td style="text-align: center;">91</td>
+<td><strong>Invariant</strong></td>
+<td>State <span class="math inline">\(P(i)\)</span> for <span class="math inline">\(i \in \{0, 1, \ldots, n\}\)</span> (your domain)</td>
 </tr>
-</tbody>
-</table>
-<p>Find <code>target = 23</code>.</p>
-<aside class="notes">
-<p>“The array must be sorted. That’s the precondition.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="linear-search-the-naive-approach" class="slide level2">
-<h2>Linear Search: The Naive Approach</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> linear_search(arr, target):</span>
-<span id="cb1-2"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
-<span id="cb1-3"><a></a>        <span class="cf">if</span> arr[i] <span class="op">==</span> target:</span>
-<span id="cb1-4"><a></a>            <span class="cf">return</span> i</span>
-<span id="cb1-5"><a></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Worst case: <span class="math inline">\(\Theta(n)\)</span></p>
-<aside class="notes">
-<p>“We might have to check every element.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="binary-search-the-clever-approach" class="slide level2">
-<h2>Binary Search: The Clever Approach</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> binary_search(arr, target):</span>
-<span id="cb2-2"><a></a>    lo, hi <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(arr) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb2-3"><a></a>    <span class="cf">while</span> lo <span class="op">&lt;=</span> hi:</span>
-<span id="cb2-4"><a></a>        mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">//</span> <span class="dv">2</span></span>
-<span id="cb2-5"><a></a>        <span class="cf">if</span> arr[mid] <span class="op">==</span> target:</span>
-<span id="cb2-6"><a></a>            <span class="cf">return</span> mid</span>
-<span id="cb2-7"><a></a>        <span class="cf">elif</span> arr[mid] <span class="op">&lt;</span> target:</span>
-<span id="cb2-8"><a></a>            lo <span class="op">=</span> mid <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb2-9"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb2-10"><a></a>            hi <span class="op">=</span> mid <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb2-11"><a></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Worst case: <span class="math inline">\(\Theta(\log n)\)</span></p>
-<aside class="notes">
-<p>“Each iteration halves the search space.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="tracing-binary-search" class="slide level2">
-<h2>Tracing Binary Search</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">8</th>
-<th style="text-align: center;">9</th>
+<tr class="even">
+<td><strong>Base case</strong></td>
+<td><span class="math inline">\(P(0)\)</span> holds (first value in domain)</td>
 </tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">12</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">23</td>
-<td style="text-align: center;">38</td>
-<td style="text-align: center;">56</td>
-<td style="text-align: center;">72</td>
-<td style="text-align: center;">91</td>
+<td><strong>Inductive step</strong></td>
+<td>Assuming <span class="math inline">\(P(j)\)</span> for all <span class="math inline">\(j\)</span> in domain where <span class="math inline">\(j &lt; i\)</span>, show <span class="math inline">\(P(i)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Termination</strong></td>
+<td>Plug in <span class="math inline">\(i = n\)</span> → desired result</td>
 </tr>
 </tbody>
 </table>
-<p>Find <code>target = 23</code>:</p>
-<ol type="1">
-<li><code>lo=0, hi=9, mid=4</code> → <code>arr[4]=16 &lt; 23</code> → <code>lo=5</code></li>
-<li><code>lo=5, hi=9, mid=7</code> → <code>arr[7]=56 &gt; 23</code> → <code>hi=6</code></li>
-<li><code>lo=5, hi=6, mid=5</code> → <code>arr[5]=23</code> ✓ → return 5</li>
-</ol>
 <aside class="notes">
-<p>“Three comparisons instead of six. At scale, the difference is dramatic.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-17-year-bug" class="slide level2">
-<h2>The 17-Year Bug</h2>
-<blockquote>
-<p>“I’ve assigned <a href="#/binary-search">binary search</a> in courses at Bell Labs and IBM… and I’ve studied their solutions… In the history of this exercise, only about ten percent of professional programmers have gotten the program right.”</p>
-<p>— Jon Bentley, <em>Programming Pearls</em> (1986)</p>
-</blockquote>
-<p>The first correct binary search was published in 1946.</p>
-<p>The first <strong>bug-free</strong> implementation? 1962.</p>
-<aside class="notes">
-<p>“Even experts get it wrong. The loop invariant helps us get it right.”</p>
+<p>“This is just induction on the iteration count. The domain of i depends on your loop — it might be <span class="math inline">\(\{0, \ldots, n\}\)</span> or <span class="math inline">\(\{a+1, \ldots, n\}\)</span> or something else.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -553,17 +382,49 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
       }</style></aside>
 </section></section>
 <section>
-<section id="proving-binary-search-correct" class="title-slide slide level1 center">
-<h1>Proving Binary Search Correct</h1>
+<section id="example-find-min" class="title-slide slide level1 center">
+<h1>Example: Find Min</h1>
 
 </section>
-<section id="the-invariant" class="slide level2">
-<h2>The Invariant</h2>
-<p><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, if <code>target</code> is in <code>arr</code>, then <code>target</code> is in <code>arr[lo:hi+1]</code>.</p>
-<p>Equivalently: We haven’t excluded any index where <code>target</code> could be.</p>
+<section id="the-code" class="slide level2">
+<h2>The Code</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
+<span id="cb2-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
+<span id="cb2-3"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb2-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb2-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb2-6"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb2-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">73</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">17</td>
+</tr>
+</tbody>
+</table>
+<p>If <code>a = 2</code>, what should <code>find_min</code> return?</p>
 <aside class="notes">
-<p>“This is the ‘search’ pattern: the answer is still in the remaining range.”</p>
-<p>“The invariant holds at any point we might exit the loop.”</p>
+<p>“Looking at arr[2:] = [73, 21, 29, 86, 81, 7], the minimum is 7 at index 7.”</p>
+<p>“Let’s prove this function always returns the correct answer.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -576,13 +437,54 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
           display:block!important;
       }</style></aside>
 </section>
-<section id="base-case-i-0" class="slide level2">
-<h2>Base Case (<span class="math inline">\(i = 0\)</span>)</h2>
-<p>Before the first iteration: <code>lo = 0</code>, <code>hi = len(arr) - 1</code></p>
-<p><code>arr[lo:hi+1]</code> = <code>arr[0:len(arr)]</code> = entire array</p>
-<p>If <code>target</code> is in <code>arr</code>, it’s in <code>arr[lo:hi+1]</code>. ✓</p>
+<section id="step-1-state-the-invariant" class="slide level2">
+<h2>Step 1: State the Invariant</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
+<span id="cb3-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
+<span id="cb3-3"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb3-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb3-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb3-6"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb3-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">9</th>
+<th style="text-align: center;">10</th>
+<th style="text-align: center;">11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">73</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">37</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span> (for <span class="math inline">\(i \in \{a+1, \ldots, n\}\)</span>), <code>ret</code> holds the index of the minimum value in <code>arr[a:i]</code>.</p>
 <aside class="notes">
-<p>“We start with the full array. The invariant holds trivially.”</p>
+<p>“The hard part is finding the right invariant. Once you have it, the proof often falls into place.”</p>
+<p>“This invariant captures what we’re maintaining as we go: ret is the min of everything we’ve seen so far.”</p>
+<p>“Note: i ranges from a+1 to n.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -595,13 +497,20 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
           display:block!important;
       }</style></aside>
 </section>
-<section id="inductive-step-case-1-found-it" class="slide level2">
-<h2>Inductive Step: Case 1 (Found it)</h2>
-<p><code>arr[mid] == target</code> → we return <code>mid</code>.</p>
-<p>The invariant holds at this exit point: <code>target</code> is indeed in <code>arr[lo:hi+1]</code>.</p>
-<p>We return the correct answer. ✓</p>
+<section id="step-2-base-case-i-a1" class="slide level2">
+<h2>Step 2: Base Case (<span class="math inline">\(i = a+1\)</span>)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
+<span id="cb4-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
+<span id="cb4-3"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb4-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb4-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb4-6"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb4-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>At the first iteration, <code>i = a+1</code> and <code>ret = a</code>.</p>
+<p>The invariant claims <code>ret</code> is the index of the min in <code>arr[a:a+1]</code>.</p>
+<p><code>arr[a:a+1]</code> contains only <code>arr[a]</code>, and <code>ret = a</code> is its index. ✓</p>
 <aside class="notes">
-<p>“Found it. The invariant tells us we’re returning a valid location.”</p>
+<p>“This is the base case. We’ve ‘seen’ only arr[a], and ret points to it.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -614,14 +523,58 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
           display:block!important;
       }</style></aside>
 </section>
-<section id="inductive-step-case-2" class="slide level2">
-<h2>Inductive Step: Case 2</h2>
-<p><code>arr[mid] &lt; target</code></p>
-<p>Since <code>arr</code> is sorted: everything at indices <span class="math inline">\(\leq\)</span> <code>mid</code> is <span class="math inline">\(\leq\)</span> <code>arr[mid]</code> <span class="math inline">\(&lt;\)</span> <code>target</code>.</p>
-<p>So <code>target</code> can’t be at indices 0 through <code>mid</code>.</p>
-<p>Setting <code>lo = mid + 1</code> excludes only indices where <code>target</code> <strong>can’t</strong> be. ✓</p>
+<section id="step-3-inductive-step" class="slide level2 smaller">
+<h2>Step 3: Inductive Step</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> find_min(arr, a):</span>
+<span id="cb5-2"><a></a>    <span class="co">"""Return index of minimum value in arr[a:]"""</span></span>
+<span id="cb5-3"><a></a>    ret <span class="op">=</span> a</span>
+<span id="cb5-4"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(a <span class="op">+</span> <span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
+<span id="cb5-5"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&lt;</span> arr[ret]:</span>
+<span id="cb5-6"><a></a>            ret <span class="op">=</span> i</span>
+<span id="cb5-7"><a></a>    <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">9</th>
+<th style="text-align: center;">10</th>
+<th style="text-align: center;">11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">73</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">37</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IH</strong>: Assume the invariant holds at the start of iteration <span class="math inline">\(i\)</span>: <code>ret</code> is the index of min in <code>arr[a:i]</code>.</p>
+<p>During iteration <span class="math inline">\(i\)</span>, we compare <code>arr[i]</code> to <code>arr[ret]</code>:</p>
+<ul>
+<li><strong>Case 1</strong>: <code>arr[i] &lt; arr[ret]</code> → we set <code>ret = i</code>, the new min</li>
+<li><strong>Case 2</strong>: <code>arr[i] &gt;= arr[ret]</code> → we keep <code>ret</code>, still the min</li>
+</ul>
+<p>Either way, after iteration <span class="math inline">\(i\)</span>, <code>ret</code> is the index of min in <code>arr[a:i+1]</code>. ✓</p>
 <aside class="notes">
-<p>“We’re safe to narrow the range because we’re only excluding impossible locations.”</p>
+<p>“The two cases correspond to the if/else. In both cases, ret ends up pointing to the minimum of arr[a:i+1], which is the invariant for iteration i+1.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -634,35 +587,15 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
           display:block!important;
       }</style></aside>
 </section>
-<section id="inductive-step-case-3" class="slide level2">
-<h2>Inductive Step: Case 3</h2>
-<p><code>arr[mid] &gt; target</code></p>
-<p>Since <code>arr</code> is sorted: everything at indices <span class="math inline">\(\geq\)</span> <code>mid</code> is <span class="math inline">\(\geq\)</span> <code>arr[mid]</code> <span class="math inline">\(&gt;\)</span> <code>target</code>.</p>
-<p>So <code>target</code> can’t be at indices <code>mid</code> through <span class="math inline">\(n-1\)</span>.</p>
-<p>Setting <code>hi = mid - 1</code> excludes only indices where <code>target</code> <strong>can’t</strong> be. ✓</p>
+<section id="step-4-termination" class="slide level2">
+<h2>Step 4: Termination</h2>
+<p>Loop terminates when <code>i = n</code> (after processing the last element).</p>
+<p>Plug into invariant: <code>ret</code> is index of min in <code>arr[a:n]</code>.</p>
+<p>But <code>arr[a:n]</code> is exactly <code>arr[a:]</code>.</p>
+<p><strong>Therefore</strong>: <code>ret</code> is the index of the minimum in <code>arr[a:]</code>. ∎</p>
 <aside class="notes">
-<p>“Same reasoning. We only narrow the range safely.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="termination-exit-via-lo-hi" class="slide level2">
-<h2>Termination (Exit via <code>lo &gt; hi</code>)</h2>
-<p>The loop exits when <code>lo &gt; hi</code>.</p>
-<p>At this exit point, <code>arr[lo:hi+1]</code> is <strong>empty</strong>.</p>
-<p>The invariant says: if <code>target</code> is in <code>arr</code>, it’s in this empty range.</p>
-<p>But nothing is in an empty range.</p>
-<p><strong>Therefore</strong>: <code>target</code> is <strong>not</strong> in <code>arr</code>. Return -1. ∎</p>
-<aside class="notes">
-<p>“The invariant holds at this exit point too — it just tells us target isn’t there.”</p>
+<p>“At i = n, ret is min of arr[a:n] = arr[a:].”</p>
+<p>“The ∎ (tombstone/halmos) marks the end of a proof.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -677,35 +610,30 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
 </section>
 <section id="the-proof-in-one-slide" class="slide level2">
 <h2>The Proof in One Slide</h2>
-<p><strong>Theorem</strong>: <code>binary_search(arr, target)</code> returns the index of <code>target</code> if present, else -1.</p>
+<p><strong>Theorem</strong>: <code>find_min(arr, a)</code> returns the index of the minimum value in <code>arr[a:]</code>.</p>
 <p><strong>Proof</strong>: By induction on iteration count.</p>
 <ul>
-<li><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, if <code>target ∈ arr</code>, then <code>target ∈ arr[lo:hi+1]</code></li>
-<li><strong>Base case</strong>: <span class="math inline">\(i=0\)</span>, full array satisfies invariant ✓</li>
-<li><strong>Inductive step</strong>: Each case either exits correctly or safely shrinks range ✓</li>
-<li><strong>Termination</strong>: At exit, invariant <span class="math inline">\(\Rightarrow\)</span> correct answer ∎</li>
+<li><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span> (for <span class="math inline">\(i \in \{a+1, \ldots, n\}\)</span>), <code>ret</code> is index of min in <code>arr[a:i]</code></li>
+<li><strong>Base case</strong>: At <span class="math inline">\(i = a+1\)</span>, <code>ret = a</code> is min of <code>arr[a:a+1]</code> ✓</li>
+<li><strong>Inductive step</strong>: If true at start of iteration <span class="math inline">\(i\)</span>, loop body restores it for <span class="math inline">\(i+1\)</span> ✓</li>
+<li><strong>Termination</strong>: Plug in <span class="math inline">\(i = n\)</span> → <code>ret</code> is min of <code>arr[a:n]</code> = <code>arr[a:]</code> ∎</li>
 </ul>
 </section></section>
 <section>
-<section id="why-the-bug" class="title-slide slide level1 center">
-<h1>Why the Bug?</h1>
+<section id="another-example-sum" class="title-slide slide level1 center">
+<h1>Another Example: Sum</h1>
 
 </section>
-<section id="common-mistakes" class="slide level2">
-<h2>Common Mistakes</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="co"># Bug 1: Wrong comparison</span></span>
-<span id="cb3-2"><a></a><span class="cf">while</span> lo <span class="op">&lt;</span> hi:  <span class="co"># Should be lo &lt;= hi</span></span>
-<span id="cb3-3"><a></a>    ...</span>
-<span id="cb3-4"><a></a></span>
-<span id="cb3-5"><a></a><span class="co"># Bug 2: Wrong update</span></span>
-<span id="cb3-6"><a></a>lo <span class="op">=</span> mid        <span class="co"># Should be mid + 1</span></span>
-<span id="cb3-7"><a></a>hi <span class="op">=</span> mid        <span class="co"># Should be mid - 1</span></span>
-<span id="cb3-8"><a></a></span>
-<span id="cb3-9"><a></a><span class="co"># Bug 3: Integer overflow (in C/Java)</span></span>
-<span id="cb3-10"><a></a>mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">/</span> <span class="dv">2</span>  <span class="co"># Can overflow!</span></span>
-<span id="cb3-11"><a></a><span class="co"># Fix: mid = lo + (hi - lo) / 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="the-code-1" class="slide level2">
+<h2>The Code</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> array_sum(arr):</span>
+<span id="cb6-2"><a></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
+<span id="cb6-4"><a></a>        total <span class="op">+=</span> arr[i]</span>
+<span id="cb6-5"><a></a>    <span class="cf">return</span> total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>What’s the invariant?</p>
 <aside class="notes">
-<p>“Bug 1: misses the case where lo == hi. Bug 2: can cause infinite loop. Bug 3: famous Java bug, discovered in 2006 in Arrays.binarySearch!”</p>
+<p>“Pause the video and try to state the invariant before I reveal it.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -718,15 +646,11 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-java-bug-2006" class="slide level2">
-<h2>The Java Bug (2006)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a></a><span class="co">// This was in java.util.Arrays for 9 years!</span></span>
-<span id="cb4-2"><a></a><span class="dt">int</span> mid <span class="op">=</span> <span class="op">(</span>low <span class="op">+</span> high<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span>  <span class="co">// OVERFLOW </span><span class="al">BUG</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>When <code>low + high &gt; Integer.MAX_VALUE</code>, this overflows.</p>
-<p>Fix:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource java number-lines code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a></a><span class="dt">int</span> mid <span class="op">=</span> low <span class="op">+</span> <span class="op">(</span>high <span class="op">-</span> low<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="the-invariant" class="slide level2">
+<h2>The Invariant</h2>
+<p><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span> (for <span class="math inline">\(i \in \{0, 1, \ldots, n\}\)</span>), <code>total</code> equals the sum of <code>arr[0:i]</code>.</p>
 <aside class="notes">
-<p>“Joshua Bloch, who wrote the code, wrote about this bug. Even Google engineers get binary search wrong.”</p>
+<p>“This captures what we’re building up as we go. Here i ranges from 0 to n.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -739,48 +663,69 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-invariant-saves-you" class="slide level2">
-<h2>The Invariant Saves You</h2>
-<p>When you’re unsure about an edge case, ask:</p>
+<section id="the-proof-quick-version" class="slide level2">
+<h2>The Proof (Quick Version)</h2>
+<ol type="1">
+<li><p><strong>Base case</strong>: At <span class="math inline">\(i = 0\)</span>, <code>total = 0</code> = sum of <code>arr[0:0]</code>. ✓</p></li>
+<li><p><strong>Inductive step</strong>: Assume invariant holds at start of iteration <span class="math inline">\(i\)</span>: <code>total</code> = sum of <code>arr[0:i]</code>.</p>
+<p>During iteration <span class="math inline">\(i\)</span>, we add <code>arr[i]</code> to <code>total</code>.</p>
+<p>After iteration <span class="math inline">\(i\)</span>: <code>total</code> = sum of <code>arr[0:i]</code> + <code>arr[i]</code> = sum of <code>arr[0:i+1]</code>. ✓</p></li>
+<li><p><strong>Termination</strong>: Plug in <span class="math inline">\(i = n\)</span> → <code>total</code> = sum of <code>arr[0:n]</code> = sum of all. ∎</p></li>
+</ol>
+<aside class="notes">
+<p>“With practice, these proofs become quick sketches, not page-long arguments.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="composing-proofs" class="title-slide slide level1 center">
+<h1>Composing Proofs</h1>
+
+</section>
+<section id="selection-sort" class="slide level2">
+<h2>Selection Sort</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">def</span> selection_sort(arr):</span>
+<span id="cb7-2"><a></a>    <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
+<span id="cb7-3"><a></a>        min_idx <span class="op">=</span> find_min(arr, a)</span>
+<span id="cb7-4"><a></a>        arr[a], arr[min_idx] <span class="op">=</span> arr[min_idx], arr[a]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><p>This uses our <code>find_min</code> helper!</p></li>
+<li><p>Quick check: running time?</p></li>
+</ul>
+<aside class="notes">
+<p>“Selection sort: repeatedly find the minimum of the unsorted portion and swap it to the front.”</p>
+<p>“Notice it calls <code>find_min(arr, a)</code> — exactly the function we just proved correct.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-decomposition-principle" class="slide level2">
+<h2>The Decomposition Principle</h2>
+<p>We already proved <code>find_min(arr, a)</code> returns the index of the minimum in <code>arr[a:]</code>.</p>
+<p>Now we can <strong>use that fact</strong> without re-proving it.</p>
 <blockquote>
-<p>“Does this maintain the invariant?”</p>
+<p>Prove small pieces. Compose them into bigger proofs.</p>
 </blockquote>
-<ul>
-<li><code>lo = mid + 1</code>: Does this exclude only impossible locations? <strong>Yes.</strong></li>
-<li><code>hi = mid - 1</code>: Does this exclude only impossible locations? <strong>Yes.</strong></li>
-<li><code>lo &lt;= hi</code>: When does the search space become empty? <strong>When lo &gt; hi.</strong></li>
-</ul>
 <aside class="notes">
-<p>“The invariant is your compass. When lost, check the invariant.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="analysis" class="title-slide slide level1 center">
-<h1>Analysis</h1>
-
-</section>
-<section id="worst-case-running-time" class="slide level2">
-<h2>Worst-Case Running Time</h2>
-<p>Each iteration:</p>
-<ul>
-<li>Constant work (comparisons, arithmetic)</li>
-<li>Range shrinks by half: <span class="math inline">\((hi - lo + 1) \to \lfloor(hi - lo + 1)/2\rfloor\)</span></li>
-</ul>
-<p>How many halvings until range is empty?</p>
-<p><span class="math inline">\(\log_2(n)\)</span></p>
-<p><strong>Worst case</strong>: <span class="math inline">\(\Theta(\log n)\)</span></p>
-<aside class="notes">
-<p>“The halving is the key. That’s what gives us the logarithm.”</p>
+<p>“This is the software engineering principle of decomposition, applied to proofs.”</p>
+<p>“You don’t re-derive addition every time you use it. Same idea here.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -793,71 +738,89 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuZGVm
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-scale-comparison" class="slide level2">
-<h2>The Scale Comparison</h2>
+<section id="the-selection-sort-invariant" class="slide level2">
+<h2>The Selection Sort Invariant</h2>
+<p><strong>Invariant</strong>: At iteration <span class="math inline">\(a\)</span> (for <span class="math inline">\(a \in \{0, 1, \ldots, n\}\)</span>), <code>arr[0:a]</code> is sorted and contains the <span class="math inline">\(a\)</span> smallest elements.</p>
+<aside class="notes">
+<p>“The first a elements are sorted AND they’re the smallest a elements overall.”</p>
+<p>“Both parts matter — sorted isn’t enough; they have to be the right elements.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-proof" class="slide level2 smaller">
+<h2>The Proof</h2>
+<ol type="1">
+<li><p><strong>Base case</strong>: At <span class="math inline">\(a = 0\)</span>, <code>arr[0:0]</code> is empty. ✓ (Trivially sorted, trivially smallest.)</p></li>
+<li><p><strong>Inductive step</strong>: Assume invariant holds at start of iteration <span class="math inline">\(a\)</span>: <code>arr[0:a]</code> is sorted and contains the <span class="math inline">\(a\)</span> smallest elements.</p>
+<p>During iteration <span class="math inline">\(a\)</span>:</p>
+<ul>
+<li><code>find_min(arr, a)</code> returns the index of the minimum in <code>arr[a:]</code> <em>(by our earlier proof!)</em></li>
+<li>After the swap, <code>arr[a]</code> holds the <span class="math inline">\((a+1)\)</span>-th smallest element</li>
+</ul>
+<p>After iteration <span class="math inline">\(a\)</span>: <code>arr[0:a+1]</code> is sorted and contains the <span class="math inline">\(a+1\)</span> smallest elements. ✓</p></li>
+<li><p><strong>Termination</strong>: Plug in <span class="math inline">\(a = n\)</span> → <code>arr[0:n]</code> is sorted. ∎</p></li>
+</ol>
+<aside class="notes">
+<p>“See how we just <em>used</em> the find_min correctness? We didn’t re-prove it.”</p>
+<p>“This is the power of decomposition: prove once, use everywhere.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-lesson" class="slide level2">
+<h2>The Lesson</h2>
+<p><strong>Decomposition</strong> is good <em>system</em> engineering.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 23%">
+<col style="width: 47%">
+</colgroup>
 <thead>
 <tr class="header">
-<th><span class="math inline">\(n\)</span></th>
-<th>Linear Search</th>
-<th>Binary Search</th>
+<th>Software</th>
+<th>Proofs</th>
+<th>Data Pipelines</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1,000</td>
-<td>1,000</td>
-<td>10</td>
+<td>Write small, tested functions</td>
+<td>Prove small helper lemmas</td>
+<td>Build validated transformations</td>
 </tr>
 <tr class="even">
-<td>1,000,000</td>
-<td>1,000,000</td>
-<td>20</td>
+<td>Compose into larger programs</td>
+<td>Compose into larger proofs</td>
+<td>Chain into workflows</td>
 </tr>
 <tr class="odd">
-<td>1,000,000,000</td>
-<td>1,000,000,000</td>
-<td>30</td>
+<td>Reuse without re-implementing</td>
+<td>Reuse without re-proving</td>
+<td>Reuse without re-validating</td>
 </tr>
 </tbody>
 </table>
 <aside class="notes">
-<p>“A billion elements, 30 comparisons. That’s the power of <span class="math inline">\(O(\log n)\)</span>.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="racing-them" class="slide level2">
-<h2>Racing Them</h2>
-<div>
-<div id="pyodide-5" class="exercise-cell">
-
-</div>
-<script type="pyodide-5-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGxpbmVhcl9zZWFyY2goYXJyLCB0YXJnZXQpOlxuICAgIGZvciBpIGluIHJhbmdlKGxlbihhcnIpKTpcbiAgICAgICAgaWYgYXJyW2ldID09IHRhcmdldDpcbiAgICAgICAgICAgIHJldHVybiBpXG4gICAgcmV0dXJuIC0xXG5cbmRlZiBiaW5hcnlfc2VhcmNoKGFyciwgdGFyZ2V0KTpcbiAgICBsbywgaGkgPSAwLCBsZW4oYXJyKSAtIDFcbiAgICB3aGlsZSBsbyA8PSBoaTpcbiAgICAgICAgbWlkID0gKGxvICsgaGkpIC8vIDJcbiAgICAgICAgaWYgYXJyW21pZF0gPT0gdGFyZ2V0OlxuICAgICAgICAgICAgcmV0dXJuIG1pZFxuICAgICAgICBlbGlmIGFyclttaWRdIDwgdGFyZ2V0OlxuICAgICAgICAgICAgbG8gPSBtaWQgKyAxXG4gICAgICAgIGVsc2U6XG4gICAgICAgICAgICBoaSA9IG1pZCAtIDFcbiAgICByZXR1cm4gLTEifQ==
-</script>
-</div>
-</section>
-<section id="the-race" class="slide level2">
-<h2>The Race</h2>
-<div>
-<div id="pyodide-6" class="exercise-cell">
-
-</div>
-<script type="pyodide-6-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoXCJuICAgICAgICAgIGxpbmVhciAgICAgIGJpbmFyeVwiKVxucHJpbnQoXCItXCIgKiA0MClcbmZvciBuIGluIFsxMDAwMCwgMTAwMDAwLCAxMDAwMDAwXTpcbiAgICBhcnIgPSBsaXN0KHJhbmdlKG4pKVxuICAgIHRhcmdldCA9IG4gICMgTm90IGluIGFycmF5ID0gd29yc3QgY2FzZVxuXG4gICAgdDEgPSB0aW1lX2l0KGxpbmVhcl9zZWFyY2gsIGFyciwgdGFyZ2V0KVxuICAgIHQyID0gdGltZV9pdChiaW5hcnlfc2VhcmNoLCBhcnIsIHRhcmdldClcblxuICAgIHByaW50KGZcIntuOjd9ICAgIHt0MTouNGZ9cyAgICB7dDI6LjZmfXNcIikifQ==
-</script>
-</div>
-<aside class="notes">
-<p>“Linear grows with n.&nbsp;Binary barely budges. That’s <span class="math inline">\(O(n)\)</span> vs <span class="math inline">\(O(\log n)\)</span>.”</p>
+<p>“When you write <code>find_min</code> as a separate function, you’re setting yourself up for cleaner code AND cleaner proofs.”</p>
+<p>“Same for data science: build a cleaning step you trust, a feature extraction step you trust, then compose them. You don’t re-check the cleaning every time you use it.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -871,24 +834,16 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoXCJuICAgICAgICAg
       }</style></aside>
 </section></section>
 <section>
-<section id="the-price-of-speed" class="title-slide slide level1 center">
-<h1>The Price of Speed</h1>
+<section id="finding-the-invariant" class="title-slide slide level1 center">
+<h1>Finding the Invariant</h1>
 
 </section>
-<section id="the-precondition" class="slide level2">
-<h2>The Precondition</h2>
-<p>Binary search <strong>requires</strong> the array to be sorted.</p>
-<p>What if it’s not sorted?</p>
-<div>
-<div id="pyodide-7" class="exercise-cell">
-
-</div>
-<script type="pyodide-7-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzMsIDEsIDQsIDEsIDUsIDksIDIsIDZdXG5wcmludChmXCJMb29raW5nIGZvciA1IGluIHthcnJ9XCIpXG5wcmludChmXCJSZXN1bHQ6IHtiaW5hcnlfc2VhcmNoKGFyciwgNSl9XCIpXG5wcmludChmXCJCdXQgNSBpcyBhdCBpbmRleDoge2Fyci5pbmRleCg1KX1cIikifQ==
-</script>
-</div>
+<section id="the-art" class="slide level2">
+<h2>The Art</h2>
+<p>Stating the invariant is often the hardest part.</p>
+<p><strong>Strategy</strong>: Ask “What property do I maintain that leads to my answer?”</p>
 <aside class="notes">
-<p>“Garbage in, garbage out. The invariant assumes sorted order.”</p>
+<p>“The invariant should connect the loop’s progress to the final goal.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -901,22 +856,219 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzMsIDEsIDQsIDEs
           display:block!important;
       }</style></aside>
 </section>
-<section id="when-to-use-binary-search" class="slide level2">
-<h2>When to Use Binary Search</h2>
-<p><strong>Use binary search when:</strong></p>
-<ul>
-<li>Data is sorted (or can be sorted once, searched many times)</li>
-<li>Random access is <span class="math inline">\(O(1)\)</span> (arrays, not linked lists)</li>
-<li>You need to find a specific value</li>
-</ul>
-<p><strong>Don’t use when:</strong></p>
-<ul>
-<li>Data is unsorted and searched only once</li>
-<li>Data structure doesn’t support random access</li>
-<li>You need to find <em>all</em> occurrences</li>
-</ul>
+<section id="common-patterns" class="slide level2">
+<h2>Common Patterns</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Algorithm Type</th>
+<th>Invariant Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Accumulation</td>
+<td>“<code>var</code> holds result for elements seen so far”</td>
+</tr>
+<tr class="even">
+<td>Search</td>
+<td>“If target exists, it’s in the remaining range”</td>
+</tr>
+<tr class="odd">
+<td>Partition</td>
+<td>“Elements before <span class="math inline">\(i\)</span> satisfy property P”</td>
+</tr>
+<tr class="even">
+<td>Two-pointer</td>
+<td>“Answer is not in the excluded region”</td>
+</tr>
+</tbody>
+</table>
 <aside class="notes">
-<p>“Sorting costs <span class="math inline">\(O(n \log n)\)</span>. If you only search once, linear search wins.”</p>
+<p>“Wednesday: we’ll use the ‘search’ pattern for binary search.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="design-not-just-proof" class="slide level2">
+<h2>Design, Not Just Proof</h2>
+<p>Loop invariants aren’t just for proving code correct.</p>
+<p>They’re a <strong>design tool</strong>.</p>
+<blockquote>
+<p>“What should be true at each step?”</p>
+</blockquote>
+<p>If you can’t state the invariant, you might not understand your own algorithm.</p>
+<aside class="notes">
+<p>“When you’re stuck debugging, ask: what’s my invariant? Often the bug is that you’re not maintaining it.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-warning" class="slide level2">
+<h2>A Warning</h2>
+<p>A <strong>wrong</strong> invariant can “prove” incorrect code correct.</p>
+<p>The invariant must be:</p>
+<ol type="1">
+<li><strong>True</strong> (actually holds at each iteration)</li>
+<li><strong>Strong enough</strong> (implies correctness at termination)</li>
+<li><strong>Preserved</strong> (maintained by the loop body)</li>
+</ol>
+<aside class="notes">
+<p>“You can’t just make up any statement. It has to capture the actual behavior.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-bad-example" class="slide level2 smaller">
+<h2>A Bad Example</h2>
+<p><strong>Weak invariant</strong>: “At iteration <span class="math inline">\(a\)</span>, <code>arr[0:a]</code> is sorted.”</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">9</th>
+<th style="text-align: center;">10</th>
+<th style="text-align: center;">11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">38</td>
+<td style="text-align: center;">47</td>
+<td style="text-align: center;">59</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">71</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">94</td>
+<td style="text-align: center;">52</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">33</td>
+</tr>
+</tbody>
+</table>
+<p>At iteration <span class="math inline">\(a = 5\)</span>, suppose we have:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">9</th>
+<th style="text-align: center;">10</th>
+<th style="text-align: center;">11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">38</td>
+<td style="text-align: center;">47</td>
+<td style="text-align: center;">59</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">71</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">94</td>
+<td style="text-align: center;">52</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">33</td>
+</tr>
+</tbody>
+</table>
+<p>Is <code>arr[0:5]</code> = <code>[12, 25, 38, 47, 59]</code> sorted? <strong>Yes!</strong></p>
+<p>But is this correct? <strong>No!</strong> The element 6 is smaller than all of them.</p>
+<aside class="notes">
+<p>“The invariant is TRUE but not STRONG ENOUGH. The first 5 elements happen to be in order, but they’re not the 5 smallest. We need: ‘arr[0:a] is sorted AND contains the a smallest elements.’”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="why-this-matters" class="title-slide slide level1 center">
+<h1>Why This Matters</h1>
+
+</section>
+<section id="for-your-career" class="slide level2">
+<h2>For Your Career</h2>
+<p>Real bugs in real systems come from:</p>
+<ul>
+<li>Off-by-one errors</li>
+<li>Edge cases not handled</li>
+<li>“It usually works” code</li>
+</ul>
+<p>Loop invariants catch these <strong>before</strong> they ship.</p>
+<aside class="notes">
+<p>“Thinking in invariants makes you a better programmer, even if you don’t write formal proofs.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-mindset" class="slide level2">
+<h2>The Mindset</h2>
+<p>Every time you write a loop, ask:</p>
+<ol type="1">
+<li>What’s true at the start?</li>
+<li>What stays true each iteration?</li>
+<li>What does that give me at the end?</li>
+</ol>
+<aside class="notes">
+<p>“Make this a habit. It prevents bugs.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -934,62 +1086,57 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzMsIDEsIDQsIDEs
 <h1>Summary</h1>
 
 </section>
-<section id="what-we-learned" class="slide level2">
-<h2>What We Learned</h2>
+<section id="the-loop-invariant-template" class="slide level2">
+<h2>The Loop Invariant Template</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 70%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>What to show</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Invariant</strong></td>
+<td>State <span class="math inline">\(P(i)\)</span> for <span class="math inline">\(i \in \{a, a+1, \ldots, n\}\)</span> (your domain)</td>
+</tr>
+<tr class="even">
+<td><strong>Base case</strong></td>
+<td><span class="math inline">\(P(a)\)</span> holds (first value in domain)</td>
+</tr>
+<tr class="odd">
+<td><strong>Inductive step</strong></td>
+<td>Assuming <span class="math inline">\(P(j)\)</span> for all <span class="math inline">\(a \leq j &lt; i\)</span>, show <span class="math inline">\(P(i)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Termination</strong></td>
+<td>Plug in <span class="math inline">\(i = n\)</span> → desired result</td>
+</tr>
+</tbody>
+</table>
+<p>This is <strong>induction</strong> on the iteration count.</p>
+</section>
+<section id="looking-ahead" class="slide level2">
+<h2>Looking Ahead</h2>
+<p><strong>Wednesday</strong>: We’ll use loop invariants to prove a famous algorithm correct — and see why it took 17 years to get a bug-free version.</p>
+</section>
+<section id="practice-problems" class="slide level2">
+<h2>Practice Problems</h2>
+<p>Before Wednesday, try stating invariants for:</p>
 <ol type="1">
-<li><p><strong>Binary search</strong> finds a target in <span class="math inline">\(\Theta(\log n)\)</span> time (vs <span class="math inline">\(\Theta(n)\)</span> for linear)</p></li>
-<li><p><strong>The invariant</strong>: “If target exists, it’s in <code>arr[lo:hi+1]</code>”</p></li>
-<li><p><strong>The proof</strong>: Init, Maintenance (3 cases), Termination</p></li>
-<li><p><strong>The bugs</strong>: Off-by-one errors, infinite loops, integer overflow</p></li>
-<li><p><strong>The precondition</strong>: Array must be sorted</p></li>
+<li><p><code>reverse(arr)</code> — reverse an array in place</p></li>
+<li><p><code>is_sorted(arr)</code> — check if array is sorted</p></li>
+<li><p><code>count(arr, target)</code> — count occurrences of target</p></li>
 </ol>
-</section>
-<section id="the-pattern" class="slide level2">
-<h2>The Pattern</h2>
-<p>Binary search is a <strong>divide-and-conquer</strong> algorithm:</p>
-<ol type="1">
-<li><strong>Divide</strong>: Pick the middle</li>
-<li><strong>Conquer</strong>: Recurse on one half</li>
-<li><strong>Combine</strong>: Nothing to combine (we found it or it’s not there)</li>
-</ol>
-<p>We’ll see more divide-and-conquer in Week 6 (sorting).</p>
-</section>
-<section id="next-week" class="slide level2">
-<h2>Next Week</h2>
-<p><strong>Week 3: Recursion</strong></p>
-<ul>
-<li>Thinking recursively</li>
-<li>Recurrence relations</li>
-<li>The fractal coastline puzzle</li>
-</ul>
-<aside class="notes">
-<p>“Binary search can also be written recursively. We’ll explore that next week.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="questions" class="slide level2">
-<h2>Questions?</h2>
-<div class="r-fit-text">
-<p>Binary search: <span class="math inline">\(\Theta(\log n)\)</span></p>
-<p>The invariant makes it <strong>correct</strong>.</p>
-<p>The halving makes it <strong>fast</strong>.</p>
-</div>
+<p>Think: What’s true after processing <span class="math inline">\(i\)</span> elements?</p>
 
 
-<script type="pyodide-data">
-eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
-</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl83ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzcgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">

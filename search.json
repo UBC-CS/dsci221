@@ -137,209 +137,6 @@
     "text": "Same Big-\\(O\\), Different Speed\nBoth touch every row: \\(O(n)\\)\nBut:\n\nVectorized: tiny constants (compiled C)\nPython loop: large constants (interpreter overhead)\n\n\n“Big-O tells you SCALING, not SPEED.”\n“In pandas: prefer vectorized operations. But that’s about constants, not complexity class.”"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#trusting-your-code",
-    "href": "slides/02_tue_invariants.html#trusting-your-code",
-    "title": "Loop Invariants",
-    "section": "Trusting Your Code",
-    "text": "Trusting Your Code\ndef ________________(arr, a):\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\nWhat does this function do?\nDoes it work?\nHow do you know?\n\n\n“You might say ‘I tested it.’ But testing checks examples, not all inputs.”\n“We want mathematical certainty.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#testing-is-not-proof",
-    "href": "slides/02_tue_invariants.html#testing-is-not-proof",
-    "title": "Loop Invariants",
-    "section": "Testing Is Not Proof",
-    "text": "Testing Is Not Proof\nTesting: “It worked on these 10 inputs.”\nProof: “It works on all valid inputs.”\n\n“Dijkstra: ‘Testing shows the presence of bugs, not their absence.’”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-key-insight",
-    "href": "slides/02_tue_invariants.html#the-key-insight",
-    "title": "Loop Invariants",
-    "section": "The Key Insight",
-    "text": "The Key Insight\nA loop is just induction in disguise.\n\n\n\nInduction\nLoop Invariant\n\n\n\n\nBase case\nInitialization\n\n\nInductive step\nMaintenance\n\n\n“For all \\(n\\)”\nTermination\n\n\n\n\n“You already know induction from discrete math. Loop invariants are the same idea applied to code.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#what-is-an-invariant",
-    "href": "slides/02_tue_invariants.html#what-is-an-invariant",
-    "title": "Loop Invariants",
-    "section": "What Is an Invariant?",
-    "text": "What Is an Invariant?\nAn invariant is a property that remains true.\n“No matter how many times the loop runs, this statement stays true.”\n\n“The word ‘invariant’ = ‘not varying’ = stays the same.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-template-1",
-    "href": "slides/02_tue_invariants.html#the-template-1",
-    "title": "Loop Invariants",
-    "section": "The Template",
-    "text": "The Template\n\n\n\n\n\n\n\nStep\nWhat to show\n\n\n\n\nInvariant\nState \\(P(i)\\) for \\(i \\in \\{0, 1, \\ldots, n\\}\\) (your domain)\n\n\nBase case\n\\(P(0)\\) holds (first value in domain)\n\n\nInductive step\nAssuming \\(P(j)\\) for all \\(j\\) in domain where \\(j &lt; i\\), show \\(P(i)\\)\n\n\nTermination\nPlug in \\(i = n\\) → desired result\n\n\n\n\n“This is just induction on the iteration count. The domain of i depends on your loop — it might be \\(\\{0, \\ldots, n\\}\\) or \\(\\{a+1, \\ldots, n\\}\\) or something else.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-code",
-    "href": "slides/02_tue_invariants.html#the-code",
-    "title": "Loop Invariants",
-    "section": "The Code",
-    "text": "The Code\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n\n\n\n\n32\n11\n73\n21\n29\n86\n81\n17\n\n\n\nIf a = 2, what should find_min return?\n\n“Looking at arr[2:] = [73, 21, 29, 86, 81, 7], the minimum is 7 at index 7.”\n“Let’s prove this function always returns the correct answer.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#step-1-state-the-invariant",
-    "href": "slides/02_tue_invariants.html#step-1-state-the-invariant",
-    "title": "Loop Invariants",
-    "section": "Step 1: State the Invariant",
-    "text": "Step 1: State the Invariant\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n32\n11\n73\n21\n29\n86\n81\n17\n14\n3\n64\n37\n\n\n\nInvariant: At iteration \\(i\\) (for \\(i \\in \\{a+1, \\ldots, n\\}\\)), ret holds the index of the minimum value in arr[a:i].\n\n“The hard part is finding the right invariant. Once you have it, the proof often falls into place.”\n“This invariant captures what we’re maintaining as we go: ret is the min of everything we’ve seen so far.”\n“Note: i ranges from a+1 to n.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#step-2-base-case-i-a1",
-    "href": "slides/02_tue_invariants.html#step-2-base-case-i-a1",
-    "title": "Loop Invariants",
-    "section": "Step 2: Base Case (\\(i = a+1\\))",
-    "text": "Step 2: Base Case (\\(i = a+1\\))\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\nAt the first iteration, i = a+1 and ret = a.\nThe invariant claims ret is the index of the min in arr[a:a+1].\narr[a:a+1] contains only arr[a], and ret = a is its index. ✓\n\n“This is the base case. We’ve ‘seen’ only arr[a], and ret points to it.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#step-3-inductive-step",
-    "href": "slides/02_tue_invariants.html#step-3-inductive-step",
-    "title": "Loop Invariants",
-    "section": "Step 3: Inductive Step",
-    "text": "Step 3: Inductive Step\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n32\n11\n73\n21\n29\n86\n81\n17\n14\n3\n64\n37\n\n\n\nIH: Assume the invariant holds at the start of iteration \\(i\\): ret is the index of min in arr[a:i].\nDuring iteration \\(i\\), we compare arr[i] to arr[ret]:\n\nCase 1: arr[i] &lt; arr[ret] → we set ret = i, the new min\nCase 2: arr[i] &gt;= arr[ret] → we keep ret, still the min\n\nEither way, after iteration \\(i\\), ret is the index of min in arr[a:i+1]. ✓\n\n“The two cases correspond to the if/else. In both cases, ret ends up pointing to the minimum of arr[a:i+1], which is the invariant for iteration i+1.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#step-4-termination",
-    "href": "slides/02_tue_invariants.html#step-4-termination",
-    "title": "Loop Invariants",
-    "section": "Step 4: Termination",
-    "text": "Step 4: Termination\nLoop terminates when i = n (after processing the last element).\nPlug into invariant: ret is index of min in arr[a:n].\nBut arr[a:n] is exactly arr[a:].\nTherefore: ret is the index of the minimum in arr[a:]. ∎\n\n“At i = n, ret is min of arr[a:n] = arr[a:].”\n“The ∎ (tombstone/halmos) marks the end of a proof.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-proof-in-one-slide",
-    "href": "slides/02_tue_invariants.html#the-proof-in-one-slide",
-    "title": "Loop Invariants",
-    "section": "The Proof in One Slide",
-    "text": "The Proof in One Slide\nTheorem: find_min(arr, a) returns the index of the minimum value in arr[a:].\nProof: By induction on iteration count.\n\nInvariant: At iteration \\(i\\) (for \\(i \\in \\{a+1, \\ldots, n\\}\\)), ret is index of min in arr[a:i]\nBase case: At \\(i = a+1\\), ret = a is min of arr[a:a+1] ✓\nInductive step: If true at start of iteration \\(i\\), loop body restores it for \\(i+1\\) ✓\nTermination: Plug in \\(i = n\\) → ret is min of arr[a:n] = arr[a:] ∎"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-code-1",
-    "href": "slides/02_tue_invariants.html#the-code-1",
-    "title": "Loop Invariants",
-    "section": "The Code",
-    "text": "The Code\ndef array_sum(arr):\n    total = 0\n    for i in range(len(arr)):\n        total += arr[i]\n    return total\nWhat’s the invariant?\n\n“Pause the video and try to state the invariant before I reveal it.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-invariant",
-    "href": "slides/02_tue_invariants.html#the-invariant",
-    "title": "Loop Invariants",
-    "section": "The Invariant",
-    "text": "The Invariant\nInvariant: At iteration \\(i\\) (for \\(i \\in \\{0, 1, \\ldots, n\\}\\)), total equals the sum of arr[0:i].\n\n“This captures what we’re building up as we go. Here i ranges from 0 to n.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-proof-quick-version",
-    "href": "slides/02_tue_invariants.html#the-proof-quick-version",
-    "title": "Loop Invariants",
-    "section": "The Proof (Quick Version)",
-    "text": "The Proof (Quick Version)\n\nBase case: At \\(i = 0\\), total = 0 = sum of arr[0:0]. ✓\nInductive step: Assume invariant holds at start of iteration \\(i\\): total = sum of arr[0:i].\nDuring iteration \\(i\\), we add arr[i] to total.\nAfter iteration \\(i\\): total = sum of arr[0:i] + arr[i] = sum of arr[0:i+1]. ✓\nTermination: Plug in \\(i = n\\) → total = sum of arr[0:n] = sum of all. ∎\n\n\n“With practice, these proofs become quick sketches, not page-long arguments.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#selection-sort",
-    "href": "slides/02_tue_invariants.html#selection-sort",
-    "title": "Loop Invariants",
-    "section": "Selection Sort",
-    "text": "Selection Sort\ndef selection_sort(arr):\n    for a in range(len(arr)):\n        min_idx = find_min(arr, a)\n        arr[a], arr[min_idx] = arr[min_idx], arr[a]\n\nThis uses our find_min helper!\nQuick check: running time?\n\n\n“Selection sort: repeatedly find the minimum of the unsorted portion and swap it to the front.”\n“Notice it calls find_min(arr, a) — exactly the function we just proved correct.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-decomposition-principle",
-    "href": "slides/02_tue_invariants.html#the-decomposition-principle",
-    "title": "Loop Invariants",
-    "section": "The Decomposition Principle",
-    "text": "The Decomposition Principle\nWe already proved find_min(arr, a) returns the index of the minimum in arr[a:].\nNow we can use that fact without re-proving it.\n\nProve small pieces. Compose them into bigger proofs.\n\n\n“This is the software engineering principle of decomposition, applied to proofs.”\n“You don’t re-derive addition every time you use it. Same idea here.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-selection-sort-invariant",
-    "href": "slides/02_tue_invariants.html#the-selection-sort-invariant",
-    "title": "Loop Invariants",
-    "section": "The Selection Sort Invariant",
-    "text": "The Selection Sort Invariant\nInvariant: At iteration \\(a\\) (for \\(a \\in \\{0, 1, \\ldots, n\\}\\)), arr[0:a] is sorted and contains the \\(a\\) smallest elements.\n\n“The first a elements are sorted AND they’re the smallest a elements overall.”\n“Both parts matter — sorted isn’t enough; they have to be the right elements.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-proof",
-    "href": "slides/02_tue_invariants.html#the-proof",
-    "title": "Loop Invariants",
-    "section": "The Proof",
-    "text": "The Proof\n\nBase case: At \\(a = 0\\), arr[0:0] is empty. ✓ (Trivially sorted, trivially smallest.)\nInductive step: Assume invariant holds at start of iteration \\(a\\): arr[0:a] is sorted and contains the \\(a\\) smallest elements.\nDuring iteration \\(a\\):\n\nfind_min(arr, a) returns the index of the minimum in arr[a:] (by our earlier proof!)\nAfter the swap, arr[a] holds the \\((a+1)\\)-th smallest element\n\nAfter iteration \\(a\\): arr[0:a+1] is sorted and contains the \\(a+1\\) smallest elements. ✓\nTermination: Plug in \\(a = n\\) → arr[0:n] is sorted. ∎\n\n\n“See how we just used the find_min correctness? We didn’t re-prove it.”\n“This is the power of decomposition: prove once, use everywhere.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-lesson-1",
-    "href": "slides/02_tue_invariants.html#the-lesson-1",
-    "title": "Loop Invariants",
-    "section": "The Lesson",
-    "text": "The Lesson\nDecomposition is good system engineering.\n\n\n\n\n\n\n\n\nSoftware\nProofs\nData Pipelines\n\n\n\n\nWrite small, tested functions\nProve small helper lemmas\nBuild validated transformations\n\n\nCompose into larger programs\nCompose into larger proofs\nChain into workflows\n\n\nReuse without re-implementing\nReuse without re-proving\nReuse without re-validating\n\n\n\n\n“When you write find_min as a separate function, you’re setting yourself up for cleaner code AND cleaner proofs.”\n“Same for data science: build a cleaning step you trust, a feature extraction step you trust, then compose them. You don’t re-check the cleaning every time you use it.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-art",
-    "href": "slides/02_tue_invariants.html#the-art",
-    "title": "Loop Invariants",
-    "section": "The Art",
-    "text": "The Art\nStating the invariant is often the hardest part.\nStrategy: Ask “What property do I maintain that leads to my answer?”\n\n“The invariant should connect the loop’s progress to the final goal.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#common-patterns",
-    "href": "slides/02_tue_invariants.html#common-patterns",
-    "title": "Loop Invariants",
-    "section": "Common Patterns",
-    "text": "Common Patterns\n\n\n\nAlgorithm Type\nInvariant Pattern\n\n\n\n\nAccumulation\n“var holds result for elements seen so far”\n\n\nSearch\n“If target exists, it’s in the remaining range”\n\n\nPartition\n“Elements before \\(i\\) satisfy property P”\n\n\nTwo-pointer\n“Answer is not in the excluded region”\n\n\n\n\n“Wednesday: we’ll use the ‘search’ pattern for binary search.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#design-not-just-proof",
-    "href": "slides/02_tue_invariants.html#design-not-just-proof",
-    "title": "Loop Invariants",
-    "section": "Design, Not Just Proof",
-    "text": "Design, Not Just Proof\nLoop invariants aren’t just for proving code correct.\nThey’re a design tool.\n\n“What should be true at each step?”\n\nIf you can’t state the invariant, you might not understand your own algorithm.\n\n“When you’re stuck debugging, ask: what’s my invariant? Often the bug is that you’re not maintaining it.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#a-warning",
-    "href": "slides/02_tue_invariants.html#a-warning",
-    "title": "Loop Invariants",
-    "section": "A Warning",
-    "text": "A Warning\nA wrong invariant can “prove” incorrect code correct.\nThe invariant must be:\n\nTrue (actually holds at each iteration)\nStrong enough (implies correctness at termination)\nPreserved (maintained by the loop body)\n\n\n“You can’t just make up any statement. It has to capture the actual behavior.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#a-bad-example",
-    "href": "slides/02_tue_invariants.html#a-bad-example",
-    "title": "Loop Invariants",
-    "section": "A Bad Example",
-    "text": "A Bad Example\nWeak invariant: “At iteration \\(a\\), arr[0:a] is sorted.”\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nAt iteration \\(a = 5\\), suppose we have:\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nIs arr[0:5] = [12, 25, 38, 47, 59] sorted? Yes!\nBut is this correct? No! The element 6 is smaller than all of them.\n\n“The invariant is TRUE but not STRONG ENOUGH. The first 5 elements happen to be in order, but they’re not the 5 smallest. We need: ‘arr[0:a] is sorted AND contains the a smallest elements.’”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#for-your-career",
-    "href": "slides/02_tue_invariants.html#for-your-career",
-    "title": "Loop Invariants",
-    "section": "For Your Career",
-    "text": "For Your Career\nReal bugs in real systems come from:\n\nOff-by-one errors\nEdge cases not handled\n“It usually works” code\n\nLoop invariants catch these before they ship.\n\n“Thinking in invariants makes you a better programmer, even if you don’t write formal proofs.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-mindset",
-    "href": "slides/02_tue_invariants.html#the-mindset",
-    "title": "Loop Invariants",
-    "section": "The Mindset",
-    "text": "The Mindset\nEvery time you write a loop, ask:\n\nWhat’s true at the start?\nWhat stays true each iteration?\nWhat does that give me at the end?\n\n\n“Make this a habit. It prevents bugs.”"
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#the-loop-invariant-template",
-    "href": "slides/02_tue_invariants.html#the-loop-invariant-template",
-    "title": "Loop Invariants",
-    "section": "The Loop Invariant Template",
-    "text": "The Loop Invariant Template\n\n\n\n\n\n\n\nStep\nWhat to show\n\n\n\n\nInvariant\nState \\(P(i)\\) for \\(i \\in \\{a, a+1, \\ldots, n\\}\\) (your domain)\n\n\nBase case\n\\(P(a)\\) holds (first value in domain)\n\n\nInductive step\nAssuming \\(P(j)\\) for all \\(a \\leq j &lt; i\\), show \\(P(i)\\)\n\n\nTermination\nPlug in \\(i = n\\) → desired result\n\n\n\nThis is induction on the iteration count."
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#looking-ahead",
-    "href": "slides/02_tue_invariants.html#looking-ahead",
-    "title": "Loop Invariants",
-    "section": "Looking Ahead",
-    "text": "Looking Ahead\nWednesday: We’ll use loop invariants to prove a famous algorithm correct — and see why it took 17 years to get a bug-free version."
-  },
-  {
-    "objectID": "slides/02_tue_invariants.html#practice-problems",
-    "href": "slides/02_tue_invariants.html#practice-problems",
-    "title": "Loop Invariants",
-    "section": "Practice Problems",
-    "text": "Practice Problems\nBefore Wednesday, try stating invariants for:\n\nreverse(arr) — reverse an array in place\nis_sorted(arr) — check if array is sorted\ncount(arr, target) — count occurrences of target\n\nThink: What’s true after processing \\(i\\) elements?"
-  },
-  {
     "objectID": "slides/01_mon_intro.html#where-to-start",
     "href": "slides/01_mon_intro.html#where-to-start",
     "title": "What Makes an Algorithm Good?",
@@ -1279,233 +1076,212 @@
   {
     "objectID": "slides/02_wed_correctness.html#announcements",
     "href": "slides/02_wed_correctness.html#announcements",
-    "title": "Binary Search",
+    "title": "Correctness",
     "section": "Announcements",
     "text": "Announcements\n\nLab 1 this week: Lists and searching\nHW1 assigned Friday"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#timing-experiment",
-    "href": "slides/02_wed_correctness.html#timing-experiment",
-    "title": "Binary Search",
-    "section": "Timing Experiment",
-    "text": "Timing Experiment"
+    "objectID": "slides/02_wed_correctness.html#trusting-your-code",
+    "href": "slides/02_wed_correctness.html#trusting-your-code",
+    "title": "Correctness",
+    "section": "Trusting Your Code",
+    "text": "Trusting Your Code\ndef ________________(arr, a):\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\nWhat does this function do?\nDoes it work?\nHow do you know?\n\n\n“You might say ‘I tested it.’ But testing checks examples, not all inputs.”\n“We want mathematical certainty.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#linear-what-happens-when-n-doubles",
-    "href": "slides/02_wed_correctness.html#linear-what-happens-when-n-doubles",
-    "title": "Binary Search",
-    "section": "Linear: What Happens When \\(n\\) Doubles?",
-    "text": "Linear: What Happens When \\(n\\) Doubles?\n\n\n\n\n\n\n\n“Doubling n → doubling time. That’s \\(\\Theta(n)\\).”"
+    "objectID": "slides/02_wed_correctness.html#testing-is-not-proof",
+    "href": "slides/02_wed_correctness.html#testing-is-not-proof",
+    "title": "Correctness",
+    "section": "Testing Is Not Proof",
+    "text": "Testing Is Not Proof\nTesting: “It worked on these 10 inputs.”\nProof: “It works on all valid inputs.”\n\n“Dijkstra: ‘Testing shows the presence of bugs, not their absence.’”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#quadratic-what-happens-when-n-doubles",
-    "href": "slides/02_wed_correctness.html#quadratic-what-happens-when-n-doubles",
-    "title": "Binary Search",
-    "section": "Quadratic: What Happens When \\(n\\) Doubles?",
-    "text": "Quadratic: What Happens When \\(n\\) Doubles?\n\n\n\n\n\n\n\n“Doubling n → quadrupling time. That’s \\(\\Theta(n^2)\\).”"
+    "objectID": "slides/02_wed_correctness.html#the-key-insight",
+    "href": "slides/02_wed_correctness.html#the-key-insight",
+    "title": "Correctness",
+    "section": "The Key Insight",
+    "text": "The Key Insight\nA loop is just induction in disguise.\n\n\n\nInduction\nLoop Invariant\n\n\n\n\nBase case\nInitialization\n\n\nInductive step\nMaintenance\n\n\n“For all \\(n\\)”\nTermination\n\n\n\n\n“You already know induction from discrete math. Loop invariants are the same idea applied to code.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#logarithmic-what-happens-when-n-doubles",
-    "href": "slides/02_wed_correctness.html#logarithmic-what-happens-when-n-doubles",
-    "title": "Binary Search",
-    "section": "Logarithmic: What Happens When \\(n\\) Doubles?",
-    "text": "Logarithmic: What Happens When \\(n\\) Doubles?\n\n\n\n\n\n\n\n“Doubling n → ONE more iteration. That’s \\(\\Theta(\\log n)\\).”"
+    "objectID": "slides/02_wed_correctness.html#what-is-an-invariant",
+    "href": "slides/02_wed_correctness.html#what-is-an-invariant",
+    "title": "Correctness",
+    "section": "What Is an Invariant?",
+    "text": "What Is an Invariant?\nAn invariant is a property that remains true.\n“No matter how many times the loop runs, this statement stays true.”\n\n“The word ‘invariant’ = ‘not varying’ = stays the same.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#the-game",
-    "href": "slides/02_wed_correctness.html#the-game",
-    "title": "Binary Search",
-    "section": "The Game",
-    "text": "The Game\nI’m thinking of a number between 1 and 1,000,000.\nYou can ask yes/no questions.\nWhat’s your guaranteed winning strategy?\n\n“How many questions do you need?”"
+    "objectID": "slides/02_wed_correctness.html#the-template-1",
+    "href": "slides/02_wed_correctness.html#the-template-1",
+    "title": "Correctness",
+    "section": "The Template",
+    "text": "The Template\n\n\n\n\n\n\n\nStep\nWhat to show\n\n\n\n\nInvariant\nState \\(P(i)\\) for \\(i \\in \\{0, 1, \\ldots, n\\}\\) (your domain)\n\n\nBase case\n\\(P(0)\\) holds (first value in domain)\n\n\nInductive step\nAssuming \\(P(j)\\) for all \\(j\\) in domain where \\(j &lt; i\\), show \\(P(i)\\)\n\n\nTermination\nPlug in \\(i = n\\) → desired result\n\n\n\n\n“This is just induction on the iteration count. The domain of i depends on your loop — it might be \\(\\{0, \\ldots, n\\}\\) or \\(\\{a+1, \\ldots, n\\}\\) or something else.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#the-optimal-strategy",
-    "href": "slides/02_wed_correctness.html#the-optimal-strategy",
-    "title": "Binary Search",
-    "section": "The Optimal Strategy",
-    "text": "The Optimal Strategy\n“Is it greater than 500,000?”\n\nYes: Search 500,001 to 1,000,000\nNo: Search 1 to 500,000\n\nEach question halves the remaining possibilities.\n\n“This is binary search! And it’s optimal—you can’t do better.”"
+    "objectID": "slides/02_wed_correctness.html#the-code",
+    "href": "slides/02_wed_correctness.html#the-code",
+    "title": "Correctness",
+    "section": "The Code",
+    "text": "The Code\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n\n\n\n\n32\n11\n73\n21\n29\n86\n81\n17\n\n\n\nIf a = 2, what should find_min return?\n\n“Looking at arr[2:] = [73, 21, 29, 86, 81, 7], the minimum is 7 at index 7.”\n“Let’s prove this function always returns the correct answer.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#how-many-questions",
-    "href": "slides/02_wed_correctness.html#how-many-questions",
-    "title": "Binary Search",
-    "section": "How Many Questions?",
-    "text": "How Many Questions?\nStart with \\(n = 1{,}000{,}000\\) possibilities.\nAfter each question: \\(n \\to n/2\\)\nQuestions needed: \\(\\log_2(1{,}000{,}000) \\approx 20\\)\n\n“20 questions for a million possibilities. That’s the power of halving.”"
+    "objectID": "slides/02_wed_correctness.html#step-1-state-the-invariant",
+    "href": "slides/02_wed_correctness.html#step-1-state-the-invariant",
+    "title": "Correctness",
+    "section": "Step 1: State the Invariant",
+    "text": "Step 1: State the Invariant\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n32\n11\n73\n21\n29\n86\n81\n17\n14\n3\n64\n37\n\n\n\nInvariant: At iteration \\(i\\) (for \\(i \\in \\{a+1, \\ldots, n\\}\\)), ret holds the index of the minimum value in arr[a:i].\n\n“The hard part is finding the right invariant. Once you have it, the proof often falls into place.”\n“This invariant captures what we’re maintaining as we go: ret is the min of everything we’ve seen so far.”\n“Note: i ranges from a+1 to n.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#the-problem",
-    "href": "slides/02_wed_correctness.html#the-problem",
-    "title": "Binary Search",
-    "section": "The Problem",
-    "text": "The Problem\nGiven a sorted array and a target value, find the target’s index (or determine it’s not there).\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n\n\n\nFind target = 23.\n\n“The array must be sorted. That’s the precondition.”"
+    "objectID": "slides/02_wed_correctness.html#step-2-base-case-i-a1",
+    "href": "slides/02_wed_correctness.html#step-2-base-case-i-a1",
+    "title": "Correctness",
+    "section": "Step 2: Base Case (\\(i = a+1\\))",
+    "text": "Step 2: Base Case (\\(i = a+1\\))\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\nAt the first iteration, i = a+1 and ret = a.\nThe invariant claims ret is the index of the min in arr[a:a+1].\narr[a:a+1] contains only arr[a], and ret = a is its index. ✓\n\n“This is the base case. We’ve ‘seen’ only arr[a], and ret points to it.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#linear-search-the-naive-approach",
-    "href": "slides/02_wed_correctness.html#linear-search-the-naive-approach",
-    "title": "Binary Search",
-    "section": "Linear Search: The Naive Approach",
-    "text": "Linear Search: The Naive Approach\ndef linear_search(arr, target):\n    for i in range(len(arr)):\n        if arr[i] == target:\n            return i\n    return -1\nWorst case: \\(\\Theta(n)\\)\n\n“We might have to check every element.”"
+    "objectID": "slides/02_wed_correctness.html#step-3-inductive-step",
+    "href": "slides/02_wed_correctness.html#step-3-inductive-step",
+    "title": "Correctness",
+    "section": "Step 3: Inductive Step",
+    "text": "Step 3: Inductive Step\ndef find_min(arr, a):\n    \"\"\"Return index of minimum value in arr[a:]\"\"\"\n    ret = a\n    for i in range(a + 1, len(arr)):\n        if arr[i] &lt; arr[ret]:\n            ret = i\n    return ret\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n32\n11\n73\n21\n29\n86\n81\n17\n14\n3\n64\n37\n\n\n\nIH: Assume the invariant holds at the start of iteration \\(i\\): ret is the index of min in arr[a:i].\nDuring iteration \\(i\\), we compare arr[i] to arr[ret]:\n\nCase 1: arr[i] &lt; arr[ret] → we set ret = i, the new min\nCase 2: arr[i] &gt;= arr[ret] → we keep ret, still the min\n\nEither way, after iteration \\(i\\), ret is the index of min in arr[a:i+1]. ✓\n\n“The two cases correspond to the if/else. In both cases, ret ends up pointing to the minimum of arr[a:i+1], which is the invariant for iteration i+1.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#binary-search-the-clever-approach",
-    "href": "slides/02_wed_correctness.html#binary-search-the-clever-approach",
-    "title": "Binary Search",
-    "section": "Binary Search: The Clever Approach",
-    "text": "Binary Search: The Clever Approach\ndef binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\nWorst case: \\(\\Theta(\\log n)\\)\n\n“Each iteration halves the search space.”"
-  },
-  {
-    "objectID": "slides/02_wed_correctness.html#tracing-binary-search",
-    "href": "slides/02_wed_correctness.html#tracing-binary-search",
-    "title": "Binary Search",
-    "section": "Tracing Binary Search",
-    "text": "Tracing Binary Search\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n\n\n\nFind target = 23:\n\nlo=0, hi=9, mid=4 → arr[4]=16 &lt; 23 → lo=5\nlo=5, hi=9, mid=7 → arr[7]=56 &gt; 23 → hi=6\nlo=5, hi=6, mid=5 → arr[5]=23 ✓ → return 5\n\n\n“Three comparisons instead of six. At scale, the difference is dramatic.”"
-  },
-  {
-    "objectID": "slides/02_wed_correctness.html#the-17-year-bug",
-    "href": "slides/02_wed_correctness.html#the-17-year-bug",
-    "title": "Binary Search",
-    "section": "The 17-Year Bug",
-    "text": "The 17-Year Bug\n\n“I’ve assigned binary search in courses at Bell Labs and IBM… and I’ve studied their solutions… In the history of this exercise, only about ten percent of professional programmers have gotten the program right.”\n— Jon Bentley, Programming Pearls (1986)\n\nThe first correct binary search was published in 1946.\nThe first bug-free implementation? 1962.\n\n“Even experts get it wrong. The loop invariant helps us get it right.”"
-  },
-  {
-    "objectID": "slides/02_wed_correctness.html#the-invariant",
-    "href": "slides/02_wed_correctness.html#the-invariant",
-    "title": "Binary Search",
-    "section": "The Invariant",
-    "text": "The Invariant\nInvariant: At iteration \\(i\\), if target is in arr, then target is in arr[lo:hi+1].\nEquivalently: We haven’t excluded any index where target could be.\n\n“This is the ‘search’ pattern: the answer is still in the remaining range.”\n“The invariant holds at any point we might exit the loop.”"
-  },
-  {
-    "objectID": "slides/02_wed_correctness.html#base-case-i-0",
-    "href": "slides/02_wed_correctness.html#base-case-i-0",
-    "title": "Binary Search",
-    "section": "Base Case (\\(i = 0\\))",
-    "text": "Base Case (\\(i = 0\\))\nBefore the first iteration: lo = 0, hi = len(arr) - 1\narr[lo:hi+1] = arr[0:len(arr)] = entire array\nIf target is in arr, it’s in arr[lo:hi+1]. ✓\n\n“We start with the full array. The invariant holds trivially.”"
-  },
-  {
-    "objectID": "slides/02_wed_correctness.html#inductive-step-case-1-found-it",
-    "href": "slides/02_wed_correctness.html#inductive-step-case-1-found-it",
-    "title": "Binary Search",
-    "section": "Inductive Step: Case 1 (Found it)",
-    "text": "Inductive Step: Case 1 (Found it)\narr[mid] == target → we return mid.\nThe invariant holds at this exit point: target is indeed in arr[lo:hi+1].\nWe return the correct answer. ✓\n\n“Found it. The invariant tells us we’re returning a valid location.”"
-  },
-  {
-    "objectID": "slides/02_wed_correctness.html#inductive-step-case-2",
-    "href": "slides/02_wed_correctness.html#inductive-step-case-2",
-    "title": "Binary Search",
-    "section": "Inductive Step: Case 2",
-    "text": "Inductive Step: Case 2\narr[mid] &lt; target\nSince arr is sorted: everything at indices \\(\\leq\\) mid is \\(\\leq\\) arr[mid] \\(&lt;\\) target.\nSo target can’t be at indices 0 through mid.\nSetting lo = mid + 1 excludes only indices where target can’t be. ✓\n\n“We’re safe to narrow the range because we’re only excluding impossible locations.”"
-  },
-  {
-    "objectID": "slides/02_wed_correctness.html#inductive-step-case-3",
-    "href": "slides/02_wed_correctness.html#inductive-step-case-3",
-    "title": "Binary Search",
-    "section": "Inductive Step: Case 3",
-    "text": "Inductive Step: Case 3\narr[mid] &gt; target\nSince arr is sorted: everything at indices \\(\\geq\\) mid is \\(\\geq\\) arr[mid] \\(&gt;\\) target.\nSo target can’t be at indices mid through \\(n-1\\).\nSetting hi = mid - 1 excludes only indices where target can’t be. ✓\n\n“Same reasoning. We only narrow the range safely.”"
-  },
-  {
-    "objectID": "slides/02_wed_correctness.html#termination-exit-via-lo-hi",
-    "href": "slides/02_wed_correctness.html#termination-exit-via-lo-hi",
-    "title": "Binary Search",
-    "section": "Termination (Exit via lo > hi)",
-    "text": "Termination (Exit via lo &gt; hi)\nThe loop exits when lo &gt; hi.\nAt this exit point, arr[lo:hi+1] is empty.\nThe invariant says: if target is in arr, it’s in this empty range.\nBut nothing is in an empty range.\nTherefore: target is not in arr. Return -1. ∎\n\n“The invariant holds at this exit point too — it just tells us target isn’t there.”"
+    "objectID": "slides/02_wed_correctness.html#step-4-termination",
+    "href": "slides/02_wed_correctness.html#step-4-termination",
+    "title": "Correctness",
+    "section": "Step 4: Termination",
+    "text": "Step 4: Termination\nLoop terminates when i = n (after processing the last element).\nPlug into invariant: ret is index of min in arr[a:n].\nBut arr[a:n] is exactly arr[a:].\nTherefore: ret is the index of the minimum in arr[a:]. ∎\n\n“At i = n, ret is min of arr[a:n] = arr[a:].”\n“The ∎ (tombstone/halmos) marks the end of a proof.”"
   },
   {
     "objectID": "slides/02_wed_correctness.html#the-proof-in-one-slide",
     "href": "slides/02_wed_correctness.html#the-proof-in-one-slide",
-    "title": "Binary Search",
+    "title": "Correctness",
     "section": "The Proof in One Slide",
-    "text": "The Proof in One Slide\nTheorem: binary_search(arr, target) returns the index of target if present, else -1.\nProof: By induction on iteration count.\n\nInvariant: At iteration \\(i\\), if target ∈ arr, then target ∈ arr[lo:hi+1]\nBase case: \\(i=0\\), full array satisfies invariant ✓\nInductive step: Each case either exits correctly or safely shrinks range ✓\nTermination: At exit, invariant \\(\\Rightarrow\\) correct answer ∎"
+    "text": "The Proof in One Slide\nTheorem: find_min(arr, a) returns the index of the minimum value in arr[a:].\nProof: By induction on iteration count.\n\nInvariant: At iteration \\(i\\) (for \\(i \\in \\{a+1, \\ldots, n\\}\\)), ret is index of min in arr[a:i]\nBase case: At \\(i = a+1\\), ret = a is min of arr[a:a+1] ✓\nInductive step: If true at start of iteration \\(i\\), loop body restores it for \\(i+1\\) ✓\nTermination: Plug in \\(i = n\\) → ret is min of arr[a:n] = arr[a:] ∎"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#common-mistakes",
-    "href": "slides/02_wed_correctness.html#common-mistakes",
-    "title": "Binary Search",
-    "section": "Common Mistakes",
-    "text": "Common Mistakes\n# Bug 1: Wrong comparison\nwhile lo &lt; hi:  # Should be lo &lt;= hi\n    ...\n\n# Bug 2: Wrong update\nlo = mid        # Should be mid + 1\nhi = mid        # Should be mid - 1\n\n# Bug 3: Integer overflow (in C/Java)\nmid = (lo + hi) / 2  # Can overflow!\n# Fix: mid = lo + (hi - lo) / 2\n\n“Bug 1: misses the case where lo == hi. Bug 2: can cause infinite loop. Bug 3: famous Java bug, discovered in 2006 in Arrays.binarySearch!”"
+    "objectID": "slides/02_wed_correctness.html#the-code-1",
+    "href": "slides/02_wed_correctness.html#the-code-1",
+    "title": "Correctness",
+    "section": "The Code",
+    "text": "The Code\ndef array_sum(arr):\n    total = 0\n    for i in range(len(arr)):\n        total += arr[i]\n    return total\nWhat’s the invariant?\n\n“Pause the video and try to state the invariant before I reveal it.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#the-java-bug-2006",
-    "href": "slides/02_wed_correctness.html#the-java-bug-2006",
-    "title": "Binary Search",
-    "section": "The Java Bug (2006)",
-    "text": "The Java Bug (2006)\n// This was in java.util.Arrays for 9 years!\nint mid = (low + high) / 2;  // OVERFLOW BUG\nWhen low + high &gt; Integer.MAX_VALUE, this overflows.\nFix:\nint mid = low + (high - low) / 2;\n\n“Joshua Bloch, who wrote the code, wrote about this bug. Even Google engineers get binary search wrong.”"
+    "objectID": "slides/02_wed_correctness.html#the-invariant",
+    "href": "slides/02_wed_correctness.html#the-invariant",
+    "title": "Correctness",
+    "section": "The Invariant",
+    "text": "The Invariant\nInvariant: At iteration \\(i\\) (for \\(i \\in \\{0, 1, \\ldots, n\\}\\)), total equals the sum of arr[0:i].\n\n“This captures what we’re building up as we go. Here i ranges from 0 to n.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#the-invariant-saves-you",
-    "href": "slides/02_wed_correctness.html#the-invariant-saves-you",
-    "title": "Binary Search",
-    "section": "The Invariant Saves You",
-    "text": "The Invariant Saves You\nWhen you’re unsure about an edge case, ask:\n\n“Does this maintain the invariant?”\n\n\nlo = mid + 1: Does this exclude only impossible locations? Yes.\nhi = mid - 1: Does this exclude only impossible locations? Yes.\nlo &lt;= hi: When does the search space become empty? When lo &gt; hi.\n\n\n“The invariant is your compass. When lost, check the invariant.”"
+    "objectID": "slides/02_wed_correctness.html#the-proof-quick-version",
+    "href": "slides/02_wed_correctness.html#the-proof-quick-version",
+    "title": "Correctness",
+    "section": "The Proof (Quick Version)",
+    "text": "The Proof (Quick Version)\n\nBase case: At \\(i = 0\\), total = 0 = sum of arr[0:0]. ✓\nInductive step: Assume invariant holds at start of iteration \\(i\\): total = sum of arr[0:i].\nDuring iteration \\(i\\), we add arr[i] to total.\nAfter iteration \\(i\\): total = sum of arr[0:i] + arr[i] = sum of arr[0:i+1]. ✓\nTermination: Plug in \\(i = n\\) → total = sum of arr[0:n] = sum of all. ∎\n\n\n“With practice, these proofs become quick sketches, not page-long arguments.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#worst-case-running-time",
-    "href": "slides/02_wed_correctness.html#worst-case-running-time",
-    "title": "Binary Search",
-    "section": "Worst-Case Running Time",
-    "text": "Worst-Case Running Time\nEach iteration:\n\nConstant work (comparisons, arithmetic)\nRange shrinks by half: \\((hi - lo + 1) \\to \\lfloor(hi - lo + 1)/2\\rfloor\\)\n\nHow many halvings until range is empty?\n\\(\\log_2(n)\\)\nWorst case: \\(\\Theta(\\log n)\\)\n\n“The halving is the key. That’s what gives us the logarithm.”"
+    "objectID": "slides/02_wed_correctness.html#selection-sort",
+    "href": "slides/02_wed_correctness.html#selection-sort",
+    "title": "Correctness",
+    "section": "Selection Sort",
+    "text": "Selection Sort\ndef selection_sort(arr):\n    for a in range(len(arr)):\n        min_idx = find_min(arr, a)\n        arr[a], arr[min_idx] = arr[min_idx], arr[a]\n\nThis uses our find_min helper!\nQuick check: running time?\n\n\n“Selection sort: repeatedly find the minimum of the unsorted portion and swap it to the front.”\n“Notice it calls find_min(arr, a) — exactly the function we just proved correct.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#the-scale-comparison",
-    "href": "slides/02_wed_correctness.html#the-scale-comparison",
-    "title": "Binary Search",
-    "section": "The Scale Comparison",
-    "text": "The Scale Comparison\n\n\n\n\\(n\\)\nLinear Search\nBinary Search\n\n\n\n\n1,000\n1,000\n10\n\n\n1,000,000\n1,000,000\n20\n\n\n1,000,000,000\n1,000,000,000\n30\n\n\n\n\n“A billion elements, 30 comparisons. That’s the power of \\(O(\\log n)\\).”"
+    "objectID": "slides/02_wed_correctness.html#the-decomposition-principle",
+    "href": "slides/02_wed_correctness.html#the-decomposition-principle",
+    "title": "Correctness",
+    "section": "The Decomposition Principle",
+    "text": "The Decomposition Principle\nWe already proved find_min(arr, a) returns the index of the minimum in arr[a:].\nNow we can use that fact without re-proving it.\n\nProve small pieces. Compose them into bigger proofs.\n\n\n“This is the software engineering principle of decomposition, applied to proofs.”\n“You don’t re-derive addition every time you use it. Same idea here.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#racing-them",
-    "href": "slides/02_wed_correctness.html#racing-them",
-    "title": "Binary Search",
-    "section": "Racing Them",
-    "text": "Racing Them"
+    "objectID": "slides/02_wed_correctness.html#the-selection-sort-invariant",
+    "href": "slides/02_wed_correctness.html#the-selection-sort-invariant",
+    "title": "Correctness",
+    "section": "The Selection Sort Invariant",
+    "text": "The Selection Sort Invariant\nInvariant: At iteration \\(a\\) (for \\(a \\in \\{0, 1, \\ldots, n\\}\\)), arr[0:a] is sorted and contains the \\(a\\) smallest elements.\n\n“The first a elements are sorted AND they’re the smallest a elements overall.”\n“Both parts matter — sorted isn’t enough; they have to be the right elements.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#the-race",
-    "href": "slides/02_wed_correctness.html#the-race",
-    "title": "Binary Search",
-    "section": "The Race",
-    "text": "The Race\n\n\n\n\n\n\n\n“Linear grows with n. Binary barely budges. That’s \\(O(n)\\) vs \\(O(\\log n)\\).”"
+    "objectID": "slides/02_wed_correctness.html#the-proof",
+    "href": "slides/02_wed_correctness.html#the-proof",
+    "title": "Correctness",
+    "section": "The Proof",
+    "text": "The Proof\n\nBase case: At \\(a = 0\\), arr[0:0] is empty. ✓ (Trivially sorted, trivially smallest.)\nInductive step: Assume invariant holds at start of iteration \\(a\\): arr[0:a] is sorted and contains the \\(a\\) smallest elements.\nDuring iteration \\(a\\):\n\nfind_min(arr, a) returns the index of the minimum in arr[a:] (by our earlier proof!)\nAfter the swap, arr[a] holds the \\((a+1)\\)-th smallest element\n\nAfter iteration \\(a\\): arr[0:a+1] is sorted and contains the \\(a+1\\) smallest elements. ✓\nTermination: Plug in \\(a = n\\) → arr[0:n] is sorted. ∎\n\n\n“See how we just used the find_min correctness? We didn’t re-prove it.”\n“This is the power of decomposition: prove once, use everywhere.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#the-precondition",
-    "href": "slides/02_wed_correctness.html#the-precondition",
-    "title": "Binary Search",
-    "section": "The Precondition",
-    "text": "The Precondition\nBinary search requires the array to be sorted.\nWhat if it’s not sorted?\n\n\n\n\n\n\n\n“Garbage in, garbage out. The invariant assumes sorted order.”"
+    "objectID": "slides/02_wed_correctness.html#the-lesson",
+    "href": "slides/02_wed_correctness.html#the-lesson",
+    "title": "Correctness",
+    "section": "The Lesson",
+    "text": "The Lesson\nDecomposition is good system engineering.\n\n\n\n\n\n\n\n\nSoftware\nProofs\nData Pipelines\n\n\n\n\nWrite small, tested functions\nProve small helper lemmas\nBuild validated transformations\n\n\nCompose into larger programs\nCompose into larger proofs\nChain into workflows\n\n\nReuse without re-implementing\nReuse without re-proving\nReuse without re-validating\n\n\n\n\n“When you write find_min as a separate function, you’re setting yourself up for cleaner code AND cleaner proofs.”\n“Same for data science: build a cleaning step you trust, a feature extraction step you trust, then compose them. You don’t re-check the cleaning every time you use it.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#when-to-use-binary-search",
-    "href": "slides/02_wed_correctness.html#when-to-use-binary-search",
-    "title": "Binary Search",
-    "section": "When to Use Binary Search",
-    "text": "When to Use Binary Search\nUse binary search when:\n\nData is sorted (or can be sorted once, searched many times)\nRandom access is \\(O(1)\\) (arrays, not linked lists)\nYou need to find a specific value\n\nDon’t use when:\n\nData is unsorted and searched only once\nData structure doesn’t support random access\nYou need to find all occurrences\n\n\n“Sorting costs \\(O(n \\log n)\\). If you only search once, linear search wins.”"
+    "objectID": "slides/02_wed_correctness.html#the-art",
+    "href": "slides/02_wed_correctness.html#the-art",
+    "title": "Correctness",
+    "section": "The Art",
+    "text": "The Art\nStating the invariant is often the hardest part.\nStrategy: Ask “What property do I maintain that leads to my answer?”\n\n“The invariant should connect the loop’s progress to the final goal.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#what-we-learned",
-    "href": "slides/02_wed_correctness.html#what-we-learned",
-    "title": "Binary Search",
-    "section": "What We Learned",
-    "text": "What We Learned\n\nBinary search finds a target in \\(\\Theta(\\log n)\\) time (vs \\(\\Theta(n)\\) for linear)\nThe invariant: “If target exists, it’s in arr[lo:hi+1]”\nThe proof: Init, Maintenance (3 cases), Termination\nThe bugs: Off-by-one errors, infinite loops, integer overflow\nThe precondition: Array must be sorted"
+    "objectID": "slides/02_wed_correctness.html#common-patterns",
+    "href": "slides/02_wed_correctness.html#common-patterns",
+    "title": "Correctness",
+    "section": "Common Patterns",
+    "text": "Common Patterns\n\n\n\nAlgorithm Type\nInvariant Pattern\n\n\n\n\nAccumulation\n“var holds result for elements seen so far”\n\n\nSearch\n“If target exists, it’s in the remaining range”\n\n\nPartition\n“Elements before \\(i\\) satisfy property P”\n\n\nTwo-pointer\n“Answer is not in the excluded region”\n\n\n\n\n“Wednesday: we’ll use the ‘search’ pattern for binary search.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#the-pattern",
-    "href": "slides/02_wed_correctness.html#the-pattern",
-    "title": "Binary Search",
-    "section": "The Pattern",
-    "text": "The Pattern\nBinary search is a divide-and-conquer algorithm:\n\nDivide: Pick the middle\nConquer: Recurse on one half\nCombine: Nothing to combine (we found it or it’s not there)\n\nWe’ll see more divide-and-conquer in Week 6 (sorting)."
+    "objectID": "slides/02_wed_correctness.html#design-not-just-proof",
+    "href": "slides/02_wed_correctness.html#design-not-just-proof",
+    "title": "Correctness",
+    "section": "Design, Not Just Proof",
+    "text": "Design, Not Just Proof\nLoop invariants aren’t just for proving code correct.\nThey’re a design tool.\n\n“What should be true at each step?”\n\nIf you can’t state the invariant, you might not understand your own algorithm.\n\n“When you’re stuck debugging, ask: what’s my invariant? Often the bug is that you’re not maintaining it.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#next-week",
-    "href": "slides/02_wed_correctness.html#next-week",
-    "title": "Binary Search",
-    "section": "Next Week",
-    "text": "Next Week\nWeek 3: Recursion\n\nThinking recursively\nRecurrence relations\nThe fractal coastline puzzle\n\n\n“Binary search can also be written recursively. We’ll explore that next week.”"
+    "objectID": "slides/02_wed_correctness.html#a-warning",
+    "href": "slides/02_wed_correctness.html#a-warning",
+    "title": "Correctness",
+    "section": "A Warning",
+    "text": "A Warning\nA wrong invariant can “prove” incorrect code correct.\nThe invariant must be:\n\nTrue (actually holds at each iteration)\nStrong enough (implies correctness at termination)\nPreserved (maintained by the loop body)\n\n\n“You can’t just make up any statement. It has to capture the actual behavior.”"
   },
   {
-    "objectID": "slides/02_wed_correctness.html#questions",
-    "href": "slides/02_wed_correctness.html#questions",
-    "title": "Binary Search",
-    "section": "Questions?",
-    "text": "Questions?\n\nBinary search: \\(\\Theta(\\log n)\\)\nThe invariant makes it correct.\nThe halving makes it fast."
+    "objectID": "slides/02_wed_correctness.html#a-bad-example",
+    "href": "slides/02_wed_correctness.html#a-bad-example",
+    "title": "Correctness",
+    "section": "A Bad Example",
+    "text": "A Bad Example\nWeak invariant: “At iteration \\(a\\), arr[0:a] is sorted.”\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nAt iteration \\(a = 5\\), suppose we have:\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n12\n25\n38\n47\n59\n83\n71\n6\n94\n52\n15\n33\n\n\n\nIs arr[0:5] = [12, 25, 38, 47, 59] sorted? Yes!\nBut is this correct? No! The element 6 is smaller than all of them.\n\n“The invariant is TRUE but not STRONG ENOUGH. The first 5 elements happen to be in order, but they’re not the 5 smallest. We need: ‘arr[0:a] is sorted AND contains the a smallest elements.’”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#for-your-career",
+    "href": "slides/02_wed_correctness.html#for-your-career",
+    "title": "Correctness",
+    "section": "For Your Career",
+    "text": "For Your Career\nReal bugs in real systems come from:\n\nOff-by-one errors\nEdge cases not handled\n“It usually works” code\n\nLoop invariants catch these before they ship.\n\n“Thinking in invariants makes you a better programmer, even if you don’t write formal proofs.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-mindset",
+    "href": "slides/02_wed_correctness.html#the-mindset",
+    "title": "Correctness",
+    "section": "The Mindset",
+    "text": "The Mindset\nEvery time you write a loop, ask:\n\nWhat’s true at the start?\nWhat stays true each iteration?\nWhat does that give me at the end?\n\n\n“Make this a habit. It prevents bugs.”"
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#the-loop-invariant-template",
+    "href": "slides/02_wed_correctness.html#the-loop-invariant-template",
+    "title": "Correctness",
+    "section": "The Loop Invariant Template",
+    "text": "The Loop Invariant Template\n\n\n\n\n\n\n\nStep\nWhat to show\n\n\n\n\nInvariant\nState \\(P(i)\\) for \\(i \\in \\{a, a+1, \\ldots, n\\}\\) (your domain)\n\n\nBase case\n\\(P(a)\\) holds (first value in domain)\n\n\nInductive step\nAssuming \\(P(j)\\) for all \\(a \\leq j &lt; i\\), show \\(P(i)\\)\n\n\nTermination\nPlug in \\(i = n\\) → desired result\n\n\n\nThis is induction on the iteration count."
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#looking-ahead",
+    "href": "slides/02_wed_correctness.html#looking-ahead",
+    "title": "Correctness",
+    "section": "Looking Ahead",
+    "text": "Looking Ahead\nWednesday: We’ll use loop invariants to prove a famous algorithm correct — and see why it took 17 years to get a bug-free version."
+  },
+  {
+    "objectID": "slides/02_wed_correctness.html#practice-problems",
+    "href": "slides/02_wed_correctness.html#practice-problems",
+    "title": "Correctness",
+    "section": "Practice Problems",
+    "text": "Practice Problems\nBefore Wednesday, try stating invariants for:\n\nreverse(arr) — reverse an array in place\nis_sorted(arr) — check if array is sorted\ncount(arr, target) — count occurrences of target\n\nThink: What’s true after processing \\(i\\) elements?"
   },
   {
     "objectID": "syllabus.html",

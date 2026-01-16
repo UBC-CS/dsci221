@@ -10,7 +10,7 @@
 <atom:link href="https://ubc-cs.github.io/dsci221/announcements.xml" rel="self" type="application/rss+xml"/>
 <description>Course website for DSCI 221 of the Department of Computer Science at the University of British Columbia
 </description>
-<generator>quarto-1.8.26</generator>
+<generator>quarto-1.8.27</generator>
 <lastBuildDate>Mon, 05 Jan 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Welcome to DSCI 221!</title>
