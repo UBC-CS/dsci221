@@ -16,6 +16,10 @@ Welcome to DSCI 221, where we study the fundamental data structures and algorith
   📧 [](mailto:)
   ⏰ TBD · 🏢 TBD
 
+- **TA: Oscar Cheng**
+  📧 [oscar.cheng@ubc.ca](mailto:oscar.cheng@ubc.ca)
+  ⏰ TBD · 🏢 TBD
+
 ## Communication
 
 - **Piazza**: [piazza.com/ubc.ca/winterterm22025/dsci221](https://piazza.com/ubc.ca/winterterm22025/dsci221) — Use Piazza for all course-related questions. You'll get faster responses here than via email, and your classmates benefit from seeing the answers too.
