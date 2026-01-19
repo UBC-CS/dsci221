@@ -136,7 +136,9 @@ schedule <- read_csv(
       !is.na(exam) & exam_booking_live ~ glue("[{exam}]({prairietest_url})"),
       # Exam booking not yet live - show name without link
       !is.na(exam) ~ exam,
-      # Practice material (in week before examlet) - no link for now
+      # Practice material - use link from CSV if it's a markdown link, otherwise just show icon
+      !is.na(exam_practice) & str_detect(exam_practice, "^\\[.*\\]\\(.*\\)$") ~
+        str_replace(exam_practice, "^\\[.*\\]\\((.*)\\)$", glue("[{fa('pen-to-square')}](\\1)")),
       !is.na(exam_practice) ~ as.character(fa("pen-to-square")),
       .default = NA_character_
     )
