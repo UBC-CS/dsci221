@@ -1,96 +1,13 @@
 ---
-title: "Correctness"
-subtitle: "Week 3, Monday"
-date: 2026-01-19
+title: "Binary Search"
+subtitle: "Week 3, Tuesday (Video)"
+date: 2026-01-20
 ---
-# Warm-up: Feel the Doubling
-
-## Timing Experiment
-
-```{pyodide}
-import time
-
-def time_it(func, *args):
-    start = time.time()
-    func(*args)
-    return time.time() - start
-
-def linear_work(n):
-    total = 0
-    for i in range(n):
-        total += i
-    return total
-
-def quadratic_work(n):
-    count = 0
-    for i in range(n):
-        for j in range(n):
-            count += 1
-    return count
-```
-
-## Linear: What Happens When $n$ Doubles?
-
-```{pyodide}
-print("n          time       ratio")
-print("-" * 35)
-prev = None
-for n in [10000, 20000, 40000, 80000]:
-    t = time_it(linear_work, n)
-    ratio = f"{t/prev:.2f}" if prev else "—"
-    print(f"{n:6}    {t:.4f}s    {ratio}")
-    prev = t
-```
-
-:::{.notes}
-"Doubling n → doubling time. That's $\Theta(n)$."
-:::
-
-## Quadratic: What Happens When $n$ Doubles?
-
-```{pyodide}
-print("n          time       ratio")
-print("-" * 35)
-prev = None
-for n in [500, 1000, 2000, 4000]:
-    t = time_it(quadratic_work, n)
-    ratio = f"{t/prev:.2f}" if prev else "—"
-    print(f"{n:6}    {t:.4f}s    {ratio}")
-    prev = t
-```
-
-:::{.notes}
-"Doubling n → quadrupling time. That's $\Theta(n^2)$."
-:::
-
-## Logarithmic: What Happens When $n$ Doubles?
-
-```{pyodide}
-import math
-
-def log_work(n):
-    count = 0
-    while n > 1:
-        n = n // 2
-        count += 1
-    return count
-
-print("n              iterations")
-print("-" * 30)
-for n in [1000, 2000, 4000, 8000, 16000]:
-    iters = log_work(n)
-    print(f"{n:6}         {iters}")
-```
-
-:::{.notes}
-"Doubling n → ONE more iteration. That's $\Theta(\log n)$."
-:::
-
 # The Twenty Questions Puzzle
 
 ## The Game
 
-I'm thinking of a number between 1 and 1,000,000.
+I'm thinking of a number between 0 and 63.
 
 You can ask yes/no questions.
 
@@ -100,30 +17,26 @@ What's your **guaranteed** winning strategy?
 "How many questions do you need?"
 :::
 
-## The Optimal Strategy
-
-"Is it greater than 500,000?"
-
-- **Yes**: Search 500,001 to 1,000,000
-- **No**: Search 1 to 500,000
-
-Each question **halves** the remaining possibilities.
-
-:::{.notes}
-"This is binary search! And it's optimal—you can't do better."
-:::
-
 ## How Many Questions?
 
-Start with $n = 1{,}000{,}000$ possibilities.
+Start with $n = 64$ possibilities (0 to 63).
 
 After each question: $n \to n/2$
 
-Questions needed: $\log_2(1{,}000{,}000) \approx 20$
+Questions needed: $\log_2(64) = 6$
 
 :::{.notes}
-"20 questions for a million possibilities. That's the power of halving."
+"6 questions for 64 possibilities. That's the power of halving."
 :::
+
+## Let's Play! {.smaller}
+
+
+I'm thinking of a number between 0 and 63.
+
+You can ask yes/no questions.
+
+
 
 # Binary Search
 
@@ -213,7 +126,7 @@ The first **bug-free** implementation? 1962.
 
 ## The Invariant
 
-**Invariant**: At iteration $i$, if `target` is in `arr`, then `target` is in `arr[lo:hi+1]`.
+**Invariant**: If `target` is in `arr`, then `target` is in `arr[lo:hi+1]`.
 
 Equivalently: We haven't excluded any index where `target` could be.
 
@@ -223,7 +136,7 @@ Equivalently: We haven't excluded any index where `target` could be.
 "The invariant holds at any point we might exit the loop."
 :::
 
-## Base Case ($i = 0$)
+## Base Case (Initialization)
 
 Before the first iteration: `lo = 0`, `hi = len(arr) - 1`
 
@@ -235,25 +148,100 @@ If `target` is in `arr`, it's in `arr[lo:hi+1]`. ✓
 "We start with the full array. The invariant holds trivially."
 :::
 
+## Key Fact: `mid` is Always Valid
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+fig, ax = plt.subplots(figsize=(10, 2.5))
+
+# Draw a number line representation
+# lo on left, hi on right, mid in between
+lo_x, hi_x = 1, 9
+mid_x = (lo_x + hi_x) / 2
+
+# The "valid range" bar
+ax.add_patch(patches.Rectangle((lo_x, 0.8), hi_x - lo_x, 0.4,
+                                 facecolor='#3498db', alpha=0.3, edgecolor='#3498db', linewidth=2))
+
+# Markers for lo, mid, hi
+for x, label, color in [(lo_x, 'lo', '#2ecc71'), (mid_x, 'mid', '#9b59b6'), (hi_x, 'hi', '#e74c3c')]:
+    ax.plot(x, 1.0, 'o', markersize=15, color=color)
+    ax.text(x, 0.3, label, ha='center', va='center', fontsize=14, fontweight='bold', color=color)
+
+# Inequality annotations
+ax.annotate('', xy=(lo_x + 0.3, 1.0), xytext=(mid_x - 0.3, 1.0),
+            arrowprops=dict(arrowstyle='<->', color='black', lw=2))
+ax.text((lo_x + mid_x) / 2, 1.4, r'$\leq$', ha='center', va='center', fontsize=16)
+
+ax.annotate('', xy=(mid_x + 0.3, 1.0), xytext=(hi_x - 0.3, 1.0),
+            arrowprops=dict(arrowstyle='<->', color='black', lw=2))
+ax.text((mid_x + hi_x) / 2, 1.4, r'$\leq$', ha='center', va='center', fontsize=16)
+
+ax.set_xlim(0, 10)
+ax.set_ylim(-0.2, 2.0)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+Since `lo <= hi` (loop condition) and `mid = (lo + hi) // 2`:
+
+$$\texttt{lo} \leq \texttt{mid} \leq \texttt{hi}$$
+
+**This means `arr[mid]` is always a valid access inside the loop.**
+
+:::{.notes}
+"This is crucial for all three cases. We can safely access arr[mid] because mid is always in bounds."
+:::
+
 ## Inductive Step: Case 1 (Found it)
 
 `arr[mid] == target` → we return `mid`.
 
-The invariant holds at this exit point: `target` is indeed in `arr[lo:hi+1]`.
+Since `lo <= mid <= hi`, we know `mid` is in the search range.
 
-We return the correct answer. ✓
+We found the target and return its index. ✓
 
 :::{.notes}
-"Found it. The invariant tells us we're returning a valid location."
+"Found it. The key fact tells us mid is valid, and we verified arr[mid] == target."
 :::
 
 ## Inductive Step: Case 2
 
 `arr[mid] < target`
 
-Since `arr` is sorted: everything at indices $\leq$ `mid` is $\leq$ `arr[mid]` $<$ `target`.
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
-So `target` can't be at indices 0 through `mid`.
+fig, ax = plt.subplots(figsize=(10, 2.5))
+
+lo_x, hi_x = 1, 9
+mid_x = (lo_x + hi_x) / 2
+
+# The full range bar
+ax.add_patch(patches.Rectangle((lo_x, 0.8), hi_x - lo_x, 0.4,
+                                 facecolor='#3498db', alpha=0.3, edgecolor='#3498db', linewidth=2))
+
+# Markers for lo, mid, hi
+for x, label, color in [(lo_x, 'lo', '#2ecc71'), (mid_x, 'mid', '#9b59b6'), (hi_x, 'hi', '#e74c3c')]:
+    ax.plot(x, 1.0, 'o', markersize=15, color=color)
+    ax.text(x, 0.3, label, ha='center', va='center', fontsize=14, fontweight='bold', color=color)
+
+ax.set_xlim(0, 10)
+ax.set_ylim(-0.2, 2.0)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
 
 Setting `lo = mid + 1` excludes only indices where `target` **can't** be. ✓
 
@@ -265,9 +253,33 @@ Setting `lo = mid + 1` excludes only indices where `target` **can't** be. ✓
 
 `arr[mid] > target`
 
-Since `arr` is sorted: everything at indices $\geq$ `mid` is $\geq$ `arr[mid]` $>$ `target`.
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
-So `target` can't be at indices `mid` through $n-1$.
+fig, ax = plt.subplots(figsize=(10, 2.5))
+
+lo_x, hi_x = 1, 9
+mid_x = (lo_x + hi_x) / 2
+
+# The full range bar
+ax.add_patch(patches.Rectangle((lo_x, 0.8), hi_x - lo_x, 0.4,
+                                 facecolor='#3498db', alpha=0.3, edgecolor='#3498db', linewidth=2))
+
+# Markers for lo, mid, hi
+for x, label, color in [(lo_x, 'lo', '#2ecc71'), (mid_x, 'mid', '#9b59b6'), (hi_x, 'hi', '#e74c3c')]:
+    ax.plot(x, 1.0, 'o', markersize=15, color=color)
+    ax.text(x, 0.3, label, ha='center', va='center', fontsize=14, fontweight='bold', color=color)
+
+ax.set_xlim(0, 10)
+ax.set_ylim(-0.2, 2.0)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
 
 Setting `hi = mid - 1` excludes only indices where `target` **can't** be. ✓
 
@@ -297,8 +309,8 @@ But nothing is in an empty range.
 
 **Proof**: By induction on iteration count.
 
-- **Invariant**: At iteration $i$, if `target ∈ arr`, then `target ∈ arr[lo:hi+1]`
-- **Base case**: $i=0$, full array satisfies invariant ✓
+- **Invariant**: If `target ∈ arr`, then `target ∈ arr[lo:hi+1]`
+- **Base case**: Initially, full array satisfies invariant ✓
 - **Inductive step**: Each case either exits correctly or safely shrinks range ✓
 - **Termination**: At exit, invariant $\Rightarrow$ correct answer ∎
 
@@ -479,26 +491,17 @@ print(f"But 5 is at index: {arr.index(5)}")
 
 5. **The precondition**: Array must be sorted
 
-## The Pattern
 
-Binary search is a **divide-and-conquer** algorithm:
+## Wednesday
 
-1. **Divide**: Pick the middle
-2. **Conquer**: Recurse on one half
-3. **Combine**: Nothing to combine (we found it or it's not there)
-
-We'll see more divide-and-conquer in Week 6 (sorting).
-
-## Next Week
-
-**Week 3: Recursion**
+**Recursion**: When the function calls itself.
 
 - Thinking recursively
-- Recurrence relations
+- Binary search, recursively
 - The fractal coastline puzzle
 
 :::{.notes}
-"Binary search can also be written recursively. We'll explore that next week."
+"Binary search can also be written recursively. We'll explore that Wednesday."
 :::
 
 ## Questions?
