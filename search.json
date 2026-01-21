@@ -1008,35 +1008,35 @@
     "href": "slides/03_wed_recursion.html#the-question",
     "title": "Introduction to Recursion",
     "section": "The Question",
-    "text": "The Question\nAfter 96 days (Jan 5 – Apr 10), how many treats did I receive in total?\n\nDay 1: 1 treat\nDay 2: 1 + 2 = 3 treats total\nDay 3: 1 + 2 + 3 = 6 treats total\n…\nDay 96: 1 + 2 + 3 + … + 96 = ?\n\n\nNobody wants to compute that by hand."
+    "text": "The Question\nAfter 96 days (Jan 5 – Apr 10), how many treats did I receive in total?\nDay 1: 1 treat\nDay 2: 1 + 2 = 3 treats total\nDay 3: 1 + 2 + 3 = 6 treats total\n…\nDay 96: 1 + 2 + 3 + … + 96 = ?\nNobody wants to compute that by hand."
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-sum",
     "href": "slides/03_wed_recursion.html#the-sum",
     "title": "Introduction to Recursion",
     "section": "The Sum",
-    "text": "The Sum\n\\[1 + 2 + 3 + \\ldots + n = \\sum_{k=1}^{n} k\\]\nFor \\(n = 96\\):\n\\[1 + 2 + 3 + \\ldots + 96 = \\text{???}\\]\nYou’ve seen the closed form: \\(\\frac{n(n+1)}{2}\\)"
+    "text": "The Sum\n\\[1 + 2 + 3 + \\ldots + n = \\sum_{k=1}^{n} k\\]\nFor \\(n = 96\\):\n\\[1 + 2 + 3 + \\ldots + 96 = \\text{???}\\]\n\nYou’ve seen the closed form: \\(\\frac{n(n+1)}{2}\\)"
   },
   {
     "objectID": "slides/03_wed_recursion.html#proving-the-closed-form",
     "href": "slides/03_wed_recursion.html#proving-the-closed-form",
     "title": "Introduction to Recursion",
     "section": "Proving the Closed Form",
-    "text": "Proving the Closed Form\nClaim: \\(f(n) = \\frac{n(n+1)}{2}\\) where \\(f(n) = 1 + 2 + \\ldots + n\\)\nWe’ll prove this by induction."
+    "text": "Proving the Closed Form\nClaim: \\(f(n) = \\frac{n(n+1)}{2}\\) where \\(f(n) \\sum_{k=1}^{n} k\\)\nWe’ll prove this by induction."
   },
   {
     "objectID": "slides/03_wed_recursion.html#proof-by-induction",
     "href": "slides/03_wed_recursion.html#proof-by-induction",
     "title": "Introduction to Recursion",
     "section": "Proof by Induction",
-    "text": "Proof by Induction\nConsider an arbitrary \\(n &gt;= 0\\). Then consider the following cases:\nCase 1, \\(n = 0\\) (base case): \\(f(0) = 0 = \\frac{0 \\cdot 1}{2}\\) ✓\nCase 2, \\(n&gt;0\\) (inductive case):\nAssume for any \\(0 &lt; j &lt; n\\), \\(f(j) = \\frac{j(j+1)}{2}\\) (Inductive Hypothesis)\n\\(f(n) = f(n-1) + n\\) by definition. \\(f(n-1) = \\frac{(n-1)(n)}{2}\\) by IH, since \\(n-1 &lt; n\\). \\(f(n) = \\frac{(n-1)(n)}{2} + n = \\frac{(n)(n+1)}{2}\\) by algebra. ✓\n\n“Notice: the inductive step assumes f(k) works and uses it. Just like recursion!”"
+    "text": "Proof by Induction\nConsider an arbitrary \\(n &gt;= 0\\). Then we have the following cases:\nCase 1, \\(n = 0\\) (base case): \\(f(0) = 0 = \\frac{0 \\cdot 1}{2}\\) ✓\nCase 2, \\(n&gt;0\\) (inductive case):\nAssume for any \\(0 &lt; j &lt; n\\), \\(f(j) = \\frac{j(j+1)}{2}\\) (Inductive Hypothesis)\n\\(f(n) = f(n-1) + n\\) by definition. \\(f(n-1) = \\frac{(n-1)(n)}{2}\\) by IH, since \\(n-1 &lt; n\\). \\(f(n) = \\frac{(n-1)(n)}{2} + n = \\frac{(n)(n+1)}{2}\\) by algebra. ✓\n\n“Notice: the inductive step assumes f(k) works and uses it. Just like recursion!”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#a-different-way-to-think",
     "href": "slides/03_wed_recursion.html#a-different-way-to-think",
     "title": "Introduction to Recursion",
     "section": "A Different Way to Think",
-    "text": "A Different Way to Think\nHow many gifts on day 13?\n\nWhatever I had on day 12, plus 13 more.\n\\[f(13) = f(12) + 13\\]"
+    "text": "A Different Way to Think\nHow many gifts on day 13?\nWhatever I had on day 12, plus 13 more.\n\\[f(13) = f(12) + 13\\]"
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-recursive-definition",
@@ -1120,21 +1120,21 @@
     "href": "slides/03_wed_recursion.html#the-general-decomposition",
     "title": "Introduction to Recursion",
     "section": "The General Decomposition",
-    "text": "The General Decomposition\nFor any \\(0 &lt; k &lt; n\\):\n\\[f(n) = f(n-k) + k \\cdot (n-k) + f(k)\\]\n\nBlue: Top triangle with \\(n-k\\) rows → \\(f(n-k)\\) dots\nGreen: Rectangle of size \\(k \\times (n-k)\\) → \\(k(n-k)\\) dots\nRed: Bottom-right triangle with \\(k\\) rows → \\(f(k)\\) dots\n\n\nThe insight: There are infinitely many valid decompositions!"
+    "text": "The General Decomposition\nFor any \\(0 &lt; k &lt; n\\):\n\\[f(n) = f(n-k) + k \\cdot (n-k) + f(k)\\]\n\nBlue: Top triangle with \\(n-k\\) rows → \\(f(n-k)\\) dots\nGreen: Rectangle of size \\(k \\times (n-k)\\) → \\(k(n-k)\\) dots\nRed: Bottom-right triangle with \\(k\\) rows → \\(f(k)\\) dots\n\nThe insight: There are infinitely many valid decompositions!"
   },
   {
     "objectID": "slides/03_wed_recursion.html#but-wait-base-cases",
     "href": "slides/03_wed_recursion.html#but-wait-base-cases",
     "title": "Introduction to Recursion",
     "section": "But Wait… Base Cases?",
-    "text": "But Wait… Base Cases?\nWith \\(f(n) = f(n-k) + k(n-k) + f(k)\\) and \\(k = 5\\):\n\n\\(f(8) = f(3) + 5 \\cdot 3 + f(5)\\)\n\\(f(5) = f(0) + 5 \\cdot 0 + f(5)\\) … infinite loop!\n\n\nWe need base cases for \\(f(0), f(1), \\ldots, f(k)\\).\n\n\nLesson: Your base cases must cover everything your recursion can reach.\n\n“The quadrant decomposition (k = n/2) only needs f(0) and f(1). This k=5 split needs base cases for 0 through 5. More base cases = more work to verify.”"
+    "text": "But Wait… Base Cases?\nWith \\(f(n) = f(n-k) + k(n-k) + f(k)\\) and \\(k = 5\\):\n\n\\(f(8) = f(3) + 5 \\cdot 3 + f(5)\\)\n\\(f(5) = f(0) + 5 \\cdot 0 + f(5)\\) … infinite loop!\n\nWe need base cases for \\(f(0), f(1), \\ldots, f(k)\\).\nLesson: Your base cases must cover everything your recursion can reach.\n\n“The quadrant decomposition (k = n/2) only needs f(0) and f(1). This k=5 split needs base cases for 0 through 5. More base cases = more work to verify.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-divide-and-conquer-code",
     "href": "slides/03_wed_recursion.html#the-divide-and-conquer-code",
     "title": "Introduction to Recursion",
     "section": "The Divide-and-Conquer Code",
-    "text": "The Divide-and-Conquer Code\ndef triangle_fast(n):\n    if n &lt;= 1:\n        return n\n    half = n // 2\n    return 2 * triangle_fast(half) + half * half\n\nDoes it compute the same thing?"
+    "text": "The Divide-and-Conquer Code\ndef triangle_fast(n):\n    if n &lt;= 1:\n        return n\n    half = n // 2\n    return 2 * triangle_fast(half) + half * half\nDoes it compute the same thing?"
   },
   {
     "objectID": "slides/03_wed_recursion.html#two-functions-same-answer",
@@ -1148,7 +1148,7 @@
     "href": "slides/03_wed_recursion.html#which-is-faster",
     "title": "Introduction to Recursion",
     "section": "Which is Faster?",
-    "text": "Which is Faster?\nBoth compute the same answer.\nBut the recursive structures are different:\n\ntriangle(n): makes \\(n\\) recursive calls\ntriangle_fast(n): makes \\(\\log_2(n)\\) recursive calls\n\n\nLet’s race them!"
+    "text": "Which is Faster?\nBoth compute the same answer.\nBut the recursive structures are different:\n\ntriangle(n): makes \\(n\\) recursive calls\ntriangle_fast(n): makes \\(\\log_2(n)\\) recursive calls\n\nLet’s race them!"
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-race-1",
@@ -1169,7 +1169,7 @@
     "href": "slides/03_wed_recursion.html#recursion-is-about-decomposition",
     "title": "Introduction to Recursion",
     "section": "Recursion is About Decomposition",
-    "text": "Recursion is About Decomposition\nThe same problem can have multiple recursive structures.\nDifferent structures lead to different code and different performance.\n\nThis is the heart of algorithm design.\n\n“This is why we study algorithms, not just ‘how to code’. The structure matters.”"
+    "text": "Recursion is About Decomposition\nThe same problem can have multiple recursive structures.\nDifferent structures lead to different code and different performance.\nThis is the heart of algorithm design.\n\n“This is why we study algorithms, not just ‘how to code’. The structure matters.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-connection-to-induction",
