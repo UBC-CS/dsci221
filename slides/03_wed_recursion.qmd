@@ -6,64 +6,36 @@ date: 2026-01-22
 
 # The 96 Days of DSCI 221
 
-## 🎵 On the first day of DSCI... {.smaller}
-
-*On the first day of DSCI, my prof gave to me...*
-
-A latte from Loafe
-
 ## 🎵 On the ninety-sixth day... {.smaller}
 
-96 moments of zen 🎵 95 grateful neurons 🎵 94 clever insights 🎵 93 aha moments 🎵 92 merge conflicts 🎵 91 Stack Overflow tabs 🎵 90 refactored functions 🎵 89 git commits 🎵 88 test cases 🎵 87 rubber ducks 🎵 86 coffee refills 🎵 85 keyboard clicks 🎵 84 documentation pages 🎵 83 variable names 🎵 82 edge cases 🎵 81 print statements 🎵 80 whiteboard markers 🎵 79 Piazza posts 🎵 78 recursive calls 🎵 77 helper functions 🎵 76 code reviews 🎵 75 unit tests 🎵 74 bug fixes 🎵 73 loop iterations 🎵 72 hash collisions 🎵 71 array indices 🎵 70 base cases 🎵 69 pointer errors 🎵 68 syntax errors 🎵 67 runtime exceptions 🎵 66 stack frames 🎵 65 heap allocations 🎵 64 binary digits 🎵 63 terminal commands 🎵 62 Slack messages 🎵 61 Discord pings 🎵 60 Zoom breakouts 🎵 59 office hours 🎵 58 study sessions 🎵 57 flashcards 🎵 56 practice problems 🎵 55 lecture notes 🎵 54 code snippets 🎵 53 TODO comments 🎵 52 FIXME tags 🎵 51 deprecation warnings 🎵 50 linter errors 🎵 49 type hints 🎵 48 docstrings 🎵 47 assert statements 🎵 46 boundary checks 🎵 45 null pointers 🎵 44 empty lists 🎵 43 off-by-ones 🎵 42 infinite loops 🎵 41 segfaults 🎵 40 memory leaks 🎵 39 cache misses 🎵 38 race conditions 🎵 37 deadlocks 🎵 36 timeouts 🎵 35 retries 🎵 34 rollbacks 🎵 33 hotfixes 🎵 32 patches 🎵 31 releases 🎵 30 version bumps 🎵 29 feature flags 🎵 28 A/B tests 🎵 27 metrics 🎵 26 dashboards 🎵 25 alerts 🎵 24 on-calls 🎵 23 incident reports 🎵 22 post-mortems 🎵 21 action items 🎵 20 sprint points 🎵 19 standups 🎵 **18 retros** 🎵 17 demos 🎵 16 pull requests 🎵 15 code comments 🎵 14 merge commits 🎵 13 Piazza posts 🎵 12 cups of ramen 🎵 11 syntax errors 🎵 10 ChatGPT tabs 🎵 9 hours of sleep 🎵 8 TA office hours 🎵 7 Pomodoros 🎵 6 study rooms 🎵 5 passing tests 🎵 4 stretch breaks 🎵 3 docs read 🎵 2 good friends 🎵 And a latte from Loafe.
+96 moments of zen 🎵 95 grateful neurons 🎵 94 clever insights 🎵 93 aha moments 🎵 92 merge conflicts 🎵 91 Stack Overflow tabs 🎵 90 refactored functions 🎵 89 git commits 🎵 88 test cases 🎵 87 rubber ducks 🎵 86 coffee refills 🎵 85 keyboard clicks 🎵 84 documentation pages 🎵 83 variable names 🎵 82 edge cases 🎵 81 print statements 🎵 80 whiteboard markers 🎵 79 Piazza posts 🎵 78 recursive calls 🎵 77 helper functions 🎵 76 code reviews 🎵 75 unit tests 🎵 74 bug fixes 🎵 73 loop iterations 🎵 72 hash collisions 🎵 71 array indices 🎵 70 base cases 🎵 69 pointer errors 🎵 68 syntax errors 🎵 67 runtime exceptions 🎵 66 stack frames 🎵 65 heap allocations 🎵 64 binary digits 🎵 63 terminal commands 🎵 62 Slack messages 🎵 61 Discord pings 🎵 60 Zoom breakouts 🎵 59 office hours 🎵 58 study sessions 🎵 57 flashcards 🎵 56 practice problems 🎵 55 lecture notes 🎵 54 code snippets 🎵 53 TODO comments 🎵 52 FIXME tags 🎵 51 deprecation warnings 🎵 50 linter errors 🎵 49 type hints 🎵 48 docstrings 🎵 47 assert statements 🎵 46 boundary checks 🎵 45 null pointers 🎵 44 empty lists 🎵 43 off-by-ones 🎵 42 infinite loops 🎵 41 segfaults 🎵 40 memory leaks 🎵 39 cache misses 🎵 38 race conditions 🎵 37 deadlocks 🎵 36 timeouts 🎵 35 snack breaks 🎵 34 memes shared 🎵 33 playlists made 🎵 32 naps attempted 🎵 31 alarms snoozed 🎵 30 tabs still open 🎵 29 unread emails 🎵 28 doodles drawn 🎵 27 songs on repeat 🎵 26 empty notebooks 🎵 25 highlighters 🎵 24 sticky notes 🎵 23 "almost dones" 🎵 22 existential crises 🎵 21 snacks consumed 🎵 20 walks taken 🎵 19 deep breaths 🎵 **18 pokemons** 🎵 17 demos 🎵 16 pull requests 🎵 15 code comments 🎵 14 merge commits 🎵 13 Piazza posts 🎵 12 cups of ramen 🎵 11 syntax errors 🎵 10 ChatGPT tabs 🎵 9 hours of sleep 🎵 8 TA office hours 🎵 7 Pomodoros 🎵 6 study rooms 🎵 5 passing tests 🎵 4 stretch breaks 🎵 3 docs read 🎵 2 good friends 🎵 And a latte from Loafe.
 
 ## The Question
 
-After 96 days (Jan 5 – Apr 10), how many treats did I receive **in total**?
+How many treats will you receive on the 96th day (Apr 10)?
 
-
-Day 1: 1 treat
-
-Day 2: 1 + 2 = 3 treats total
-
-Day 3: 1 + 2 + 3 = 6 treats total
-
-...
-
-Day 96: 1 + 2 + 3 + ... + 96 = ?
-
-
-**Nobody wants to compute that by hand.**
-
-## The Sum
-
-$$1 + 2 + 3 + \ldots + n = \sum_{k=1}^{n} k$$
-
-For $n = 96$:
-
-$$1 + 2 + 3 + \ldots + 96 = \text{???}$$
+$$1 + 2 + 3 + \ldots + 96 = \sum_{k=1}^{96} k = \text{ ?}$$
 
 ::: notes
 You've seen the closed form: $\frac{n(n+1)}{2}$
 :::
 
-## Proving the Closed Form
+## Proving the Closed Form {.smaller}
 
-**Claim**: $f(n) = \frac{n(n+1)}{2}$ where $f(n) \sum_{k=1}^{n} k$
+**Claim**: $f(n) = \frac{n(n+1)}{2}$ where $f(n) = \sum_{k=1}^{n} k$
 
-We'll prove this by induction.
+**Proof**: Consider an arbitrary $n >= 0$.  Then we have the following cases:
 
-## Proof by Induction
+- **Case 1, $n = 0$** (base case): $f(0) = 0 = \frac{0 \cdot 1}{2}$ ✓
 
-Consider an arbitrary $n >= 0$.  Then we have the following cases:
-
-**Case 1, $n = 0$** (base case): $f(0) = 0 = \frac{0 \cdot 1}{2}$ ✓
-
-**Case 2, $n>0$** (inductive case):
+- **Case 2, $n>0$** (inductive case):
 
 Assume for any $0 < j < n$, $f(j) = \frac{j(j+1)}{2}$ (Inductive Hypothesis)
 
 $f(n) = f(n-1) + n$ by definition.
+
 $f(n-1) = \frac{(n-1)(n)}{2}$ by IH, since $n-1 < n$.
+
 $f(n) = \frac{(n-1)(n)}{2} + n = \frac{(n)(n+1)}{2}$ by algebra. ✓
 
 :::{.notes}
@@ -71,69 +43,6 @@ $f(n) = \frac{(n-1)(n)}{2} + n = \frac{(n)(n+1)}{2}$ by algebra. ✓
 :::
 
 # Recursive Thinking
-
-## A Different Way to Think
-
-How many gifts on day 13?
-
-
-**Whatever I had on day 12, plus 13 more.**
-
-$$f(13) = f(12) + 13$$
-
-## The Recursive Definition
-
-$$f(n) = \begin{cases} 0 & \text{if } n = 0 \\ f(n-1) + n & \text{if } n > 0 \end{cases}$$
-
-**Base case**: $f(0) = 0$ (zero days = zero gifts)
-
-**Recursive case**: $f(n) = f(n-1) + n$
-
-:::{.notes}
-"This is a recursive definition. The function is defined in terms of itself."
-:::
-
-## Induction = Recursion
-
-| Induction | Recursion |
-|-----------|-----------|
-| Consider arbitrary $n \geq 0$ | `def f(n):` |
-| Case $n = 0$: prove directly | `if n == 0: return 0` |
-| Case $n > 0$: assume $P(j)$ for $j < n$ | Trust `f(n-1)` works |
-| Prove $P(n)$ using IH | Compute `f(n)` using `f(n-1)` |
-
-**Same structure. Same reasoning.**
-
-:::{.notes}
-"If you can prove it by induction, you can compute it by recursion. They're the same thing."
-:::
-
-# The Triangle
-
-## Visualizing the Sum
-
-```{python}
-#| echo: false
-#| fig-align: center
-import matplotlib.pyplot as plt
-
-fig, ax = plt.subplots(figsize=(8, 7))
-
-n = 8
-for row in range(n):
-    for col in range(row + 1):
-        circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
-                            facecolor='#3498db', edgecolor='#2980b9', linewidth=2)
-        ax.add_patch(circle)
-
-ax.set_xlim(0, n)
-ax.set_ylim(0, n)
-ax.set_aspect('equal')
-ax.axis('off')
-plt.title(f'Triangle with n = {n} rows\nTotal dots = 1 + 2 + ... + 8 = 36', fontsize=14)
-plt.tight_layout()
-plt.show()
-```
 
 ## The Recursive Structure: Peel Bottom Row
 
@@ -168,71 +77,52 @@ plt.show()
 "The triangle with n rows = the triangle with n-1 rows + n more dots on the bottom."
 :::
 
-## Peel Two Rows?
+## The Recursive Definition
 
-```{python}
-#| echo: false
-#| fig-align: center
-import matplotlib.pyplot as plt
-
-fig, ax = plt.subplots(figsize=(8, 7))
-
-n = 8
-for row in range(n):
-    for col in range(row + 1):
-        if row >= n - 2:  # Bottom two rows
-            color = '#e74c3c'  # Red
-        else:
-            color = '#3498db'  # Blue
-        circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
-                            facecolor=color, edgecolor='#2c3e50', linewidth=2)
-        ax.add_patch(circle)
-
-ax.set_xlim(0, n)
-ax.set_ylim(0, n)
-ax.set_aspect('equal')
-ax.axis('off')
-plt.title('f(n) = f(n-2) + (n-1) + n\nBlue: f(n-2)   Red: +(n-1)+n', fontsize=14)
-plt.tight_layout()
-plt.show()
-```
-
-$$f(n) = f(n-2) + (n-1) + n$$
-
-We can peel off any number of rows!
-
-# From Math to Code
-
-## The Recursive Code
-
-```python
-def triangle(n):
-    if n == 0:
-        return 0
-    return triangle(n - 1) + n
-```
-
-Compare to the math:
+A recursive mathematical function:
 
 $$f(n) = \begin{cases} 0 & \text{if } n = 0 \\ f(n-1) + n & \text{if } n > 0 \end{cases}$$
 
 :::{.notes}
-"The code is a direct translation of the math. Base case, recursive case."
+"This is a recursive definition. The function is defined in terms of itself."
 :::
 
-## Let's Run It
+## Induction = Recursion
+
+| Induction | Math | Recursion |
+|-----------|------|-----------|
+| Consider arbitrary $n \geq 0$ | $n\in \mathbb{N}$ | `def f(n):` |
+| Case $n = 0$: prove directly | $0$ if $n=0$ | `if n == 0: return 0` |
+| Case $n > 0$: assume $P(j)$ for $j < n$ | $f(n-1)$ defined | Trust `f(n-1)` works |
+| Prove $P(n)$ using IH | $f(n-1)+n$ if $n>0$ | Compute `f(n)` using `f(n-1)` |
+
+**Same structure. Same reasoning.**
+
+:::{.notes}
+"If you can prove it by induction, you can compute it by recursion. They're the same thing."
+:::
+
+
+
+## The Recursive Code
+
+Consider the math:
+
+$$f(n) = \begin{cases} 0 & \text{if } n = 0 \\ f(n-1) + n & \text{if } n > 0 \end{cases}$$
 
 ```{pyodide}
 def triangle(n):
     if n == 0:
         return 0
     return triangle(n - 1) + n
-
-print(f"triangle(5) = {triangle(5)}")
-print(f"triangle(13) = {triangle(13)}")
 ```
 
-## Trust the Recursion Fairy
+
+:::{.notes}
+"The code is a direct translation of the math. Base case, recursive case."
+:::
+
+## Intuition for Recursive Design
 
 When you write `triangle(n - 1)`, **trust that it works**.
 
@@ -247,7 +137,19 @@ Don't trace through every call. Just ask:
 "The recursion fairy handles the recursive call. You just handle your level. Same as induction: assume P(k) holds, prove P(k+1)."
 :::
 
-# A Different Decomposition
+## The Three Musts of Recursion
+
+For the recursion to work its magic, your code must satisfy:
+
+1. **Handle all valid inputs**: Every input needs a case (base or recursive)
+
+2. **Have a base case**: At least one case that returns without recursing
+
+3. **Make progress**: Each recursive call must get closer to a base case
+
+:::{.notes}
+"These are the contract with the recursion fairy. Break any of these, and your code will loop forever or crash."
+:::
 
 ## Same Triangle, Different View
 
@@ -257,148 +159,64 @@ What if we split the triangle differently?
 #| echo: false
 #| fig-align: center
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 
-fig, ax = plt.subplots(figsize=(8, 6))
+def draw_triangle_split(ax, n):
+    half = n // 2
+    top = n - half  # Size of square in middle
 
-n = 8
-half = n // 2
+    for row in range(n):
+        for col in range(row + 1):
+            # Top triangle: first half rows
+            if row < half:
+                color = '#3498db'  # Blue - top triangle
+            # Bottom section: split at column 'top'
+            elif col < top:  # Left part is the square
+                color = '#2ecc71'  # Green - square
+            else:  # Right part is bottom triangle
+                color = '#e74c3c'  # Red - bottom triangle
 
-for row in range(n):
-    for col in range(row + 1):
-        # Determine which region: top-left triangle, bottom-left rect, bottom-right triangle
-        if row < half:  # Top half
-            color = '#3498db'  # Blue - top triangle
-        elif col < half:  # Bottom-left
-            color = '#2ecc71'  # Green - rectangle
-        else:  # Bottom-right
-            color = '#e74c3c'  # Red - bottom triangle
+            circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
+                                facecolor=color, edgecolor='#2c3e50', linewidth=1.5)
+            ax.add_patch(circle)
 
-        circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
-                            facecolor=color, edgecolor='#2c3e50', linewidth=1.5)
-        ax.add_patch(circle)
+    # Add dividing lines
+    ax.axhline(y=n - half, color='black', linewidth=2, linestyle='--')
+    ax.axvline(x=top, ymin=0, ymax=half/n, color='black', linewidth=2, linestyle='--')
 
-# Add dividing lines
-ax.axhline(y=half, color='black', linewidth=2, linestyle='--')
-ax.axvline(x=half, ymin=0, ymax=0.5, color='black', linewidth=2, linestyle='--')
+    ax.set_xlim(0, n)
+    ax.set_ylim(0, n)
+    ax.set_aspect('equal')
+    ax.axis('off')
 
-ax.set_xlim(0, n)
-ax.set_ylim(0, n)
-ax.set_aspect('equal')
-ax.axis('off')
-plt.title('Split into quadrants (n = 8)', fontsize=14)
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+draw_triangle_split(ax1, 8)
+ax1.set_title('Even: n = 8\nhalf = 4, square = 4×4', fontsize=12)
+
+draw_triangle_split(ax2, 7)
+ax2.set_title('Odd: n = 7\nhalf = 3, square = 4×4', fontsize=12)
+
 plt.tight_layout()
 plt.show()
 ```
 
 ## The Quadrant Decomposition
 
-For $n$ rows (where $n$ is even):
+- **Blue**: Top triangle with $\lfloor n/2 \rfloor$ rows → $f(\lfloor n/2 \rfloor)$ dots
+- **Red**: Bottom-right triangle with $\lfloor n/2 \rfloor$ rows → $f(\lfloor n/2 \rfloor)$ dots
+- **Green**: Square of size $(n - \lfloor n/2 \rfloor)^2$ dots
 
-- **Blue**: Top triangle with $n/2$ rows → $f(n/2)$ dots
-- **Red**: Bottom-right triangle with $n/2$ rows → $f(n/2)$ dots
-- **Green**: Rectangle of size $(n/2) \times (n/2)$ → $(n/2)^2$ dots
+$$f(n) = 2 \cdot f(\lfloor n/2 \rfloor) + (n - \lfloor n/2 \rfloor)^2$$
 
-$$f(n) = 2 \cdot f(n/2) + (n/2)^2$$
-
-:::{.notes}
-"Same problem, different recursive structure!"
-:::
-
-## Split Anywhere!
-
-```{python}
-#| echo: false
-#| fig-align: center
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-
-fig, ax = plt.subplots(figsize=(8, 7))
-
-n = 8
-k = 5  # Split at row 5
-
-for row in range(n):
-    for col in range(row + 1):
-        if row < n - k:  # Top triangle (rows 0 to n-k-1)
-            color = '#3498db'  # Blue - f(n-k)
-        elif col < n - k:  # Middle-left rectangle
-            color = '#2ecc71'  # Green - k*(n-k)
-        else:  # Bottom-right triangle
-            color = '#e74c3c'  # Red - f(k)
-
-        circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
-                            facecolor=color, edgecolor='#2c3e50', linewidth=1.5)
-        ax.add_patch(circle)
-
-# Add dividing lines
-ax.axhline(y=k, color='black', linewidth=2, linestyle='--')
-ax.axvline(x=n-k, ymin=0, ymax=k/n, color='black', linewidth=2, linestyle='--')
-
-ax.set_xlim(0, n)
-ax.set_ylim(0, n)
-ax.set_aspect('equal')
-ax.axis('off')
-plt.title('Split at any k (here k = 5)', fontsize=14)
-plt.tight_layout()
-plt.show()
-```
-
-## The General Decomposition
-
-For any $0 < k < n$:
-
-$$f(n) = f(n-k) + k \cdot (n-k) + f(k)$$
-
-- **Blue**: Top triangle with $n-k$ rows → $f(n-k)$ dots
-- **Green**: Rectangle of size $k \times (n-k)$ → $k(n-k)$ dots
-- **Red**: Bottom-right triangle with $k$ rows → $f(k)$ dots
-
-
-**The insight**: There are infinitely many valid decompositions!
-
-## But Wait... Base Cases?
-
-With $f(n) = f(n-k) + k(n-k) + f(k)$ and $k = 5$:
-
-- $f(8) = f(3) + 5 \cdot 3 + f(5)$
-- $f(5) = f(0) + 5 \cdot 0 + f(5)$ ... infinite loop!
-
-
-We need base cases for $f(0), f(1), \ldots, f(k)$.
-
-
-**Lesson**: Your base cases must cover everything your recursion can reach.
+Works for **all** $n$. 
 
 :::{.notes}
-"The quadrant decomposition (k = n/2) only needs f(0) and f(1). This k=5 split needs base cases for 0 through 5. More base cases = more work to verify."
+"Same problem, different recursive structure! The square absorbs the 'extra' row when n is odd."
 :::
-
-## The Divide-and-Conquer Code
-
-```python
-def triangle_fast(n):
-    if n <= 1:
-        return n
-    half = n // 2
-    return 2 * triangle_fast(half) + half * half
-```
-
-
-Does it compute the same thing?
-
-```{pyodide}
-def triangle_fast(n):
-    if n <= 1:
-        return n
-    half = n // 2
-    return 2 * triangle_fast(half) + half * half
-
-print(f"triangle_fast(8) = {triangle_fast(8)}")
-print(f"Expected: 1+2+...+8 = {8*9//2}")
-```
 
 ## Two Functions, Same Answer
+
+I forgot to define `triangle_fast`!
 
 ```{pyodide}
 def triangle(n):
@@ -406,20 +224,12 @@ def triangle(n):
         return 0
     return triangle(n - 1) + n
 
-def triangle_fast(n):
-    if n <= 1:
-        return n
-    half = n // 2
-    return 2 * triangle_fast(half) + half * half
-
-for n in [4, 8, 16, 32, 64]:
+for n in [4, 5, 7, 8, 15, 16, 100]:
     slow = triangle(n)
     fast = triangle_fast(n)
     match = "✓" if slow == fast else "✗"
     print(f"n={n:3}: triangle={slow:5}, triangle_fast={fast:5} {match}")
 ```
-
-# The Race
 
 ## Which is Faster?
 
@@ -427,18 +237,28 @@ Both compute the same answer.
 
 But the recursive structures are different:
 
-- `triangle(n)`: makes $n$ recursive calls
-- `triangle_fast(n)`: makes $\log_2(n)$ recursive calls
+- `triangle(n)`: calls `triangle(n-1)`
+- `triangle_fast(n)`: calls `triangle_fast(n//2)`
 
+Does that matter?
 
 Let's race them!
 
 ## The Race
 
 ```{pyodide}
+#| echo: false
+import time
 import sys
-sys.setrecursionlimit(100000)
+sys.setrecursionlimit(100000000)
 
+def time_it(func, arg):
+    start = time.time()
+    func(arg)
+    return time.time() - start
+```
+
+```{pyodide}
 n = 50000
 print(f"Racing on n = {n:,}")
 print("-" * 40)
@@ -472,14 +292,11 @@ print(f"\nSpeedup: {t1/t2:.0f}x faster!")
 "Linear depth vs logarithmic depth. At n=50000, that's 50000 vs ~16."
 :::
 
-# The Big Idea
-
-## Recursion is About Decomposition
+## Big Idea: Recursion is About Decomposition
 
 The same problem can have **multiple recursive structures**.
 
 Different structures lead to **different code** and **different performance**.
-
 
 This is the heart of **algorithm design**.
 
@@ -487,22 +304,6 @@ This is the heart of **algorithm design**.
 "This is why we study algorithms, not just 'how to code'. The structure matters."
 :::
 
-## The Connection to Induction
-
-You already know recursion from math:
-
-| Math (Induction) | Code (Recursion) |
-|------------------|------------------|
-| Consider arbitrary $n$ | `def f(n):` |
-| Case $n = 0$ | `if n == 0: return ...` |
-| Case $n > 0$: assume for $j < n$ | Trust recursive call |
-| Prove for $n$ | Combine result with current |
-
-:::{.notes}
-"If you can prove it by induction, you can compute it by recursion."
-:::
-
-# Coming Up
 
 ## What's Next
 
@@ -522,10 +323,3 @@ The triangle race was a preview: smart decomposition → fast algorithms.
 
 ## Questions?
 
-::: {.r-fit-text}
-Two decompositions.
-
-Same answer.
-
-**Very** different performance.
-:::
