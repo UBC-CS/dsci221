@@ -194,13 +194,15 @@ print(f"triangle(13) = {triangle(13)}")
 
 When you write `triangle(n - 1)`, **trust that it works**.
 
+This is exactly like relying on the **inductive hypothesis** in a proof.
+
 Don't trace through every call. Just ask:
 
 1. Does my base case return the right thing?
 2. If `triangle(n-1)` magically gives me the right answer, does my code use it correctly?
 
 :::{.notes}
-"The recursion fairy handles the recursive call. You just handle your level."
+"The recursion fairy handles the recursive call. You just handle your level. Same as induction: assume P(k) holds, prove P(k+1)."
 :::
 
 # A Different Decomposition
