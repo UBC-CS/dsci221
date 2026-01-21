@@ -35,7 +35,6 @@ And a latte from Loafe.
 
 After 96 days (Jan 5 – Apr 10), how many treats did I receive **in total**?
 
-. . .
 
 Day 1: 1 treat
 
@@ -47,7 +46,6 @@ Day 3: 1 + 2 + 3 = 6 treats total
 
 Day 96: 1 + 2 + 3 + ... + 96 = ?
 
-. . .
 
 **Nobody wants to compute that by hand.**
 
@@ -59,17 +57,19 @@ For $n = 96$:
 
 $$1 + 2 + 3 + \ldots + 96 = \text{???}$$
 
+::: notes
 You've seen the closed form: $\frac{n(n+1)}{2}$
+:::
 
 ## Proving the Closed Form
 
-**Claim**: $f(n) = \frac{n(n+1)}{2}$ where $f(n) = 1 + 2 + \ldots + n$
+**Claim**: $f(n) = \frac{n(n+1)}{2}$ where $f(n) \sum_{k=1}^{n} k$
 
 We'll prove this by induction.
 
 ## Proof by Induction
 
-Consider an arbitrary $n >= 0$.  Then consider the following cases:
+Consider an arbitrary $n >= 0$.  Then we have the following cases:
 
 **Case 1, $n = 0$** (base case): $f(0) = 0 = \frac{0 \cdot 1}{2}$ ✓
 
@@ -91,7 +91,6 @@ $f(n) = \frac{(n-1)(n)}{2} + n = \frac{(n)(n+1)}{2}$ by algebra. ✓
 
 How many gifts on day 13?
 
-. . .
 
 **Whatever I had on day 12, plus 13 more.**
 
@@ -370,7 +369,6 @@ $$f(n) = f(n-k) + k \cdot (n-k) + f(k)$$
 - **Green**: Rectangle of size $k \times (n-k)$ → $k(n-k)$ dots
 - **Red**: Bottom-right triangle with $k$ rows → $f(k)$ dots
 
-. . .
 
 **The insight**: There are infinitely many valid decompositions!
 
@@ -381,11 +379,9 @@ With $f(n) = f(n-k) + k(n-k) + f(k)$ and $k = 5$:
 - $f(8) = f(3) + 5 \cdot 3 + f(5)$
 - $f(5) = f(0) + 5 \cdot 0 + f(5)$ ... infinite loop!
 
-. . .
 
 We need base cases for $f(0), f(1), \ldots, f(k)$.
 
-. . .
 
 **Lesson**: Your base cases must cover everything your recursion can reach.
 
@@ -403,7 +399,6 @@ def triangle_fast(n):
     return 2 * triangle_fast(half) + half * half
 ```
 
-. . .
 
 Does it compute the same thing?
 
@@ -450,7 +445,6 @@ But the recursive structures are different:
 - `triangle(n)`: makes $n$ recursive calls
 - `triangle_fast(n)`: makes $\log_2(n)$ recursive calls
 
-. . .
 
 Let's race them!
 
@@ -501,7 +495,6 @@ The same problem can have **multiple recursive structures**.
 
 Different structures lead to **different code** and **different performance**.
 
-. . .
 
 This is the heart of **algorithm design**.
 
