@@ -4,59 +4,61 @@ subtitle: "Week 3, Wednesday"
 date: 2026-01-22
 ---
 
-# The 13 Days Before Reading Break
+# The 96 Days of DSCI 221
 
-## 🎵 On the first day before break... {.smaller}
+## 🎵 On the first day of DSCI... {.smaller}
 
-*On the first day before break, my prof gave to me...*
+*On the first day of DSCI, my prof gave to me...*
 
 A latte from Loafe
 
-## 🎵 On the thirteenth day... {.smaller}
+## 🎵 On the ninety-sixth day... {.smaller}
 
-:::: {.columns}
-::: {.column width="50%"}
-13. Thirteen moments of zen
-12. Twelve grateful neurons
-11. Eleven Piazza posts
-10. Ten merge commits
-9. Nine cups of ramen
-8. Eight syntax errors
-7. Seven ChatGPT tabs
-:::
-::: {.column width="50%"}
-6. Six hours of sleep
+96. Ninety-six moments of zen
+95. Ninety-five grateful neurons
+94. ...
+...
+13. Thirteen Piazza posts
+12. Twelve merge commits
+11. Eleven cups of ramen
+10. Ten syntax errors
+9. Nine ChatGPT tabs
+8. Eight hours of sleep
+7. Seven TA office hours
+6. Six Pomodoros
 5. **Five passing tests** 🎵
-4. Four Pomodoros
-3. Three study rooms
-2. Two stretch breaks
+4. Four study rooms
+3. Three stretch breaks
+2. Two docs read
 1. And a latte from Loafe
-:::
-::::
 
 ## The Question
 
-After 13 days, how many gifts did I receive **in total**?
+After 96 days (Jan 5 – Apr 10), how many treats did I receive **in total**?
 
 . . .
 
-Day 1: 1 gift
+Day 1: 1 treat
 
-Day 2: 1 + 2 = 3 gifts total
+Day 2: 1 + 2 = 3 treats total
 
-Day 3: 1 + 2 + 3 = 6 gifts total
+Day 3: 1 + 2 + 3 = 6 treats total
 
 ...
 
-Day 13: 1 + 2 + 3 + ... + 13 = ?
+Day 96: 1 + 2 + 3 + ... + 96 = ?
+
+. . .
+
+**Nobody wants to compute that by hand.**
 
 ## The Sum
 
 $$1 + 2 + 3 + \ldots + n = \sum_{k=1}^{n} k$$
 
-For $n = 13$:
+For $n = 96$:
 
-$$1 + 2 + 3 + \ldots + 13 = 91 \text{ gifts}$$
+$$1 + 2 + 3 + \ldots + 96 = \text{???}$$
 
 You've seen the closed form: $\frac{n(n+1)}{2}$
 
