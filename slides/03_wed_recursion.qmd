@@ -14,23 +14,22 @@ A latte from Loafe
 
 ## 🎵 On the ninety-sixth day... {.smaller}
 
-96. Ninety-six moments of zen
-95. Ninety-five grateful neurons
-94. ...
+Ninety-six moments of zen,
+Ninety-five grateful neurons,
 ...
-13. Thirteen Piazza posts
-12. Twelve merge commits
-11. Eleven cups of ramen
-10. Ten syntax errors
-9. Nine ChatGPT tabs
-8. Eight hours of sleep
-7. Seven TA office hours
-6. Six Pomodoros
-5. **Five passing tests** 🎵
-4. Four study rooms
-3. Three stretch breaks
-2. Two docs read
-1. And a latte from Loafe
+Thirteen Piazza posts,
+Twelve merge commits,
+Eleven cups of ramen,
+Ten syntax errors,
+Nine ChatGPT tabs,
+Eight hours of sleep,
+Seven TA office hours,
+Six Pomodoros,
+**Five passing tests** 🎵
+Four study rooms,
+Three stretch breaks,
+Two docs read,
+And a latte from Loafe.
 
 ## The Question
 
