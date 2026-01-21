@@ -216,55 +216,55 @@
   <p class="date">January 22, 2026</p>
 </section>
 <section>
-<section id="the-13-days-before-reading-break" class="title-slide slide level1 center">
-<h1>The 13 Days Before Reading Break</h1>
+<section id="the-96-days-of-dsci-221" class="title-slide slide level1 center">
+<h1>The 96 Days of DSCI 221</h1>
 
 </section>
-<section id="on-the-first-day-before-break" class="slide level2 smaller">
-<h2>🎵 On the first day before break…</h2>
-<p><em>On the first day before break, my prof gave to me…</em></p>
+<section id="on-the-first-day-of-dsci" class="slide level2 smaller">
+<h2>🎵 On the first day of DSCI…</h2>
+<p><em>On the first day of DSCI, my prof gave to me…</em></p>
 <p>A latte from Loafe</p>
 </section>
-<section id="on-the-thirteenth-day" class="slide level2 smaller">
-<h2>🎵 On the thirteenth day…</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ol start="13" type="1">
-<li>Thirteen moments of zen</li>
-<li>Twelve grateful neurons</li>
-<li>Eleven Piazza posts</li>
-<li>Ten merge commits</li>
-<li>Nine cups of ramen</li>
-<li>Eight syntax errors</li>
-<li>Seven ChatGPT tabs</li>
-</ol>
-</div><div class="column" style="width:50%;">
-<ol start="6" type="1">
-<li>Six hours of sleep</li>
+<section id="on-the-ninety-sixth-day" class="slide level2 smaller">
+<h2>🎵 On the ninety-sixth day…</h2>
+<ol start="96" type="1">
+<li>Ninety-six moments of zen</li>
+<li>Ninety-five grateful neurons</li>
+<li>… …</li>
+<li>Thirteen Piazza posts</li>
+<li>Twelve merge commits</li>
+<li>Eleven cups of ramen</li>
+<li>Ten syntax errors</li>
+<li>Nine ChatGPT tabs</li>
+<li>Eight hours of sleep</li>
+<li>Seven TA office hours</li>
+<li>Six Pomodoros</li>
 <li><strong>Five passing tests</strong> 🎵</li>
-<li>Four Pomodoros</li>
-<li>Three study rooms</li>
-<li>Two stretch breaks</li>
+<li>Four study rooms</li>
+<li>Three stretch breaks</li>
+<li>Two docs read</li>
 <li>And a latte from Loafe</li>
 </ol>
-</div></div>
 </section>
 <section id="the-question" class="slide level2">
 <h2>The Question</h2>
-<p>After 13 days, how many gifts did I receive <strong>in total</strong>?</p>
+<p>After 96 days (Jan 5 – Apr 10), how many treats did I receive <strong>in total</strong>?</p>
 <div class="fragment">
-<p>Day 1: 1 gift</p>
-<p>Day 2: 1 + 2 = 3 gifts total</p>
-<p>Day 3: 1 + 2 + 3 = 6 gifts total</p>
+<p>Day 1: 1 treat</p>
+<p>Day 2: 1 + 2 = 3 treats total</p>
+<p>Day 3: 1 + 2 + 3 = 6 treats total</p>
 <p>…</p>
-<p>Day 13: 1 + 2 + 3 + … + 13 = ?</p>
+<p>Day 96: 1 + 2 + 3 + … + 96 = ?</p>
+</div>
+<div class="fragment">
+<p><strong>Nobody wants to compute that by hand.</strong></p>
 </div>
 </section>
 <section id="the-sum" class="slide level2">
 <h2>The Sum</h2>
 <p><span class="math display">\[1 + 2 + 3 + \ldots + n = \sum_{k=1}^{n} k\]</span></p>
-<p>For <span class="math inline">\(n = 13\)</span>:</p>
-<p><span class="math display">\[1 + 2 + 3 + \ldots + 13 = 91 \text{ gifts}\]</span></p>
+<p>For <span class="math inline">\(n = 96\)</span>:</p>
+<p><span class="math display">\[1 + 2 + 3 + \ldots + 96 = \text{???}\]</span></p>
 <p>You’ve seen the closed form: <span class="math inline">\(\frac{n(n+1)}{2}\)</span></p>
 </section>
 <section id="proving-the-closed-form" class="slide level2">
@@ -375,7 +375,7 @@
 </section>
 <section id="visualizing-the-sum" class="slide level2">
 <h2>Visualizing the Sum</h2>
-<div id="f4d7615d" class="cell" data-execution_count="1">
+<div id="52686a45" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -387,7 +387,7 @@
 </section>
 <section id="the-recursive-structure-peel-bottom-row" class="slide level2">
 <h2>The Recursive Structure: Peel Bottom Row</h2>
-<div id="d4123606" class="cell" data-execution_count="2">
+<div id="fbe8557d" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -412,7 +412,7 @@
 </section>
 <section id="peel-two-rows" class="slide level2">
 <h2>Peel Two Rows?</h2>
-<div id="4403453f" class="cell" data-execution_count="3">
+<div id="9cf2c562" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -493,7 +493,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
 <section id="same-triangle-different-view" class="slide level2">
 <h2>Same Triangle, Different View</h2>
 <p>What if we split the triangle differently?</p>
-<div id="a2aeb2fd" class="cell" data-execution_count="4">
+<div id="dabe98b9" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -528,7 +528,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
 </section>
 <section id="split-anywhere" class="slide level2">
 <h2>Split Anywhere!</h2>
-<div id="6c0c6c55" class="cell" data-execution_count="5">
+<div id="61e32a9d" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>

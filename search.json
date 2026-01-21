@@ -990,32 +990,32 @@
     "text": "Questions?\n\nBinary search: \\(\\Theta(\\log n)\\)\nThe invariant makes it correct.\nThe halving makes it fast."
   },
   {
-    "objectID": "slides/03_wed_recursion.html#on-the-first-day-before-break",
-    "href": "slides/03_wed_recursion.html#on-the-first-day-before-break",
+    "objectID": "slides/03_wed_recursion.html#on-the-first-day-of-dsci",
+    "href": "slides/03_wed_recursion.html#on-the-first-day-of-dsci",
     "title": "Introduction to Recursion",
-    "section": "🎵 On the first day before break…",
-    "text": "🎵 On the first day before break…\nOn the first day before break, my prof gave to me…\nA latte from Loafe"
+    "section": "🎵 On the first day of DSCI…",
+    "text": "🎵 On the first day of DSCI…\nOn the first day of DSCI, my prof gave to me…\nA latte from Loafe"
   },
   {
-    "objectID": "slides/03_wed_recursion.html#on-the-thirteenth-day",
-    "href": "slides/03_wed_recursion.html#on-the-thirteenth-day",
+    "objectID": "slides/03_wed_recursion.html#on-the-ninety-sixth-day",
+    "href": "slides/03_wed_recursion.html#on-the-ninety-sixth-day",
     "title": "Introduction to Recursion",
-    "section": "🎵 On the thirteenth day…",
-    "text": "🎵 On the thirteenth day…\n\n\n\nThirteen moments of zen\nTwelve grateful neurons\nEleven Piazza posts\nTen merge commits\nNine cups of ramen\nEight syntax errors\nSeven ChatGPT tabs\n\n\n\nSix hours of sleep\nFive passing tests 🎵\nFour Pomodoros\nThree study rooms\nTwo stretch breaks\nAnd a latte from Loafe"
+    "section": "🎵 On the ninety-sixth day…",
+    "text": "🎵 On the ninety-sixth day…\n\nNinety-six moments of zen\nNinety-five grateful neurons\n… …\nThirteen Piazza posts\nTwelve merge commits\nEleven cups of ramen\nTen syntax errors\nNine ChatGPT tabs\nEight hours of sleep\nSeven TA office hours\nSix Pomodoros\nFive passing tests 🎵\nFour study rooms\nThree stretch breaks\nTwo docs read\nAnd a latte from Loafe"
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-question",
     "href": "slides/03_wed_recursion.html#the-question",
     "title": "Introduction to Recursion",
     "section": "The Question",
-    "text": "The Question\nAfter 13 days, how many gifts did I receive in total?\n\nDay 1: 1 gift\nDay 2: 1 + 2 = 3 gifts total\nDay 3: 1 + 2 + 3 = 6 gifts total\n…\nDay 13: 1 + 2 + 3 + … + 13 = ?"
+    "text": "The Question\nAfter 96 days (Jan 5 – Apr 10), how many treats did I receive in total?\n\nDay 1: 1 treat\nDay 2: 1 + 2 = 3 treats total\nDay 3: 1 + 2 + 3 = 6 treats total\n…\nDay 96: 1 + 2 + 3 + … + 96 = ?\n\n\nNobody wants to compute that by hand."
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-sum",
     "href": "slides/03_wed_recursion.html#the-sum",
     "title": "Introduction to Recursion",
     "section": "The Sum",
-    "text": "The Sum\n\\[1 + 2 + 3 + \\ldots + n = \\sum_{k=1}^{n} k\\]\nFor \\(n = 13\\):\n\\[1 + 2 + 3 + \\ldots + 13 = 91 \\text{ gifts}\\]\nYou’ve seen the closed form: \\(\\frac{n(n+1)}{2}\\)"
+    "text": "The Sum\n\\[1 + 2 + 3 + \\ldots + n = \\sum_{k=1}^{n} k\\]\nFor \\(n = 96\\):\n\\[1 + 2 + 3 + \\ldots + 96 = \\text{???}\\]\nYou’ve seen the closed form: \\(\\frac{n(n+1)}{2}\\)"
   },
   {
     "objectID": "slides/03_wed_recursion.html#proving-the-closed-form",
