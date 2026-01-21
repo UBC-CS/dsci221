@@ -183,6 +183,39 @@ plt.show()
 "The triangle with n rows = the triangle with n-1 rows + n more dots on the bottom."
 :::
 
+## Peel Two Rows?
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(8, 7))
+
+n = 8
+for row in range(n):
+    for col in range(row + 1):
+        if row >= n - 2:  # Bottom two rows
+            color = '#e74c3c'  # Red
+        else:
+            color = '#3498db'  # Blue
+        circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
+                            facecolor=color, edgecolor='#2c3e50', linewidth=2)
+        ax.add_patch(circle)
+
+ax.set_xlim(0, n)
+ax.set_ylim(0, n)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.title('f(n) = f(n-2) + (n-1) + n\nBlue: f(n-2)   Red: +(n-1)+n', fontsize=14)
+plt.tight_layout()
+plt.show()
+```
+
+$$f(n) = f(n-2) + (n-1) + n$$
+
+We can peel off any number of rows!
+
 # From Math to Code
 
 ## The Recursive Code
