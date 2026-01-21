@@ -1,0 +1,428 @@
+---
+title: "Introduction to Recursion"
+subtitle: "Week 3, Wednesday"
+date: 2026-01-22
+---
+
+# The 13 Days Before Reading Break
+
+## 🎵 On the first day before break... {.smaller}
+
+*On the first day before break, my prof gave to me...*
+
+A latte from Loafe
+
+## 🎵 On the thirteenth day... {.smaller}
+
+:::: {.columns}
+::: {.column width="50%"}
+13. Thirteen moments of zen
+12. Twelve grateful neurons
+11. Eleven Piazza posts
+10. Ten merge commits
+9. Nine cups of ramen
+8. Eight syntax errors
+7. Seven ChatGPT tabs
+:::
+::: {.column width="50%"}
+6. Six hours of sleep
+5. **Five passing tests** 🎵
+4. Four Pomodoros
+3. Three study rooms
+2. Two stretch breaks
+1. And a latte from Loafe
+:::
+::::
+
+## The Question
+
+After 13 days, how many gifts did I receive **in total**?
+
+. . .
+
+Day 1: 1 gift
+
+Day 2: 1 + 2 = 3 gifts total
+
+Day 3: 1 + 2 + 3 = 6 gifts total
+
+...
+
+Day 13: 1 + 2 + 3 + ... + 13 = ?
+
+## The Sum
+
+$$1 + 2 + 3 + \ldots + n = \sum_{k=1}^{n} k$$
+
+For $n = 13$:
+
+$$1 + 2 + 3 + \ldots + 13 = 91 \text{ gifts}$$
+
+:::{.notes}
+"You might remember the formula n(n+1)/2. But let's think about this differently."
+:::
+
+# Recursive Thinking
+
+## A Different Way to Think
+
+How many gifts on day 13?
+
+. . .
+
+**Whatever I had on day 12, plus 13 more.**
+
+$$f(13) = f(12) + 13$$
+
+## The Recursive Definition
+
+$$f(n) = \begin{cases} 0 & \text{if } n = 0 \\ f(n-1) + n & \text{if } n > 0 \end{cases}$$
+
+**Base case**: $f(0) = 0$ (zero days = zero gifts)
+
+**Recursive case**: $f(n) = f(n-1) + n$
+
+:::{.notes}
+"This is a recursive definition. The function is defined in terms of itself."
+:::
+
+## Unrolling the Definition
+
+$$f(4) = f(3) + 4$$
+$$= (f(2) + 3) + 4$$
+$$= ((f(1) + 2) + 3) + 4$$
+$$= (((f(0) + 1) + 2) + 3) + 4$$
+$$= (((0 + 1) + 2) + 3) + 4$$
+$$= 10$$
+
+:::{.notes}
+"Each step substitutes the definition until we hit the base case."
+:::
+
+# The Triangle
+
+## Visualizing the Sum
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(6, 5))
+
+n = 5
+for row in range(n):
+    for col in range(row + 1):
+        circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
+                            facecolor='#3498db', edgecolor='#2980b9', linewidth=2)
+        ax.add_patch(circle)
+
+ax.set_xlim(0, n)
+ax.set_ylim(0, n)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.title(f'Triangle with n = {n} rows\nTotal dots = 1 + 2 + 3 + 4 + 5 = 15', fontsize=14)
+plt.tight_layout()
+plt.show()
+```
+
+## The Recursive Structure: Peel Bottom Row
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(6, 5))
+
+n = 5
+for row in range(n):
+    for col in range(row + 1):
+        if row == n - 1:  # Bottom row
+            color = '#e74c3c'  # Red
+        else:
+            color = '#3498db'  # Blue
+        circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
+                            facecolor=color, edgecolor='#2c3e50', linewidth=2)
+        ax.add_patch(circle)
+
+ax.set_xlim(0, n)
+ax.set_ylim(0, n)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.title('f(n) = f(n-1) + n\nBlue: f(n-1)   Red: +n', fontsize=14)
+plt.tight_layout()
+plt.show()
+```
+
+:::{.notes}
+"The triangle with n rows = the triangle with n-1 rows + n more dots on the bottom."
+:::
+
+# From Math to Code
+
+## The Recursive Code
+
+```python
+def triangle(n):
+    if n == 0:
+        return 0
+    return triangle(n - 1) + n
+```
+
+Compare to the math:
+
+$$f(n) = \begin{cases} 0 & \text{if } n = 0 \\ f(n-1) + n & \text{if } n > 0 \end{cases}$$
+
+:::{.notes}
+"The code is a direct translation of the math. Base case, recursive case."
+:::
+
+## Let's Run It
+
+```{pyodide}
+def triangle(n):
+    if n == 0:
+        return 0
+    return triangle(n - 1) + n
+
+print(f"triangle(5) = {triangle(5)}")
+print(f"triangle(13) = {triangle(13)}")
+```
+
+## The Call Stack
+
+Calling `triangle(4)`:
+
+```
+triangle(4)
+  → triangle(3) + 4
+      → triangle(2) + 3
+          → triangle(1) + 2
+              → triangle(0) + 1
+                  → 0
+              ← 0 + 1 = 1
+          ← 1 + 2 = 3
+      ← 3 + 3 = 6
+  ← 6 + 4 = 10
+```
+
+:::{.notes}
+"Each call waits for the recursive call to return, then adds n."
+:::
+
+# A Different Decomposition
+
+## Same Triangle, Different View
+
+What if we split the triangle differently?
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+fig, ax = plt.subplots(figsize=(8, 6))
+
+n = 8
+half = n // 2
+
+for row in range(n):
+    for col in range(row + 1):
+        # Determine which region: top-left triangle, bottom-left rect, bottom-right triangle
+        if row < half:  # Top half
+            color = '#3498db'  # Blue - top triangle
+        elif col < half:  # Bottom-left
+            color = '#2ecc71'  # Green - rectangle
+        else:  # Bottom-right
+            color = '#e74c3c'  # Red - bottom triangle
+
+        circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
+                            facecolor=color, edgecolor='#2c3e50', linewidth=1.5)
+        ax.add_patch(circle)
+
+# Add dividing lines
+ax.axhline(y=half, color='black', linewidth=2, linestyle='--')
+ax.axvline(x=half, ymin=0, ymax=0.5, color='black', linewidth=2, linestyle='--')
+
+ax.set_xlim(0, n)
+ax.set_ylim(0, n)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.title('Split into quadrants (n = 8)', fontsize=14)
+plt.tight_layout()
+plt.show()
+```
+
+## The Quadrant Decomposition
+
+For $n$ rows (where $n$ is even):
+
+- **Blue**: Top triangle with $n/2$ rows → $f(n/2)$ dots
+- **Red**: Bottom-right triangle with $n/2$ rows → $f(n/2)$ dots
+- **Green**: Rectangle of size $(n/2) \times (n/2)$ → $(n/2)^2$ dots
+
+$$f(n) = 2 \cdot f(n/2) + (n/2)^2$$
+
+:::{.notes}
+"Same problem, different recursive structure!"
+:::
+
+## The Divide-and-Conquer Code
+
+```python
+def triangle_fast(n):
+    if n <= 1:
+        return n
+    half = n // 2
+    return 2 * triangle_fast(half) + half * half
+```
+
+. . .
+
+Does it compute the same thing?
+
+```{pyodide}
+def triangle_fast(n):
+    if n <= 1:
+        return n
+    half = n // 2
+    return 2 * triangle_fast(half) + half * half
+
+print(f"triangle_fast(8) = {triangle_fast(8)}")
+print(f"Expected: 1+2+...+8 = {8*9//2}")
+```
+
+## Two Functions, Same Answer
+
+```{pyodide}
+def triangle(n):
+    if n == 0:
+        return 0
+    return triangle(n - 1) + n
+
+def triangle_fast(n):
+    if n <= 1:
+        return n
+    half = n // 2
+    return 2 * triangle_fast(half) + half * half
+
+for n in [4, 8, 16, 32, 64]:
+    slow = triangle(n)
+    fast = triangle_fast(n)
+    match = "✓" if slow == fast else "✗"
+    print(f"n={n:3}: triangle={slow:5}, triangle_fast={fast:5} {match}")
+```
+
+# The Race
+
+## Which is Faster?
+
+Both compute the same answer.
+
+But the recursive structures are different:
+
+- `triangle(n)`: makes $n$ recursive calls
+- `triangle_fast(n)`: makes $\log_2(n)$ recursive calls
+
+. . .
+
+Let's race them!
+
+## The Race
+
+```{pyodide}
+import sys
+sys.setrecursionlimit(100000)
+
+n = 50000
+print(f"Racing on n = {n:,}")
+print("-" * 40)
+
+t1 = time_it(triangle, n)
+print(f"triangle:      {t1:.4f}s")
+
+t2 = time_it(triangle_fast, n)
+print(f"triangle_fast: {t2:.6f}s")
+
+print(f"\nSpeedup: {t1/t2:.0f}x faster!")
+```
+
+:::{.notes}
+"Same answer. Wildly different performance. That's the power of choosing the right decomposition."
+:::
+
+## Why So Different?
+
+**`triangle(n)`**: $f(n) = f(n-1) + n$
+
+- Recursion depth: $n$
+- Total calls: $n$
+
+**`triangle_fast(n)`**: $f(n) = 2 \cdot f(n/2) + (n/2)^2$
+
+- Recursion depth: $\log_2(n)$
+- Total calls: $\log_2(n)$
+
+:::{.notes}
+"Linear depth vs logarithmic depth. At n=50000, that's 50000 vs ~16."
+:::
+
+# The Big Idea
+
+## Recursion is About Decomposition
+
+The same problem can have **multiple recursive structures**.
+
+Different structures lead to **different code** and **different performance**.
+
+. . .
+
+This is the heart of **algorithm design**.
+
+:::{.notes}
+"This is why we study algorithms, not just 'how to code'. The structure matters."
+:::
+
+## The Connection to Induction
+
+You already know recursion from math:
+
+| Math (Induction) | Code (Recursion) |
+|------------------|------------------|
+| Base case | `if n == 0: return ...` |
+| Inductive hypothesis | Recursive call |
+| Inductive step | Combine result with current |
+
+:::{.notes}
+"If you can prove it by induction, you can compute it by recursion."
+:::
+
+# Coming Up
+
+## What's Next
+
+- **Lab 3**: Writing recursive functions
+- **Week 4**: Analyzing recursive running times (recurrences)
+- **Later**: Divide-and-conquer algorithms (merge sort, quicksort)
+
+The triangle race was a preview: smart decomposition → fast algorithms.
+
+## Summary
+
+1. **Recursion**: A function defined in terms of itself
+2. **Base case**: When to stop
+3. **Recursive case**: How to reduce the problem
+4. **Key insight**: The same problem can have different recursive structures
+5. **Performance**: Structure choice affects speed dramatically
+
+## Questions?
+
+::: {.r-fit-text}
+Two decompositions.
+
+Same answer.
+
+**Very** different performance.
+:::
