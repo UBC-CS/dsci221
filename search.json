@@ -1071,7 +1071,7 @@
     "href": "slides/03_wed_recursion.html#trust-the-recursion-fairy",
     "title": "Introduction to Recursion",
     "section": "Trust the Recursion Fairy",
-    "text": "Trust the Recursion Fairy\nWhen you write triangle(n - 1), trust that it works.\nDon’t trace through every call. Just ask:\n\nDoes my base case return the right thing?\nIf triangle(n-1) magically gives me the right answer, does my code use it correctly?\n\n\n“The recursion fairy handles the recursive call. You just handle your level.”"
+    "text": "Trust the Recursion Fairy\nWhen you write triangle(n - 1), trust that it works.\nThis is exactly like relying on the inductive hypothesis in a proof.\nDon’t trace through every call. Just ask:\n\nDoes my base case return the right thing?\nIf triangle(n-1) magically gives me the right answer, does my code use it correctly?\n\n\n“The recursion fairy handles the recursive call. You just handle your level. Same as induction: assume P(k) holds, prove P(k+1).”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#same-triangle-different-view",

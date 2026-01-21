@@ -335,7 +335,7 @@
 </section>
 <section id="visualizing-the-sum" class="slide level2">
 <h2>Visualizing the Sum</h2>
-<div id="bd7bfaac" class="cell" data-execution_count="1">
+<div id="190d0d75" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -347,7 +347,7 @@
 </section>
 <section id="the-recursive-structure-peel-bottom-row" class="slide level2">
 <h2>The Recursive Structure: Peel Bottom Row</h2>
-<div id="c53531e6" class="cell" data-execution_count="2">
+<div id="66637b4e" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -411,13 +411,14 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
 <section id="trust-the-recursion-fairy" class="slide level2">
 <h2>Trust the Recursion Fairy</h2>
 <p>When you write <code>triangle(n - 1)</code>, <strong>trust that it works</strong>.</p>
+<p>This is exactly like relying on the <strong>inductive hypothesis</strong> in a proof.</p>
 <p>Don’t trace through every call. Just ask:</p>
 <ol type="1">
 <li>Does my base case return the right thing?</li>
 <li>If <code>triangle(n-1)</code> magically gives me the right answer, does my code use it correctly?</li>
 </ol>
 <aside class="notes">
-<p>“The recursion fairy handles the recursive call. You just handle your level.”</p>
+<p>“The recursion fairy handles the recursive call. You just handle your level. Same as induction: assume P(k) holds, prove P(k+1).”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -438,7 +439,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
 <section id="same-triangle-different-view" class="slide level2">
 <h2>Same Triangle, Different View</h2>
 <p>What if we split the triangle differently?</p>
-<div id="cee8cf01" class="cell" data-execution_count="3">
+<div id="e1b80f46" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
