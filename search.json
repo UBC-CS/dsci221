@@ -990,74 +990,25 @@
     "text": "Questions?\n\nBinary search: \\(\\Theta(\\log n)\\)\nThe invariant makes it correct.\nThe halving makes it fast."
   },
   {
-    "objectID": "slides/03_wed_recursion.html#on-the-first-day-of-dsci",
-    "href": "slides/03_wed_recursion.html#on-the-first-day-of-dsci",
-    "title": "Introduction to Recursion",
-    "section": "🎵 On the first day of DSCI…",
-    "text": "🎵 On the first day of DSCI…\nOn the first day of DSCI, my prof gave to me…\nA latte from Loafe"
-  },
-  {
     "objectID": "slides/03_wed_recursion.html#on-the-ninety-sixth-day",
     "href": "slides/03_wed_recursion.html#on-the-ninety-sixth-day",
     "title": "Introduction to Recursion",
     "section": "🎵 On the ninety-sixth day…",
-    "text": "🎵 On the ninety-sixth day…\n96 moments of zen 🎵 95 grateful neurons 🎵 94 clever insights 🎵 93 aha moments 🎵 92 merge conflicts 🎵 91 Stack Overflow tabs 🎵 90 refactored functions 🎵 89 git commits 🎵 88 test cases 🎵 87 rubber ducks 🎵 86 coffee refills 🎵 85 keyboard clicks 🎵 84 documentation pages 🎵 83 variable names 🎵 82 edge cases 🎵 81 print statements 🎵 80 whiteboard markers 🎵 79 Piazza posts 🎵 78 recursive calls 🎵 77 helper functions 🎵 76 code reviews 🎵 75 unit tests 🎵 74 bug fixes 🎵 73 loop iterations 🎵 72 hash collisions 🎵 71 array indices 🎵 70 base cases 🎵 69 pointer errors 🎵 68 syntax errors 🎵 67 runtime exceptions 🎵 66 stack frames 🎵 65 heap allocations 🎵 64 binary digits 🎵 63 terminal commands 🎵 62 Slack messages 🎵 61 Discord pings 🎵 60 Zoom breakouts 🎵 59 office hours 🎵 58 study sessions 🎵 57 flashcards 🎵 56 practice problems 🎵 55 lecture notes 🎵 54 code snippets 🎵 53 TODO comments 🎵 52 FIXME tags 🎵 51 deprecation warnings 🎵 50 linter errors 🎵 49 type hints 🎵 48 docstrings 🎵 47 assert statements 🎵 46 boundary checks 🎵 45 null pointers 🎵 44 empty lists 🎵 43 off-by-ones 🎵 42 infinite loops 🎵 41 segfaults 🎵 40 memory leaks 🎵 39 cache misses 🎵 38 race conditions 🎵 37 deadlocks 🎵 36 timeouts 🎵 35 retries 🎵 34 rollbacks 🎵 33 hotfixes 🎵 32 patches 🎵 31 releases 🎵 30 version bumps 🎵 29 feature flags 🎵 28 A/B tests 🎵 27 metrics 🎵 26 dashboards 🎵 25 alerts 🎵 24 on-calls 🎵 23 incident reports 🎵 22 post-mortems 🎵 21 action items 🎵 20 sprint points 🎵 19 standups 🎵 18 retros 🎵 17 demos 🎵 16 pull requests 🎵 15 code comments 🎵 14 merge commits 🎵 13 Piazza posts 🎵 12 cups of ramen 🎵 11 syntax errors 🎵 10 ChatGPT tabs 🎵 9 hours of sleep 🎵 8 TA office hours 🎵 7 Pomodoros 🎵 6 study rooms 🎵 5 passing tests 🎵 4 stretch breaks 🎵 3 docs read 🎵 2 good friends 🎵 And a latte from Loafe."
+    "text": "🎵 On the ninety-sixth day…\n96 moments of zen 🎵 95 grateful neurons 🎵 94 clever insights 🎵 93 aha moments 🎵 92 merge conflicts 🎵 91 Stack Overflow tabs 🎵 90 refactored functions 🎵 89 git commits 🎵 88 test cases 🎵 87 rubber ducks 🎵 86 coffee refills 🎵 85 keyboard clicks 🎵 84 documentation pages 🎵 83 variable names 🎵 82 edge cases 🎵 81 print statements 🎵 80 whiteboard markers 🎵 79 Piazza posts 🎵 78 recursive calls 🎵 77 helper functions 🎵 76 code reviews 🎵 75 unit tests 🎵 74 bug fixes 🎵 73 loop iterations 🎵 72 hash collisions 🎵 71 array indices 🎵 70 base cases 🎵 69 pointer errors 🎵 68 syntax errors 🎵 67 runtime exceptions 🎵 66 stack frames 🎵 65 heap allocations 🎵 64 binary digits 🎵 63 terminal commands 🎵 62 Slack messages 🎵 61 Discord pings 🎵 60 Zoom breakouts 🎵 59 office hours 🎵 58 study sessions 🎵 57 flashcards 🎵 56 practice problems 🎵 55 lecture notes 🎵 54 code snippets 🎵 53 TODO comments 🎵 52 FIXME tags 🎵 51 deprecation warnings 🎵 50 linter errors 🎵 49 type hints 🎵 48 docstrings 🎵 47 assert statements 🎵 46 boundary checks 🎵 45 null pointers 🎵 44 empty lists 🎵 43 off-by-ones 🎵 42 infinite loops 🎵 41 segfaults 🎵 40 memory leaks 🎵 39 cache misses 🎵 38 race conditions 🎵 37 deadlocks 🎵 36 timeouts 🎵 35 snack breaks 🎵 34 memes shared 🎵 33 playlists made 🎵 32 naps attempted 🎵 31 alarms snoozed 🎵 30 tabs still open 🎵 29 unread emails 🎵 28 doodles drawn 🎵 27 songs on repeat 🎵 26 empty notebooks 🎵 25 highlighters 🎵 24 sticky notes 🎵 23 “almost dones” 🎵 22 existential crises 🎵 21 snacks consumed 🎵 20 walks taken 🎵 19 deep breaths 🎵 18 pokemons 🎵 17 demos 🎵 16 pull requests 🎵 15 code comments 🎵 14 merge commits 🎵 13 Piazza posts 🎵 12 cups of ramen 🎵 11 syntax errors 🎵 10 ChatGPT tabs 🎵 9 hours of sleep 🎵 8 TA office hours 🎵 7 Pomodoros 🎵 6 study rooms 🎵 5 passing tests 🎵 4 stretch breaks 🎵 3 docs read 🎵 2 good friends 🎵 And a latte from Loafe."
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-question",
     "href": "slides/03_wed_recursion.html#the-question",
     "title": "Introduction to Recursion",
     "section": "The Question",
-    "text": "The Question\nAfter 96 days (Jan 5 – Apr 10), how many treats did I receive in total?\nDay 1: 1 treat\nDay 2: 1 + 2 = 3 treats total\nDay 3: 1 + 2 + 3 = 6 treats total\n…\nDay 96: 1 + 2 + 3 + … + 96 = ?\nNobody wants to compute that by hand."
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#the-sum",
-    "href": "slides/03_wed_recursion.html#the-sum",
-    "title": "Introduction to Recursion",
-    "section": "The Sum",
-    "text": "The Sum\n\\[1 + 2 + 3 + \\ldots + n = \\sum_{k=1}^{n} k\\]\nFor \\(n = 96\\):\n\\[1 + 2 + 3 + \\ldots + 96 = \\text{???}\\]\n\nYou’ve seen the closed form: \\(\\frac{n(n+1)}{2}\\)"
+    "text": "The Question\nHow many treats will you receive on the 96th day (Apr 10)?\n\\[1 + 2 + 3 + \\ldots + 96 = \\sum_{k=1}^{96} k = \\text{ ?}\\]\n\nYou’ve seen the closed form: \\(\\frac{n(n+1)}{2}\\)"
   },
   {
     "objectID": "slides/03_wed_recursion.html#proving-the-closed-form",
     "href": "slides/03_wed_recursion.html#proving-the-closed-form",
     "title": "Introduction to Recursion",
     "section": "Proving the Closed Form",
-    "text": "Proving the Closed Form\nClaim: \\(f(n) = \\frac{n(n+1)}{2}\\) where \\(f(n) \\sum_{k=1}^{n} k\\)\nWe’ll prove this by induction."
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#proof-by-induction",
-    "href": "slides/03_wed_recursion.html#proof-by-induction",
-    "title": "Introduction to Recursion",
-    "section": "Proof by Induction",
-    "text": "Proof by Induction\nConsider an arbitrary \\(n &gt;= 0\\). Then we have the following cases:\nCase 1, \\(n = 0\\) (base case): \\(f(0) = 0 = \\frac{0 \\cdot 1}{2}\\) ✓\nCase 2, \\(n&gt;0\\) (inductive case):\nAssume for any \\(0 &lt; j &lt; n\\), \\(f(j) = \\frac{j(j+1)}{2}\\) (Inductive Hypothesis)\n\\(f(n) = f(n-1) + n\\) by definition. \\(f(n-1) = \\frac{(n-1)(n)}{2}\\) by IH, since \\(n-1 &lt; n\\). \\(f(n) = \\frac{(n-1)(n)}{2} + n = \\frac{(n)(n+1)}{2}\\) by algebra. ✓\n\n“Notice: the inductive step assumes f(k) works and uses it. Just like recursion!”"
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#a-different-way-to-think",
-    "href": "slides/03_wed_recursion.html#a-different-way-to-think",
-    "title": "Introduction to Recursion",
-    "section": "A Different Way to Think",
-    "text": "A Different Way to Think\nHow many gifts on day 13?\nWhatever I had on day 12, plus 13 more.\n\\[f(13) = f(12) + 13\\]"
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#the-recursive-definition",
-    "href": "slides/03_wed_recursion.html#the-recursive-definition",
-    "title": "Introduction to Recursion",
-    "section": "The Recursive Definition",
-    "text": "The Recursive Definition\n\\[f(n) = \\begin{cases} 0 & \\text{if } n = 0 \\\\ f(n-1) + n & \\text{if } n &gt; 0 \\end{cases}\\]\nBase case: \\(f(0) = 0\\) (zero days = zero gifts)\nRecursive case: \\(f(n) = f(n-1) + n\\)\n\n“This is a recursive definition. The function is defined in terms of itself.”"
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#induction-recursion",
-    "href": "slides/03_wed_recursion.html#induction-recursion",
-    "title": "Introduction to Recursion",
-    "section": "Induction = Recursion",
-    "text": "Induction = Recursion\n\n\n\nInduction\nRecursion\n\n\n\n\nConsider arbitrary \\(n \\geq 0\\)\ndef f(n):\n\n\nCase \\(n = 0\\): prove directly\nif n == 0: return 0\n\n\nCase \\(n &gt; 0\\): assume \\(P(j)\\) for \\(j &lt; n\\)\nTrust f(n-1) works\n\n\nProve \\(P(n)\\) using IH\nCompute f(n) using f(n-1)\n\n\n\nSame structure. Same reasoning.\n\n“If you can prove it by induction, you can compute it by recursion. They’re the same thing.”"
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#visualizing-the-sum",
-    "href": "slides/03_wed_recursion.html#visualizing-the-sum",
-    "title": "Introduction to Recursion",
-    "section": "Visualizing the Sum",
-    "text": "Visualizing the Sum"
+    "text": "Proving the Closed Form\nClaim: \\(f(n) = \\frac{n(n+1)}{2}\\) where \\(f(n) = \\sum_{k=1}^{n} k\\)\nProof: Consider an arbitrary \\(n &gt;= 0\\). Then we have the following cases:\n\nCase 1, \\(n = 0\\) (base case): \\(f(0) = 0 = \\frac{0 \\cdot 1}{2}\\) ✓\nCase 2, \\(n&gt;0\\) (inductive case):\n\nAssume for any \\(0 &lt; j &lt; n\\), \\(f(j) = \\frac{j(j+1)}{2}\\) (Inductive Hypothesis)\n\\(f(n) = f(n-1) + n\\) by definition.\n\\(f(n-1) = \\frac{(n-1)(n)}{2}\\) by IH, since \\(n-1 &lt; n\\).\n\\(f(n) = \\frac{(n-1)(n)}{2} + n = \\frac{(n)(n+1)}{2}\\) by algebra. ✓\n\n“Notice: the inductive step assumes f(k) works and uses it. Just like recursion!”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-recursive-structure-peel-bottom-row",
@@ -1067,32 +1018,39 @@
     "text": "The Recursive Structure: Peel Bottom Row\n\n\n\n\n\n\n\n\n\n\n“The triangle with n rows = the triangle with n-1 rows + n more dots on the bottom.”"
   },
   {
-    "objectID": "slides/03_wed_recursion.html#peel-two-rows",
-    "href": "slides/03_wed_recursion.html#peel-two-rows",
+    "objectID": "slides/03_wed_recursion.html#the-recursive-definition",
+    "href": "slides/03_wed_recursion.html#the-recursive-definition",
     "title": "Introduction to Recursion",
-    "section": "Peel Two Rows?",
-    "text": "Peel Two Rows?\n\n\n\n\n\n\n\n\n\n\\[f(n) = f(n-2) + (n-1) + n\\]\nWe can peel off any number of rows!"
+    "section": "The Recursive Definition",
+    "text": "The Recursive Definition\nA recursive mathematical function:\n\\[f(n) = \\begin{cases} 0 & \\text{if } n = 0 \\\\ f(n-1) + n & \\text{if } n &gt; 0 \\end{cases}\\]\n\n“This is a recursive definition. The function is defined in terms of itself.”"
+  },
+  {
+    "objectID": "slides/03_wed_recursion.html#induction-recursion",
+    "href": "slides/03_wed_recursion.html#induction-recursion",
+    "title": "Introduction to Recursion",
+    "section": "Induction = Recursion",
+    "text": "Induction = Recursion\n\n\n\n\n\n\n\n\nInduction\nMath\nRecursion\n\n\n\n\nConsider arbitrary \\(n \\geq 0\\)\n\\(n\\in \\mathbb{N}\\)\ndef f(n):\n\n\nCase \\(n = 0\\): prove directly\n\\(0\\) if \\(n=0\\)\nif n == 0: return 0\n\n\nCase \\(n &gt; 0\\): assume \\(P(j)\\) for \\(j &lt; n\\)\n\\(f(n-1)\\) defined\nTrust f(n-1) works\n\n\nProve \\(P(n)\\) using IH\n\\(f(n-1)+n\\) if \\(n&gt;0\\)\nCompute f(n) using f(n-1)\n\n\n\nSame structure. Same reasoning.\n\n“If you can prove it by induction, you can compute it by recursion. They’re the same thing.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-recursive-code",
     "href": "slides/03_wed_recursion.html#the-recursive-code",
     "title": "Introduction to Recursion",
     "section": "The Recursive Code",
-    "text": "The Recursive Code\ndef triangle(n):\n    if n == 0:\n        return 0\n    return triangle(n - 1) + n\nCompare to the math:\n\\[f(n) = \\begin{cases} 0 & \\text{if } n = 0 \\\\ f(n-1) + n & \\text{if } n &gt; 0 \\end{cases}\\]\n\n“The code is a direct translation of the math. Base case, recursive case.”"
+    "text": "The Recursive Code\nConsider the math:\n\\[f(n) = \\begin{cases} 0 & \\text{if } n = 0 \\\\ f(n-1) + n & \\text{if } n &gt; 0 \\end{cases}\\]\n\n\n\n\n\n\n\n“The code is a direct translation of the math. Base case, recursive case.”"
   },
   {
-    "objectID": "slides/03_wed_recursion.html#lets-run-it",
-    "href": "slides/03_wed_recursion.html#lets-run-it",
+    "objectID": "slides/03_wed_recursion.html#intuition-for-recursive-design",
+    "href": "slides/03_wed_recursion.html#intuition-for-recursive-design",
     "title": "Introduction to Recursion",
-    "section": "Let’s Run It",
-    "text": "Let’s Run It"
+    "section": "Intuition for Recursive Design",
+    "text": "Intuition for Recursive Design\nWhen you write triangle(n - 1), trust that it works.\nThis is exactly like relying on the inductive hypothesis in a proof.\nDon’t trace through every call. Just ask:\n\nDoes my base case return the right thing?\nIf triangle(n-1) magically gives me the right answer, does my code use it correctly?\n\n\n“The recursion fairy handles the recursive call. You just handle your level. Same as induction: assume P(k) holds, prove P(k+1).”"
   },
   {
-    "objectID": "slides/03_wed_recursion.html#trust-the-recursion-fairy",
-    "href": "slides/03_wed_recursion.html#trust-the-recursion-fairy",
+    "objectID": "slides/03_wed_recursion.html#the-three-musts-of-recursion",
+    "href": "slides/03_wed_recursion.html#the-three-musts-of-recursion",
     "title": "Introduction to Recursion",
-    "section": "Trust the Recursion Fairy",
-    "text": "Trust the Recursion Fairy\nWhen you write triangle(n - 1), trust that it works.\nThis is exactly like relying on the inductive hypothesis in a proof.\nDon’t trace through every call. Just ask:\n\nDoes my base case return the right thing?\nIf triangle(n-1) magically gives me the right answer, does my code use it correctly?\n\n\n“The recursion fairy handles the recursive call. You just handle your level. Same as induction: assume P(k) holds, prove P(k+1).”"
+    "section": "The Three Musts of Recursion",
+    "text": "The Three Musts of Recursion\nFor the recursion to work its magic, your code must satisfy:\n\nHandle all valid inputs: Every input needs a case (base or recursive)\nHave a base case: At least one case that returns without recursing\nMake progress: Each recursive call must get closer to a base case\n\n\n“These are the contract with the recursion fairy. Break any of these, and your code will loop forever or crash.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#same-triangle-different-view",
@@ -1106,56 +1064,28 @@
     "href": "slides/03_wed_recursion.html#the-quadrant-decomposition",
     "title": "Introduction to Recursion",
     "section": "The Quadrant Decomposition",
-    "text": "The Quadrant Decomposition\nFor \\(n\\) rows (where \\(n\\) is even):\n\nBlue: Top triangle with \\(n/2\\) rows → \\(f(n/2)\\) dots\nRed: Bottom-right triangle with \\(n/2\\) rows → \\(f(n/2)\\) dots\nGreen: Rectangle of size \\((n/2) \\times (n/2)\\) → \\((n/2)^2\\) dots\n\n\\[f(n) = 2 \\cdot f(n/2) + (n/2)^2\\]\n\n“Same problem, different recursive structure!”"
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#split-anywhere",
-    "href": "slides/03_wed_recursion.html#split-anywhere",
-    "title": "Introduction to Recursion",
-    "section": "Split Anywhere!",
-    "text": "Split Anywhere!"
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#the-general-decomposition",
-    "href": "slides/03_wed_recursion.html#the-general-decomposition",
-    "title": "Introduction to Recursion",
-    "section": "The General Decomposition",
-    "text": "The General Decomposition\nFor any \\(0 &lt; k &lt; n\\):\n\\[f(n) = f(n-k) + k \\cdot (n-k) + f(k)\\]\n\nBlue: Top triangle with \\(n-k\\) rows → \\(f(n-k)\\) dots\nGreen: Rectangle of size \\(k \\times (n-k)\\) → \\(k(n-k)\\) dots\nRed: Bottom-right triangle with \\(k\\) rows → \\(f(k)\\) dots\n\nThe insight: There are infinitely many valid decompositions!"
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#but-wait-base-cases",
-    "href": "slides/03_wed_recursion.html#but-wait-base-cases",
-    "title": "Introduction to Recursion",
-    "section": "But Wait… Base Cases?",
-    "text": "But Wait… Base Cases?\nWith \\(f(n) = f(n-k) + k(n-k) + f(k)\\) and \\(k = 5\\):\n\n\\(f(8) = f(3) + 5 \\cdot 3 + f(5)\\)\n\\(f(5) = f(0) + 5 \\cdot 0 + f(5)\\) … infinite loop!\n\nWe need base cases for \\(f(0), f(1), \\ldots, f(k)\\).\nLesson: Your base cases must cover everything your recursion can reach.\n\n“The quadrant decomposition (k = n/2) only needs f(0) and f(1). This k=5 split needs base cases for 0 through 5. More base cases = more work to verify.”"
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#the-divide-and-conquer-code",
-    "href": "slides/03_wed_recursion.html#the-divide-and-conquer-code",
-    "title": "Introduction to Recursion",
-    "section": "The Divide-and-Conquer Code",
-    "text": "The Divide-and-Conquer Code\ndef triangle_fast(n):\n    if n &lt;= 1:\n        return n\n    half = n // 2\n    return 2 * triangle_fast(half) + half * half\nDoes it compute the same thing?"
+    "text": "The Quadrant Decomposition\n\nBlue: Top triangle with \\(\\lfloor n/2 \\rfloor\\) rows → \\(f(\\lfloor n/2 \\rfloor)\\) dots\nRed: Bottom-right triangle with \\(\\lfloor n/2 \\rfloor\\) rows → \\(f(\\lfloor n/2 \\rfloor)\\) dots\nGreen: Square of size \\((n - \\lfloor n/2 \\rfloor)^2\\) dots\n\n\\[f(n) = 2 \\cdot f(\\lfloor n/2 \\rfloor) + (n - \\lfloor n/2 \\rfloor)^2\\]\nWorks for all \\(n\\).\n\n“Same problem, different recursive structure! The square absorbs the ‘extra’ row when n is odd.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#two-functions-same-answer",
     "href": "slides/03_wed_recursion.html#two-functions-same-answer",
     "title": "Introduction to Recursion",
     "section": "Two Functions, Same Answer",
-    "text": "Two Functions, Same Answer"
+    "text": "Two Functions, Same Answer\nI forgot to define triangle_fast!"
   },
   {
     "objectID": "slides/03_wed_recursion.html#which-is-faster",
     "href": "slides/03_wed_recursion.html#which-is-faster",
     "title": "Introduction to Recursion",
     "section": "Which is Faster?",
-    "text": "Which is Faster?\nBoth compute the same answer.\nBut the recursive structures are different:\n\ntriangle(n): makes \\(n\\) recursive calls\ntriangle_fast(n): makes \\(\\log_2(n)\\) recursive calls\n\nLet’s race them!"
+    "text": "Which is Faster?\nBoth compute the same answer.\nBut the recursive structures are different:\n\ntriangle(n): calls triangle(n-1)\ntriangle_fast(n): calls triangle_fast(n//2)\n\nDoes that matter?\nLet’s race them!"
   },
   {
-    "objectID": "slides/03_wed_recursion.html#the-race-1",
-    "href": "slides/03_wed_recursion.html#the-race-1",
+    "objectID": "slides/03_wed_recursion.html#the-race",
+    "href": "slides/03_wed_recursion.html#the-race",
     "title": "Introduction to Recursion",
     "section": "The Race",
-    "text": "The Race\n\n\n\n\n\n\n\n“Same answer. Wildly different performance. That’s the power of choosing the right decomposition.”"
+    "text": "The Race\n\n\n\n\n\n\n\n\n\n\n\n\n\n“Same answer. Wildly different performance. That’s the power of choosing the right decomposition.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#why-so-different",
@@ -1165,18 +1095,11 @@
     "text": "Why So Different?\ntriangle(n): \\(f(n) = f(n-1) + n\\)\n\nRecursion depth: \\(n\\)\nTotal calls: \\(n\\)\n\ntriangle_fast(n): \\(f(n) = 2 \\cdot f(n/2) + (n/2)^2\\)\n\nRecursion depth: \\(\\log_2(n)\\)\nTotal calls: \\(\\log_2(n)\\)\n\n\n“Linear depth vs logarithmic depth. At n=50000, that’s 50000 vs ~16.”"
   },
   {
-    "objectID": "slides/03_wed_recursion.html#recursion-is-about-decomposition",
-    "href": "slides/03_wed_recursion.html#recursion-is-about-decomposition",
+    "objectID": "slides/03_wed_recursion.html#big-idea-recursion-is-about-decomposition",
+    "href": "slides/03_wed_recursion.html#big-idea-recursion-is-about-decomposition",
     "title": "Introduction to Recursion",
-    "section": "Recursion is About Decomposition",
-    "text": "Recursion is About Decomposition\nThe same problem can have multiple recursive structures.\nDifferent structures lead to different code and different performance.\nThis is the heart of algorithm design.\n\n“This is why we study algorithms, not just ‘how to code’. The structure matters.”"
-  },
-  {
-    "objectID": "slides/03_wed_recursion.html#the-connection-to-induction",
-    "href": "slides/03_wed_recursion.html#the-connection-to-induction",
-    "title": "Introduction to Recursion",
-    "section": "The Connection to Induction",
-    "text": "The Connection to Induction\nYou already know recursion from math:\n\n\n\nMath (Induction)\nCode (Recursion)\n\n\n\n\nConsider arbitrary \\(n\\)\ndef f(n):\n\n\nCase \\(n = 0\\)\nif n == 0: return ...\n\n\nCase \\(n &gt; 0\\): assume for \\(j &lt; n\\)\nTrust recursive call\n\n\nProve for \\(n\\)\nCombine result with current\n\n\n\n\n“If you can prove it by induction, you can compute it by recursion.”"
+    "section": "Big Idea: Recursion is About Decomposition",
+    "text": "Big Idea: Recursion is About Decomposition\nThe same problem can have multiple recursive structures.\nDifferent structures lead to different code and different performance.\nThis is the heart of algorithm design.\n\n“This is why we study algorithms, not just ‘how to code’. The structure matters.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#whats-next",
@@ -1197,7 +1120,7 @@
     "href": "slides/03_wed_recursion.html#questions",
     "title": "Introduction to Recursion",
     "section": "Questions?",
-    "text": "Questions?\n\nTwo decompositions.\nSame answer.\nVery different performance."
+    "text": "Questions?"
   },
   {
     "objectID": "slides/AA_XXX_hierarchy.html#patterns",
