@@ -265,8 +265,22 @@
 <p><span class="math display">\[1 + 2 + 3 + \ldots + n = \sum_{k=1}^{n} k\]</span></p>
 <p>For <span class="math inline">\(n = 13\)</span>:</p>
 <p><span class="math display">\[1 + 2 + 3 + \ldots + 13 = 91 \text{ gifts}\]</span></p>
+<p>You’ve seen the closed form: <span class="math inline">\(\frac{n(n+1)}{2}\)</span></p>
+</section>
+<section id="proving-the-closed-form" class="slide level2">
+<h2>Proving the Closed Form</h2>
+<p><strong>Claim</strong>: <span class="math inline">\(f(n) = \frac{n(n+1)}{2}\)</span> where <span class="math inline">\(f(n) = 1 + 2 + \ldots + n\)</span></p>
+<p>We’ll prove this by induction.</p>
+</section>
+<section id="proof-by-induction" class="slide level2">
+<h2>Proof by Induction</h2>
+<p>Consider an arbitrary <span class="math inline">\(n &gt;= 0\)</span>. Then consider the following cases:</p>
+<p><strong>Case 1, <span class="math inline">\(n = 0\)</span></strong> (base case): <span class="math inline">\(f(0) = 0 = \frac{0 \cdot 1}{2}\)</span> ✓</p>
+<p><strong>Case 2, <span class="math inline">\(n&gt;0\)</span></strong> (inductive case):</p>
+<p>Assume for any <span class="math inline">\(0 &lt; j &lt; n\)</span>, <span class="math inline">\(f(j) = \frac{j(j+1)}{2}\)</span> (Inductive Hypothesis)</p>
+<p><span class="math inline">\(f(n) = f(n-1) + n\)</span> by definition. <span class="math inline">\(f(n-1) = \frac{(n-1)(n)}{2}\)</span> by IH, since <span class="math inline">\(n-1 &lt; n\)</span>. <span class="math inline">\(f(n) = \frac{(n-1)(n)}{2} + n = \frac{(n)(n+1)}{2}\)</span> by algebra. ✓</p>
 <aside class="notes">
-<p>“You might remember the formula n(n+1)/2. But let’s think about this differently.”</p>
+<p>“Notice: the inductive step assumes f(k) works and uses it. Just like recursion!”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -311,11 +325,37 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="unrolling-the-definition" class="slide level2">
-<h2>Unrolling the Definition</h2>
-<p><span class="math display">\[f(4) = f(3) + 4\]</span> <span class="math display">\[= (f(2) + 3) + 4\]</span> <span class="math display">\[= ((f(1) + 2) + 3) + 4\]</span> <span class="math display">\[= (((f(0) + 1) + 2) + 3) + 4\]</span> <span class="math display">\[= (((0 + 1) + 2) + 3) + 4\]</span> <span class="math display">\[= 10\]</span></p>
+<section id="induction-recursion" class="slide level2">
+<h2>Induction = Recursion</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Induction</th>
+<th>Recursion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Consider arbitrary <span class="math inline">\(n \geq 0\)</span></td>
+<td><code>def f(n):</code></td>
+</tr>
+<tr class="even">
+<td>Case <span class="math inline">\(n = 0\)</span>: prove directly</td>
+<td><code>if n == 0: return 0</code></td>
+</tr>
+<tr class="odd">
+<td>Case <span class="math inline">\(n &gt; 0\)</span>: assume <span class="math inline">\(P(j)\)</span> for <span class="math inline">\(j &lt; n\)</span></td>
+<td>Trust <code>f(n-1)</code> works</td>
+</tr>
+<tr class="even">
+<td>Prove <span class="math inline">\(P(n)\)</span> using IH</td>
+<td>Compute <code>f(n)</code> using <code>f(n-1)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Same structure. Same reasoning.</strong></p>
 <aside class="notes">
-<p>“Each step substitutes the definition until we hit the base case.”</p>
+<p>“If you can prove it by induction, you can compute it by recursion. They’re the same thing.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -335,11 +375,11 @@
 </section>
 <section id="visualizing-the-sum" class="slide level2">
 <h2>Visualizing the Sum</h2>
-<div id="190d0d75" class="cell" data-execution_count="1">
+<div id="f4d7615d" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03_wed_recursion_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="425" height="469"></p>
+<p><img data-src="03_wed_recursion_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="617" height="661"></p>
 </figure>
 </div>
 </div>
@@ -347,11 +387,11 @@
 </section>
 <section id="the-recursive-structure-peel-bottom-row" class="slide level2">
 <h2>The Recursive Structure: Peel Bottom Row</h2>
-<div id="66637b4e" class="cell" data-execution_count="2">
+<div id="d4123606" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03_wed_recursion_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="425" height="469"></p>
+<p><img data-src="03_wed_recursion_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="617" height="661"></p>
 </figure>
 </div>
 </div>
@@ -369,6 +409,20 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
+<section id="peel-two-rows" class="slide level2">
+<h2>Peel Two Rows?</h2>
+<div id="4403453f" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="03_wed_recursion_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="617" height="661"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="math display">\[f(n) = f(n-2) + (n-1) + n\]</span></p>
+<p>We can peel off any number of rows!</p>
 </section></section>
 <section>
 <section id="from-math-to-code" class="title-slide slide level1 center">
@@ -439,11 +493,11 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
 <section id="same-triangle-different-view" class="slide level2">
 <h2>Same Triangle, Different View</h2>
 <p>What if we split the triangle differently?</p>
-<div id="e1b80f46" class="cell" data-execution_count="3">
+<div id="a2aeb2fd" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03_wed_recursion_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="543" height="566"></p>
+<p><img data-src="03_wed_recursion_files/figure-revealjs/cell-5-output-1.png" class="quarto-figure quarto-figure-center" width="543" height="566"></p>
 </figure>
 </div>
 </div>
@@ -471,6 +525,58 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
+<section id="split-anywhere" class="slide level2">
+<h2>Split Anywhere!</h2>
+<div id="6c0c6c55" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="03_wed_recursion_files/figure-revealjs/cell-6-output-1.png" class="quarto-figure quarto-figure-center" width="639" height="662"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-general-decomposition" class="slide level2">
+<h2>The General Decomposition</h2>
+<p>For any <span class="math inline">\(0 &lt; k &lt; n\)</span>:</p>
+<p><span class="math display">\[f(n) = f(n-k) + k \cdot (n-k) + f(k)\]</span></p>
+<ul>
+<li><strong>Blue</strong>: Top triangle with <span class="math inline">\(n-k\)</span> rows → <span class="math inline">\(f(n-k)\)</span> dots</li>
+<li><strong>Green</strong>: Rectangle of size <span class="math inline">\(k \times (n-k)\)</span> → <span class="math inline">\(k(n-k)\)</span> dots</li>
+<li><strong>Red</strong>: Bottom-right triangle with <span class="math inline">\(k\)</span> rows → <span class="math inline">\(f(k)\)</span> dots</li>
+</ul>
+<div class="fragment">
+<p><strong>The insight</strong>: There are infinitely many valid decompositions!</p>
+</div>
+</section>
+<section id="but-wait-base-cases" class="slide level2">
+<h2>But Wait… Base Cases?</h2>
+<p>With <span class="math inline">\(f(n) = f(n-k) + k(n-k) + f(k)\)</span> and <span class="math inline">\(k = 5\)</span>:</p>
+<ul>
+<li><span class="math inline">\(f(8) = f(3) + 5 \cdot 3 + f(5)\)</span></li>
+<li><span class="math inline">\(f(5) = f(0) + 5 \cdot 0 + f(5)\)</span> … infinite loop!</li>
+</ul>
+<div class="fragment">
+<p>We need base cases for <span class="math inline">\(f(0), f(1), \ldots, f(k)\)</span>.</p>
+</div>
+<div class="fragment">
+<p><strong>Lesson</strong>: Your base cases must cover everything your recursion can reach.</p>
+<aside class="notes">
+<p>“The quadrant decomposition (k = n/2) only needs f(0) and f(1). This k=5 split needs base cases for 0 through 5. More base cases = more work to verify.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
 </section>
 <section id="the-divide-and-conquer-code" class="slide level2">
 <h2>The Divide-and-Conquer Code</h2>
@@ -607,15 +713,19 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHN5c1xuc3lzLnNl
 </thead>
 <tbody>
 <tr class="odd">
-<td>Base case</td>
-<td><code>if n == 0: return ...</code></td>
+<td>Consider arbitrary <span class="math inline">\(n\)</span></td>
+<td><code>def f(n):</code></td>
 </tr>
 <tr class="even">
-<td>Inductive hypothesis</td>
-<td>Recursive call</td>
+<td>Case <span class="math inline">\(n = 0\)</span></td>
+<td><code>if n == 0: return ...</code></td>
 </tr>
 <tr class="odd">
-<td>Inductive step</td>
+<td>Case <span class="math inline">\(n &gt; 0\)</span>: assume for <span class="math inline">\(j &lt; n\)</span></td>
+<td>Trust recursive call</td>
+</tr>
+<tr class="even">
+<td>Prove for <span class="math inline">\(n\)</span></td>
 <td>Combine result with current</td>
 </tr>
 </tbody>

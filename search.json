@@ -1015,7 +1015,21 @@
     "href": "slides/03_wed_recursion.html#the-sum",
     "title": "Introduction to Recursion",
     "section": "The Sum",
-    "text": "The Sum\n\\[1 + 2 + 3 + \\ldots + n = \\sum_{k=1}^{n} k\\]\nFor \\(n = 13\\):\n\\[1 + 2 + 3 + \\ldots + 13 = 91 \\text{ gifts}\\]\n\n“You might remember the formula n(n+1)/2. But let’s think about this differently.”"
+    "text": "The Sum\n\\[1 + 2 + 3 + \\ldots + n = \\sum_{k=1}^{n} k\\]\nFor \\(n = 13\\):\n\\[1 + 2 + 3 + \\ldots + 13 = 91 \\text{ gifts}\\]\nYou’ve seen the closed form: \\(\\frac{n(n+1)}{2}\\)"
+  },
+  {
+    "objectID": "slides/03_wed_recursion.html#proving-the-closed-form",
+    "href": "slides/03_wed_recursion.html#proving-the-closed-form",
+    "title": "Introduction to Recursion",
+    "section": "Proving the Closed Form",
+    "text": "Proving the Closed Form\nClaim: \\(f(n) = \\frac{n(n+1)}{2}\\) where \\(f(n) = 1 + 2 + \\ldots + n\\)\nWe’ll prove this by induction."
+  },
+  {
+    "objectID": "slides/03_wed_recursion.html#proof-by-induction",
+    "href": "slides/03_wed_recursion.html#proof-by-induction",
+    "title": "Introduction to Recursion",
+    "section": "Proof by Induction",
+    "text": "Proof by Induction\nConsider an arbitrary \\(n &gt;= 0\\). Then consider the following cases:\nCase 1, \\(n = 0\\) (base case): \\(f(0) = 0 = \\frac{0 \\cdot 1}{2}\\) ✓\nCase 2, \\(n&gt;0\\) (inductive case):\nAssume for any \\(0 &lt; j &lt; n\\), \\(f(j) = \\frac{j(j+1)}{2}\\) (Inductive Hypothesis)\n\\(f(n) = f(n-1) + n\\) by definition. \\(f(n-1) = \\frac{(n-1)(n)}{2}\\) by IH, since \\(n-1 &lt; n\\). \\(f(n) = \\frac{(n-1)(n)}{2} + n = \\frac{(n)(n+1)}{2}\\) by algebra. ✓\n\n“Notice: the inductive step assumes f(k) works and uses it. Just like recursion!”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#a-different-way-to-think",
@@ -1032,11 +1046,11 @@
     "text": "The Recursive Definition\n\\[f(n) = \\begin{cases} 0 & \\text{if } n = 0 \\\\ f(n-1) + n & \\text{if } n &gt; 0 \\end{cases}\\]\nBase case: \\(f(0) = 0\\) (zero days = zero gifts)\nRecursive case: \\(f(n) = f(n-1) + n\\)\n\n“This is a recursive definition. The function is defined in terms of itself.”"
   },
   {
-    "objectID": "slides/03_wed_recursion.html#unrolling-the-definition",
-    "href": "slides/03_wed_recursion.html#unrolling-the-definition",
+    "objectID": "slides/03_wed_recursion.html#induction-recursion",
+    "href": "slides/03_wed_recursion.html#induction-recursion",
     "title": "Introduction to Recursion",
-    "section": "Unrolling the Definition",
-    "text": "Unrolling the Definition\n\\[f(4) = f(3) + 4\\] \\[= (f(2) + 3) + 4\\] \\[= ((f(1) + 2) + 3) + 4\\] \\[= (((f(0) + 1) + 2) + 3) + 4\\] \\[= (((0 + 1) + 2) + 3) + 4\\] \\[= 10\\]\n\n“Each step substitutes the definition until we hit the base case.”"
+    "section": "Induction = Recursion",
+    "text": "Induction = Recursion\n\n\n\nInduction\nRecursion\n\n\n\n\nConsider arbitrary \\(n \\geq 0\\)\ndef f(n):\n\n\nCase \\(n = 0\\): prove directly\nif n == 0: return 0\n\n\nCase \\(n &gt; 0\\): assume \\(P(j)\\) for \\(j &lt; n\\)\nTrust f(n-1) works\n\n\nProve \\(P(n)\\) using IH\nCompute f(n) using f(n-1)\n\n\n\nSame structure. Same reasoning.\n\n“If you can prove it by induction, you can compute it by recursion. They’re the same thing.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#visualizing-the-sum",
@@ -1051,6 +1065,13 @@
     "title": "Introduction to Recursion",
     "section": "The Recursive Structure: Peel Bottom Row",
     "text": "The Recursive Structure: Peel Bottom Row\n\n\n\n\n\n\n\n\n\n\n“The triangle with n rows = the triangle with n-1 rows + n more dots on the bottom.”"
+  },
+  {
+    "objectID": "slides/03_wed_recursion.html#peel-two-rows",
+    "href": "slides/03_wed_recursion.html#peel-two-rows",
+    "title": "Introduction to Recursion",
+    "section": "Peel Two Rows?",
+    "text": "Peel Two Rows?\n\n\n\n\n\n\n\n\n\n\\[f(n) = f(n-2) + (n-1) + n\\]\nWe can peel off any number of rows!"
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-recursive-code",
@@ -1086,6 +1107,27 @@
     "title": "Introduction to Recursion",
     "section": "The Quadrant Decomposition",
     "text": "The Quadrant Decomposition\nFor \\(n\\) rows (where \\(n\\) is even):\n\nBlue: Top triangle with \\(n/2\\) rows → \\(f(n/2)\\) dots\nRed: Bottom-right triangle with \\(n/2\\) rows → \\(f(n/2)\\) dots\nGreen: Rectangle of size \\((n/2) \\times (n/2)\\) → \\((n/2)^2\\) dots\n\n\\[f(n) = 2 \\cdot f(n/2) + (n/2)^2\\]\n\n“Same problem, different recursive structure!”"
+  },
+  {
+    "objectID": "slides/03_wed_recursion.html#split-anywhere",
+    "href": "slides/03_wed_recursion.html#split-anywhere",
+    "title": "Introduction to Recursion",
+    "section": "Split Anywhere!",
+    "text": "Split Anywhere!"
+  },
+  {
+    "objectID": "slides/03_wed_recursion.html#the-general-decomposition",
+    "href": "slides/03_wed_recursion.html#the-general-decomposition",
+    "title": "Introduction to Recursion",
+    "section": "The General Decomposition",
+    "text": "The General Decomposition\nFor any \\(0 &lt; k &lt; n\\):\n\\[f(n) = f(n-k) + k \\cdot (n-k) + f(k)\\]\n\nBlue: Top triangle with \\(n-k\\) rows → \\(f(n-k)\\) dots\nGreen: Rectangle of size \\(k \\times (n-k)\\) → \\(k(n-k)\\) dots\nRed: Bottom-right triangle with \\(k\\) rows → \\(f(k)\\) dots\n\n\nThe insight: There are infinitely many valid decompositions!"
+  },
+  {
+    "objectID": "slides/03_wed_recursion.html#but-wait-base-cases",
+    "href": "slides/03_wed_recursion.html#but-wait-base-cases",
+    "title": "Introduction to Recursion",
+    "section": "But Wait… Base Cases?",
+    "text": "But Wait… Base Cases?\nWith \\(f(n) = f(n-k) + k(n-k) + f(k)\\) and \\(k = 5\\):\n\n\\(f(8) = f(3) + 5 \\cdot 3 + f(5)\\)\n\\(f(5) = f(0) + 5 \\cdot 0 + f(5)\\) … infinite loop!\n\n\nWe need base cases for \\(f(0), f(1), \\ldots, f(k)\\).\n\n\nLesson: Your base cases must cover everything your recursion can reach.\n\n“The quadrant decomposition (k = n/2) only needs f(0) and f(1). This k=5 split needs base cases for 0 through 5. More base cases = more work to verify.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#the-divide-and-conquer-code",
@@ -1134,7 +1176,7 @@
     "href": "slides/03_wed_recursion.html#the-connection-to-induction",
     "title": "Introduction to Recursion",
     "section": "The Connection to Induction",
-    "text": "The Connection to Induction\nYou already know recursion from math:\n\n\n\nMath (Induction)\nCode (Recursion)\n\n\n\n\nBase case\nif n == 0: return ...\n\n\nInductive hypothesis\nRecursive call\n\n\nInductive step\nCombine result with current\n\n\n\n\n“If you can prove it by induction, you can compute it by recursion.”"
+    "text": "The Connection to Induction\nYou already know recursion from math:\n\n\n\nMath (Induction)\nCode (Recursion)\n\n\n\n\nConsider arbitrary \\(n\\)\ndef f(n):\n\n\nCase \\(n = 0\\)\nif n == 0: return ...\n\n\nCase \\(n &gt; 0\\): assume for \\(j &lt; n\\)\nTrust recursive call\n\n\nProve for \\(n\\)\nCombine result with current\n\n\n\n\n“If you can prove it by induction, you can compute it by recursion.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#whats-next",
