@@ -284,6 +284,516 @@
     "text": "Questions?"
   },
   {
+    "objectID": "slides/02_mon_hierarchy.html#announcements",
+    "href": "slides/02_mon_hierarchy.html#announcements",
+    "title": "The Hierarchy of Speed",
+    "section": "Announcements",
+    "text": "Announcements\n\nLabs begin this week!\n\nMonday 1-3pm or Tuesday 4-6pm"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#rules",
+    "href": "slides/02_mon_hierarchy.html#rules",
+    "title": "The Hierarchy of Speed",
+    "section": "Rules",
+    "text": "Rules\nFor \\(T(n)\\), the running time of an algorithm on input of size \\(n\\)…\n\nConstants don’t matter: \\(5n = O(n)\\)\nLower terms don’t matter: \\(n^2 + n = O(n^2)\\)\nLog base doesn’t matter: \\(log_2 n = O(log_{10}n)\\)\n\n\n“What’s the intuition for #3?”\nAll logs differ by a constant factor. log₂n = log₁₀n / log₁₀2"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#example-1",
+    "href": "slides/02_mon_hierarchy.html#example-1",
+    "title": "The Hierarchy of Speed",
+    "section": "Example 1",
+    "text": "Example 1\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n3\n7\n2\n9\n1\n8\n4\n6\n5\n2\n7\n3\n\n\n\n\nPython questions?\nWhat’s the worst-case running time?\n\n\nOne pass through the array. \\(\\Theta(n)\\), tight.\n“We’ll see this again later with pandas.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#example-2",
+    "href": "slides/02_mon_hierarchy.html#example-2",
+    "title": "The Hierarchy of Speed",
+    "section": "Example 2",
+    "text": "Example 2\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 17th element counted?\nWhat are the values of i and j for the 32nd element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet them trace: i=2, j=4 for 17th. i=5, j=1 for 32nd.\n“Predict for n = 8?” (64)\nDouble n → QUADRUPLE the work. \\(\\Theta(n^2)\\), tight."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#example-3",
+    "href": "slides/02_mon_hierarchy.html#example-3",
+    "title": "The Hierarchy of Speed",
+    "section": "Example 3",
+    "text": "Example 3\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 4th element counted?\nWhat are the values of i and j for the 12th element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\ni=2: j=0,1 (2 elements). i=3: j=0,1,2 (3 elements). So 4th is i=3, j=0.\n\\(0 + 1 + 2 + \\ldots + (n-1) = n(n-1)/2\\)\nStill \\(\\Theta(n^2)\\), tight! The triangle is half the square."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-two-pillars",
+    "href": "slides/02_mon_hierarchy.html#the-two-pillars",
+    "title": "The Hierarchy of Speed",
+    "section": "The Two Pillars",
+    "text": "The Two Pillars\n\nCorrectness — Does it work?\nEfficiency — How fast?\n\n\n“Last week: efficiency. This week: we add correctness.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-analysis-recipe",
+    "href": "slides/02_mon_hierarchy.html#the-analysis-recipe",
+    "title": "The Hierarchy of Speed",
+    "section": "The Analysis Recipe",
+    "text": "The Analysis Recipe\n\nEstablish the case — usually worst case\nAnalyze the function — count operations for that case\nState the bound:\n\n\\(\\Theta\\) (or “tight \\(O\\)”) if you know it’s exact\n\\(O\\) if you’re only claiming an upper bound\n\\(\\Omega\\) if you’re only claiming a lower bound\n\n\n\n“When we say ‘binary search is \\(O(\\log n)\\)’ we mean it’s tight — \\(\\Theta(\\log n)\\). We’re not hedging.”\n“First: which case? Then: what’s the function? Then: is it tight or just a bound?”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#big-o-is-a-set",
+    "href": "slides/02_mon_hierarchy.html#big-o-is-a-set",
+    "title": "The Hierarchy of Speed",
+    "section": "Big-\\(O\\) is a Set",
+    "text": "Big-\\(O\\) is a Set\n\\(O(g(n))\\) is the set of all functions \\(f(n)\\) satisfying the definition.\n\\[O(n) = \\{f(n) : \\exists c &gt; 0, n_0 \\geq 0 \\text{ such that } f(n) \\leq c \\cdot n \\text{ for all } n \\geq n_0\\}\\]\n\n“From discrete math: Big-O defines a SET of functions.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-ladder",
+    "href": "slides/02_mon_hierarchy.html#the-ladder",
+    "title": "The Hierarchy of Speed",
+    "section": "The Ladder",
+    "text": "The Ladder\n\\[O(1) \\subset O(\\log n) \\subset O(n) \\subset O(n \\log n) \\subset O(n^2) \\subset O(2^n)\\]\nEach class contains all the ones to its left.\n\n“Every \\(O(1)\\) function is also \\(O(n)\\), also \\(O(n^2)\\), etc.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
+    "href": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
+    "title": "The Hierarchy of Speed",
+    "section": "A Common Abuse of Notation",
+    "text": "A Common Abuse of Notation\nWe write: \\(\\quad 4n + 2 = O(n)\\)\nWe mean: \\(\\quad 4n + 2 \\in O(n)\\)\n\n“You’ll see this everywhere. Just remember: we’re really talking about set membership.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#true-or-false",
+    "href": "slides/02_mon_hierarchy.html#true-or-false",
+    "title": "The Hierarchy of Speed",
+    "section": "True or False?",
+    "text": "True or False?\n\n\\(3n + 2 \\in O(n)\\)\n\\(3n + 2 \\in O(n^2)\\)\n\\(n^2 \\in O(n)\\)\n\\(5 \\in O(1)\\)\n\\(5 \\in O(n)\\)\n\n\nT, T, F, T, T\n“If \\(f \\in O(g)\\) and \\(O(g) \\subset O(h)\\), then \\(f \\in O(h)\\).”\n“Let’s see what these mean at scale.”"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#announcements",
+    "href": "slides/01_wed_runtime.html#announcements",
+    "title": "Analysis",
+    "section": "Announcements",
+    "text": "Announcements\n\nLabs begin next week."
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#algorithm-analysis",
+    "href": "slides/01_wed_runtime.html#algorithm-analysis",
+    "title": "Analysis",
+    "section": "Algorithm Analysis",
+    "text": "Algorithm Analysis\n\nCorrectness — Does it work?\nEfficiency — How long? How much memory?\n\n\n“This week: efficiency. Next week: proving correctness.”"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#the-shazam-lesson-fin",
+    "href": "slides/01_wed_runtime.html#the-shazam-lesson-fin",
+    "title": "Analysis",
+    "section": "The Shazam Lesson – Fin",
+    "text": "The Shazam Lesson – Fin\nNaive search: “Linear” — too slow\nHash lookup: “Constant” — instant\n\n\n\nDatabase size\nLinear search\nHash lookup\n\n\n\n\n1,000\n1 sec\n0.001 sec\n\n\n1,000,000\n1000 sec\n0.001 sec\n\n\n100,000,000\n27 hours\n0.001 sec\n\n\n\n\n“Today: How do we figure out which is which?”"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#how-does-shazam-actually-work",
+    "href": "slides/01_wed_runtime.html#how-does-shazam-actually-work",
+    "title": "Analysis",
+    "section": "How does Shazam actually work?",
+    "text": "How does Shazam actually work?\n\n\n\n\n\n\n\nshazam\n\n\ncluster_fingerprint\n\nAudio Fingerprinting\n\n\n\naudio\n\n3 sec audio\n\n\n\nspec\n\nSpectrogram\n\n\n\naudio-&gt;spec\n\n\n\n\n\nland\n\nLandmarks\n\n\n\nspec-&gt;land\n\n\n\n\n\nhash\n\nHash\n\n\n\nland-&gt;hash\n\n\n\n\n\ntable\n\n\nHash Table\nLookup\n\n\n\nhash-&gt;table\n\n\n\n\n\nresult\n\nSong Found!\n\n\n\ntable-&gt;result\n\n\n\n\n\n\n\n\n\n\n\n“Hash table lookup doesn’t depend on the size of the database.”\nO(1) — constant time.\n“We’ll learn how in Week 5.”"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#speed-matters-in-surprising-places",
+    "href": "slides/01_wed_runtime.html#speed-matters-in-surprising-places",
+    "title": "Analysis",
+    "section": "Speed matters in surprising places",
+    "text": "Speed matters in surprising places\nIt’s not just Shazam!\n\n\nYouTube\n800 million videos\nEvery search: &lt; 0.5 sec\nLinear search would take hours\n\nGenomics\nHuman genome: 3 billion base pairs\nFinding a gene sequence\nNaive: days → Real tools: seconds\n\nPandemic response\n330 million people\nContact tracing within 2 connections\nRelationships grow exponentially\n\n\n\nAs data grows, bad algorithms become impossible."
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#measuring-the-value-of-algorithms",
+    "href": "slides/01_wed_runtime.html#measuring-the-value-of-algorithms",
+    "title": "Analysis",
+    "section": "Measuring the value of algorithms",
+    "text": "Measuring the value of algorithms\nSuppose you have two correct algorithms that solve the same problem — which is better?\n\nUse different metrics — time, space most common\nExpress ________ as a (positive) function:\n\n \n \n\nForm of function depends on structure of the algorithm:\n\n\n“time” and “space” are the two main metrics.\n“Express WHAT as a function?” → Let them say “running time” or “work”\nWe’ll write T(n) — running time as a function of input size n."
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#intro-to-analysis",
+    "href": "slides/01_wed_runtime.html#intro-to-analysis",
+    "title": "Analysis",
+    "section": "Intro to Analysis",
+    "text": "Intro to Analysis\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n…\n99,999,999\n\n\n\n\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n…\n🎵\n\n\n\n\nDo you have any questions about the Python?\nHow long does it take to run (in seconds)?\n\n\n“Is this correct?” (Yes)\n“Is this efficient?” (Let’s see…)\n“How long does it take?”"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#what-might-determine-the-running-time",
+    "href": "slides/01_wed_runtime.html#what-might-determine-the-running-time",
+    "title": "Analysis",
+    "section": "What might determine the running time?",
+    "text": "What might determine the running time?\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n…\n99,999,999\n\n\n\n\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n…\n🎵\n\n\n\nWhat factors affect how long find_song_naive takes?\n\n\n\n\n\n\nThey’ll say: “It depends!”\n“What does it depend on?”\nLet them generate: size of database, where the song is, machine speed…\nGuide to: we care about SIZE. That’s the input to our algorithm."
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#discussion-results",
+    "href": "slides/01_wed_runtime.html#discussion-results",
+    "title": "Analysis",
+    "section": "Discussion results…",
+    "text": "Discussion results…\n\n\nMachine speed\nA faster computer runs the same code faster.\n\nBut that’s not about the algorithm.\n\n\nLocation of song\nAt the front? Quick!\nAt the end? Slow.\nNot there at all? Slowest.\n\nSize of database\n100 songs vs 100 million songs\n\nThis is the big one.\n\n\n\nWe want to characterize the algorithm, not the machine or our luck.\n\n“Which should we focus on for algorithm analysis?”\nMachine speed varies (not about the algorithm). Location varies (best case vs worst case). Size is the INPUT.\n“We parameterize by n.”\nwrite T(n) running time on input of size n.  T(n) is a function!"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#aside-for-cases",
+    "href": "slides/01_wed_runtime.html#aside-for-cases",
+    "title": "Analysis",
+    "section": "Aside for Cases",
+    "text": "Aside for Cases\n\n\n\n\n\n\n\nBest case: minimum running time over all inputs\nWorst case: maximum running time over all inputs\nAverage case: expected running time (needs probability)\n\n\n“The answer depends on the input!”\nBest case: 1 Worst case: n Average case: (1+2+…+n)/n = (n+1)/2 ≈ n/2\n“Which should we report?”\nwe will do worst case, almost always."
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#back-to-tn",
+    "href": "slides/01_wed_runtime.html#back-to-tn",
+    "title": "Analysis",
+    "section": "Back to \\(T(n)\\)",
+    "text": "Back to \\(T(n)\\)\n\n\n\n\n\n\n\nWhat’s a good name?\nWhat’s a good expression for running time? \\(T(n) =\\)\n\n\nWhat construct do we have that characterizes functions in a way that ignores constants?\n\n“Does the 2 matter?”\nAt n = 1,000,000: 2n ≈ n. Constants are noise.\nThe SHAPE matters: linear.\nwhat construct do we have that characterizes functions in a way that ignores constants?"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#the-definition-of-big-o",
+    "href": "slides/01_wed_runtime.html#the-definition-of-big-o",
+    "title": "Analysis",
+    "section": "The Definition of Big-O",
+    "text": "The Definition of Big-O\n\\(f(n)\\) is \\(O(g(n))\\) if there exist constants \\(c &gt; 0\\) and \\(n_0 \\geq 0\\) such that:\n\\[f(n) \\leq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\n\n\n\n\n\n\n\n\n\n“In words: f grows no faster than g, once n is big enough.”"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#other-definitions",
+    "href": "slides/01_wed_runtime.html#other-definitions",
+    "title": "Analysis",
+    "section": "Other Definitions",
+    "text": "Other Definitions\n\\(f(n)\\) is \\(O(g(n))\\) if there exist constants \\(c &gt; 0\\) and \\(n_0 \\geq 0\\) such that:\n\\[f(n) \\leq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\\(f(n)\\) is \\(\\Omega(g(n))\\) if there exist constants \\(c &gt; 0\\) and \\(n_0 \\geq 0\\) such that:\n\\[f(n) \\geq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\\(f(n)\\) is \\(\\Theta(g(n))\\) iff it is both \\(O(g(n))\\) and \\(\\Omega(g(n))\\).\n\n“We mostly use O, though we usually mean Θ.”"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#example-1",
+    "href": "slides/01_wed_runtime.html#example-1",
+    "title": "Analysis",
+    "section": "Example 1",
+    "text": "Example 1\n\n\n\n\n\n\n\nPython questions?\nWhat’s the Big-O?\n\n\nOne pass through the array. \\(O(n)\\).\n“We’ll see this again Monday with pandas.”"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#example-2",
+    "href": "slides/01_wed_runtime.html#example-2",
+    "title": "Analysis",
+    "section": "Example 2",
+    "text": "Example 2\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 17th element counted?\nWhat are the values of i and j for the 32nd element counted?\nWhat’s the Big-O?\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet them trace: 16\n“Predict for n = 8?” (64)\nDouble n → QUADRUPLE the work. QUADRATIC. \\(O(n^2)\\)"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#example-3",
+    "href": "slides/01_wed_runtime.html#example-3",
+    "title": "Analysis",
+    "section": "Example 3",
+    "text": "Example 3\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 4th element counted?\nWhat are the values of i and j for the 12th element counted?\nWhat’s the Big-O?\n\n\n\n\n\n\n\n\n\n\n\n\n\ni=0: 0. i=1: 1. i=2: 2. i=3: 3. i=4: 4. Total: 10.\n\\(0 + 1 + 2 + \\ldots + (n-1) = \\frac{n(n-1)}{2}\\)\nStill quadratic! \\(O(n^2)\\)"
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#the-triangle-sum",
+    "href": "slides/01_wed_runtime.html#the-triangle-sum",
+    "title": "Analysis",
+    "section": "The Triangle Sum",
+    "text": "The Triangle Sum\n\\[1 + 2 + 3 + \\ldots + n = \\frac{n(n+1)}{2}\\]\n\n“This is \\(O(n^2)\\), not \\(O(n)\\).”\nWhenever you see “all pairs” — expect quadratic."
+  },
+  {
+    "objectID": "slides/01_wed_runtime.html#next-week",
+    "href": "slides/01_wed_runtime.html#next-week",
+    "title": "Analysis",
+    "section": "Next week",
+    "text": "Next week\nMore analysis"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "about.html#about",
+    "href": "about.html#about",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "LICENSE.html",
+    "href": "LICENSE.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "Attribution-ShareAlike 4.0 International\n=======================================================================\nCreative Commons Corporation (“Creative Commons”) is not a law firm and does not provide legal services or legal advice. Distribution of Creative Commons public licenses does not create a lawyer-client or other relationship. Creative Commons makes its licenses and related information available on an “as-is” basis. Creative Commons gives no warranties regarding its licenses, any material licensed under their terms and conditions, or any related information. Creative Commons disclaims all liability for damages resulting from their use to the fullest extent possible.\nUsing Creative Commons Public Licenses\nCreative Commons public licenses provide a standard set of terms and conditions that creators and other rights holders may use to share original works of authorship and other material subject to copyright and certain other rights specified in the public license below. The following considerations are for informational purposes only, are not exhaustive, and do not form part of our licenses.\n Considerations for licensors: Our public licenses are\n intended for use by those authorized to give the public\n permission to use material in ways otherwise restricted by\n copyright and certain other rights. Our licenses are\n irrevocable. Licensors should read and understand the terms\n and conditions of the license they choose before applying it.\n Licensors should also secure all rights necessary before\n applying our licenses so that the public can reuse the\n material as expected. Licensors should clearly mark any\n material not subject to the license. This includes other CC-\n licensed material, or material used under an exception or\n limitation to copyright. More considerations for licensors:\nwiki.creativecommons.org/Considerations_for_licensors\n\n Considerations for the public: By using one of our public\n licenses, a licensor grants the public permission to use the\n licensed material under specified terms and conditions. If\n the licensor's permission is not necessary for any reason--for\n example, because of any applicable exception or limitation to\n copyright--then that use is not regulated by the license. Our\n licenses grant only permissions under copyright and certain\n other rights that a licensor has authority to grant. Use of\n the licensed material may still be restricted for other\n reasons, including because others have copyright or other\n rights in the material. A licensor may make special requests,\n such as asking that all changes be marked or described.\n Although not required by our licenses, you are encouraged to\n respect those requests where reasonable. More_considerations\n for the public:\nwiki.creativecommons.org/Considerations_for_licensees\n=======================================================================\nCreative Commons Attribution-ShareAlike 4.0 International Public License\nBy exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution-ShareAlike 4.0 International Public License (“Public License”). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.\nSection 1 – Definitions.\n\nAdapted Material means material subject to Copyright and Similar Rights that is derived from or based upon the Licensed Material and in which the Licensed Material is translated, altered, arranged, transformed, or otherwise modified in a manner requiring permission under the Copyright and Similar Rights held by the Licensor. For purposes of this Public License, where the Licensed Material is a musical work, performance, or sound recording, Adapted Material is always produced where the Licensed Material is synched in timed relation with a moving image.\nAdapter’s License means the license You apply to Your Copyright and Similar Rights in Your contributions to Adapted Material in accordance with the terms and conditions of this Public License.\nBY-SA Compatible License means a license listed at creativecommons.org/compatiblelicenses, approved by Creative Commons as essentially the equivalent of this Public License.\nCopyright and Similar Rights means copyright and/or similar rights closely related to copyright including, without limitation, performance, broadcast, sound recording, and Sui Generis Database Rights, without regard to how the rights are labeled or categorized. For purposes of this Public License, the rights specified in Section 2(b)(1)-(2) are not Copyright and Similar Rights.\nEffective Technological Measures means those measures that, in the absence of proper authority, may not be circumvented under laws fulfilling obligations under Article 11 of the WIPO Copyright Treaty adopted on December 20, 1996, and/or similar international agreements.\nExceptions and Limitations means fair use, fair dealing, and/or any other exception or limitation to Copyright and Similar Rights that applies to Your use of the Licensed Material.\nLicense Elements means the license attributes listed in the name of a Creative Commons Public License. The License Elements of this Public License are Attribution and ShareAlike.\nLicensed Material means the artistic or literary work, database, or other material to which the Licensor applied this Public License.\nLicensed Rights means the rights granted to You subject to the terms and conditions of this Public License, which are limited to all Copyright and Similar Rights that apply to Your use of the Licensed Material and that the Licensor has authority to license.\nLicensor means the individual(s) or entity(ies) granting rights under this Public License.\nShare means to provide material to the public by any means or process that requires permission under the Licensed Rights, such as reproduction, public display, public performance, distribution, dissemination, communication, or importation, and to make material available to the public including in ways that members of the public may access the material from a place and at a time individually chosen by them.\nSui Generis Database Rights means rights other than copyright resulting from Directive 96/9/EC of the European Parliament and of the Council of 11 March 1996 on the legal protection of databases, as amended and/or succeeded, as well as other essentially equivalent rights anywhere in the world.\nYou means the individual or entity exercising the Licensed Rights under this Public License. Your has a corresponding meaning.\n\nSection 2 – Scope.\n\nLicense grant.\n\nSubject to the terms and conditions of this Public License, the Licensor hereby grants You a worldwide, royalty-free, non-sublicensable, non-exclusive, irrevocable license to exercise the Licensed Rights in the Licensed Material to:\n\nreproduce and Share the Licensed Material, in whole or in part; and\nproduce, reproduce, and Share Adapted Material.\n\nExceptions and Limitations. For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this Public License does not apply, and You do not need to comply with its terms and conditions.\nTerm. The term of this Public License is specified in Section 6(a).\nMedia and formats; technical modifications allowed. The Licensor authorizes You to exercise the Licensed Rights in all media and formats whether now known or hereafter created, and to make technical modifications necessary to do so. The Licensor waives and/or agrees not to assert any right or authority to forbid You from making technical modifications necessary to exercise the Licensed Rights, including technical modifications necessary to circumvent Effective Technological Measures. For purposes of this Public License, simply making modifications authorized by this Section 2(a)\n\nnever produces Adapted Material.\n\nDownstream recipients.\n\nOffer from the Licensor – Licensed Material. Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.\nAdditional offer from the Licensor – Adapted Material. Every recipient of Adapted Material from You automatically receives an offer from the Licensor to exercise the Licensed Rights in the Adapted Material under the conditions of the Adapter’s License You apply.\nNo downstream restrictions. You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.\n\nNo endorsement. Nothing in this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided in Section 3(a)(1)(A)(i).\n\nOther rights.\n\nMoral rights, such as the right of integrity, are not licensed under this Public License, nor are publicity, privacy, and/or other similar personality rights; however, to the extent possible, the Licensor waives and/or agrees not to assert any such rights held by the Licensor to the limited extent necessary to allow You to exercise the Licensed Rights, but not otherwise.\nPatent and trademark rights are not licensed under this Public License.\nTo the extent possible, the Licensor waives any right to collect royalties from You for the exercise of the Licensed Rights, whether directly or through a collecting society under any voluntary or waivable statutory or compulsory licensing scheme. In all other cases the Licensor expressly reserves any right to collect such royalties.\n\n\nSection 3 – License Conditions.\nYour exercise of the Licensed Rights is expressly made subject to the following conditions.\n\nAttribution.\n\nIf You Share the Licensed Material (including in modified form), You must:\n\nretain the following if it is supplied by the Licensor with the Licensed Material:\n\nidentification of the creator(s) of the Licensed Material and any others designated to receive attribution, in any reasonable manner requested by the Licensor (including by pseudonym if designated);\na copyright notice;\na notice that refers to this Public License;\na notice that refers to the disclaimer of warranties;\na URI or hyperlink to the Licensed Material to the extent reasonably practicable;\n\nindicate if You modified the Licensed Material and retain an indication of any previous modifications; and\nindicate the Licensed Material is licensed under this Public License, and include the text of, or the URI or hyperlink to, this Public License.\n\nYou may satisfy the conditions in Section 3(a)(1) in any reasonable manner based on the medium, means, and context in which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI or hyperlink to a resource that includes the required information.\nIf requested by the Licensor, You must remove any of the information required by Section 3(a)(1)(A) to the extent reasonably practicable.\n\nShareAlike.\nIn addition to the conditions in Section 3(a), if You Share Adapted Material You produce, the following conditions also apply.\n\nThe Adapter’s License You apply must be a Creative Commons license with the same License Elements, this version or later, or a BY-SA Compatible License.\nYou must include the text of, or the URI or hyperlink to, the Adapter’s License You apply. You may satisfy this condition in any reasonable manner based on the medium, means, and context in which You Share Adapted Material.\nYou may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, Adapted Material that restrict exercise of the rights granted under the Adapter’s License You apply.\n\n\nSection 4 – Sui Generis Database Rights.\nWhere the Licensed Rights include Sui Generis Database Rights that apply to Your use of the Licensed Material:\n\nfor the avoidance of doubt, Section 2(a)(1) grants You the right to extract, reuse, reproduce, and Share all or a substantial portion of the contents of the database;\nif You include all or a substantial portion of the database contents in a database in which You have Sui Generis Database Rights, then the database in which You have Sui Generis Database Rights (but not its individual contents) is Adapted Material,\nincluding for purposes of Section 3(b); and\nYou must comply with the conditions in Section 3(a) if You Share all or a substantial portion of the contents of the database.\n\nFor the avoidance of doubt, this Section 4 supplements and does not replace Your obligations under this Public License where the Licensed Rights include other Copyright and Similar Rights.\nSection 5 – Disclaimer of Warranties and Limitation of Liability.\n\nUNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.\nTO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.\nThe disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.\n\nSection 6 – Term and Termination.\n\nThis Public License applies for the term of the Copyright and Similar Rights licensed here. However, if You fail to comply with this Public License, then Your rights under this Public License terminate automatically.\nWhere Your right to use the Licensed Material has terminated under Section 6(a), it reinstates:\n\nautomatically as of the date the violation is cured, provided it is cured within 30 days of Your discovery of the violation; or\nupon express reinstatement by the Licensor.\n\nFor the avoidance of doubt, this Section 6(b) does not affect any right the Licensor may have to seek remedies for Your violations of this Public License.\nFor the avoidance of doubt, the Licensor may also offer the Licensed Material under separate terms or conditions or stop distributing the Licensed Material at any time; however, doing so will not terminate this Public License.\nSections 1, 5, 6, 7, and 8 survive termination of this Public License.\n\nSection 7 – Other Terms and Conditions.\n\nThe Licensor shall not be bound by any additional or different terms or conditions communicated by You unless expressly agreed.\nAny arrangements, understandings, or agreements regarding the Licensed Material not stated herein are separate from and independent of the terms and conditions of this Public License.\n\nSection 8 – Interpretation.\n\nFor the avoidance of doubt, this Public License does not, and shall not be interpreted to, reduce, limit, restrict, or impose conditions on any use of the Licensed Material that could lawfully be made without permission under this Public License.\nTo the extent possible, if any provision of this Public License is deemed unenforceable, it shall be automatically reformed to the minimum extent necessary to make it enforceable. If the provision cannot be reformed, it shall be severed from this Public License without affecting the enforceability of the remaining terms and conditions.\nNo term or condition of this Public License will be waived and no failure to comply consented to unless expressly agreed to by the Licensor.\nNothing in this Public License constitutes or may be interpreted as a limitation upon, or waiver of, any privileges and immunities that apply to the Licensor or You, including from the legal processes of any jurisdiction or authority.\n\n=======================================================================\nCreative Commons is not a party to its public licenses. Notwithstanding, Creative Commons may elect to apply one of its public licenses to material it publishes and in those instances will be considered the “Licensor.” The text of the Creative Commons public licenses is dedicated to the public domain under the CC0 Public Domain Dedication. Except for the limited purpose of indicating that material is shared under a Creative Commons public license or as otherwise permitted by the Creative Commons policies published at creativecommons.org/policies, Creative Commons does not authorize the use of the trademark “Creative Commons” or any other trademark or logo of Creative Commons without its prior written consent including, without limitation, in connection with any unauthorized modifications to any of its public licenses or any other arrangements, understandings, or agreements concerning use of licensed material. For the avoidance of doubt, this paragraph does not form part of the public licenses.\nCreative Commons may be contacted at creativecommons.org."
+  },
+  {
+    "objectID": "labs/02_create-website.html",
+    "href": "labs/02_create-website.html",
+    "title": " Lab: Create your own website!",
+    "section": "",
+    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
+  },
+  {
+    "objectID": "labs/02_create-website.html#basic-structure-of-quarto-document",
+    "href": "labs/02_create-website.html#basic-structure-of-quarto-document",
+    "title": " Lab: Create your own website!",
+    "section": "",
+    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
+  },
+  {
+    "objectID": "labs/02_create-website.html#steps",
+    "href": "labs/02_create-website.html#steps",
+    "title": " Lab: Create your own website!",
+    "section": " Steps",
+    "text": "Steps\n\nOpen your workspace: us.prairielearn.com/pl/course_instance/205477/assessment/2633615.\nCreate index.qmd.\nClick the “Render” button on top.\nDownload the output directory _site.\nOpen Netlify Drop: app.netlify.com/drop.\nDrag and drop the downloaded _site onto Netlify Drop.\nPost the link to your website in the comments below."
+  },
+  {
+    "objectID": "labs/02_create-website.html#resources",
+    "href": "labs/02_create-website.html#resources",
+    "title": " Lab: Create your own website!",
+    "section": " Resources",
+    "text": "Resources\n\nDaring Fireball: Markdown\nInteractive Commonmark Markdown tutorial\nQuarto documentation\nGet started with Quarto Workshop including the material and this video:"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "index.html#weekly-announcement",
+    "href": "index.html#weekly-announcement",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "Weekly announcement",
+    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\nHW3",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "posts/00_welcome/index.html",
+    "href": "posts/00_welcome/index.html",
+    "title": "Welcome to DSCI 221!",
+    "section": "",
+    "text": "Welcome to DSCI 221: Data Structures and Algorithms for Data Science!\nIn this course, we’ll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what’s the cheapest flight to Tokyo?), you’ll develop the algorithmic thinking that separates good programmers from great ones.\nGetting started:\n\nRead the syllabus for course policies and requirements\nCheck the schedule on the home page to see what’s coming up\nCome to class ready to think about puzzles!\n\nSee you in class!"
+  },
+  {
+    "objectID": "TODO.html",
+    "href": "TODO.html",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory\n\n\n\n\n\n\n\nSchedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\n\n\n\n\n\n\n\nCreate labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic\n\n\n\n\n\n\nSet up testing framework within marimo\nSet up autograder for PL programming assignments"
+  },
+  {
+    "objectID": "TODO.html#completed-setup-reference-for-future-terms",
+    "href": "TODO.html#completed-setup-reference-for-future-terms",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory"
+  },
+  {
+    "objectID": "TODO.html#course-setup-canvasinfrastructure",
+    "href": "TODO.html#course-setup-canvasinfrastructure",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Schedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)"
+  },
+  {
+    "objectID": "TODO.html#assessments",
+    "href": "TODO.html#assessments",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Create labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic"
+  },
+  {
+    "objectID": "TODO.html#technical-infrastructure",
+    "href": "TODO.html#technical-infrastructure",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Set up testing framework within marimo\nSet up autograder for PL programming assignments"
+  },
+  {
+    "objectID": "setup.html",
+    "href": "setup.html",
+    "title": "Setup: Tech stack",
+    "section": "",
+    "text": "As with any computer science or data science course, several tools and software packages are needed for this course. These tools are not used by the typical consumer, so most Windows or macOS installations will not include them. Even on machines which do include them (such as many Linux distributions), they may still need some configuration. Below you will find guides to install the tech stack for DSCI 221, with different guides for different operating systems. A tech stack is the complete set of tools and technologies needed to accomplish a particular task; in this case, it is the various programming and data analytics that we will explore in DSCI 221.\nAs you go through the install guides, remember that perhaps the two most important things you will learn in this course is how to troubleshoot things and achieve familiarity and proficiency with your computer. Be patient, read things carefully, do not be afraid to try things, it’s unlikely you will do anything to irreversibly break your computer! Almost everything you do (you’re on your own if you decide to take a hammer to your laptop!) can be undone, don’t be afraid to ask your peers, TAs, and the instructor on Giscus below (you will need to set up an GitHub account first).\nThis is an exciting time for you as you begin your Software Development journey!",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "setup.html#hardware",
+    "href": "setup.html#hardware",
+    "title": "Setup: Tech stack",
+    "section": "Hardware",
+    "text": "Hardware\nBefore starting, ensure that your laptop meets the minimum requirements:\n\nCan connect to networks via a wireless connection.\nHas at least 25 GB disk space available.\nHas at least 4 GB of RAM (more is recommended).\nUses a 64-bit CPU.\nIs at most 6 years old at the start of the course (4 years old or newer is recommended).\nStudent user has full administrative access to the computer.\n\n\n\n\n\n\n\nImportant\n\n\n\nIf your computer does not meet any of the requirements above, please don’t just drop the course!! Let me know first and we can discuss alternate possibilities so you can still take the course.",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "setup.html#software",
+    "href": "setup.html#software",
+    "title": "Setup: Tech stack",
+    "section": "Software",
+    "text": "Software\n\n\n\n\n\n\nTip\n\n\n\nThese installation notes assume you are starting with a fresh install, without any custom setups. Following the instructions below will help you install and configure the tech stack correctly in the same way for our course, enabling us to support you effectively and minimize setup issues and software conflicts.\n\n\n\nWindowsmacOS\n\n\n In all the sections below, if you are presented with the choice to download either a 64-bit (also called x64) or a 32-bit (also called x86) version of the application always choose the 64-bit version.\n\n\nIn all the sections below, if you are presented with the choice to download either a 64-bit (also called x64) or a 32-bit (also called x86) version of the application always choose the 64-bit version. If you purchased a Mac anytime in the last few years, chances are you have an “M1/M2/M3/M4”… Mac, also known as “Apple Silicon”, and “arm64”. When given the option, you should choose to download the “arm64”/Apple Silicon or the “Universal versions—if that choice doesn’t exist, then you can choose the”x86” version which will run in “emulated mode”, which will result in a slight performance penalty.\n\n\n\n\n\nOperating system (OS)\nWe strongly suggest to run the latest version of the operating system (OS) available for your laptop.\n\n\n\n\n\n\nWarning\n\n\n\nIf you update or upgrade your OS you do so on your own risk!\n\n\nIn general, there are many good reasons to update your OS. Some of the software tools or their functionality used in our tutorials will only work on more recent OS versions. Updating your OS will also ensure that you have the latest security updates installed and help prevent unauthorized access to your computer.\nThere a two main reasons that would prevent you from updating your OS:\n\nYour hardware would not support the updated OS.\nSome of your software you depend on might not work on a newer OS.\n\n\nWindowsmacOS\n\n\nThe latest version of Windows 11 available is 24H2 (build 26100.6584). See here on how to update your Windows 11 machine to the latest version. If you do not own Windows 11, currently enrolled UBC students with a valid CWL account qualify for one license of Windows 11 Education.\n\n\nThe latest version of macOS is Tahoe 16.0. Check your current version of macOS. If you do not have the latest version, follow the upgrade instructions on the Apple support page.\nIf you cannot upgrade to the latest version, follow these instructions to find the system requirements and upgrade to latest versions available to you. If you need to maintain 32-bit compatibility for any of your software, then upgrade to no higher than macOS 10.14 Mojave.\n\n\n\n\n\nTerminal\nA terminal program allows you to interact with many different programs using a command line interface. Instead of using graphical elements like in a graphical user interface, you type in commands describing what program you want to use and how you want to use it.\n\nWindowsmacOS\n\n\nThe terminal app Terminal comes preinstalled with Windows. Activate the Windows Start menu, start typing “terminal” and select the Terminal app by pressing EnterEnter.\n\n\nThe terminal app Terminal comes preinstalled with macOS. Activate Spotlight with Command-SpaceCommand-Space, start typing “terminal” and select the Terminal app by pressing EnterEnter.\n\n\n\nYou will need to open the terminal several times in these instructions to install other programs.\n\n\nPackage manager\nA package manager is a program allowing you to install and update programs on your computer, similar to the Microsoft Store on Windows or the App Store on macOS. The main difference of a package manager to these programs is that you use them with a command line interface running in a terminal instead of a graphical user interface.\n\nWindowsmacOS\n\n\nIf you have at least Windows 10 version 1809 (build 17763) or later installed on your machine, you will already have the package manager WinGet available to you. When you use WinGet for the first time, you will be asked to register the Windows Package Manager with the Microsoft Store.\n\n\n\n\n\n\nImportant\n\n\n\nIf you cannot update your Windows to a version that supports WinGet, please reach out to the teaching team.\n\n\n\nResources\n\nUse WinGet to install and manage applications\n\n\n\n\nWe will use one of the most popular package managers on macOS called Homebrew. Open your Terminal, and then enter the following command:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nYou will be asked to enter the password for your computer:\n==&gt; Checking for `sudo` access (which may request your password)...\nEnter your password (it is normal that the cursor will not move as you enter characters for a password) and hit EnterEnter.\nNext, the installation will install the XCode Command Line Tools:\nThe XCode Command Line Tools will be installed.\nA new window will open with the following prompt:\n\nThe “xcode-select” command requires the command line developer tools. Would you like to install the tools now?\nChoose Install to download and install the command line developer tools now.” Confirm by clicking on “Install”.\n\nAfterwards, back in the terminal, you will be informed what steps will be executed:\n==&gt; This script will install:\n/opt/homebrew/bin/brew\n/opt/homebrew/share/doc/homebrew\n/opt/homebrew/share/man/man1/brew.1\n/opt/homebrew/share/zsh/site-functions/_brew\n/opt/homebrew/etc/bash_completion.d/brew\n/opt/homebrew\n/etc/paths.d/homebrew\n\nPress RETURN/ENTER to continue or any other key to abort:\nConfirm with EnterEnter. When the installation is finished, you will be asked to run the following command in the terminal to add Homebrew to your PATH:\necho &gt;&gt; \"${HOME}/.zprofile\"\necho 'eval \"$(/opt/homebrew/bin/brew shellenv)\"' &gt;&gt; \"${HOME}/.zprofile\"\neval \"$(/opt/homebrew/bin/brew shellenv)\"\nNow test if Homebrew works:\nbrew --version\nYou should see the following:\nHomebrew 4.6.11\n\nResources\n\nHomebrew Documentation\n\n\n\n\n\n\n\nPython\n\nInstalling uv\nWe will be using Python for a large part of the course, and uv will be our Python package manager. Instead of installing Python separately on our machine, we will use uv to provision us with Python whenever we need to run it.\n\nWindowsmacOS\n\n\nIn the terminal, install uv with Winget:\nwinget install -e --id=astral-sh.uv\n\n\nIn the terminal install uv with Homebrew:\nbrew install uv\n\n\n\nTo check if uv installed successfully, type in the terminal:\nuv --version\nAnd you should see something like this\nuv 0.8.18 &lt;some-installer-specific-information&gt;\n\nResources\n\nInstallation | uv\n\n\n\n\nmarimo\nWe will be writing our code in a notebook app called marimo. marimo is itself a Python package, so we can use uv to install and run it. In particular, we will use the command uvx which will check if we have the latest version of marimo and everything else necessary to run it, even Python itself!\nuvx marimo --version\nAnd you should see:\n0.16.0\nEven better, try this:\nuvx marimo tutorial intro\nAnd your default browser should open a window showing marimo.\n\nFor now, let’s shut down marimo by clicking on the red x in the top right corner and then on the “Shutdown” button.\nNow you are ready to run Python code on your local machine!!!\n\nResources\n\nInstallation | marimo",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "setup.html#optional-software",
+    "href": "setup.html#optional-software",
+    "title": "Setup: Tech stack",
+    "section": "Optional software",
+    "text": "Optional software\nIf you are interested in using a very common software development tool and platform for version control, check out Git and GitHub. We also have two examples with Zoom or your web browser on how to install and update everyday software with a package manager.\n\nGit and GitHub\nWe will be using the command line version of Git.\n\nWindowsmacOS\n\n\nGit is installed as part of Git Bash. Open your terminal, and install Git Bash with\nwinget install -e --id Git.Git\nRestart your terminal.\n\n\nOpen your terminal, and install Git with:\nbrew install git\n\n\n\nIn the terminal, type the following to check the Git version:\ngit --version\nYou should see something like this if everything is working correctly:\ngit version 2.51.0\n\nGitHub.com account\nSign up for a free account at GitHub.com if you don’t have one already. Your GitHub.com username is important, so here some advice on picking a username and below an image on how to find it again.\n\n\n\nConfiguring Git user info\nNext, we need to configure Git by telling it your name and email. To do this, provide your name and GitHub email by typing into the terminal:\ngit config --global user.name \"&lt;your-name&gt;\"\ngit config --global user.email \"&lt;your-github-email&gt;\"\n\n\n\n\n\n\nNote\n\n\n\nTo ensure that you haven’t made a typo in any of the above, you can view your global Git configurations by either opening the configuration file in a text editor (e.g., via the command code ~/.gitconfig) or by typing git config --list --global. You can quit this view by just pressing the q key on your keyboard.\n\n\n\n\nCreate your GitHub “Personal Access Token”\nThis is a bit tricky, so please make sure you follow these directions carefully.\n\nStart creating a personal access token (PAT) on GitHub.com either by\n\nClicking this link: https://github.com/settings/tokens/new\nNavigating to your tokens by following these steps:\n\nLog in to GitHub.com\nClick your picture in the top right and select “Settings”\nClick on “Developer Settings”\nClick on “Personal access tokens” and then on “Tokens (classic)”\nClick “Generate new token”\n\n\nGive the token a name in the note field, for example, DSCI 221\nChoose for expiration “Custom” and set the date to the end of this term: 2026-04-10\nSet the scope of the token to the “repo” level (see image below):\n\n\n\nPersonal access token settings\n\n\nClick “Generate new token”\nCopy the token that is shown to you. It is essentially a password for apps on your computer (for example, Git) to enable them to take actions on GitHub.com for you (in this case, clone a private repository to your computer). Treat this password like any other of your other passwords, so don’t share your token with anyone.\nSave this token somewhere safe on your computer, such as a password manager. You will not be able to come back to this page to get your token. If you forget or lose a token, you can just delete that token on GitHub.com where you manage all existing tokens and create another one: https://github.com/settings/tokens\n\n\n\n\nClone your first repository on your computer\nOpen the terminal, and then run the following command:\ngit clone https://github.com/firasm/test.git\nHopefully, if things work, you should be able to see a new folder created at that location. We will be talking more about what exactly you did over the next week and a bit, don’t worry!\n\n\n\n\n\n\nTip\n\n\n\nIf after running the code above, you see the error message:\nfatal: destination path 'test' already exists and is not an empty directory. \nIt means that you already attempted a clone before, and there is already a directory called test where you are trying to clone this repository. You will first need to delete that directory to try again. Open an Explorer (Windows) or Finder (macOS) window on your computer, navigate to the directory, right click the test directory and delete it. Alternatively, from the command line you can try:\nrm -rf test\nwhich will “remove” (using the rm command) the directory called test. The- is to specify additional options: r means “recursively” for all the files in the directory, and f means “force” which means don’t ask me for confirmation after deleting each file and folder.\n\n\n\n\n\nZoom\nSo far, we have been using the package manager to install software development tools. We can use the package manager to install other everyday software making it easier to find the correct version for your hardware or update to the latest release. For example, you might attend office hours or a livestream using Zoom Workplace and you should install the Zoom client locally on your machine.\n\nWindowsmacOS\n\n\nIn your terminal, use WinGet to install Zoom:\nwinget install -e --id Zoom.Zoom\n\n\nIn your terminal, use Homebrew to install Zoom:\nbrew install --cask zoom\n\n\n\nIt is important that you have the most recent version of Zoom installed, as we will be using many of the features that are only available in more recent versions. The latest version of Zoom is 6.6.0 (64511). For a lot of software, there is an option to check for updates.\n\nA package manager can directly update any software you have installed with it.\n\nWindowsmacOS\n\n\nwinget upgrade -e --id Zoom.Zoom\n\n\nbrew upgrade --cask zoom\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nPlease note that if you have been relying on the “web version” of Zoom that works only in a browser, this will not work for this course! Please make sure to download the Zoom desktop client for your operating system to fully participate in the course.\n\n\n\n\nWeb browser\nYou are welcome to use most modern browsers that have a WebKit or Gecko backend. Safari (Mac only), Firefox, Vivaldi, Brave, Edge are all recommended. Google Chrome is not recommended because of the well-documented privacy and tracking issues with Google.\nOptional: try to install the browser also with the package manager! Use this website to find the install instruction for the browser of your choice:\n\nWindowsmacOS\n\n\nwinget.run | Finding winget packages made simple.\n\n\nHomebrew Formulae",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "setup.html#attribution",
+    "href": "setup.html#attribution",
+    "title": "Setup: Tech stack",
+    "section": "Attribution",
+    "text": "Attribution\nThese instructions have been adapted and remixed from the original version provided by the UBC-Vancouver MDS Install stack under a CC-BY-SA 4.0 license. They were originally written by Anmol Jawandha but have since been updated by Stephan Koenig, Firas Moosvi, Joel Ostblom, Tomas Beuzen, Rodolfo Lourenzutti, Tiffany Timbers, and others.\n\nHarvard CS109\nUBC STAT 545 licensed under the CC BY-NC 3.0.\nSoftware Carpentry\nOracle - How do I set or change the PATH system variable?\nNumerical Methods - Getting started\nEDUCE setup instructions",
+    "crumbs": [
+      "Resources",
+      "Setup"
+    ]
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#the-scene",
+    "href": "slides/03_mon_invariants.html#the-scene",
+    "title": "The Invariant Detective",
+    "section": "The Scene",
+    "text": "The Scene\nAn algorithm was running, but we paused it mid-execution.\nYour job: figure out what it was doing and where it stopped.\n\n“Think of this like a crime scene investigation. The clues are in the state.”"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#puzzle-1-find-maximum-1",
+    "href": "slides/03_mon_invariants.html#puzzle-1-find-maximum-1",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 1: Find Maximum",
+    "text": "Puzzle 1: Find Maximum\n\n\ndef mystery1(arr):\n    result = arr[0]\n    for i in range(1, len(arr)):\n        if arr[i] &gt; result:\n            result = arr[i]\n    return result\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n7\n3\n9\n2\n5\n1\n8\n\n\n\nVariables: result = 9\n\nQ1: What iteration is i about to start?\nQ2: What does result represent?\n\n“Pause and think. What value of i would give us result = 9?”"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#the-solution",
+    "href": "slides/03_mon_invariants.html#the-solution",
+    "title": "The Invariant Detective",
+    "section": "The Solution",
+    "text": "The Solution\n\n\n\n\n\n\n\n\n\n\ni = 3 (about to examine index 3)\nresult = 9 = maximum of arr[0:3] = maximum of [7, 3, 9]\n\nThe Invariant: At iteration \\(i\\), result holds the maximum of arr[0:i]."
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#why-this-works",
+    "href": "slides/03_mon_invariants.html#why-this-works",
+    "title": "The Invariant Detective",
+    "section": "Why This Works",
+    "text": "Why This Works\nThe invariant tells us:\n\nAt i = 1: result = max of arr[0:1] = max of [7] = 7 ✓\nAt i = 2: result = max of arr[0:2] = max of [7, 3] = 7 ✓\nAt i = 3: result = max of arr[0:3] = max of [7, 3, 9] = 9 ✓\n\nThe frozen state is consistent with the invariant at i = 3."
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#puzzle-2-counting-1",
+    "href": "slides/03_mon_invariants.html#puzzle-2-counting-1",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 2: Counting",
+    "text": "Puzzle 2: Counting\n\n\ndef mystery2(arr):\n    count = 0\n    for i in range(len(arr)):\n        if arr[i] &gt; 5:\n            count += 1\n    return count\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n4\n8\n2\n7\n1\n9\n3\n\n\n\nVariables: count = 2\n\nQ1: What iteration is i about to start?\nQ2: State the invariant.\n\n“Which elements &gt; 5 have we seen? 8 at index 1, 7 at index 3. That’s 2 elements. So i = 4.”"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#the-solution-1",
+    "href": "slides/03_mon_invariants.html#the-solution-1",
+    "title": "The Invariant Detective",
+    "section": "The Solution",
+    "text": "The Solution\n\n\n\n\n\n\n\n\n\n\nElements &gt; 5 in arr[0:4] = [4, 8, 2, 7]: 8 and 7 → count = 2\ni = 4\n\nThe Invariant: At iteration \\(i\\), count equals the number of elements &gt; 5 in arr[0:i]."
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#puzzle-3-partitioning-1",
+    "href": "slides/03_mon_invariants.html#puzzle-3-partitioning-1",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 3: Partitioning",
+    "text": "Puzzle 3: Partitioning\n\n\ndef mystery3(arr):\n    pivot = arr[0]\n    left = 1\n    for right in range(1, len(arr)):\n        if arr[right] &lt; pivot:\n            arr[left], arr[right] = arr[right], arr[left]\n            left += 1\n    arr[0], arr[left - 1] = arr[left - 1], arr[0]\n    return left - 1\n\nOriginal: [5, 8, 2, 9, 1, 7, 3]\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n5\n2\n1\n9\n8\n7\n3\n\n\n\npivot = 5, left = 3\n\nQ1: What iteration is right about to start?\nQ2: Describe what’s in arr[1:left] and arr[left:right].\n\n“This is trickier. Notice: arr[1:3] = [2, 1] — both &lt; 5. arr[3:?] = ?”"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#the-visualization",
+    "href": "slides/03_mon_invariants.html#the-visualization",
+    "title": "The Invariant Detective",
+    "section": "The Visualization",
+    "text": "The Visualization"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#the-solution-2",
+    "href": "slides/03_mon_invariants.html#the-solution-2",
+    "title": "The Invariant Detective",
+    "section": "The Solution",
+    "text": "The Solution\n\nright = 5 (about to examine index 5, which has value 7)\narr[1:left] = arr[1:3] = [2, 1] — all &lt; pivot (5)\narr[left:right] = arr[3:5] = [9, 8] — all &gt;= pivot (5)\n\nThe Invariant (at iteration right):\n\narr[1:left] contains elements &lt; pivot\narr[left:right] contains elements &gt;= pivot\narr[right:] is unexamined\n\n\n“This is the partition step from quicksort! The invariant maintains two regions.”"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#how-to-find-invariants",
+    "href": "slides/03_mon_invariants.html#how-to-find-invariants",
+    "title": "The Invariant Detective",
+    "section": "How to Find Invariants",
+    "text": "How to Find Invariants\n\nLook at the loop variable: What does i (or right, etc.) represent?\nLook at the accumulated state: What has result, count, left captured so far?\nState the relationship: “At iteration \\(i\\), [variable] holds [property of arr[0:i]]”\nVerify: Does the frozen state match your invariant?"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#common-invariant-patterns",
+    "href": "slides/03_mon_invariants.html#common-invariant-patterns",
+    "title": "The Invariant Detective",
+    "section": "Common Invariant Patterns",
+    "text": "Common Invariant Patterns\n\n\n\nPattern\nExample Invariant\n\n\n\n\nAccumulation\n“total = sum of arr[0:i]”\n\n\nExtremum\n“max_val = maximum of arr[0:i]”\n\n\nCounting\n“count = number of X in arr[0:i]”\n\n\nSearch\n“If target exists, it’s in arr[lo:hi+1]”\n\n\nPartition\n“arr[0:left] satisfies P, arr[left:i] doesn’t”"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#puzzle-4",
+    "href": "slides/03_mon_invariants.html#puzzle-4",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 4",
+    "text": "Puzzle 4\n\n\ndef mystery4(arr):\n    total = 0\n    for i in range(len(arr)):\n        total += arr[i] * arr[i]\n    return total\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n\n\n\n\n2\n3\n1\n4\n5\n2\n3\n1\n\n\n\nVariables: total = 14\n\nQ1: What is i? Q2: State the invariant.\n\n“Think: 2² + 3² + 1² = 4 + 9 + 1 = 14. So i = 3.”"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#solution-4",
+    "href": "slides/03_mon_invariants.html#solution-4",
+    "title": "The Invariant Detective",
+    "section": "Solution 4",
+    "text": "Solution 4\n\\(2^2 + 3^2 + 1^2 = 4 + 9 + 1 = 14\\)\nSo i = 3 (about to process index 3).\nInvariant: At iteration \\(i\\), total = sum of squares of arr[0:i]."
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#puzzle-5",
+    "href": "slides/03_mon_invariants.html#puzzle-5",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 5",
+    "text": "Puzzle 5\ndef mystery5(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\nFrozen state: lo = 5, hi = 9, target = 72\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n95\n99\n103\n110\n125\n142\n\n\n\nQ1: What just happened? Q2: State the invariant."
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#solution-5",
+    "href": "slides/03_mon_invariants.html#solution-5",
+    "title": "The Invariant Detective",
+    "section": "Solution 5",
+    "text": "Solution 5\n\nWe’re searching for 72\nlo = 5, hi = 9 means we’re looking in arr[5:10] = [23, 38, 56, 72, 91]\nPrevious mid was 4 (value 16 &lt; 72), so we set lo = 5\n\nInvariant: If target is in arr, then target is in arr[lo:hi+1].\n\n“We narrowed from the full array to indices 5-9. The invariant says: if 72 exists, it’s in this range. (And it is — at index 8.)”"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#debugging-with-invariants",
+    "href": "slides/03_mon_invariants.html#debugging-with-invariants",
+    "title": "The Invariant Detective",
+    "section": "Debugging with Invariants",
+    "text": "Debugging with Invariants\nWhen your code doesn’t work:\n\nState your invariant (what should be true?)\nPrint the state at each iteration\nFind where the invariant breaks\n\nThe bug is where reality diverges from the invariant."
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#the-invariant-as-compass",
+    "href": "slides/03_mon_invariants.html#the-invariant-as-compass",
+    "title": "The Invariant Detective",
+    "section": "The Invariant as Compass",
+    "text": "The Invariant as Compass\n\n“When lost, check the invariant.”\n\n\nUnsure about an edge case? → Does it maintain the invariant?\nCode gives wrong answer? → Where does the invariant fail?\nWriting new code? → What invariant do I want to maintain?"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#what-we-learned",
+    "href": "slides/03_mon_invariants.html#what-we-learned",
+    "title": "The Invariant Detective",
+    "section": "What We Learned",
+    "text": "What We Learned\n\nInvariants are discoverable from frozen states\nThe pattern: “At iteration \\(i\\), [variable] holds [property of data seen so far]”\nCommon types: accumulation, extremum, counting, search range, partition\nThe detective method: Look at loop variable, look at accumulated state, state the relationship"
+  },
+  {
+    "objectID": "slides/03_mon_invariants.html#next-time",
+    "href": "slides/03_mon_invariants.html#next-time",
+    "title": "The Invariant Detective",
+    "section": "Next Time",
+    "text": "Next Time\nRecursion: When the function calls itself.\nSpoiler: Recursion has invariants too — we call them recursive properties."
+  },
+  {
     "objectID": "slides/03_tue_binarysearch.html#the-game",
     "href": "slides/03_tue_binarysearch.html#the-game",
     "title": "Binary Search",
@@ -480,514 +990,172 @@
     "text": "Questions?\n\nBinary search: \\(\\Theta(\\log n)\\)\nThe invariant makes it correct.\nThe halving makes it fast."
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-scene",
-    "href": "slides/03_mon_invariants.html#the-scene",
-    "title": "The Invariant Detective",
-    "section": "The Scene",
-    "text": "The Scene\nAn algorithm was running, but we paused it mid-execution.\nYour job: figure out what it was doing and where it stopped.\n\n“Think of this like a crime scene investigation. The clues are in the state.”"
+    "objectID": "slides/03_wed_recursion.html#on-the-first-day-before-break",
+    "href": "slides/03_wed_recursion.html#on-the-first-day-before-break",
+    "title": "Introduction to Recursion",
+    "section": "🎵 On the first day before break…",
+    "text": "🎵 On the first day before break…\nOn the first day before break, my prof gave to me…\nA latte from Loafe"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-1-find-maximum-1",
-    "href": "slides/03_mon_invariants.html#puzzle-1-find-maximum-1",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 1: Find Maximum",
-    "text": "Puzzle 1: Find Maximum\n\n\ndef mystery1(arr):\n    result = arr[0]\n    for i in range(1, len(arr)):\n        if arr[i] &gt; result:\n            result = arr[i]\n    return result\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n7\n3\n9\n2\n5\n1\n8\n\n\n\nVariables: result = 9\n\nQ1: What iteration is i about to start?\nQ2: What does result represent?\n\n“Pause and think. What value of i would give us result = 9?”"
+    "objectID": "slides/03_wed_recursion.html#on-the-thirteenth-day",
+    "href": "slides/03_wed_recursion.html#on-the-thirteenth-day",
+    "title": "Introduction to Recursion",
+    "section": "🎵 On the thirteenth day…",
+    "text": "🎵 On the thirteenth day…\n\n\n\nThirteen moments of zen\nTwelve grateful neurons\nEleven Piazza posts\nTen merge commits\nNine cups of ramen\nEight syntax errors\nSeven ChatGPT tabs\n\n\n\nSix hours of sleep\nFive passing tests 🎵\nFour Pomodoros\nThree study rooms\nTwo stretch breaks\nAnd a latte from Loafe"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-solution",
-    "href": "slides/03_mon_invariants.html#the-solution",
-    "title": "The Invariant Detective",
-    "section": "The Solution",
-    "text": "The Solution\n\n\n\n\n\n\n\n\n\n\ni = 3 (about to examine index 3)\nresult = 9 = maximum of arr[0:3] = maximum of [7, 3, 9]\n\nThe Invariant: At iteration \\(i\\), result holds the maximum of arr[0:i]."
+    "objectID": "slides/03_wed_recursion.html#the-question",
+    "href": "slides/03_wed_recursion.html#the-question",
+    "title": "Introduction to Recursion",
+    "section": "The Question",
+    "text": "The Question\nAfter 13 days, how many gifts did I receive in total?\n\nDay 1: 1 gift\nDay 2: 1 + 2 = 3 gifts total\nDay 3: 1 + 2 + 3 = 6 gifts total\n…\nDay 13: 1 + 2 + 3 + … + 13 = ?"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#why-this-works",
-    "href": "slides/03_mon_invariants.html#why-this-works",
-    "title": "The Invariant Detective",
-    "section": "Why This Works",
-    "text": "Why This Works\nThe invariant tells us:\n\nAt i = 1: result = max of arr[0:1] = max of [7] = 7 ✓\nAt i = 2: result = max of arr[0:2] = max of [7, 3] = 7 ✓\nAt i = 3: result = max of arr[0:3] = max of [7, 3, 9] = 9 ✓\n\nThe frozen state is consistent with the invariant at i = 3."
+    "objectID": "slides/03_wed_recursion.html#the-sum",
+    "href": "slides/03_wed_recursion.html#the-sum",
+    "title": "Introduction to Recursion",
+    "section": "The Sum",
+    "text": "The Sum\n\\[1 + 2 + 3 + \\ldots + n = \\sum_{k=1}^{n} k\\]\nFor \\(n = 13\\):\n\\[1 + 2 + 3 + \\ldots + 13 = 91 \\text{ gifts}\\]\n\n“You might remember the formula n(n+1)/2. But let’s think about this differently.”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-2-counting-1",
-    "href": "slides/03_mon_invariants.html#puzzle-2-counting-1",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 2: Counting",
-    "text": "Puzzle 2: Counting\n\n\ndef mystery2(arr):\n    count = 0\n    for i in range(len(arr)):\n        if arr[i] &gt; 5:\n            count += 1\n    return count\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n4\n8\n2\n7\n1\n9\n3\n\n\n\nVariables: count = 2\n\nQ1: What iteration is i about to start?\nQ2: State the invariant.\n\n“Which elements &gt; 5 have we seen? 8 at index 1, 7 at index 3. That’s 2 elements. So i = 4.”"
+    "objectID": "slides/03_wed_recursion.html#a-different-way-to-think",
+    "href": "slides/03_wed_recursion.html#a-different-way-to-think",
+    "title": "Introduction to Recursion",
+    "section": "A Different Way to Think",
+    "text": "A Different Way to Think\nHow many gifts on day 13?\n\nWhatever I had on day 12, plus 13 more.\n\\[f(13) = f(12) + 13\\]"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-solution-1",
-    "href": "slides/03_mon_invariants.html#the-solution-1",
-    "title": "The Invariant Detective",
-    "section": "The Solution",
-    "text": "The Solution\n\n\n\n\n\n\n\n\n\n\nElements &gt; 5 in arr[0:4] = [4, 8, 2, 7]: 8 and 7 → count = 2\ni = 4\n\nThe Invariant: At iteration \\(i\\), count equals the number of elements &gt; 5 in arr[0:i]."
+    "objectID": "slides/03_wed_recursion.html#the-recursive-definition",
+    "href": "slides/03_wed_recursion.html#the-recursive-definition",
+    "title": "Introduction to Recursion",
+    "section": "The Recursive Definition",
+    "text": "The Recursive Definition\n\\[f(n) = \\begin{cases} 0 & \\text{if } n = 0 \\\\ f(n-1) + n & \\text{if } n &gt; 0 \\end{cases}\\]\nBase case: \\(f(0) = 0\\) (zero days = zero gifts)\nRecursive case: \\(f(n) = f(n-1) + n\\)\n\n“This is a recursive definition. The function is defined in terms of itself.”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-3-partitioning-1",
-    "href": "slides/03_mon_invariants.html#puzzle-3-partitioning-1",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 3: Partitioning",
-    "text": "Puzzle 3: Partitioning\n\n\ndef mystery3(arr):\n    pivot = arr[0]\n    left = 1\n    for right in range(1, len(arr)):\n        if arr[right] &lt; pivot:\n            arr[left], arr[right] = arr[right], arr[left]\n            left += 1\n    arr[0], arr[left - 1] = arr[left - 1], arr[0]\n    return left - 1\n\nOriginal: [5, 8, 2, 9, 1, 7, 3]\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n5\n2\n1\n9\n8\n7\n3\n\n\n\npivot = 5, left = 3\n\nQ1: What iteration is right about to start?\nQ2: Describe what’s in arr[1:left] and arr[left:right].\n\n“This is trickier. Notice: arr[1:3] = [2, 1] — both &lt; 5. arr[3:?] = ?”"
+    "objectID": "slides/03_wed_recursion.html#unrolling-the-definition",
+    "href": "slides/03_wed_recursion.html#unrolling-the-definition",
+    "title": "Introduction to Recursion",
+    "section": "Unrolling the Definition",
+    "text": "Unrolling the Definition\n\\[f(4) = f(3) + 4\\] \\[= (f(2) + 3) + 4\\] \\[= ((f(1) + 2) + 3) + 4\\] \\[= (((f(0) + 1) + 2) + 3) + 4\\] \\[= (((0 + 1) + 2) + 3) + 4\\] \\[= 10\\]\n\n“Each step substitutes the definition until we hit the base case.”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-visualization",
-    "href": "slides/03_mon_invariants.html#the-visualization",
-    "title": "The Invariant Detective",
-    "section": "The Visualization",
-    "text": "The Visualization"
+    "objectID": "slides/03_wed_recursion.html#visualizing-the-sum",
+    "href": "slides/03_wed_recursion.html#visualizing-the-sum",
+    "title": "Introduction to Recursion",
+    "section": "Visualizing the Sum",
+    "text": "Visualizing the Sum"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-solution-2",
-    "href": "slides/03_mon_invariants.html#the-solution-2",
-    "title": "The Invariant Detective",
-    "section": "The Solution",
-    "text": "The Solution\n\nright = 5 (about to examine index 5, which has value 7)\narr[1:left] = arr[1:3] = [2, 1] — all &lt; pivot (5)\narr[left:right] = arr[3:5] = [9, 8] — all &gt;= pivot (5)\n\nThe Invariant (at iteration right):\n\narr[1:left] contains elements &lt; pivot\narr[left:right] contains elements &gt;= pivot\narr[right:] is unexamined\n\n\n“This is the partition step from quicksort! The invariant maintains two regions.”"
+    "objectID": "slides/03_wed_recursion.html#the-recursive-structure-peel-bottom-row",
+    "href": "slides/03_wed_recursion.html#the-recursive-structure-peel-bottom-row",
+    "title": "Introduction to Recursion",
+    "section": "The Recursive Structure: Peel Bottom Row",
+    "text": "The Recursive Structure: Peel Bottom Row\n\n\n\n\n\n\n\n\n\n\n“The triangle with n rows = the triangle with n-1 rows + n more dots on the bottom.”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#how-to-find-invariants",
-    "href": "slides/03_mon_invariants.html#how-to-find-invariants",
-    "title": "The Invariant Detective",
-    "section": "How to Find Invariants",
-    "text": "How to Find Invariants\n\nLook at the loop variable: What does i (or right, etc.) represent?\nLook at the accumulated state: What has result, count, left captured so far?\nState the relationship: “At iteration \\(i\\), [variable] holds [property of arr[0:i]]”\nVerify: Does the frozen state match your invariant?"
+    "objectID": "slides/03_wed_recursion.html#the-recursive-code",
+    "href": "slides/03_wed_recursion.html#the-recursive-code",
+    "title": "Introduction to Recursion",
+    "section": "The Recursive Code",
+    "text": "The Recursive Code\ndef triangle(n):\n    if n == 0:\n        return 0\n    return triangle(n - 1) + n\nCompare to the math:\n\\[f(n) = \\begin{cases} 0 & \\text{if } n = 0 \\\\ f(n-1) + n & \\text{if } n &gt; 0 \\end{cases}\\]\n\n“The code is a direct translation of the math. Base case, recursive case.”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#common-invariant-patterns",
-    "href": "slides/03_mon_invariants.html#common-invariant-patterns",
-    "title": "The Invariant Detective",
-    "section": "Common Invariant Patterns",
-    "text": "Common Invariant Patterns\n\n\n\nPattern\nExample Invariant\n\n\n\n\nAccumulation\n“total = sum of arr[0:i]”\n\n\nExtremum\n“max_val = maximum of arr[0:i]”\n\n\nCounting\n“count = number of X in arr[0:i]”\n\n\nSearch\n“If target exists, it’s in arr[lo:hi+1]”\n\n\nPartition\n“arr[0:left] satisfies P, arr[left:i] doesn’t”"
+    "objectID": "slides/03_wed_recursion.html#lets-run-it",
+    "href": "slides/03_wed_recursion.html#lets-run-it",
+    "title": "Introduction to Recursion",
+    "section": "Let’s Run It",
+    "text": "Let’s Run It"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-4",
-    "href": "slides/03_mon_invariants.html#puzzle-4",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 4",
-    "text": "Puzzle 4\n\n\ndef mystery4(arr):\n    total = 0\n    for i in range(len(arr)):\n        total += arr[i] * arr[i]\n    return total\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n\n\n\n\n2\n3\n1\n4\n5\n2\n3\n1\n\n\n\nVariables: total = 14\n\nQ1: What is i? Q2: State the invariant.\n\n“Think: 2² + 3² + 1² = 4 + 9 + 1 = 14. So i = 3.”"
+    "objectID": "slides/03_wed_recursion.html#the-call-stack",
+    "href": "slides/03_wed_recursion.html#the-call-stack",
+    "title": "Introduction to Recursion",
+    "section": "The Call Stack",
+    "text": "The Call Stack\nCalling triangle(4):\ntriangle(4)\n  → triangle(3) + 4\n      → triangle(2) + 3\n          → triangle(1) + 2\n              → triangle(0) + 1\n                  → 0\n              ← 0 + 1 = 1\n          ← 1 + 2 = 3\n      ← 3 + 3 = 6\n  ← 6 + 4 = 10\n\n“Each call waits for the recursive call to return, then adds n.”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#solution-4",
-    "href": "slides/03_mon_invariants.html#solution-4",
-    "title": "The Invariant Detective",
-    "section": "Solution 4",
-    "text": "Solution 4\n\\(2^2 + 3^2 + 1^2 = 4 + 9 + 1 = 14\\)\nSo i = 3 (about to process index 3).\nInvariant: At iteration \\(i\\), total = sum of squares of arr[0:i]."
+    "objectID": "slides/03_wed_recursion.html#same-triangle-different-view",
+    "href": "slides/03_wed_recursion.html#same-triangle-different-view",
+    "title": "Introduction to Recursion",
+    "section": "Same Triangle, Different View",
+    "text": "Same Triangle, Different View\nWhat if we split the triangle differently?"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-5",
-    "href": "slides/03_mon_invariants.html#puzzle-5",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 5",
-    "text": "Puzzle 5\ndef mystery5(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\nFrozen state: lo = 5, hi = 9, target = 72\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n95\n99\n103\n110\n125\n142\n\n\n\nQ1: What just happened? Q2: State the invariant."
+    "objectID": "slides/03_wed_recursion.html#the-quadrant-decomposition",
+    "href": "slides/03_wed_recursion.html#the-quadrant-decomposition",
+    "title": "Introduction to Recursion",
+    "section": "The Quadrant Decomposition",
+    "text": "The Quadrant Decomposition\nFor \\(n\\) rows (where \\(n\\) is even):\n\nBlue: Top triangle with \\(n/2\\) rows → \\(f(n/2)\\) dots\nRed: Bottom-right triangle with \\(n/2\\) rows → \\(f(n/2)\\) dots\nGreen: Rectangle of size \\((n/2) \\times (n/2)\\) → \\((n/2)^2\\) dots\n\n\\[f(n) = 2 \\cdot f(n/2) + (n/2)^2\\]\n\n“Same problem, different recursive structure!”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#solution-5",
-    "href": "slides/03_mon_invariants.html#solution-5",
-    "title": "The Invariant Detective",
-    "section": "Solution 5",
-    "text": "Solution 5\n\nWe’re searching for 72\nlo = 5, hi = 9 means we’re looking in arr[5:10] = [23, 38, 56, 72, 91]\nPrevious mid was 4 (value 16 &lt; 72), so we set lo = 5\n\nInvariant: If target is in arr, then target is in arr[lo:hi+1].\n\n“We narrowed from the full array to indices 5-9. The invariant says: if 72 exists, it’s in this range. (And it is — at index 8.)”"
-  },
-  {
-    "objectID": "slides/03_mon_invariants.html#debugging-with-invariants",
-    "href": "slides/03_mon_invariants.html#debugging-with-invariants",
-    "title": "The Invariant Detective",
-    "section": "Debugging with Invariants",
-    "text": "Debugging with Invariants\nWhen your code doesn’t work:\n\nState your invariant (what should be true?)\nPrint the state at each iteration\nFind where the invariant breaks\n\nThe bug is where reality diverges from the invariant."
-  },
-  {
-    "objectID": "slides/03_mon_invariants.html#the-invariant-as-compass",
-    "href": "slides/03_mon_invariants.html#the-invariant-as-compass",
-    "title": "The Invariant Detective",
-    "section": "The Invariant as Compass",
-    "text": "The Invariant as Compass\n\n“When lost, check the invariant.”\n\n\nUnsure about an edge case? → Does it maintain the invariant?\nCode gives wrong answer? → Where does the invariant fail?\nWriting new code? → What invariant do I want to maintain?"
-  },
-  {
-    "objectID": "slides/03_mon_invariants.html#what-we-learned",
-    "href": "slides/03_mon_invariants.html#what-we-learned",
-    "title": "The Invariant Detective",
-    "section": "What We Learned",
-    "text": "What We Learned\n\nInvariants are discoverable from frozen states\nThe pattern: “At iteration \\(i\\), [variable] holds [property of data seen so far]”\nCommon types: accumulation, extremum, counting, search range, partition\nThe detective method: Look at loop variable, look at accumulated state, state the relationship"
-  },
-  {
-    "objectID": "slides/03_mon_invariants.html#next-time",
-    "href": "slides/03_mon_invariants.html#next-time",
-    "title": "The Invariant Detective",
-    "section": "Next Time",
-    "text": "Next Time\nRecursion: When the function calls itself.\nSpoiler: Recursion has invariants too — we call them recursive properties."
-  },
-  {
-    "objectID": "setup.html",
-    "href": "setup.html",
-    "title": "Setup: Tech stack",
-    "section": "",
-    "text": "As with any computer science or data science course, several tools and software packages are needed for this course. These tools are not used by the typical consumer, so most Windows or macOS installations will not include them. Even on machines which do include them (such as many Linux distributions), they may still need some configuration. Below you will find guides to install the tech stack for DSCI 221, with different guides for different operating systems. A tech stack is the complete set of tools and technologies needed to accomplish a particular task; in this case, it is the various programming and data analytics that we will explore in DSCI 221.\nAs you go through the install guides, remember that perhaps the two most important things you will learn in this course is how to troubleshoot things and achieve familiarity and proficiency with your computer. Be patient, read things carefully, do not be afraid to try things, it’s unlikely you will do anything to irreversibly break your computer! Almost everything you do (you’re on your own if you decide to take a hammer to your laptop!) can be undone, don’t be afraid to ask your peers, TAs, and the instructor on Giscus below (you will need to set up an GitHub account first).\nThis is an exciting time for you as you begin your Software Development journey!",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "setup.html#hardware",
-    "href": "setup.html#hardware",
-    "title": "Setup: Tech stack",
-    "section": "Hardware",
-    "text": "Hardware\nBefore starting, ensure that your laptop meets the minimum requirements:\n\nCan connect to networks via a wireless connection.\nHas at least 25 GB disk space available.\nHas at least 4 GB of RAM (more is recommended).\nUses a 64-bit CPU.\nIs at most 6 years old at the start of the course (4 years old or newer is recommended).\nStudent user has full administrative access to the computer.\n\n\n\n\n\n\n\nImportant\n\n\n\nIf your computer does not meet any of the requirements above, please don’t just drop the course!! Let me know first and we can discuss alternate possibilities so you can still take the course.",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "setup.html#software",
-    "href": "setup.html#software",
-    "title": "Setup: Tech stack",
-    "section": "Software",
-    "text": "Software\n\n\n\n\n\n\nTip\n\n\n\nThese installation notes assume you are starting with a fresh install, without any custom setups. Following the instructions below will help you install and configure the tech stack correctly in the same way for our course, enabling us to support you effectively and minimize setup issues and software conflicts.\n\n\n\nWindowsmacOS\n\n\n In all the sections below, if you are presented with the choice to download either a 64-bit (also called x64) or a 32-bit (also called x86) version of the application always choose the 64-bit version.\n\n\nIn all the sections below, if you are presented with the choice to download either a 64-bit (also called x64) or a 32-bit (also called x86) version of the application always choose the 64-bit version. If you purchased a Mac anytime in the last few years, chances are you have an “M1/M2/M3/M4”… Mac, also known as “Apple Silicon”, and “arm64”. When given the option, you should choose to download the “arm64”/Apple Silicon or the “Universal versions—if that choice doesn’t exist, then you can choose the”x86” version which will run in “emulated mode”, which will result in a slight performance penalty.\n\n\n\n\n\nOperating system (OS)\nWe strongly suggest to run the latest version of the operating system (OS) available for your laptop.\n\n\n\n\n\n\nWarning\n\n\n\nIf you update or upgrade your OS you do so on your own risk!\n\n\nIn general, there are many good reasons to update your OS. Some of the software tools or their functionality used in our tutorials will only work on more recent OS versions. Updating your OS will also ensure that you have the latest security updates installed and help prevent unauthorized access to your computer.\nThere a two main reasons that would prevent you from updating your OS:\n\nYour hardware would not support the updated OS.\nSome of your software you depend on might not work on a newer OS.\n\n\nWindowsmacOS\n\n\nThe latest version of Windows 11 available is 24H2 (build 26100.6584). See here on how to update your Windows 11 machine to the latest version. If you do not own Windows 11, currently enrolled UBC students with a valid CWL account qualify for one license of Windows 11 Education.\n\n\nThe latest version of macOS is Tahoe 16.0. Check your current version of macOS. If you do not have the latest version, follow the upgrade instructions on the Apple support page.\nIf you cannot upgrade to the latest version, follow these instructions to find the system requirements and upgrade to latest versions available to you. If you need to maintain 32-bit compatibility for any of your software, then upgrade to no higher than macOS 10.14 Mojave.\n\n\n\n\n\nTerminal\nA terminal program allows you to interact with many different programs using a command line interface. Instead of using graphical elements like in a graphical user interface, you type in commands describing what program you want to use and how you want to use it.\n\nWindowsmacOS\n\n\nThe terminal app Terminal comes preinstalled with Windows. Activate the Windows Start menu, start typing “terminal” and select the Terminal app by pressing EnterEnter.\n\n\nThe terminal app Terminal comes preinstalled with macOS. Activate Spotlight with Command-SpaceCommand-Space, start typing “terminal” and select the Terminal app by pressing EnterEnter.\n\n\n\nYou will need to open the terminal several times in these instructions to install other programs.\n\n\nPackage manager\nA package manager is a program allowing you to install and update programs on your computer, similar to the Microsoft Store on Windows or the App Store on macOS. The main difference of a package manager to these programs is that you use them with a command line interface running in a terminal instead of a graphical user interface.\n\nWindowsmacOS\n\n\nIf you have at least Windows 10 version 1809 (build 17763) or later installed on your machine, you will already have the package manager WinGet available to you. When you use WinGet for the first time, you will be asked to register the Windows Package Manager with the Microsoft Store.\n\n\n\n\n\n\nImportant\n\n\n\nIf you cannot update your Windows to a version that supports WinGet, please reach out to the teaching team.\n\n\n\nResources\n\nUse WinGet to install and manage applications\n\n\n\n\nWe will use one of the most popular package managers on macOS called Homebrew. Open your Terminal, and then enter the following command:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nYou will be asked to enter the password for your computer:\n==&gt; Checking for `sudo` access (which may request your password)...\nEnter your password (it is normal that the cursor will not move as you enter characters for a password) and hit EnterEnter.\nNext, the installation will install the XCode Command Line Tools:\nThe XCode Command Line Tools will be installed.\nA new window will open with the following prompt:\n\nThe “xcode-select” command requires the command line developer tools. Would you like to install the tools now?\nChoose Install to download and install the command line developer tools now.” Confirm by clicking on “Install”.\n\nAfterwards, back in the terminal, you will be informed what steps will be executed:\n==&gt; This script will install:\n/opt/homebrew/bin/brew\n/opt/homebrew/share/doc/homebrew\n/opt/homebrew/share/man/man1/brew.1\n/opt/homebrew/share/zsh/site-functions/_brew\n/opt/homebrew/etc/bash_completion.d/brew\n/opt/homebrew\n/etc/paths.d/homebrew\n\nPress RETURN/ENTER to continue or any other key to abort:\nConfirm with EnterEnter. When the installation is finished, you will be asked to run the following command in the terminal to add Homebrew to your PATH:\necho &gt;&gt; \"${HOME}/.zprofile\"\necho 'eval \"$(/opt/homebrew/bin/brew shellenv)\"' &gt;&gt; \"${HOME}/.zprofile\"\neval \"$(/opt/homebrew/bin/brew shellenv)\"\nNow test if Homebrew works:\nbrew --version\nYou should see the following:\nHomebrew 4.6.11\n\nResources\n\nHomebrew Documentation\n\n\n\n\n\n\n\nPython\n\nInstalling uv\nWe will be using Python for a large part of the course, and uv will be our Python package manager. Instead of installing Python separately on our machine, we will use uv to provision us with Python whenever we need to run it.\n\nWindowsmacOS\n\n\nIn the terminal, install uv with Winget:\nwinget install -e --id=astral-sh.uv\n\n\nIn the terminal install uv with Homebrew:\nbrew install uv\n\n\n\nTo check if uv installed successfully, type in the terminal:\nuv --version\nAnd you should see something like this\nuv 0.8.18 &lt;some-installer-specific-information&gt;\n\nResources\n\nInstallation | uv\n\n\n\n\nmarimo\nWe will be writing our code in a notebook app called marimo. marimo is itself a Python package, so we can use uv to install and run it. In particular, we will use the command uvx which will check if we have the latest version of marimo and everything else necessary to run it, even Python itself!\nuvx marimo --version\nAnd you should see:\n0.16.0\nEven better, try this:\nuvx marimo tutorial intro\nAnd your default browser should open a window showing marimo.\n\nFor now, let’s shut down marimo by clicking on the red x in the top right corner and then on the “Shutdown” button.\nNow you are ready to run Python code on your local machine!!!\n\nResources\n\nInstallation | marimo",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "setup.html#optional-software",
-    "href": "setup.html#optional-software",
-    "title": "Setup: Tech stack",
-    "section": "Optional software",
-    "text": "Optional software\nIf you are interested in using a very common software development tool and platform for version control, check out Git and GitHub. We also have two examples with Zoom or your web browser on how to install and update everyday software with a package manager.\n\nGit and GitHub\nWe will be using the command line version of Git.\n\nWindowsmacOS\n\n\nGit is installed as part of Git Bash. Open your terminal, and install Git Bash with\nwinget install -e --id Git.Git\nRestart your terminal.\n\n\nOpen your terminal, and install Git with:\nbrew install git\n\n\n\nIn the terminal, type the following to check the Git version:\ngit --version\nYou should see something like this if everything is working correctly:\ngit version 2.51.0\n\nGitHub.com account\nSign up for a free account at GitHub.com if you don’t have one already. Your GitHub.com username is important, so here some advice on picking a username and below an image on how to find it again.\n\n\n\nConfiguring Git user info\nNext, we need to configure Git by telling it your name and email. To do this, provide your name and GitHub email by typing into the terminal:\ngit config --global user.name \"&lt;your-name&gt;\"\ngit config --global user.email \"&lt;your-github-email&gt;\"\n\n\n\n\n\n\nNote\n\n\n\nTo ensure that you haven’t made a typo in any of the above, you can view your global Git configurations by either opening the configuration file in a text editor (e.g., via the command code ~/.gitconfig) or by typing git config --list --global. You can quit this view by just pressing the q key on your keyboard.\n\n\n\n\nCreate your GitHub “Personal Access Token”\nThis is a bit tricky, so please make sure you follow these directions carefully.\n\nStart creating a personal access token (PAT) on GitHub.com either by\n\nClicking this link: https://github.com/settings/tokens/new\nNavigating to your tokens by following these steps:\n\nLog in to GitHub.com\nClick your picture in the top right and select “Settings”\nClick on “Developer Settings”\nClick on “Personal access tokens” and then on “Tokens (classic)”\nClick “Generate new token”\n\n\nGive the token a name in the note field, for example, DSCI 221\nChoose for expiration “Custom” and set the date to the end of this term: 2026-04-10\nSet the scope of the token to the “repo” level (see image below):\n\n\n\nPersonal access token settings\n\n\nClick “Generate new token”\nCopy the token that is shown to you. It is essentially a password for apps on your computer (for example, Git) to enable them to take actions on GitHub.com for you (in this case, clone a private repository to your computer). Treat this password like any other of your other passwords, so don’t share your token with anyone.\nSave this token somewhere safe on your computer, such as a password manager. You will not be able to come back to this page to get your token. If you forget or lose a token, you can just delete that token on GitHub.com where you manage all existing tokens and create another one: https://github.com/settings/tokens\n\n\n\n\nClone your first repository on your computer\nOpen the terminal, and then run the following command:\ngit clone https://github.com/firasm/test.git\nHopefully, if things work, you should be able to see a new folder created at that location. We will be talking more about what exactly you did over the next week and a bit, don’t worry!\n\n\n\n\n\n\nTip\n\n\n\nIf after running the code above, you see the error message:\nfatal: destination path 'test' already exists and is not an empty directory. \nIt means that you already attempted a clone before, and there is already a directory called test where you are trying to clone this repository. You will first need to delete that directory to try again. Open an Explorer (Windows) or Finder (macOS) window on your computer, navigate to the directory, right click the test directory and delete it. Alternatively, from the command line you can try:\nrm -rf test\nwhich will “remove” (using the rm command) the directory called test. The- is to specify additional options: r means “recursively” for all the files in the directory, and f means “force” which means don’t ask me for confirmation after deleting each file and folder.\n\n\n\n\n\nZoom\nSo far, we have been using the package manager to install software development tools. We can use the package manager to install other everyday software making it easier to find the correct version for your hardware or update to the latest release. For example, you might attend office hours or a livestream using Zoom Workplace and you should install the Zoom client locally on your machine.\n\nWindowsmacOS\n\n\nIn your terminal, use WinGet to install Zoom:\nwinget install -e --id Zoom.Zoom\n\n\nIn your terminal, use Homebrew to install Zoom:\nbrew install --cask zoom\n\n\n\nIt is important that you have the most recent version of Zoom installed, as we will be using many of the features that are only available in more recent versions. The latest version of Zoom is 6.6.0 (64511). For a lot of software, there is an option to check for updates.\n\nA package manager can directly update any software you have installed with it.\n\nWindowsmacOS\n\n\nwinget upgrade -e --id Zoom.Zoom\n\n\nbrew upgrade --cask zoom\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nPlease note that if you have been relying on the “web version” of Zoom that works only in a browser, this will not work for this course! Please make sure to download the Zoom desktop client for your operating system to fully participate in the course.\n\n\n\n\nWeb browser\nYou are welcome to use most modern browsers that have a WebKit or Gecko backend. Safari (Mac only), Firefox, Vivaldi, Brave, Edge are all recommended. Google Chrome is not recommended because of the well-documented privacy and tracking issues with Google.\nOptional: try to install the browser also with the package manager! Use this website to find the install instruction for the browser of your choice:\n\nWindowsmacOS\n\n\nwinget.run | Finding winget packages made simple.\n\n\nHomebrew Formulae",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "setup.html#attribution",
-    "href": "setup.html#attribution",
-    "title": "Setup: Tech stack",
-    "section": "Attribution",
-    "text": "Attribution\nThese instructions have been adapted and remixed from the original version provided by the UBC-Vancouver MDS Install stack under a CC-BY-SA 4.0 license. They were originally written by Anmol Jawandha but have since been updated by Stephan Koenig, Firas Moosvi, Joel Ostblom, Tomas Beuzen, Rodolfo Lourenzutti, Tiffany Timbers, and others.\n\nHarvard CS109\nUBC STAT 545 licensed under the CC BY-NC 3.0.\nSoftware Carpentry\nOracle - How do I set or change the PATH system variable?\nNumerical Methods - Getting started\nEDUCE setup instructions",
-    "crumbs": [
-      "Resources",
-      "Setup"
-    ]
-  },
-  {
-    "objectID": "TODO.html",
-    "href": "TODO.html",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory\n\n\n\n\n\n\n\nSchedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\n\n\n\n\n\n\n\nCreate labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic\n\n\n\n\n\n\nSet up testing framework within marimo\nSet up autograder for PL programming assignments"
-  },
-  {
-    "objectID": "TODO.html#completed-setup-reference-for-future-terms",
-    "href": "TODO.html#completed-setup-reference-for-future-terms",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory"
-  },
-  {
-    "objectID": "TODO.html#course-setup-canvasinfrastructure",
-    "href": "TODO.html#course-setup-canvasinfrastructure",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Schedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)"
-  },
-  {
-    "objectID": "TODO.html#assessments",
-    "href": "TODO.html#assessments",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Create labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic"
-  },
-  {
-    "objectID": "TODO.html#technical-infrastructure",
-    "href": "TODO.html#technical-infrastructure",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Set up testing framework within marimo\nSet up autograder for PL programming assignments"
-  },
-  {
-    "objectID": "posts/00_welcome/index.html",
-    "href": "posts/00_welcome/index.html",
-    "title": "Welcome to DSCI 221!",
-    "section": "",
-    "text": "Welcome to DSCI 221: Data Structures and Algorithms for Data Science!\nIn this course, we’ll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what’s the cheapest flight to Tokyo?), you’ll develop the algorithmic thinking that separates good programmers from great ones.\nGetting started:\n\nRead the syllabus for course policies and requirements\nCheck the schedule on the home page to see what’s coming up\nCome to class ready to think about puzzles!\n\nSee you in class!"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
-  },
-  {
-    "objectID": "index.html#weekly-announcement",
-    "href": "index.html#weekly-announcement",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "Weekly announcement",
-    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\nHW3",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
-  },
-  {
-    "objectID": "labs/02_create-website.html",
-    "href": "labs/02_create-website.html",
-    "title": " Lab: Create your own website!",
-    "section": "",
-    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
-  },
-  {
-    "objectID": "labs/02_create-website.html#basic-structure-of-quarto-document",
-    "href": "labs/02_create-website.html#basic-structure-of-quarto-document",
-    "title": " Lab: Create your own website!",
-    "section": "",
-    "text": "We are going to create a website using a Quarto. Quarto documents are a mix of natural language and executed code and this pattern is called literate programming. A Quarto document usually contains:\n\nText formatted in Markdown.\nCode is fenced as code chunk between ```{r} and ```.\nMetadata as YAML with the format key: value. You can find metadata in the header of the document fenced by ---, or in code chunks starting with #|.\n\n---\ntitle: \"Untitled\"\nformat: html\n---\n\n## Quarto\n\nQuarto enables you to weave together content and executable code into\na finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.\n\n```{r}\n#| label: calculation\n\n1 + 1\n```"
+    "objectID": "slides/03_wed_recursion.html#the-divide-and-conquer-code",
+    "href": "slides/03_wed_recursion.html#the-divide-and-conquer-code",
+    "title": "Introduction to Recursion",
+    "section": "The Divide-and-Conquer Code",
+    "text": "The Divide-and-Conquer Code\ndef triangle_fast(n):\n    if n &lt;= 1:\n        return n\n    half = n // 2\n    return 2 * triangle_fast(half) + half * half\n\nDoes it compute the same thing?"
   },
-  {
-    "objectID": "labs/02_create-website.html#steps",
-    "href": "labs/02_create-website.html#steps",
-    "title": " Lab: Create your own website!",
-    "section": " Steps",
-    "text": "Steps\n\nOpen your workspace: us.prairielearn.com/pl/course_instance/205477/assessment/2633615.\nCreate index.qmd.\nClick the “Render” button on top.\nDownload the output directory _site.\nOpen Netlify Drop: app.netlify.com/drop.\nDrag and drop the downloaded _site onto Netlify Drop.\nPost the link to your website in the comments below."
-  },
-  {
-    "objectID": "labs/02_create-website.html#resources",
-    "href": "labs/02_create-website.html#resources",
-    "title": " Lab: Create your own website!",
-    "section": " Resources",
-    "text": "Resources\n\nDaring Fireball: Markdown\nInteractive Commonmark Markdown tutorial\nQuarto documentation\nGet started with Quarto Workshop including the material and this video:"
-  },
-  {
-    "objectID": "LICENSE.html",
-    "href": "LICENSE.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "Attribution-ShareAlike 4.0 International\n=======================================================================\nCreative Commons Corporation (“Creative Commons”) is not a law firm and does not provide legal services or legal advice. Distribution of Creative Commons public licenses does not create a lawyer-client or other relationship. Creative Commons makes its licenses and related information available on an “as-is” basis. Creative Commons gives no warranties regarding its licenses, any material licensed under their terms and conditions, or any related information. Creative Commons disclaims all liability for damages resulting from their use to the fullest extent possible.\nUsing Creative Commons Public Licenses\nCreative Commons public licenses provide a standard set of terms and conditions that creators and other rights holders may use to share original works of authorship and other material subject to copyright and certain other rights specified in the public license below. The following considerations are for informational purposes only, are not exhaustive, and do not form part of our licenses.\n Considerations for licensors: Our public licenses are\n intended for use by those authorized to give the public\n permission to use material in ways otherwise restricted by\n copyright and certain other rights. Our licenses are\n irrevocable. Licensors should read and understand the terms\n and conditions of the license they choose before applying it.\n Licensors should also secure all rights necessary before\n applying our licenses so that the public can reuse the\n material as expected. Licensors should clearly mark any\n material not subject to the license. This includes other CC-\n licensed material, or material used under an exception or\n limitation to copyright. More considerations for licensors:\nwiki.creativecommons.org/Considerations_for_licensors\n\n Considerations for the public: By using one of our public\n licenses, a licensor grants the public permission to use the\n licensed material under specified terms and conditions. If\n the licensor's permission is not necessary for any reason--for\n example, because of any applicable exception or limitation to\n copyright--then that use is not regulated by the license. Our\n licenses grant only permissions under copyright and certain\n other rights that a licensor has authority to grant. Use of\n the licensed material may still be restricted for other\n reasons, including because others have copyright or other\n rights in the material. A licensor may make special requests,\n such as asking that all changes be marked or described.\n Although not required by our licenses, you are encouraged to\n respect those requests where reasonable. More_considerations\n for the public:\nwiki.creativecommons.org/Considerations_for_licensees\n=======================================================================\nCreative Commons Attribution-ShareAlike 4.0 International Public License\nBy exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution-ShareAlike 4.0 International Public License (“Public License”). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.\nSection 1 – Definitions.\n\nAdapted Material means material subject to Copyright and Similar Rights that is derived from or based upon the Licensed Material and in which the Licensed Material is translated, altered, arranged, transformed, or otherwise modified in a manner requiring permission under the Copyright and Similar Rights held by the Licensor. For purposes of this Public License, where the Licensed Material is a musical work, performance, or sound recording, Adapted Material is always produced where the Licensed Material is synched in timed relation with a moving image.\nAdapter’s License means the license You apply to Your Copyright and Similar Rights in Your contributions to Adapted Material in accordance with the terms and conditions of this Public License.\nBY-SA Compatible License means a license listed at creativecommons.org/compatiblelicenses, approved by Creative Commons as essentially the equivalent of this Public License.\nCopyright and Similar Rights means copyright and/or similar rights closely related to copyright including, without limitation, performance, broadcast, sound recording, and Sui Generis Database Rights, without regard to how the rights are labeled or categorized. For purposes of this Public License, the rights specified in Section 2(b)(1)-(2) are not Copyright and Similar Rights.\nEffective Technological Measures means those measures that, in the absence of proper authority, may not be circumvented under laws fulfilling obligations under Article 11 of the WIPO Copyright Treaty adopted on December 20, 1996, and/or similar international agreements.\nExceptions and Limitations means fair use, fair dealing, and/or any other exception or limitation to Copyright and Similar Rights that applies to Your use of the Licensed Material.\nLicense Elements means the license attributes listed in the name of a Creative Commons Public License. The License Elements of this Public License are Attribution and ShareAlike.\nLicensed Material means the artistic or literary work, database, or other material to which the Licensor applied this Public License.\nLicensed Rights means the rights granted to You subject to the terms and conditions of this Public License, which are limited to all Copyright and Similar Rights that apply to Your use of the Licensed Material and that the Licensor has authority to license.\nLicensor means the individual(s) or entity(ies) granting rights under this Public License.\nShare means to provide material to the public by any means or process that requires permission under the Licensed Rights, such as reproduction, public display, public performance, distribution, dissemination, communication, or importation, and to make material available to the public including in ways that members of the public may access the material from a place and at a time individually chosen by them.\nSui Generis Database Rights means rights other than copyright resulting from Directive 96/9/EC of the European Parliament and of the Council of 11 March 1996 on the legal protection of databases, as amended and/or succeeded, as well as other essentially equivalent rights anywhere in the world.\nYou means the individual or entity exercising the Licensed Rights under this Public License. Your has a corresponding meaning.\n\nSection 2 – Scope.\n\nLicense grant.\n\nSubject to the terms and conditions of this Public License, the Licensor hereby grants You a worldwide, royalty-free, non-sublicensable, non-exclusive, irrevocable license to exercise the Licensed Rights in the Licensed Material to:\n\nreproduce and Share the Licensed Material, in whole or in part; and\nproduce, reproduce, and Share Adapted Material.\n\nExceptions and Limitations. For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this Public License does not apply, and You do not need to comply with its terms and conditions.\nTerm. The term of this Public License is specified in Section 6(a).\nMedia and formats; technical modifications allowed. The Licensor authorizes You to exercise the Licensed Rights in all media and formats whether now known or hereafter created, and to make technical modifications necessary to do so. The Licensor waives and/or agrees not to assert any right or authority to forbid You from making technical modifications necessary to exercise the Licensed Rights, including technical modifications necessary to circumvent Effective Technological Measures. For purposes of this Public License, simply making modifications authorized by this Section 2(a)\n\nnever produces Adapted Material.\n\nDownstream recipients.\n\nOffer from the Licensor – Licensed Material. Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.\nAdditional offer from the Licensor – Adapted Material. Every recipient of Adapted Material from You automatically receives an offer from the Licensor to exercise the Licensed Rights in the Adapted Material under the conditions of the Adapter’s License You apply.\nNo downstream restrictions. You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.\n\nNo endorsement. Nothing in this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided in Section 3(a)(1)(A)(i).\n\nOther rights.\n\nMoral rights, such as the right of integrity, are not licensed under this Public License, nor are publicity, privacy, and/or other similar personality rights; however, to the extent possible, the Licensor waives and/or agrees not to assert any such rights held by the Licensor to the limited extent necessary to allow You to exercise the Licensed Rights, but not otherwise.\nPatent and trademark rights are not licensed under this Public License.\nTo the extent possible, the Licensor waives any right to collect royalties from You for the exercise of the Licensed Rights, whether directly or through a collecting society under any voluntary or waivable statutory or compulsory licensing scheme. In all other cases the Licensor expressly reserves any right to collect such royalties.\n\n\nSection 3 – License Conditions.\nYour exercise of the Licensed Rights is expressly made subject to the following conditions.\n\nAttribution.\n\nIf You Share the Licensed Material (including in modified form), You must:\n\nretain the following if it is supplied by the Licensor with the Licensed Material:\n\nidentification of the creator(s) of the Licensed Material and any others designated to receive attribution, in any reasonable manner requested by the Licensor (including by pseudonym if designated);\na copyright notice;\na notice that refers to this Public License;\na notice that refers to the disclaimer of warranties;\na URI or hyperlink to the Licensed Material to the extent reasonably practicable;\n\nindicate if You modified the Licensed Material and retain an indication of any previous modifications; and\nindicate the Licensed Material is licensed under this Public License, and include the text of, or the URI or hyperlink to, this Public License.\n\nYou may satisfy the conditions in Section 3(a)(1) in any reasonable manner based on the medium, means, and context in which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI or hyperlink to a resource that includes the required information.\nIf requested by the Licensor, You must remove any of the information required by Section 3(a)(1)(A) to the extent reasonably practicable.\n\nShareAlike.\nIn addition to the conditions in Section 3(a), if You Share Adapted Material You produce, the following conditions also apply.\n\nThe Adapter’s License You apply must be a Creative Commons license with the same License Elements, this version or later, or a BY-SA Compatible License.\nYou must include the text of, or the URI or hyperlink to, the Adapter’s License You apply. You may satisfy this condition in any reasonable manner based on the medium, means, and context in which You Share Adapted Material.\nYou may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, Adapted Material that restrict exercise of the rights granted under the Adapter’s License You apply.\n\n\nSection 4 – Sui Generis Database Rights.\nWhere the Licensed Rights include Sui Generis Database Rights that apply to Your use of the Licensed Material:\n\nfor the avoidance of doubt, Section 2(a)(1) grants You the right to extract, reuse, reproduce, and Share all or a substantial portion of the contents of the database;\nif You include all or a substantial portion of the database contents in a database in which You have Sui Generis Database Rights, then the database in which You have Sui Generis Database Rights (but not its individual contents) is Adapted Material,\nincluding for purposes of Section 3(b); and\nYou must comply with the conditions in Section 3(a) if You Share all or a substantial portion of the contents of the database.\n\nFor the avoidance of doubt, this Section 4 supplements and does not replace Your obligations under this Public License where the Licensed Rights include other Copyright and Similar Rights.\nSection 5 – Disclaimer of Warranties and Limitation of Liability.\n\nUNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.\nTO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.\nThe disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.\n\nSection 6 – Term and Termination.\n\nThis Public License applies for the term of the Copyright and Similar Rights licensed here. However, if You fail to comply with this Public License, then Your rights under this Public License terminate automatically.\nWhere Your right to use the Licensed Material has terminated under Section 6(a), it reinstates:\n\nautomatically as of the date the violation is cured, provided it is cured within 30 days of Your discovery of the violation; or\nupon express reinstatement by the Licensor.\n\nFor the avoidance of doubt, this Section 6(b) does not affect any right the Licensor may have to seek remedies for Your violations of this Public License.\nFor the avoidance of doubt, the Licensor may also offer the Licensed Material under separate terms or conditions or stop distributing the Licensed Material at any time; however, doing so will not terminate this Public License.\nSections 1, 5, 6, 7, and 8 survive termination of this Public License.\n\nSection 7 – Other Terms and Conditions.\n\nThe Licensor shall not be bound by any additional or different terms or conditions communicated by You unless expressly agreed.\nAny arrangements, understandings, or agreements regarding the Licensed Material not stated herein are separate from and independent of the terms and conditions of this Public License.\n\nSection 8 – Interpretation.\n\nFor the avoidance of doubt, this Public License does not, and shall not be interpreted to, reduce, limit, restrict, or impose conditions on any use of the Licensed Material that could lawfully be made without permission under this Public License.\nTo the extent possible, if any provision of this Public License is deemed unenforceable, it shall be automatically reformed to the minimum extent necessary to make it enforceable. If the provision cannot be reformed, it shall be severed from this Public License without affecting the enforceability of the remaining terms and conditions.\nNo term or condition of this Public License will be waived and no failure to comply consented to unless expressly agreed to by the Licensor.\nNothing in this Public License constitutes or may be interpreted as a limitation upon, or waiver of, any privileges and immunities that apply to the Licensor or You, including from the legal processes of any jurisdiction or authority.\n\n=======================================================================\nCreative Commons is not a party to its public licenses. Notwithstanding, Creative Commons may elect to apply one of its public licenses to material it publishes and in those instances will be considered the “Licensor.” The text of the Creative Commons public licenses is dedicated to the public domain under the CC0 Public Domain Dedication. Except for the limited purpose of indicating that material is shared under a Creative Commons public license or as otherwise permitted by the Creative Commons policies published at creativecommons.org/policies, Creative Commons does not authorize the use of the trademark “Creative Commons” or any other trademark or logo of Creative Commons without its prior written consent including, without limitation, in connection with any unauthorized modifications to any of its public licenses or any other arrangements, understandings, or agreements concerning use of licensed material. For the avoidance of doubt, this paragraph does not form part of the public licenses.\nCreative Commons may be contacted at creativecommons.org."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "about.html#about",
-    "href": "about.html#about",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#announcements",
-    "href": "slides/01_wed_runtime.html#announcements",
-    "title": "Analysis",
-    "section": "Announcements",
-    "text": "Announcements\n\nLabs begin next week."
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#algorithm-analysis",
-    "href": "slides/01_wed_runtime.html#algorithm-analysis",
-    "title": "Analysis",
-    "section": "Algorithm Analysis",
-    "text": "Algorithm Analysis\n\nCorrectness — Does it work?\nEfficiency — How long? How much memory?\n\n\n“This week: efficiency. Next week: proving correctness.”"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#the-shazam-lesson-fin",
-    "href": "slides/01_wed_runtime.html#the-shazam-lesson-fin",
-    "title": "Analysis",
-    "section": "The Shazam Lesson – Fin",
-    "text": "The Shazam Lesson – Fin\nNaive search: “Linear” — too slow\nHash lookup: “Constant” — instant\n\n\n\nDatabase size\nLinear search\nHash lookup\n\n\n\n\n1,000\n1 sec\n0.001 sec\n\n\n1,000,000\n1000 sec\n0.001 sec\n\n\n100,000,000\n27 hours\n0.001 sec\n\n\n\n\n“Today: How do we figure out which is which?”"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#how-does-shazam-actually-work",
-    "href": "slides/01_wed_runtime.html#how-does-shazam-actually-work",
-    "title": "Analysis",
-    "section": "How does Shazam actually work?",
-    "text": "How does Shazam actually work?\n\n\n\n\n\n\n\nshazam\n\n\ncluster_fingerprint\n\nAudio Fingerprinting\n\n\n\naudio\n\n3 sec audio\n\n\n\nspec\n\nSpectrogram\n\n\n\naudio-&gt;spec\n\n\n\n\n\nland\n\nLandmarks\n\n\n\nspec-&gt;land\n\n\n\n\n\nhash\n\nHash\n\n\n\nland-&gt;hash\n\n\n\n\n\ntable\n\n\nHash Table\nLookup\n\n\n\nhash-&gt;table\n\n\n\n\n\nresult\n\nSong Found!\n\n\n\ntable-&gt;result\n\n\n\n\n\n\n\n\n\n\n\n“Hash table lookup doesn’t depend on the size of the database.”\nO(1) — constant time.\n“We’ll learn how in Week 5.”"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#speed-matters-in-surprising-places",
-    "href": "slides/01_wed_runtime.html#speed-matters-in-surprising-places",
-    "title": "Analysis",
-    "section": "Speed matters in surprising places",
-    "text": "Speed matters in surprising places\nIt’s not just Shazam!\n\n\nYouTube\n800 million videos\nEvery search: &lt; 0.5 sec\nLinear search would take hours\n\nGenomics\nHuman genome: 3 billion base pairs\nFinding a gene sequence\nNaive: days → Real tools: seconds\n\nPandemic response\n330 million people\nContact tracing within 2 connections\nRelationships grow exponentially\n\n\n\nAs data grows, bad algorithms become impossible."
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#measuring-the-value-of-algorithms",
-    "href": "slides/01_wed_runtime.html#measuring-the-value-of-algorithms",
-    "title": "Analysis",
-    "section": "Measuring the value of algorithms",
-    "text": "Measuring the value of algorithms\nSuppose you have two correct algorithms that solve the same problem — which is better?\n\nUse different metrics — time, space most common\nExpress ________ as a (positive) function:\n\n \n \n\nForm of function depends on structure of the algorithm:\n\n\n“time” and “space” are the two main metrics.\n“Express WHAT as a function?” → Let them say “running time” or “work”\nWe’ll write T(n) — running time as a function of input size n."
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#intro-to-analysis",
-    "href": "slides/01_wed_runtime.html#intro-to-analysis",
-    "title": "Analysis",
-    "section": "Intro to Analysis",
-    "text": "Intro to Analysis\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n…\n99,999,999\n\n\n\n\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n…\n🎵\n\n\n\n\nDo you have any questions about the Python?\nHow long does it take to run (in seconds)?\n\n\n“Is this correct?” (Yes)\n“Is this efficient?” (Let’s see…)\n“How long does it take?”"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#what-might-determine-the-running-time",
-    "href": "slides/01_wed_runtime.html#what-might-determine-the-running-time",
-    "title": "Analysis",
-    "section": "What might determine the running time?",
-    "text": "What might determine the running time?\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n…\n99,999,999\n\n\n\n\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n🎵\n…\n🎵\n\n\n\nWhat factors affect how long find_song_naive takes?\n\n\n\n\n\n\nThey’ll say: “It depends!”\n“What does it depend on?”\nLet them generate: size of database, where the song is, machine speed…\nGuide to: we care about SIZE. That’s the input to our algorithm."
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#discussion-results",
-    "href": "slides/01_wed_runtime.html#discussion-results",
-    "title": "Analysis",
-    "section": "Discussion results…",
-    "text": "Discussion results…\n\n\nMachine speed\nA faster computer runs the same code faster.\n\nBut that’s not about the algorithm.\n\n\nLocation of song\nAt the front? Quick!\nAt the end? Slow.\nNot there at all? Slowest.\n\nSize of database\n100 songs vs 100 million songs\n\nThis is the big one.\n\n\n\nWe want to characterize the algorithm, not the machine or our luck.\n\n“Which should we focus on for algorithm analysis?”\nMachine speed varies (not about the algorithm). Location varies (best case vs worst case). Size is the INPUT.\n“We parameterize by n.”\nwrite T(n) running time on input of size n.  T(n) is a function!"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#aside-for-cases",
-    "href": "slides/01_wed_runtime.html#aside-for-cases",
-    "title": "Analysis",
-    "section": "Aside for Cases",
-    "text": "Aside for Cases\n\n\n\n\n\n\n\nBest case: minimum running time over all inputs\nWorst case: maximum running time over all inputs\nAverage case: expected running time (needs probability)\n\n\n“The answer depends on the input!”\nBest case: 1 Worst case: n Average case: (1+2+…+n)/n = (n+1)/2 ≈ n/2\n“Which should we report?”\nwe will do worst case, almost always."
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#back-to-tn",
-    "href": "slides/01_wed_runtime.html#back-to-tn",
-    "title": "Analysis",
-    "section": "Back to \\(T(n)\\)",
-    "text": "Back to \\(T(n)\\)\n\n\n\n\n\n\n\nWhat’s a good name?\nWhat’s a good expression for running time? \\(T(n) =\\)\n\n\nWhat construct do we have that characterizes functions in a way that ignores constants?\n\n“Does the 2 matter?”\nAt n = 1,000,000: 2n ≈ n. Constants are noise.\nThe SHAPE matters: linear.\nwhat construct do we have that characterizes functions in a way that ignores constants?"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#the-definition-of-big-o",
-    "href": "slides/01_wed_runtime.html#the-definition-of-big-o",
-    "title": "Analysis",
-    "section": "The Definition of Big-O",
-    "text": "The Definition of Big-O\n\\(f(n)\\) is \\(O(g(n))\\) if there exist constants \\(c &gt; 0\\) and \\(n_0 \\geq 0\\) such that:\n\\[f(n) \\leq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\n\n\n\n\n\n\n\n\n\n“In words: f grows no faster than g, once n is big enough.”"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#other-definitions",
-    "href": "slides/01_wed_runtime.html#other-definitions",
-    "title": "Analysis",
-    "section": "Other Definitions",
-    "text": "Other Definitions\n\\(f(n)\\) is \\(O(g(n))\\) if there exist constants \\(c &gt; 0\\) and \\(n_0 \\geq 0\\) such that:\n\\[f(n) \\leq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\\(f(n)\\) is \\(\\Omega(g(n))\\) if there exist constants \\(c &gt; 0\\) and \\(n_0 \\geq 0\\) such that:\n\\[f(n) \\geq c \\cdot g(n) \\quad \\text{for all } n \\geq n_0\\]\n\\(f(n)\\) is \\(\\Theta(g(n))\\) iff it is both \\(O(g(n))\\) and \\(\\Omega(g(n))\\).\n\n“We mostly use O, though we usually mean Θ.”"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#example-1",
-    "href": "slides/01_wed_runtime.html#example-1",
-    "title": "Analysis",
-    "section": "Example 1",
-    "text": "Example 1\n\n\n\n\n\n\n\nPython questions?\nWhat’s the Big-O?\n\n\nOne pass through the array. \\(O(n)\\).\n“We’ll see this again Monday with pandas.”"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#example-2",
-    "href": "slides/01_wed_runtime.html#example-2",
-    "title": "Analysis",
-    "section": "Example 2",
-    "text": "Example 2\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 17th element counted?\nWhat are the values of i and j for the 32nd element counted?\nWhat’s the Big-O?\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet them trace: 16\n“Predict for n = 8?” (64)\nDouble n → QUADRUPLE the work. QUADRATIC. \\(O(n^2)\\)"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#example-3",
-    "href": "slides/01_wed_runtime.html#example-3",
-    "title": "Analysis",
-    "section": "Example 3",
-    "text": "Example 3\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 4th element counted?\nWhat are the values of i and j for the 12th element counted?\nWhat’s the Big-O?\n\n\n\n\n\n\n\n\n\n\n\n\n\ni=0: 0. i=1: 1. i=2: 2. i=3: 3. i=4: 4. Total: 10.\n\\(0 + 1 + 2 + \\ldots + (n-1) = \\frac{n(n-1)}{2}\\)\nStill quadratic! \\(O(n^2)\\)"
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#the-triangle-sum",
-    "href": "slides/01_wed_runtime.html#the-triangle-sum",
-    "title": "Analysis",
-    "section": "The Triangle Sum",
-    "text": "The Triangle Sum\n\\[1 + 2 + 3 + \\ldots + n = \\frac{n(n+1)}{2}\\]\n\n“This is \\(O(n^2)\\), not \\(O(n)\\).”\nWhenever you see “all pairs” — expect quadratic."
-  },
-  {
-    "objectID": "slides/01_wed_runtime.html#next-week",
-    "href": "slides/01_wed_runtime.html#next-week",
-    "title": "Analysis",
-    "section": "Next week",
-    "text": "Next week\nMore analysis"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#announcements",
-    "href": "slides/02_mon_hierarchy.html#announcements",
-    "title": "The Hierarchy of Speed",
-    "section": "Announcements",
-    "text": "Announcements\n\nLabs begin this week!\n\nMonday 1-3pm or Tuesday 4-6pm"
-  },
-  {
-    "objectID": "slides/02_mon_hierarchy.html#rules",
-    "href": "slides/02_mon_hierarchy.html#rules",
-    "title": "The Hierarchy of Speed",
-    "section": "Rules",
-    "text": "Rules\nFor \\(T(n)\\), the running time of an algorithm on input of size \\(n\\)…\n\nConstants don’t matter: \\(5n = O(n)\\)\nLower terms don’t matter: \\(n^2 + n = O(n^2)\\)\nLog base doesn’t matter: \\(log_2 n = O(log_{10}n)\\)\n\n\n“What’s the intuition for #3?”\nAll logs differ by a constant factor. log₂n = log₁₀n / log₁₀2"
-  },
   {
-    "objectID": "slides/02_mon_hierarchy.html#example-1",
-    "href": "slides/02_mon_hierarchy.html#example-1",
-    "title": "The Hierarchy of Speed",
-    "section": "Example 1",
-    "text": "Example 1\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n3\n7\n2\n9\n1\n8\n4\n6\n5\n2\n7\n3\n\n\n\n\nPython questions?\nWhat’s the worst-case running time?\n\n\nOne pass through the array. \\(\\Theta(n)\\), tight.\n“We’ll see this again later with pandas.”"
+    "objectID": "slides/03_wed_recursion.html#two-functions-same-answer",
+    "href": "slides/03_wed_recursion.html#two-functions-same-answer",
+    "title": "Introduction to Recursion",
+    "section": "Two Functions, Same Answer",
+    "text": "Two Functions, Same Answer"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#example-2",
-    "href": "slides/02_mon_hierarchy.html#example-2",
-    "title": "The Hierarchy of Speed",
-    "section": "Example 2",
-    "text": "Example 2\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 17th element counted?\nWhat are the values of i and j for the 32nd element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet them trace: i=2, j=4 for 17th. i=5, j=1 for 32nd.\n“Predict for n = 8?” (64)\nDouble n → QUADRUPLE the work. \\(\\Theta(n^2)\\), tight."
+    "objectID": "slides/03_wed_recursion.html#which-is-faster",
+    "href": "slides/03_wed_recursion.html#which-is-faster",
+    "title": "Introduction to Recursion",
+    "section": "Which is Faster?",
+    "text": "Which is Faster?\nBoth compute the same answer.\nBut the recursive structures are different:\n\ntriangle(n): makes \\(n\\) recursive calls\ntriangle_fast(n): makes \\(\\log_2(n)\\) recursive calls\n\n\nLet’s race them!"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#example-3",
-    "href": "slides/02_mon_hierarchy.html#example-3",
-    "title": "The Hierarchy of Speed",
-    "section": "Example 3",
-    "text": "Example 3\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 4th element counted?\nWhat are the values of i and j for the 12th element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\ni=2: j=0,1 (2 elements). i=3: j=0,1,2 (3 elements). So 4th is i=3, j=0.\n\\(0 + 1 + 2 + \\ldots + (n-1) = n(n-1)/2\\)\nStill \\(\\Theta(n^2)\\), tight! The triangle is half the square."
+    "objectID": "slides/03_wed_recursion.html#the-race-1",
+    "href": "slides/03_wed_recursion.html#the-race-1",
+    "title": "Introduction to Recursion",
+    "section": "The Race",
+    "text": "The Race\n\n\n\n\n\n\n\n“Same answer. Wildly different performance. That’s the power of choosing the right decomposition.”"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#the-two-pillars",
-    "href": "slides/02_mon_hierarchy.html#the-two-pillars",
-    "title": "The Hierarchy of Speed",
-    "section": "The Two Pillars",
-    "text": "The Two Pillars\n\nCorrectness — Does it work?\nEfficiency — How fast?\n\n\n“Last week: efficiency. This week: we add correctness.”"
+    "objectID": "slides/03_wed_recursion.html#why-so-different",
+    "href": "slides/03_wed_recursion.html#why-so-different",
+    "title": "Introduction to Recursion",
+    "section": "Why So Different?",
+    "text": "Why So Different?\ntriangle(n): \\(f(n) = f(n-1) + n\\)\n\nRecursion depth: \\(n\\)\nTotal calls: \\(n\\)\n\ntriangle_fast(n): \\(f(n) = 2 \\cdot f(n/2) + (n/2)^2\\)\n\nRecursion depth: \\(\\log_2(n)\\)\nTotal calls: \\(\\log_2(n)\\)\n\n\n“Linear depth vs logarithmic depth. At n=50000, that’s 50000 vs ~16.”"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#the-analysis-recipe",
-    "href": "slides/02_mon_hierarchy.html#the-analysis-recipe",
-    "title": "The Hierarchy of Speed",
-    "section": "The Analysis Recipe",
-    "text": "The Analysis Recipe\n\nEstablish the case — usually worst case\nAnalyze the function — count operations for that case\nState the bound:\n\n\\(\\Theta\\) (or “tight \\(O\\)”) if you know it’s exact\n\\(O\\) if you’re only claiming an upper bound\n\\(\\Omega\\) if you’re only claiming a lower bound\n\n\n\n“When we say ‘binary search is \\(O(\\log n)\\)’ we mean it’s tight — \\(\\Theta(\\log n)\\). We’re not hedging.”\n“First: which case? Then: what’s the function? Then: is it tight or just a bound?”"
+    "objectID": "slides/03_wed_recursion.html#recursion-is-about-decomposition",
+    "href": "slides/03_wed_recursion.html#recursion-is-about-decomposition",
+    "title": "Introduction to Recursion",
+    "section": "Recursion is About Decomposition",
+    "text": "Recursion is About Decomposition\nThe same problem can have multiple recursive structures.\nDifferent structures lead to different code and different performance.\n\nThis is the heart of algorithm design.\n\n“This is why we study algorithms, not just ‘how to code’. The structure matters.”"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#big-o-is-a-set",
-    "href": "slides/02_mon_hierarchy.html#big-o-is-a-set",
-    "title": "The Hierarchy of Speed",
-    "section": "Big-\\(O\\) is a Set",
-    "text": "Big-\\(O\\) is a Set\n\\(O(g(n))\\) is the set of all functions \\(f(n)\\) satisfying the definition.\n\\[O(n) = \\{f(n) : \\exists c &gt; 0, n_0 \\geq 0 \\text{ such that } f(n) \\leq c \\cdot n \\text{ for all } n \\geq n_0\\}\\]\n\n“From discrete math: Big-O defines a SET of functions.”"
+    "objectID": "slides/03_wed_recursion.html#the-connection-to-induction",
+    "href": "slides/03_wed_recursion.html#the-connection-to-induction",
+    "title": "Introduction to Recursion",
+    "section": "The Connection to Induction",
+    "text": "The Connection to Induction\nYou already know recursion from math:\n\n\n\nMath (Induction)\nCode (Recursion)\n\n\n\n\nBase case\nif n == 0: return ...\n\n\nInductive hypothesis\nRecursive call\n\n\nInductive step\nCombine result with current\n\n\n\n\n“If you can prove it by induction, you can compute it by recursion.”"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#the-ladder",
-    "href": "slides/02_mon_hierarchy.html#the-ladder",
-    "title": "The Hierarchy of Speed",
-    "section": "The Ladder",
-    "text": "The Ladder\n\\[O(1) \\subset O(\\log n) \\subset O(n) \\subset O(n \\log n) \\subset O(n^2) \\subset O(2^n)\\]\nEach class contains all the ones to its left.\n\n“Every \\(O(1)\\) function is also \\(O(n)\\), also \\(O(n^2)\\), etc.”"
+    "objectID": "slides/03_wed_recursion.html#whats-next",
+    "href": "slides/03_wed_recursion.html#whats-next",
+    "title": "Introduction to Recursion",
+    "section": "What’s Next",
+    "text": "What’s Next\n\nLab 3: Writing recursive functions\nWeek 4: Analyzing recursive running times (recurrences)\nLater: Divide-and-conquer algorithms (merge sort, quicksort)\n\nThe triangle race was a preview: smart decomposition → fast algorithms."
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
-    "href": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
-    "title": "The Hierarchy of Speed",
-    "section": "A Common Abuse of Notation",
-    "text": "A Common Abuse of Notation\nWe write: \\(\\quad 4n + 2 = O(n)\\)\nWe mean: \\(\\quad 4n + 2 \\in O(n)\\)\n\n“You’ll see this everywhere. Just remember: we’re really talking about set membership.”"
+    "objectID": "slides/03_wed_recursion.html#summary",
+    "href": "slides/03_wed_recursion.html#summary",
+    "title": "Introduction to Recursion",
+    "section": "Summary",
+    "text": "Summary\n\nRecursion: A function defined in terms of itself\nBase case: When to stop\nRecursive case: How to reduce the problem\nKey insight: The same problem can have different recursive structures\nPerformance: Structure choice affects speed dramatically"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#true-or-false",
-    "href": "slides/02_mon_hierarchy.html#true-or-false",
-    "title": "The Hierarchy of Speed",
-    "section": "True or False?",
-    "text": "True or False?\n\n\\(3n + 2 \\in O(n)\\)\n\\(3n + 2 \\in O(n^2)\\)\n\\(n^2 \\in O(n)\\)\n\\(5 \\in O(1)\\)\n\\(5 \\in O(n)\\)\n\n\nT, T, F, T, T\n“If \\(f \\in O(g)\\) and \\(O(g) \\subset O(h)\\), then \\(f \\in O(h)\\).”\n“Let’s see what these mean at scale.”"
+    "objectID": "slides/03_wed_recursion.html#questions",
+    "href": "slides/03_wed_recursion.html#questions",
+    "title": "Introduction to Recursion",
+    "section": "Questions?",
+    "text": "Questions?\n\nTwo decompositions.\nSame answer.\nVery different performance."
   },
   {
     "objectID": "slides/AA_XXX_hierarchy.html#patterns",
