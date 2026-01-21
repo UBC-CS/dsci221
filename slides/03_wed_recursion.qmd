@@ -58,8 +58,30 @@ For $n = 13$:
 
 $$1 + 2 + 3 + \ldots + 13 = 91 \text{ gifts}$$
 
+You've seen the closed form: $\frac{n(n+1)}{2}$
+
+## Proving the Closed Form
+
+**Claim**: $f(n) = \frac{n(n+1)}{2}$ where $f(n) = 1 + 2 + \ldots + n$
+
+We'll prove this by induction.
+
+## Proof by Induction
+
+Consider an arbitrary $n >= 0$.  Then consider the following cases:
+
+**Case 1, $n = 0$** (base case): $f(0) = 0 = \frac{0 \cdot 1}{2}$ ✓
+
+**Case 2, $n>0$** (inductive case):
+
+Assume for any $0 < j < n$, $f(j) = \frac{j(j+1)}{2}$ (Inductive Hypothesis)
+
+$f(n) = f(n-1) + n$ by definition.
+$f(n-1) = \frac{(n-1)(n)}{2}$ by IH, since $n-1 < n$.
+$f(n) = \frac{(n-1)(n)}{2} + n = \frac{(n)(n+1)}{2}$ by algebra. ✓
+
 :::{.notes}
-"You might remember the formula n(n+1)/2. But let's think about this differently."
+"Notice: the inductive step assumes f(k) works and uses it. Just like recursion!"
 :::
 
 # Recursive Thinking
@@ -86,17 +108,19 @@ $$f(n) = \begin{cases} 0 & \text{if } n = 0 \\ f(n-1) + n & \text{if } n > 0 \en
 "This is a recursive definition. The function is defined in terms of itself."
 :::
 
-## Unrolling the Definition
+## Induction = Recursion
 
-$$f(4) = f(3) + 4$$
-$$= (f(2) + 3) + 4$$
-$$= ((f(1) + 2) + 3) + 4$$
-$$= (((f(0) + 1) + 2) + 3) + 4$$
-$$= (((0 + 1) + 2) + 3) + 4$$
-$$= 10$$
+| Induction | Recursion |
+|-----------|-----------|
+| Consider arbitrary $n \geq 0$ | `def f(n):` |
+| Case $n = 0$: prove directly | `if n == 0: return 0` |
+| Case $n > 0$: assume $P(j)$ for $j < n$ | Trust `f(n-1)` works |
+| Prove $P(n)$ using IH | Compute `f(n)` using `f(n-1)` |
+
+**Same structure. Same reasoning.**
 
 :::{.notes}
-"Each step substitutes the definition until we hit the base case."
+"If you can prove it by induction, you can compute it by recursion. They're the same thing."
 :::
 
 # The Triangle
@@ -108,9 +132,9 @@ $$= 10$$
 #| fig-align: center
 import matplotlib.pyplot as plt
 
-fig, ax = plt.subplots(figsize=(6, 5))
+fig, ax = plt.subplots(figsize=(8, 7))
 
-n = 5
+n = 8
 for row in range(n):
     for col in range(row + 1):
         circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
@@ -121,7 +145,7 @@ ax.set_xlim(0, n)
 ax.set_ylim(0, n)
 ax.set_aspect('equal')
 ax.axis('off')
-plt.title(f'Triangle with n = {n} rows\nTotal dots = 1 + 2 + 3 + 4 + 5 = 15', fontsize=14)
+plt.title(f'Triangle with n = {n} rows\nTotal dots = 1 + 2 + ... + 8 = 36', fontsize=14)
 plt.tight_layout()
 plt.show()
 ```
@@ -133,9 +157,9 @@ plt.show()
 #| fig-align: center
 import matplotlib.pyplot as plt
 
-fig, ax = plt.subplots(figsize=(6, 5))
+fig, ax = plt.subplots(figsize=(8, 7))
 
-n = 5
+n = 8
 for row in range(n):
     for col in range(row + 1):
         if row == n - 1:  # Bottom row
@@ -263,6 +287,78 @@ $$f(n) = 2 \cdot f(n/2) + (n/2)^2$$
 "Same problem, different recursive structure!"
 :::
 
+## Split Anywhere!
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+fig, ax = plt.subplots(figsize=(8, 7))
+
+n = 8
+k = 5  # Split at row 5
+
+for row in range(n):
+    for col in range(row + 1):
+        if row < n - k:  # Top triangle (rows 0 to n-k-1)
+            color = '#3498db'  # Blue - f(n-k)
+        elif col < n - k:  # Middle-left rectangle
+            color = '#2ecc71'  # Green - k*(n-k)
+        else:  # Bottom-right triangle
+            color = '#e74c3c'  # Red - f(k)
+
+        circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
+                            facecolor=color, edgecolor='#2c3e50', linewidth=1.5)
+        ax.add_patch(circle)
+
+# Add dividing lines
+ax.axhline(y=k, color='black', linewidth=2, linestyle='--')
+ax.axvline(x=n-k, ymin=0, ymax=k/n, color='black', linewidth=2, linestyle='--')
+
+ax.set_xlim(0, n)
+ax.set_ylim(0, n)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.title('Split at any k (here k = 5)', fontsize=14)
+plt.tight_layout()
+plt.show()
+```
+
+## The General Decomposition
+
+For any $0 < k < n$:
+
+$$f(n) = f(n-k) + k \cdot (n-k) + f(k)$$
+
+- **Blue**: Top triangle with $n-k$ rows → $f(n-k)$ dots
+- **Green**: Rectangle of size $k \times (n-k)$ → $k(n-k)$ dots
+- **Red**: Bottom-right triangle with $k$ rows → $f(k)$ dots
+
+. . .
+
+**The insight**: There are infinitely many valid decompositions!
+
+## But Wait... Base Cases?
+
+With $f(n) = f(n-k) + k(n-k) + f(k)$ and $k = 5$:
+
+- $f(8) = f(3) + 5 \cdot 3 + f(5)$
+- $f(5) = f(0) + 5 \cdot 0 + f(5)$ ... infinite loop!
+
+. . .
+
+We need base cases for $f(0), f(1), \ldots, f(k)$.
+
+. . .
+
+**Lesson**: Your base cases must cover everything your recursion can reach.
+
+:::{.notes}
+"The quadrant decomposition (k = n/2) only needs f(0) and f(1). This k=5 split needs base cases for 0 through 5. More base cases = more work to verify."
+:::
+
 ## The Divide-and-Conquer Code
 
 ```python
@@ -385,9 +481,10 @@ You already know recursion from math:
 
 | Math (Induction) | Code (Recursion) |
 |------------------|------------------|
-| Base case | `if n == 0: return ...` |
-| Inductive hypothesis | Recursive call |
-| Inductive step | Combine result with current |
+| Consider arbitrary $n$ | `def f(n):` |
+| Case $n = 0$ | `if n == 0: return ...` |
+| Case $n > 0$: assume for $j < n$ | Trust recursive call |
+| Prove for $n$ | Combine result with current |
 
 :::{.notes}
 "If you can prove it by induction, you can compute it by recursion."
