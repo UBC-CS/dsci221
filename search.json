@@ -1067,11 +1067,11 @@
     "text": "Let’s Run It"
   },
   {
-    "objectID": "slides/03_wed_recursion.html#the-call-stack",
-    "href": "slides/03_wed_recursion.html#the-call-stack",
+    "objectID": "slides/03_wed_recursion.html#trust-the-recursion-fairy",
+    "href": "slides/03_wed_recursion.html#trust-the-recursion-fairy",
     "title": "Introduction to Recursion",
-    "section": "The Call Stack",
-    "text": "The Call Stack\nCalling triangle(4):\ntriangle(4)\n  → triangle(3) + 4\n      → triangle(2) + 3\n          → triangle(1) + 2\n              → triangle(0) + 1\n                  → 0\n              ← 0 + 1 = 1\n          ← 1 + 2 = 3\n      ← 3 + 3 = 6\n  ← 6 + 4 = 10\n\n“Each call waits for the recursive call to return, then adds n.”"
+    "section": "Trust the Recursion Fairy",
+    "text": "Trust the Recursion Fairy\nWhen you write triangle(n - 1), trust that it works.\nDon’t trace through every call. Just ask:\n\nDoes my base case return the right thing?\nIf triangle(n-1) magically gives me the right answer, does my code use it correctly?\n\n\n“The recursion fairy handles the recursive call. You just handle your level.”"
   },
   {
     "objectID": "slides/03_wed_recursion.html#same-triangle-different-view",

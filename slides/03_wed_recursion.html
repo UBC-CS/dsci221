@@ -335,7 +335,7 @@
 </section>
 <section id="visualizing-the-sum" class="slide level2">
 <h2>Visualizing the Sum</h2>
-<div id="83dde0d8" class="cell" data-execution_count="1">
+<div id="bd7bfaac" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -347,7 +347,7 @@
 </section>
 <section id="the-recursive-structure-peel-bottom-row" class="slide level2">
 <h2>The Recursive Structure: Peel Bottom Row</h2>
-<div id="b2c52a0e" class="cell" data-execution_count="2">
+<div id="c53531e6" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -408,21 +408,16 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
 </script>
 </div>
 </section>
-<section id="the-call-stack" class="slide level2">
-<h2>The Call Stack</h2>
-<p>Calling <code>triangle(4)</code>:</p>
-<pre><code>triangle(4)
-  → triangle(3) + 4
-      → triangle(2) + 3
-          → triangle(1) + 2
-              → triangle(0) + 1
-                  → 0
-              ← 0 + 1 = 1
-          ← 1 + 2 = 3
-      ← 3 + 3 = 6
-  ← 6 + 4 = 10</code></pre>
+<section id="trust-the-recursion-fairy" class="slide level2">
+<h2>Trust the Recursion Fairy</h2>
+<p>When you write <code>triangle(n - 1)</code>, <strong>trust that it works</strong>.</p>
+<p>Don’t trace through every call. Just ask:</p>
+<ol type="1">
+<li>Does my base case return the right thing?</li>
+<li>If <code>triangle(n-1)</code> magically gives me the right answer, does my code use it correctly?</li>
+</ol>
 <aside class="notes">
-<p>“Each call waits for the recursive call to return, then adds n.”</p>
+<p>“The recursion fairy handles the recursive call. You just handle your level.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -443,7 +438,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
 <section id="same-triangle-different-view" class="slide level2">
 <h2>Same Triangle, Different View</h2>
 <p>What if we split the triangle differently?</p>
-<div id="d5762f42" class="cell" data-execution_count="3">
+<div id="cee8cf01" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -478,11 +473,11 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
 </section>
 <section id="the-divide-and-conquer-code" class="slide level2">
 <h2>The Divide-and-Conquer Code</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> triangle_fast(n):</span>
-<span id="cb3-2"><a></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
-<span id="cb3-3"><a></a>        <span class="cf">return</span> n</span>
-<span id="cb3-4"><a></a>    half <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
-<span id="cb3-5"><a></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> triangle_fast(half) <span class="op">+</span> half <span class="op">*</span> half</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> triangle_fast(n):</span>
+<span id="cb2-2"><a></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb2-3"><a></a>        <span class="cf">return</span> n</span>
+<span id="cb2-4"><a></a>    half <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb2-5"><a></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> triangle_fast(half) <span class="op">+</span> half <span class="op">*</span> half</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>Does it compute the same thing?</p>
 <div>
