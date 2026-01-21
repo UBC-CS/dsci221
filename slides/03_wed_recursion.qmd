@@ -190,25 +190,17 @@ print(f"triangle(5) = {triangle(5)}")
 print(f"triangle(13) = {triangle(13)}")
 ```
 
-## The Call Stack
+## Trust the Recursion Fairy
 
-Calling `triangle(4)`:
+When you write `triangle(n - 1)`, **trust that it works**.
 
-```
-triangle(4)
-  → triangle(3) + 4
-      → triangle(2) + 3
-          → triangle(1) + 2
-              → triangle(0) + 1
-                  → 0
-              ← 0 + 1 = 1
-          ← 1 + 2 = 3
-      ← 3 + 3 = 6
-  ← 6 + 4 = 10
-```
+Don't trace through every call. Just ask:
+
+1. Does my base case return the right thing?
+2. If `triangle(n-1)` magically gives me the right answer, does my code use it correctly?
 
 :::{.notes}
-"Each call waits for the recursive call to return, then adds n."
+"The recursion fairy handles the recursive call. You just handle your level."
 :::
 
 # A Different Decomposition
