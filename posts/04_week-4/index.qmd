@@ -1,13 +1,23 @@
 ---
 title: "Week 4"
 description: >
-  More on {{< iconify fa6-brands python >}} Python classes and an introduction
-  {{< iconify simple-icons:pandas >}} pandas
+  Recurrences and Divide-and-Conquer
 author: "{{< var instructor.name >}}"
-date: 2025-09-22
+date: 2026-01-25
 categories:
   - "weekly announcement"
 draft: true
 ---
 
-This week we will be continuing knitting and learning about Python classes, and then learning about pandas.
+## Office Hours Change
+
+**My Monday 2-3pm office hour is cancelled this week.** Please come to my other office hours or reach out on Piazza if you need help.
+
+## This Week
+
+We continue with recursion and begin analyzing recursive running times using recurrence relations.
+
+## Reminders
+
+- **PA1** is now available - Wolf tracking and the closest pair algorithm
+- **HW1** is due Sunday

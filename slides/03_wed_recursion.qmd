@@ -274,6 +274,11 @@ print(f"\nSpeedup: {t1/t2:.0f}x faster!")
 
 :::{.notes}
 "Same answer. Wildly different performance. That's the power of choosing the right decomposition."
+
+**INSTRUCTOR NOTE (2026W2)**: After the race, go back and MODIFY `triangle_fast` to call
+`triangle_fast(n//2) + triangle_fast(n//2)` instead of `2 * triangle_fast(n//2)`.
+Race again. The "fast" version becomes SLOWER than the linear one! Students are amazed.
+This sets up the recurrence analysis in Week 4: T(n) = T(n/2) + O(1) vs T(n) = 2T(n/2) + O(1).
 :::
 
 ## Why So Different?
@@ -322,4 +327,20 @@ The triangle race was a preview: smart decomposition → fast algorithms.
 5. **Performance**: Structure choice affects speed dramatically
 
 ## Questions?
+
+:::{.notes}
+**INSTRUCTOR NOTE (2026W2)**: End the lecture with the "this was all non-sense" moment.
+
+Ask: "This whole day has been non-sense. Why?"
+
+Wait for responses:
+- Student: "We could have done this iteratively" → "Yes, but that would be essentially the same..."
+- Student: "We know the closed form!!" → BINGO!
+
+Close with: "You could have written a function with NO recursion, NO iteration at all...
+just `return n * (n + 1) // 2`. Sometimes the best algorithm is no algorithm."
+
+This lands the punch that understanding the MATH lets you avoid computation entirely.
+Sets up the theme: data structures and algorithms are about being clever, not brute force.
+:::
 
