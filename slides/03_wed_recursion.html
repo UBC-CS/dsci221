@@ -209,7 +209,7 @@
 </section>
 <section id="the-recursive-structure-peel-bottom-row" class="slide level2">
 <h2>The Recursive Structure: Peel Bottom Row</h2>
-<div id="40c11fec" class="cell" data-execution_count="1">
+<div id="a9c2c09e" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -377,7 +377,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRyaWFuZ2xlKG4pOlxu
 <section id="same-triangle-different-view" class="slide level2">
 <h2>Same Triangle, Different View</h2>
 <p>What if we split the triangle differently?</p>
-<div id="573d959e" class="cell" data-execution_count="2">
+<div id="6c167a74" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -453,6 +453,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDUwMDAwXG5wcmludChm
 </div>
 <aside class="notes">
 <p>“Same answer. Wildly different performance. That’s the power of choosing the right decomposition.”</p>
+<p><strong>INSTRUCTOR NOTE (2026W2)</strong>: After the race, go back and MODIFY <code>triangle_fast</code> to call <code>triangle_fast(n//2) + triangle_fast(n//2)</code> instead of <code>2 * triangle_fast(n//2)</code>. Race again. The “fast” version becomes SLOWER than the linear one! Students are amazed. This sets up the recurrence analysis in Week 4: T(n) = T(n/2) + O(1) vs T(n) = 2T(n/2) + O(1).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -531,6 +532,23 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDUwMDAwXG5wcmludChm
 </section>
 <section id="questions" class="slide level2">
 <h2>Questions?</h2>
+<aside class="notes">
+<p><strong>INSTRUCTOR NOTE (2026W2)</strong>: End the lecture with the “this was all non-sense” moment.</p>
+<p>Ask: “This whole day has been non-sense. Why?”</p>
+<p>Wait for responses: - Student: “We could have done this iteratively” → “Yes, but that would be essentially the same…” - Student: “We know the closed form!!” → BINGO!</p>
+<p>Close with: “You could have written a function with NO recursion, NO iteration at all… just <code>return n * (n + 1) // 2</code>. Sometimes the best algorithm is no algorithm.”</p>
+<p>This lands the punch that understanding the MATH lets you avoid computation entirely. Sets up the theme: data structures and algorithms are about being clever, not brute force.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 <script type="pyodide-data">
