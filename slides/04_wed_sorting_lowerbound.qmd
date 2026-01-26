@@ -1,0 +1,296 @@
+---
+title: "The Sorting Lower Bound"
+subtitle: "Week 4, Wednesday"
+date: 2026-01-28
+---
+
+# The Big Question
+
+## Can We Do Better?
+
+We've seen:
+
+- Insertion sort: $O(n^2)$
+- Selection sort: $O(n^2)$
+- Merge sort: $O(n \log n)$
+
+**Question**: Is $O(n \log n)$ the best we can do?
+
+Or is there some clever algorithm that sorts in $O(n)$?
+
+## The Surprising Answer
+
+**Theorem**: Any comparison-based sorting algorithm requires $\Omega(n \log n)$ comparisons in the worst case.
+
+This means:
+
+- Merge sort is **optimal**
+- No comparison sort can do better
+- $O(n \log n)$ is a fundamental barrier
+
+:::{.notes}
+"This is one of the most beautiful results in CS: we can prove a lower bound on ALL possible algorithms, not just the ones we know about."
+:::
+
+# Decision Trees
+
+## The Key Idea
+
+Every comparison-based sort makes decisions by comparing pairs of elements:
+
+```
+if arr[i] < arr[j]:
+    ...
+else:
+    ...
+```
+
+We can model the algorithm as a **binary tree** of decisions.
+
+## Example: Sorting 3 Elements
+
+Suppose we want to sort $[a, b, c]$.
+
+```
+                    a < b?
+                   /     \
+                yes       no
+               /           \
+           b < c?          a < c?
+          /    \          /    \
+        yes    no       yes    no
+        /       \       /       \
+   [a,b,c]    a < c?  [b,a,c]   b < c?
+              /   \            /   \
+            yes   no         yes   no
+            /      \         /      \
+        [a,c,b]  [c,a,b]  [b,c,a]  [c,b,a]
+```
+
+## What the Tree Represents
+
+- **Internal nodes**: Comparisons (questions)
+- **Edges**: Answers (yes/no, or $\leq$ / $>$)
+- **Leaves**: Output permutations
+
+**Key insight**: Each possible input ordering must lead to a different leaf!
+
+## Counting Leaves
+
+For $n$ elements, there are $n!$ possible input orderings.
+
+Each ordering needs its own leaf (otherwise we'd give the same answer for different inputs).
+
+**So**: The decision tree must have **at least $n!$ leaves**.
+
+# The Lower Bound Proof
+
+## Height of a Binary Tree
+
+**Fact**: A binary tree of height $h$ has at most $2^h$ leaves.
+
+**Proof**:
+- Height 0: 1 leaf ($2^0$)
+- Height 1: 2 leaves ($2^1$)
+- Height $h$: at most $2^h$ leaves
+
+## Connecting Height to Comparisons
+
+The **height** of the decision tree = **maximum number of comparisons** in the worst case.
+
+If the tree has height $h$, then:
+
+- At most $2^h$ leaves
+- We need at least $n!$ leaves
+
+Therefore: $2^h \geq n!$
+
+Taking logarithms: $h \geq \log_2(n!)$
+
+## How Big is $\log(n!)$?
+
+**Stirling's approximation**: $n! \approx \sqrt{2\pi n} \left(\frac{n}{e}\right)^n$
+
+Therefore:
+
+$$\log_2(n!) \approx n \log_2 n - n \log_2 e + O(\log n)$$
+
+**Simplifying**: $\log_2(n!) = \Theta(n \log n)$
+
+## The Theorem
+
+**Theorem**: Any comparison-based sorting algorithm requires $\Omega(n \log n)$ comparisons in the worst case.
+
+**Proof**:
+
+1. Model the algorithm as a decision tree
+2. The tree needs at least $n!$ leaves
+3. A tree with $\geq n!$ leaves has height $\geq \log_2(n!)$
+4. $\log_2(n!) = \Theta(n \log n)$
+5. Therefore, worst-case comparisons $\geq \Omega(n \log n)$ ∎
+
+:::{.notes}
+"This proof is remarkable: we didn't analyze any specific algorithm. We proved a limit on ALL possible comparison-based sorting algorithms!"
+:::
+
+## What This Means
+
+| Algorithm | Worst Case | Optimal? |
+|-----------|-----------|----------|
+| Merge Sort | $O(n \log n)$ | **Yes!** |
+| Heap Sort | $O(n \log n)$ | **Yes!** |
+| Quick Sort | $O(n^2)$ | No (but avg is optimal) |
+| Insertion Sort | $O(n^2)$ | No |
+
+**Merge sort achieves the theoretical limit.**
+
+# Breaking the Barrier?
+
+## A Loophole
+
+The lower bound applies to **comparison-based** sorts.
+
+What if we don't compare elements?
+
+## Counting Sort: When Elements are Small Integers
+
+**Idea**: If elements are integers in range $[0, k]$, count occurrences!
+
+```{pyodide}
+def counting_sort(arr, k):
+    """Sort integers in range [0, k]."""
+    counts = [0] * (k + 1)
+    for x in arr:
+        counts[x] += 1
+
+    result = []
+    for i in range(k + 1):
+        result.extend([i] * counts[i])
+    return result
+```
+
+## Counting Sort in Action
+
+```{pyodide}
+arr = [4, 2, 0, 3, 2, 1, 4, 2]
+print(f"Original: {arr}")
+print(f"Sorted:   {counting_sort(arr, 4)}")
+```
+
+**Running time**: $O(n + k)$
+
+If $k = O(n)$, this is $O(n)$—**linear time**!
+
+## The Catch
+
+Counting sort requires:
+
+- Elements must be integers (or convertible to integers)
+- Range $k$ must be known and reasonable
+- Uses $O(k)$ extra space
+
+**Not a general-purpose sort**—but incredibly useful when it applies!
+
+## Other Linear-Time Sorts
+
+| Algorithm | Constraint | Time |
+|-----------|------------|------|
+| Counting Sort | Integers in $[0, k]$ | $O(n + k)$ |
+| Radix Sort | Fixed-width integers | $O(d \cdot n)$ |
+| Bucket Sort | Uniformly distributed | $O(n)$ expected |
+
+All exploit **extra structure** in the input.
+
+# The Sorting Landscape
+
+## Summary of Sorting Algorithms
+
+```{python}
+#| echo: false
+import pandas as pd
+from IPython.display import HTML
+
+data = {
+    'Algorithm': ['Merge Sort', 'Heap Sort', 'Quick Sort', 'Insertion Sort', 'Counting Sort'],
+    'Best': ['n log n', 'n log n', 'n log n', 'n', 'n + k'],
+    'Worst': ['n log n', 'n log n', 'n²', 'n²', 'n + k'],
+    'Stable': ['Yes', 'No', 'No', 'Yes', 'Yes'],
+    'In-place': ['No', 'Yes', 'Yes', 'Yes', 'No'],
+}
+df = pd.DataFrame(data)
+print(df.to_string(index=False))
+```
+
+## Python's Timsort
+
+Python's built-in `sorted()` uses **Timsort**:
+
+- Hybrid of merge sort and insertion sort
+- Exploits "runs" of already-sorted data
+- $O(n \log n)$ worst case
+- $O(n)$ on nearly-sorted data
+- Stable
+
+**In practice**: Just use `sorted()`!
+
+:::{.notes}
+"Timsort is named after Tim Peters, who designed it for Python in 2002. It's now used in Java, Android, and many other systems."
+:::
+
+# Connection to This Course
+
+## Why This Matters
+
+1. **Lower bounds** tell us when to stop searching for better algorithms
+
+2. **The decision tree model** appears again in:
+   - Week 8: Binary search trees
+   - Week 8: Wordle decision trees
+
+3. **Divide-and-conquer analysis** (recurrences) applies to:
+   - PA1: Closest pair
+   - Later: Quick sort, binary search
+
+## The Hierarchy Revisited
+
+| Complexity | Example | Achievable? |
+|------------|---------|-------------|
+| $O(1)$ | Hash lookup | Special cases |
+| $O(\log n)$ | Binary search | Yes |
+| $O(n)$ | Linear scan | Yes |
+| $O(n \log n)$ | Sorting | **Optimal for comparisons** |
+| $O(n^2)$ | All pairs | Sometimes unavoidable |
+
+# Summary
+
+## What We Learned This Week
+
+**Monday**: Merge Sort + Recurrence Forms
+
+- Designed merge sort, saw $T(n) = 2T(n/2) + O(n)$
+- Five recurrence patterns and their solutions
+- Matching algorithms to recurrences
+
+**Tuesday Video**: Solving Recurrences
+
+- Expansion method with formal proofs
+- Recursion tree method
+- Proved merge sort is $O(n \log n)$
+
+**Wednesday**: Lower Bounds
+
+- $\Omega(n \log n)$ is optimal for comparison sorts
+- Decision tree argument
+- Non-comparison sorts can break the barrier
+
+## Looking Ahead
+
+- **PA1**: Due Feb 8 — apply divide-and-conquer to closest pair
+- **EX1**: This week — covers analysis, loop invariants, recursion
+- **Next week**: The dictionary trick — $O(n^2) \to O(n)$ transformations
+
+## Questions?
+
+:::{.notes}
+Good luck on EX1!
+:::

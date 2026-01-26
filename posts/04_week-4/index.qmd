@@ -19,5 +19,5 @@ We continue with recursion and begin analyzing recursive running times using rec
 
 ## Reminders
 
-- **PA1** is now available - Wolf tracking and the closest pair algorithm
+- **PA1** is now available - Bird staging areas and the closest pair algorithm
 - **HW1** is due Sunday

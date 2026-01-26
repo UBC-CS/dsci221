@@ -1,0 +1,887 @@
+---
+title: "Merge Sort and Recurrence Forms"
+subtitle: "Week 4, Monday"
+date: 2026-01-26
+---
+## Announcements
+
+- EX1 this week
+- PA1 released, due Feb 7, 23:59.
+- Lab 3 meets in-person
+
+# Remember the Triangle?
+
+## Last Week's Recursion
+
+We computed $1 + 2 + 3 + \ldots + n$ recursively:
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+
+def draw_triangle_split(ax, n):
+    half = n // 2
+    top = n - half
+
+    for row in range(n):
+        for col in range(row + 1):
+            if row < half:
+                color = '#3498db'  # Blue - top triangle
+            elif col < top:
+                color = '#2ecc71'  # Green - square
+            else:
+                color = '#e74c3c'  # Red - bottom triangle
+
+            circle = plt.Circle((col + 0.5, n - row - 0.5), 0.35,
+                                facecolor=color, edgecolor='#2c3e50', linewidth=1.5)
+            ax.add_patch(circle)
+
+    ax.set_xlim(0, n)
+    ax.set_ylim(0, n)
+    ax.set_aspect('equal')
+    ax.axis('off')
+
+fig, ax = plt.subplots(figsize=(6, 5))
+draw_triangle_split(ax, 8)
+ax.set_title('f(n) = 2·f(n/2) + square\nBlue + Red = 2·f(n/2), Green = square', fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+
+The **mathematical decomposition**: $f(n) = 2 \cdot f(\lfloor n/2 \rfloor) + (n - \lfloor n/2 \rfloor)^2$
+
+## Two Ways to Compute This
+
+```python
+def triangle_fast(n):
+    if n <= 1:
+        return n
+    half = n // 2
+    top = n - half
+    return 2 * triangle_fast(half) + top * top
+```
+
+```python
+def triangle_double(n):
+    if n <= 1:
+        return n
+    half = n // 2
+    top = n - half
+    return triangle_double(half) + triangle_double(half) + top * top
+```
+
+Both compute **the same answer**. But are they equally fast?
+
+## The Critical Distinction
+
+| Code | How many recursive calls? |
+|------|---------------------------|
+| `2 * triangle_fast(half)` | **ONE** call, multiply result by 2 |
+| `triangle_double(half) + triangle_double(half)` | **TWO** calls! |
+
+The **mathematical relationship** is: $f(n) = 2 \cdot f(\lfloor n/2 \rfloor) + (n - \lfloor n/2 \rfloor)^2$
+
+But the **time to compute** depends on **how many recursive calls we make**!
+
+## Today's Question
+
+When we write recursive code, how do we figure out its running time?
+
+**The answer**: We write a **recurrence relation** for $T(n)$, the time.
+
+- `triangle_fast`: $T(n) = T(n/2) + O(1)$ — ONE call
+- `triangle_double`: $T(n) = 2T(n/2) + O(1)$ — TWO calls
+
+Different recurrences → **different running times**!
+
+Let's explore this through another recursive puzzle...
+
+# A Recursive Puzzle
+
+## What Does This Function Do?
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+# Input 1 (5 elements)
+ax.text(0.3, 4.0, 'Input 1:', fontsize=11, fontweight='bold', color='#e67e22')
+left = ['A', 'D', 'G', 'M', 'P']
+for i, val in enumerate(left):
+    rect = mpatches.FancyBboxPatch((i * 0.8 + 1.2, 3.5), 0.7, 0.7,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ffe0b3', edgecolor='#e67e22', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.8 + 1.55, 3.85, val, ha='center', va='center', fontsize=14, fontweight='bold')
+
+# Input 2 (3 elements)
+ax.text(5.8, 4.0, 'Input 2:', fontsize=11, fontweight='bold', color='#3498db')
+right = ['B', 'C', 'K']
+for i, val in enumerate(right):
+    rect = mpatches.FancyBboxPatch((i * 0.8 + 6.7, 3.5), 0.7, 0.7,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#cce5ff', edgecolor='#3498db', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.8 + 7.05, 3.85, val, ha='center', va='center', fontsize=14, fontweight='bold')
+
+# Arrow down to output
+ax.annotate('', xy=(5, 1.5), xytext=(5, 2.8),
+            arrowprops=dict(arrowstyle='->', color='#7f8c8d', lw=2))
+
+# Output (8 elements)
+ax.text(1.5, 1.2, 'Output:', fontsize=11, fontweight='bold', color='#27ae60')
+result = ['A', 'B', 'C', 'D', 'G', 'K', 'M', 'P']
+for i, val in enumerate(result):
+    rect = mpatches.FancyBboxPatch((i * 0.8 + 2.2, 0.5), 0.7, 0.7,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ccffcc', edgecolor='#27ae60', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.8 + 2.55, 0.85, val, ha='center', va='center', fontsize=14, fontweight='bold')
+
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 4.5)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+
+## The Observations
+
+1. Both inputs are **sorted**
+
+2. The output contains **all elements from both inputs**
+
+3. The output is **sorted**
+
+**The function**: Given two sorted lists, produce one sorted list with all elements.
+
+## Let's Think About It
+
+What's the **simplest case**?
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+fig, ax = plt.subplots(figsize=(10, 3.5))
+
+# Input 1 (empty)
+ax.text(0.3, 2.5, 'Input 1:', fontsize=11, fontweight='bold', color='#e67e22')
+ax.text(1.5, 2.5, '[ ]', fontsize=14, fontweight='bold', color='#e67e22', va='center')
+
+# Input 2 (5 elements)
+ax.text(3.5, 2.5, 'Input 2:', fontsize=11, fontweight='bold', color='#3498db')
+input2 = ['A', 'D', 'G', 'M', 'P']
+for i, val in enumerate(input2):
+    rect = mpatches.FancyBboxPatch((i * 0.8 + 4.5, 2.15), 0.7, 0.7,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#cce5ff', edgecolor='#3498db', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.8 + 4.85, 2.5, val, ha='center', va='center', fontsize=14, fontweight='bold')
+
+# Arrow down to output
+ax.annotate('', xy=(4, 1.0), xytext=(4, 1.8),
+            arrowprops=dict(arrowstyle='->', color='#7f8c8d', lw=2))
+
+# Output (same as input 2)
+ax.text(0.3, 0.65, 'Output:', fontsize=11, fontweight='bold', color='#27ae60')
+for i, val in enumerate(input2):
+    rect = mpatches.FancyBboxPatch((i * 0.8 + 1.3, 0.3), 0.7, 0.7,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ccffcc', edgecolor='#27ae60', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.8 + 1.65, 0.65, val, ha='center', va='center', fontsize=14, fontweight='bold')
+
+ax.text(6.0, 0.65, '← just return the other list!', fontsize=11, va='center', color='#27ae60', style='italic')
+
+ax.set_xlim(0, 9)
+ax.set_ylim(0, 3.2)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+What if both lists have elements?
+
+## The Key Insight
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+fig, ax = plt.subplots(figsize=(10, 4))
+
+# Left sorted list
+left = [1, 4, 6, 7]
+ax.text(1.5, 3.5, 'Input 1 (sorted):', fontsize=10, fontweight='bold', color='#e67e22')
+for idx, val in enumerate(left):
+    color = '#ffcc80' if idx == 0 else '#ffe0b3'
+    lw = 3 if idx == 0 else 1.5
+    rect = mpatches.FancyBboxPatch((idx * 0.8 + 0.5, 2.5), 0.7, 0.7,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor=color, edgecolor='#e67e22', linewidth=lw)
+    ax.add_patch(rect)
+    ax.text(idx * 0.8 + 0.85, 2.85, str(val), ha='center', va='center', fontsize=12,
+            fontweight='bold' if idx == 0 else 'normal')
+
+ax.text(0.85, 2.1, '↑ smallest in list 1', fontsize=9, ha='center', color='#e67e22')
+
+# Right sorted list
+right = [2, 3, 5, 8]
+ax.text(6.5, 3.5, 'Input 2 (sorted):', fontsize=10, fontweight='bold', color='#3498db')
+for idx, val in enumerate(right):
+    color = '#99ccff' if idx == 0 else '#cce5ff'
+    lw = 3 if idx == 0 else 1.5
+    rect = mpatches.FancyBboxPatch((idx * 0.8 + 5.5, 2.5), 0.7, 0.7,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor=color, edgecolor='#3498db', linewidth=lw)
+    ax.add_patch(rect)
+    ax.text(idx * 0.8 + 5.85, 2.85, str(val), ha='center', va='center', fontsize=12,
+            fontweight='bold' if idx == 0 else 'normal')
+
+ax.text(5.85, 2.1, '↑ smallest in list 2', fontsize=9, ha='center', color='#3498db')
+
+# The insight
+ax.text(4.2, 2.85, '1 < 2', ha='center', va='center', fontsize=14, fontweight='bold', color='#8e44ad',
+        bbox=dict(boxstyle='round,pad=0.3', facecolor='#f5e6ff', edgecolor='#8e44ad', linewidth=2))
+
+ax.text(4.2, 1.3, '1 is the smallest of ALL elements!', ha='center', fontsize=12, fontweight='bold', color='#27ae60')
+ax.text(4.2, 0.7, 'Put 1 first, then recursively handle the rest...', ha='center', fontsize=11, color='#555')
+
+ax.set_xlim(0, 10)
+ax.set_ylim(0.3, 3.9)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+The smallest element overall must be at the **front of one of the lists**!
+
+
+
+## Live Code: Merge
+
+```{pyodide}
+def merge(left, right):
+    """Merge two sorted lists into one sorted list."""
+    # Base cases - if either list is empty, return the other
+
+    # Recursive case: take the smaller front element and add the merge of rest
+
+```
+
+:::{.notes}
+Guide students to this solution:
+```python
+def merge(left, right):
+    # Base cases
+    if len(left) == 0:
+        return right
+    if len(right) == 0:
+        return left
+
+    # Recursive case: take the smaller front element
+    if left[0] <= right[0]:
+        return [left[0]] + merge(left[1:], right)
+    else:
+        return [right[0]] + merge(left, right[1:])
+```
+:::
+
+## Test It!
+
+```{pyodide}
+left = [1, 4, 6, 7]
+right = [2, 3, 5, 8]
+print(f"Left:   {left}")
+print(f"Right:  {right}")
+print(f"Merged: {merge(left, right)}")
+```
+
+## Merge Running Time
+
+Each recursive call: processes one element.
+
+How many calls? Exactly $n$ (total elements).
+
+**Running time: $O(n)$**
+
+## Why is Merge Correct?
+
+**Induction** on the total size $n = |left| + |right|$.
+
+**Base cases**: If either list is empty, return the other. ✓
+
+**Inductive step**: Assume `merge` works for total size $< n$.
+
+## Merge Correctness: The Key Insight
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+# Left sorted list
+left = [1, 4, 6, 7]
+ax.text(1.5, 4.2, 'left (sorted):', fontsize=10, fontweight='bold', color='#e67e22')
+for idx, val in enumerate(left):
+    color = '#ffcc80' if idx == 0 else '#ffe0b3'
+    lw = 3 if idx == 0 else 1.5
+    rect = mpatches.FancyBboxPatch((idx * 0.8 + 0.5, 3.3), 0.7, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor=color, edgecolor='#e67e22', linewidth=lw)
+    ax.add_patch(rect)
+    ax.text(idx * 0.8 + 0.85, 3.6, str(val), ha='center', va='center', fontsize=11,
+            fontweight='bold' if idx == 0 else 'normal')
+
+ax.text(0.85, 2.9, '↑ min of left', fontsize=9, ha='center', color='#e67e22')
+
+# Right sorted list
+right = [2, 3, 5, 8]
+ax.text(6.5, 4.2, 'right (sorted):', fontsize=10, fontweight='bold', color='#3498db')
+for idx, val in enumerate(right):
+    color = '#99ccff' if idx == 0 else '#cce5ff'
+    lw = 3 if idx == 0 else 1.5
+    rect = mpatches.FancyBboxPatch((idx * 0.8 + 5.5, 3.3), 0.7, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor=color, edgecolor='#3498db', linewidth=lw)
+    ax.add_patch(rect)
+    ax.text(idx * 0.8 + 5.85, 3.6, str(val), ha='center', va='center', fontsize=11,
+            fontweight='bold' if idx == 0 else 'normal')
+
+ax.text(5.85, 2.9, '↑ min of right', fontsize=9, ha='center', color='#3498db')
+
+# Comparison box
+ax.text(4.2, 3.6, '1 < 2', ha='center', va='center', fontsize=14, fontweight='bold', color='#8e44ad',
+        bbox=dict(boxstyle='round,pad=0.3', facecolor='#f5e6ff', edgecolor='#8e44ad', linewidth=2))
+
+# Arrow down
+ax.annotate('', xy=(4.2, 2.3), xytext=(4.2, 3.0),
+            arrowprops=dict(arrowstyle='->', color='#27ae60', lw=3))
+
+# Result explanation
+ax.text(4.2, 1.9, '1 is the minimum!', ha='center', fontsize=11, fontweight='bold', color='#27ae60')
+ax.text(4.2, 1.4, 'Put 1 first, then recursively merge', ha='center', fontsize=10, color='#555')
+ax.text(4.2, 0.9, '[4,6,7] and [2,3,5,8]', ha='center', fontsize=10, color='#555', style='italic')
+
+ax.set_xlim(0, 10)
+ax.set_ylim(0.5, 4.6)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+## Merge Correctness: Proof
+
+**Inductive step**: Given sorted lists `left` and `right` with total size $n$:
+
+- Compare `left[0]` and `right[0]` (the two minima)
+- The smaller one is the **minimum** of all elements
+- Put it first, then recursively merge the rest (size $n-1$)
+- By IH, the recursive call returns a sorted list
+- Prepending the min keeps it sorted ✓
+
+**Therefore, `merge` is correct for all inputs.** ∎
+
+# Merge Sort
+
+## OK, Now Sort This Array
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+fig, ax = plt.subplots(figsize=(10, 7))
+
+# Row labels
+ax.text(0.3, 6.3, 'Input:', fontsize=11, fontweight='bold', va='center')
+ax.text(0.3, 4.5, 'Step 1:', fontsize=11, fontweight='bold', va='center')
+ax.text(0.3, 2.7, 'Step 2:', fontsize=11, fontweight='bold', va='center')
+ax.text(0.3, 0.9, 'Step 3:', fontsize=11, fontweight='bold', va='center')
+
+# Row 1: Original unsorted array
+original = [7, 1, 6, 4, 5, 3, 2, 8]
+for i, val in enumerate(original):
+    rect = mpatches.FancyBboxPatch((i * 0.9 + 1.5, 6.0), 0.8, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ffcccc', edgecolor='#c0392b', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.9 + 1.9, 6.3, str(val), ha='center', va='center', fontsize=14, fontweight='bold')
+
+# Arrow down
+ax.annotate('', xy=(5.1, 5.4), xytext=(5.1, 5.9),
+            arrowprops=dict(arrowstyle='->', color='#7f8c8d', lw=2))
+
+# Row 2: Split into two halves
+left_unsorted = [7, 1, 6, 4]
+right_unsorted = [5, 3, 2, 8]
+for i, val in enumerate(left_unsorted):
+    rect = mpatches.FancyBboxPatch((i * 0.9 + 1.0, 4.2), 0.8, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ffe0cc', edgecolor='#e67e22', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.9 + 1.4, 4.5, str(val), ha='center', va='center', fontsize=14, fontweight='bold')
+
+for i, val in enumerate(right_unsorted):
+    rect = mpatches.FancyBboxPatch((i * 0.9 + 5.5, 4.2), 0.8, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#cce0ff', edgecolor='#3498db', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.9 + 5.9, 4.5, str(val), ha='center', va='center', fontsize=14, fontweight='bold')
+
+# Arrows down with magic recursion label
+ax.annotate('', xy=(2.6, 3.4), xytext=(2.6, 4.1),
+            arrowprops=dict(arrowstyle='->', color='#8e44ad', lw=2))
+ax.annotate('', xy=(7.6, 3.4), xytext=(7.6, 4.1),
+            arrowprops=dict(arrowstyle='->', color='#8e44ad', lw=2))
+
+
+# Row 3: After recursive sorting
+left_sorted = [1, 4, 6, 7]
+right_sorted = [2, 3, 5, 8]
+for i, val in enumerate(left_sorted):
+    rect = mpatches.FancyBboxPatch((i * 0.9 + 1.0, 2.4), 0.8, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ccffcc', edgecolor='#27ae60', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.9 + 1.4, 2.7, str(val), ha='center', va='center', fontsize=14, fontweight='bold')
+
+for i, val in enumerate(right_sorted):
+    rect = mpatches.FancyBboxPatch((i * 0.9 + 5.5, 2.4), 0.8, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ccffcc', edgecolor='#27ae60', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.9 + 5.9, 2.7, str(val), ha='center', va='center', fontsize=14, fontweight='bold')
+
+
+# Arrows converging to merge
+ax.annotate('', xy=(4.2, 1.5), xytext=(2.6, 1.9),
+            arrowprops=dict(arrowstyle='->', color='#27ae60', lw=2))
+ax.annotate('', xy=(6.0, 1.5), xytext=(7.6, 1.9),
+            arrowprops=dict(arrowstyle='->', color='#27ae60', lw=2))
+
+
+# Row 4: Final merged result
+final = [1, 2, 3, 4, 5, 6, 7, 8]
+for i, val in enumerate(final):
+    rect = mpatches.FancyBboxPatch((i * 0.9 + 1.5, 0.6), 0.8, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ccffcc', edgecolor='#1e8449', linewidth=3)
+    ax.add_patch(rect)
+    ax.text(i * 0.9 + 1.9, 0.9, str(val), ha='center', va='center', fontsize=14, fontweight='bold')
+
+
+ax.set_xlim(0, 10.5)
+ax.set_ylim(0, 7)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+## Putting It Together
+
+```{pyodide}
+def merge_sort(arr):
+    # Base case
+    if len(arr) <= 1:
+        return arr
+
+    # Divide
+    mid = len(arr) // 2
+
+    # Conquer
+    left_sorted = merge_sort(arr[:mid])
+    right_sorted = merge_sort(arr[mid:])
+
+    # Combine
+    return merge(left_sorted, right_sorted)
+```
+
+## Does It Work?
+
+```{pyodide}
+arr = [7, 1, 6, 4, 5, 3, 2, 8]
+print(f"Original: {arr}")
+print(f"Sorted:   {merge_sort(arr)}")
+```
+
+```{pyodide}
+import random
+arr = [random.randint(1, 100) for _ in range(15)]
+print(f"Original: {arr}")
+print(f"Sorted:   {merge_sort(arr)}")
+```
+
+# Why Does It Work?
+
+## Proving Correctness
+
+Testing shows it works on examples. But how do we **prove** it always works?
+
+**Induction** on the size of the input:
+
+1. **Base case**: Lists of size 0 or 1
+2. **Inductive step**: If it works for smaller lists, it works for size $n$
+
+## The Induction Visualized
+
+```{python}
+#| echo: false
+#| fig-align: center
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Draw the main unsorted array at top
+unsorted = [7, 1, 6, 4, 5, 3, 2, 8]
+for i, val in enumerate(unsorted):
+    rect = mpatches.FancyBboxPatch((i * 0.8 + 1.5, 5), 0.7, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ffcccc', edgecolor='#c0392b', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.8 + 1.85, 5.3, str(val), ha='center', va='center', fontsize=12, fontweight='bold')
+
+ax.text(5, 5.9, 'Unsorted: [7, 1, 6, 4, 5, 3, 2, 8]', ha='center', fontsize=11)
+
+# Arrow down to split
+ax.annotate('', xy=(3, 4.2), xytext=(3, 4.8),
+            arrowprops=dict(arrowstyle='->', color='#7f8c8d', lw=2))
+ax.annotate('', xy=(7, 4.2), xytext=(7, 4.8),
+            arrowprops=dict(arrowstyle='->', color='#7f8c8d', lw=2))
+ax.text(5, 4.5, 'split', ha='center', fontsize=10, color='#7f8c8d')
+
+# Left half (unsorted then sorted)
+left_unsorted = [7, 1, 6, 4]
+for i, val in enumerate(left_unsorted):
+    rect = mpatches.FancyBboxPatch((i * 0.7 + 0.5, 3.3), 0.6, 0.5,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ffe0cc', edgecolor='#e67e22', linewidth=1.5)
+    ax.add_patch(rect)
+    ax.text(i * 0.7 + 0.8, 3.55, str(val), ha='center', va='center', fontsize=10)
+
+# Right half (unsorted then sorted)
+right_unsorted = [5, 3, 2, 8]
+for i, val in enumerate(right_unsorted):
+    rect = mpatches.FancyBboxPatch((i * 0.7 + 6, 3.3), 0.6, 0.5,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#cce0ff', edgecolor='#3498db', linewidth=1.5)
+    ax.add_patch(rect)
+    ax.text(i * 0.7 + 6.3, 3.55, str(val), ha='center', va='center', fontsize=10)
+
+# Magic recursion boxes
+ax.text(2.2, 2.5, '🪄 recursion', ha='center', fontsize=10, style='italic', color='#8e44ad')
+ax.text(7.7, 2.5, '🪄 recursion', ha='center', fontsize=10, style='italic', color='#8e44ad')
+
+# Arrows for recursion
+ax.annotate('', xy=(2.2, 2.0), xytext=(2.2, 3.2),
+            arrowprops=dict(arrowstyle='->', color='#8e44ad', lw=2))
+ax.annotate('', xy=(7.7, 2.0), xytext=(7.7, 3.2),
+            arrowprops=dict(arrowstyle='->', color='#8e44ad', lw=2))
+
+# Sorted halves
+left_sorted = [1, 4, 6, 7]
+for i, val in enumerate(left_sorted):
+    rect = mpatches.FancyBboxPatch((i * 0.7 + 0.5, 1.2), 0.6, 0.5,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ccffcc', edgecolor='#27ae60', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.7 + 0.8, 1.45, str(val), ha='center', va='center', fontsize=10, fontweight='bold')
+
+ax.text(2.2, 0.9, 'sorted ✓', ha='center', fontsize=9, color='#27ae60')
+
+right_sorted = [2, 3, 5, 8]
+for i, val in enumerate(right_sorted):
+    rect = mpatches.FancyBboxPatch((i * 0.7 + 6, 1.2), 0.6, 0.5,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ccffcc', edgecolor='#27ae60', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(i * 0.7 + 6.3, 1.45, str(val), ha='center', va='center', fontsize=10, fontweight='bold')
+
+ax.text(7.7, 0.9, 'sorted ✓', ha='center', fontsize=9, color='#27ae60')
+
+# Arrows to merge
+ax.annotate('', xy=(4, 0.2), xytext=(2.2, 0.8),
+            arrowprops=dict(arrowstyle='->', color='#27ae60', lw=2))
+ax.annotate('', xy=(6, 0.2), xytext=(7.7, 0.8),
+            arrowprops=dict(arrowstyle='->', color='#27ae60', lw=2))
+ax.text(5, 0.5, 'merge', ha='center', fontsize=10, color='#27ae60', fontweight='bold')
+
+# Final merged result
+final = [1, 2, 3, 4, 5, 6, 7, 8]
+for i, val in enumerate(final):
+    rect = mpatches.FancyBboxPatch((i * 0.8 + 1.5, -0.6), 0.7, 0.6,
+                                    boxstyle="round,pad=0.05",
+                                    facecolor='#ccffcc', edgecolor='#1e8449', linewidth=3)
+    ax.add_patch(rect)
+    ax.text(i * 0.8 + 1.85, -0.3, str(val), ha='center', va='center', fontsize=12, fontweight='bold')
+
+ax.text(5, -1.0, 'Sorted! ✓', ha='center', fontsize=12, color='#1e8449', fontweight='bold')
+
+ax.set_xlim(0, 10)
+ax.set_ylim(-1.3, 6.2)
+ax.set_aspect('equal')
+ax.axis('off')
+plt.tight_layout()
+plt.show()
+```
+
+## The Base Case
+
+```python
+if len(arr) <= 1:
+    return arr
+```
+
+A list with 0 or 1 elements is **already sorted**. ✓
+
+## The Inductive Step
+
+**Assume**: `merge_sort` correctly sorts any list of size $< n$.
+
+**Goal**: Show `merge_sort` correctly sorts a list of size $n$.
+
+```python
+left_sorted = merge_sort(arr[:mid])    # size < n
+right_sorted = merge_sort(arr[mid:])   # size < n
+return merge(left_sorted, right_sorted)
+```
+
+By our assumption, `left_sorted` and `right_sorted` are correctly sorted. 
+
+Thus they are valid inputs to `merge`.
+
+We have already proved correctness of `merge`, so we are done!
+
+
+## Putting It Together
+
+1. Base case: ✓ (trivially sorted)
+2. Inductive hypothesis: `merge_sort` works for sizes $< n$
+3. `left_sorted` is sorted (by IH, since size $< n$)
+4. `right_sorted` is sorted (by IH, since size $< n$)
+5. `merge` combines them correctly (by earlier proof)
+6. Therefore `merge_sort` works for size $n$ ✓
+
+**By induction, `merge_sort` is correct for all $n$.** ∎
+
+## Merge Sort Runtime Analysis
+
+```python
+def merge_sort(arr):
+    if len(arr) <= 1:          # O(1)
+        return arr
+    mid = len(arr) // 2        # O(1)
+    left = merge_sort(arr[:mid])    # T(n/2)
+    right = merge_sort(arr[mid:])   # T(n/2)
+    return merge(left, right)       # O(n)
+```
+
+**The recurrence**:
+
+$$T(n) = 2T(n/2) + O(n)$$
+
+## What Does This Mean?
+
+$$T(n) = 2T(n/2) + n$$
+
+- We make **2 recursive calls**
+- Each on a problem of size **n/2**
+- Plus **n** work to merge
+
+This is a **recurrence relation**: T(n) defined in terms of T(smaller).
+
+# Visualizing the Recursion
+
+## The Call Tree
+
+```
+                merge_sort([7,1,6,4,5,3,2,8])
+                        /              \
+        merge_sort([7,1,6,4])    merge_sort([5,3,2,8])
+            /        \              /        \
+    ms([7,1])    ms([6,4])    ms([5,3])    ms([2,8])
+      /  \        /  \        /  \        /  \
+   [7]  [1]    [6]  [4]    [5]  [3]    [2]  [8]
+```
+
+**How deep does this go?**
+
+## Recursion Depth
+
+At each level, problem size halves: $n \to n/2 \to n/4 \to \ldots \to 1$
+
+**Depth** = How many times can we halve $n$?
+
+$$n \to n/2 \to n/4 \to \ldots \to 1$$
+
+Answer: $\log_2 n$ levels
+
+## Work at Each Level
+
+```
+Level 0:     [n]                      n work (merge)
+            /   \
+Level 1:  [n/2] [n/2]                 n work (two merges of n/2)
+          / \   / \
+Level 2: [n/4]×4                      n work (four merges of n/4)
+         ...
+Level log n: [1]×n                    n work (base cases)
+```
+
+**Total work**: $n \times \log n = O(n \log n)$
+
+:::{.notes}
+"This is the recursion tree method. Tuesday's video will formalize this."
+:::
+
+# Recurrence Forms
+
+## The Big Idea
+
+Different recursive structures 
+- → different recurrences 
+  - → different running times!
+
+
+## Form 1: Linear Shrinking
+
+**Example**: Processing a list one element at a time
+
+```python
+def sum_list(arr):
+    if len(arr) == 0:
+        return 0
+    return arr[0] + sum_list(arr[1:]) 
+```
+
+$T(n) =$
+
+
+## Form 2: Halving
+
+**Example**: Binary search
+
+```python
+def binary_search(arr, target, lo, hi):
+    if lo > hi:
+        return -1
+    mid = (lo + hi) // 2
+    if arr[mid] == target:
+        return mid
+    elif arr[mid] < target:
+        return binary_search(arr, target, mid+1, hi)  
+    else:
+        return binary_search(arr, target, lo, mid-1)
+```
+
+$T(n) =$
+
+
+## Form 3: Two Calls, Halving, Constant Work
+
+**Example**: `triangle_double` — calls itself twice!
+
+```python
+def triangle_double(n):
+    if n <= 1:
+        return n
+    half = n // 2
+    top = n - half
+    return triangle_double(half) + triangle_double(half) + top * top
+```
+
+$T(n) =$
+
+## Form 4: Two Calls, Halving, Linear Work
+
+**Example**: Merge sort!
+
+```python
+def merge_sort(arr):
+    ...
+    left = merge_sort(arr[:mid])    
+    right = merge_sort(arr[mid:])   
+    return merge(left, right)       
+```
+
+$T(n) =$
+
+## Form 5: Linear Shrinking, Linear Work
+
+**Example**: Selection sort (find min, then sort rest)
+
+```python
+def selection_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    min_idx = find_min_index(arr)  
+    swap(arr, 0, min_idx)
+    return [arr[0]] + selection_sort(arr[1:])  
+```
+
+$T(n) =$
+
+## Closed Forms
+
+| Algorithm | Recurrence | Solution |
+|-----------|------------|----------|
+| Binary search | $T(n) = T(n/2) + O(1)$ |  |
+| Merge sort | $T(n) = 2T(n/2) + O(n)$ |  |
+| Linear search | $T(n) = T(n-1) + O(1)$ |  |
+| `triangle_double` | $T(n) = 2T(n/2) + O(1)$ |  |
+| Selection sort | $T(n) = T(n-1) + O(n)$ |  |
+
+## Closed Form Reasons
+
+| Recurrence | Solution | Why? |
+|------------|----------|------|
+| $T(n) = T(n-1) + 1$ | $O(n)$ | $n$ levels × $O(1)$ work |
+| $T(n) = T(n/2) + 1$ | $O(\log n)$ | $\log n$ levels × $O(1)$ work |
+| $T(n) = 2T(n/2) + 1$ | $O(n)$ | Doubling nodes overwhelms depth |
+| $T(n) = 2T(n/2) + n$ | $O(n \log n)$ | $\log n$ levels × $O(n)$ work |
+| $T(n) = T(n-1) + n$ | $O(n^2)$ | $n$ levels × $O(n)$ avg work |
+
+
+# Summary
+
+## What We Learned Today
+
+1. **Math vs. Time**: Same functionality, different running times!
+
+2. **Merge sort**: Divide, conquer, merge
+
+3. **MS recurrence**: $T(n) = 2T(n/2) + O(n)$
+
+4. **Recursion sketches**: Visualize depth × work per level
+
+5. **Recurrence forms**: Different structures → different runtimes
+
+## Coming Up
+
+- **Tuesday video**: Solving recurrences formally (review for DSCI 220 folks)
+- **Wednesday**: Why $O(n \log n)$ is optimal for comparison sorting
+
+:::{.notes}
+"If you took DSCI 220, the Tuesday video will be review. Feel free to skim it!"
+:::
