@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.27">
 
-  <meta name="dcterms.date" content="2026-01-07">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Hierarchy of Speed</title>
+  <meta name="dcterms.date" content="2026-01-26">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Merge Sort and Recurrence Forms</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -31,6 +31,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7e745c094e38f47e1e49ac7c09d7c9b4.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -129,11 +195,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 1, Wednesday">
+<meta property="og:title" content="Merge Sort and Recurrence Forms – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 4, Monday">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 1, Wednesday">
+<meta name="twitter:title" content="Merge Sort and Recurrence Forms – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 4, Monday">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -141,302 +207,168 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The Hierarchy of Speed</h1>
-  <p class="subtitle">Week 1, Wednesday</p>
+  <h1 class="title">Merge Sort and Recurrence Forms</h1>
+  <p class="subtitle">Week 4, Monday</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 7, 2026</p>
+  <p class="date">January 26, 2026</p>
+</section>
+<section id="announcements" class="slide level2">
+<h2>Announcements</h2>
+<ul>
+<li>EX1 this week</li>
+<li>PA1 released, due Feb 7, 23:59.</li>
+<li>Lab 3 meets in-person</li>
+</ul>
 </section>
 <section>
-<section id="from-tuesday" class="title-slide slide level1 center">
-<h1>From Tuesday</h1>
+<section id="remember-the-triangle" class="title-slide slide level1 center">
+<h1>Remember the Triangle?</h1>
 
 </section>
-<section id="patterns" class="slide level2">
-<h2>Patterns</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Pattern</th>
-<th>When n doubles…</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Single loop</td>
-<td>Work doubles</td>
-</tr>
-<tr class="even">
-<td>Nested loops</td>
-<td>Work quadruples</td>
-</tr>
-<tr class="odd">
-<td>Halving</td>
-<td>One more step</td>
-</tr>
-</tbody>
-</table>
-<aside class="notes">
-<p>“Today: formalize this, then FEEL the difference.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="formalizing-big-o" class="title-slide slide level1 center">
-<h1>Formalizing Big-O</h1>
-
-</section>
-<section id="the-definition" class="slide level2">
-<h2>The Definition</h2>
-<p>f(n) is <strong>O(g(n))</strong> if there exist constants c &gt; 0 and n₀ ≥ 0 such that:</p>
-<p><span class="math display">\[f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0\]</span></p>
-<aside class="notes">
-<p>“In words: f grows no faster than g, once n is big enough.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="picture" class="slide level2">
-<h2>Picture</h2>
-<div id="ebffff92" class="cell" data-execution_count="1">
+<section id="last-weeks-recursion" class="slide level2">
+<h2>Last Week’s Recursion</h2>
+<p>We computed <span class="math inline">\(1 + 2 + 3 + \ldots + n\)</span> recursively:</p>
+<div id="a6de4d43" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="AA_XXX_hierarchy_files/figure-revealjs/cell-2-output-1.png" width="759" height="471"></p>
+<p><img data-src="04_mon_mergesort_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="433" height="471"></p>
 </figure>
 </div>
 </div>
 </div>
-<aside class="notes">
-<p>For n ≥ 3: 2n + 3 ≤ 3n</p>
-<p>Choose c = 3, n₀ = 3.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>The <strong>mathematical decomposition</strong>: <span class="math inline">\(f(n) = 2 \cdot f(\lfloor n/2 \rfloor) + (n - \lfloor n/2 \rfloor)^2\)</span></p>
 </section>
-<section id="other-notations" class="slide level2">
-<h2>Other Notations</h2>
+<section id="two-ways-to-compute-this" class="slide level2">
+<h2>Two Ways to Compute This</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> triangle_fast(n):</span>
+<span id="cb1-2"><a></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb1-3"><a></a>        <span class="cf">return</span> n</span>
+<span id="cb1-4"><a></a>    half <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb1-5"><a></a>    top <span class="op">=</span> n <span class="op">-</span> half</span>
+<span id="cb1-6"><a></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> triangle_fast(half) <span class="op">+</span> top <span class="op">*</span> top</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> triangle_double(n):</span>
+<span id="cb2-2"><a></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb2-3"><a></a>        <span class="cf">return</span> n</span>
+<span id="cb2-4"><a></a>    half <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb2-5"><a></a>    top <span class="op">=</span> n <span class="op">-</span> half</span>
+<span id="cb2-6"><a></a>    <span class="cf">return</span> triangle_double(half) <span class="op">+</span> triangle_double(half) <span class="op">+</span> top <span class="op">*</span> top</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Both compute <strong>the same answer</strong>. But are they equally fast?</p>
+</section>
+<section id="the-critical-distinction" class="slide level2">
+<h2>The Critical Distinction</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Notation</th>
-<th>Meaning</th>
+<th>Code</th>
+<th>How many recursive calls?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>O(g(n))</td>
-<td>≤ c·g(n) — upper bound</td>
+<td><code>2 * triangle_fast(half)</code></td>
+<td><strong>ONE</strong> call, multiply result by 2</td>
 </tr>
 <tr class="even">
-<td>Ω(g(n))</td>
-<td>≥ c·g(n) — lower bound</td>
-</tr>
-<tr class="odd">
-<td>Θ(g(n))</td>
-<td>both — tight bound</td>
+<td><code>triangle_double(half) + triangle_double(half)</code></td>
+<td><strong>TWO</strong> calls!</td>
 </tr>
 </tbody>
 </table>
-<aside class="notes">
-<p>“We mostly use O — the worst-case guarantee.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>The <strong>mathematical relationship</strong> is: <span class="math inline">\(f(n) = 2 \cdot f(\lfloor n/2 \rfloor) + (n - \lfloor n/2 \rfloor)^2\)</span></p>
+<p>But the <strong>time to compute</strong> depends on <strong>how many recursive calls we make</strong>!</p>
 </section>
-<section id="prove-it" class="slide level2">
-<h2>Prove It</h2>
-<p>Show that 3n² + 5n + 2 = O(n²)</p>
-<aside class="notes">
-<p>Let them try.</p>
-<p>For n ≥ 1: - 3n² ≤ 3n² - 5n ≤ 5n² - 2 ≤ 2n²</p>
-<p>So: 3n² + 5n + 2 ≤ 10n²</p>
-<p>Choose c = 10, n₀ = 1. ✓</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="rules" class="slide level2">
-<h2>Rules</h2>
-<ol type="1">
-<li>Constants don’t matter: 5n = O(n)</li>
-<li>Lower terms don’t matter: n² + n = O(n²)</li>
-<li>Log base doesn’t matter: log₂n = O(log₁₀n)</li>
-</ol>
-<aside class="notes">
-<p>“What’s the intuition for #3?”</p>
-<p>All logs differ by a constant factor. log₂n = log₁₀n / log₁₀2</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="todays-question" class="slide level2">
+<h2>Today’s Question</h2>
+<p>When we write recursive code, how do we figure out its running time?</p>
+<p><strong>The answer</strong>: We write a <strong>recurrence relation</strong> for <span class="math inline">\(T(n)\)</span>, the time.</p>
+<ul>
+<li><code>triangle_fast</code>: <span class="math inline">\(T(n) = T(n/2) + O(1)\)</span> — ONE call</li>
+<li><code>triangle_double</code>: <span class="math inline">\(T(n) = 2T(n/2) + O(1)\)</span> — TWO calls</li>
+</ul>
+<p>Different recurrences → <strong>different running times</strong>!</p>
+<p>Let’s explore this through another recursive puzzle…</p>
 </section></section>
 <section>
-<section id="the-hierarchy" class="title-slide slide level1 center">
-<h1>The Hierarchy</h1>
+<section id="a-recursive-puzzle" class="title-slide slide level1 center">
+<h1>A Recursive Puzzle</h1>
 
 </section>
-<section id="the-ladder" class="slide level2">
-<h2>The Ladder</h2>
-<p><span class="math display">\[O(1) &lt; O(\log n) &lt; O(n) &lt; O(n \log n) &lt; O(n^2) &lt; O(2^n)\]</span></p>
-<aside class="notes">
-<p>“Let’s see what these mean at scale.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="what-does-this-function-do" class="slide level2">
+<h2>What Does This Function Do?</h2>
+<div id="89e4e217" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="04_mon_mergesort_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="950" height="438"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="at-n-1000000" class="slide level2">
-<h2>At n = 1,000,000</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Big-O</th>
-<th>Operations</th>
-<th>Time @ 1B ops/sec</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>O(1)</td>
-<td>1</td>
-<td>1 nanosecond</td>
-</tr>
-<tr class="even">
-<td>O(log n)</td>
-<td>20</td>
-<td>20 nanoseconds</td>
-</tr>
-<tr class="odd">
-<td>O(n)</td>
-<td>1,000,000</td>
-<td>1 millisecond</td>
-</tr>
-<tr class="even">
-<td>O(n log n)</td>
-<td>20,000,000</td>
-<td>20 milliseconds</td>
-</tr>
-<tr class="odd">
-<td>O(n²)</td>
-<td>10¹²</td>
-<td>16 minutes</td>
-</tr>
-<tr class="even">
-<td>O(2ⁿ)</td>
-<td>10³⁰⁰’⁰⁰⁰</td>
-<td>heat death of universe</td>
-</tr>
-</tbody>
-</table>
+<section id="the-observations" class="slide level2">
+<h2>The Observations</h2>
+<ol type="1">
+<li><p>Both inputs are <strong>sorted</strong></p></li>
+<li><p>The output contains <strong>all elements from both inputs</strong></p></li>
+<li><p>The output is <strong>sorted</strong></p></li>
+</ol>
+<p><strong>The function</strong>: Given two sorted lists, produce one sorted list with all elements.</p>
 </section>
-<section id="the-cliff" class="slide level2">
-<h2>The Cliff</h2>
+<section id="lets-think-about-it" class="slide level2">
+<h2>Let’s Think About It</h2>
+<p>What’s the <strong>simplest case</strong>?</p>
+<div id="2a8d65c6" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="04_mon_mergesort_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="883" height="326"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>What if both lists have elements?</p>
+</section>
+<section id="the-key-insight" class="slide level2">
+<h2>The Key Insight</h2>
+<div id="e066f1a7" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="04_mon_mergesort_files/figure-revealjs/cell-5-output-1.png" class="quarto-figure quarto-figure-center" width="950" height="354"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The smallest element overall must be at the <strong>front of one of the lists</strong>!</p>
+</section>
+<section id="live-code-merge" class="slide level2">
+<h2>Live Code: Merge</h2>
 <div>
 <div id="pyodide-1" class="exercise-cell">
 
 </div>
 <script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZm9yIG4gaW4gWzEwLCAyMCwgMzAsIDQwLCA1MF06XG4gICAgcHJpbnQoZlwibj17bjoyfTogIG7Csj17bioqMjo+MTAsfSAgICAy4oG/PXsyKipuOj4yMCx9XCIpIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIG1lcmdlKGxlZnQsIHJpZ2h0KTpcbiAgICBcIlwiXCJNZXJnZSB0d28gc29ydGVkIGxpc3RzIGludG8gb25lIHNvcnRlZCBsaXN0LlwiXCJcIlxuICAgICMgQmFzZSBjYXNlcyAtIGlmIGVpdGhlciBsaXN0IGlzIGVtcHR5LCByZXR1cm4gdGhlIG90aGVyXG5cbiAgICAjIFJlY3Vyc2l2ZSBjYXNlOiB0YWtlIHRoZSBzbWFsbGVyIGZyb250IGVsZW1lbnQgYW5kIGFkZCB0aGUgbWVyZ2Ugb2YgcmVzdCJ9
 </script>
 </div>
 <aside class="notes">
-<p>“2ⁿ goes vertical.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="the-practical-classes" class="title-slide slide level1 center">
-<h1>The Practical Classes</h1>
-
-</section>
-<section id="o1-constant" class="slide level2">
-<h2>O(1): Constant</h2>
-<aside class="notes">
-<p>“No matter how big the input, same time.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="olog-n-logarithmic" class="slide level2">
-<h2>O(log n): Logarithmic</h2>
-<aside class="notes">
-<p>“Halving at each step. log₂(1 billion) ≈ 30.”</p>
-<p>We’ll prove this correct next week.</p>
+<p>Guide students to this solution:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> merge(left, right):</span>
+<span id="cb3-2"><a></a>    <span class="co"># Base cases</span></span>
+<span id="cb3-3"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(left) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb3-4"><a></a>        <span class="cf">return</span> right</span>
+<span id="cb3-5"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(right) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb3-6"><a></a>        <span class="cf">return</span> left</span>
+<span id="cb3-7"><a></a></span>
+<span id="cb3-8"><a></a>    <span class="co"># Recursive case: take the smaller front element</span></span>
+<span id="cb3-9"><a></a>    <span class="cf">if</span> left[<span class="dv">0</span>] <span class="op">&lt;=</span> right[<span class="dv">0</span>]:</span>
+<span id="cb3-10"><a></a>        <span class="cf">return</span> [left[<span class="dv">0</span>]] <span class="op">+</span> merge(left[<span class="dv">1</span>:], right)</span>
+<span id="cb3-11"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb3-12"><a></a>        <span class="cf">return</span> [right[<span class="dv">0</span>]] <span class="op">+</span> merge(left, right[<span class="dv">1</span>:])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -449,199 +381,212 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZm9yIG4gaW4gWzEwLCAyMCwg
           display:block!important;
       }</style></aside>
 </section>
-<section id="on-linear" class="slide level2">
-<h2>O(n): Linear</h2>
-<aside class="notes">
-<p>“Must look at every element.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="on²-quadratic" class="slide level2">
-<h2>O(n²): Quadratic</h2>
-<aside class="notes">
-<p>“All pairs. Gets painful quickly.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="o2ⁿ-exponential" class="slide level2">
-<h2>O(2ⁿ): Exponential</h2>
-<aside class="notes">
-<p>“Doubles with each element. Often intractable.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="racing-algorithms" class="title-slide slide level1 center">
-<h1>Racing Algorithms</h1>
-
-</section>
-<section id="the-setup" class="slide level2">
-<h2>The Setup</h2>
+<section id="test-it" class="slide level2">
+<h2>Test It!</h2>
 <div>
 <div id="pyodide-2" class="exercise-cell">
 
 </div>
 <script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHRpbWVcblxuZGVmIGhhc19kdXBfcXVhZHJhdGljKGFycik6XG4gICAgZm9yIGkgaW4gcmFuZ2UobGVuKGFycikpOlxuICAgICAgICBmb3IgaiBpbiByYW5nZShpKzEsIGxlbihhcnIpKTpcbiAgICAgICAgICAgIGlmIGFycltpXSA9PSBhcnJbal06XG4gICAgICAgICAgICAgICAgcmV0dXJuIFRydWVcbiAgICByZXR1cm4gRmFsc2VcblxuZGVmIGhhc19kdXBfbGluZWFyKGFycik6XG4gICAgc2VlbiA9IHNldCgpXG4gICAgZm9yIHggaW4gYXJyOlxuICAgICAgICBpZiB4IGluIHNlZW46XG4gICAgICAgICAgICByZXR1cm4gVHJ1ZVxuICAgICAgICBzZWVuLmFkZCh4KVxuICAgIHJldHVybiBGYWxzZSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGVmdCA9IFsxLCA0LCA2LCA3XVxucmlnaHQgPSBbMiwgMywgNSwgOF1cbnByaW50KGZcIkxlZnQ6ICAge2xlZnR9XCIpXG5wcmludChmXCJSaWdodDogIHtyaWdodH1cIilcbnByaW50KGZcIk1lcmdlZDoge21lcmdlKGxlZnQsIHJpZ2h0KX1cIikifQ==
 </script>
 </div>
-<aside class="notes">
-<p>“Same problem, two approaches.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="the-race" class="slide level2">
-<h2>The Race</h2>
+<section id="merge-running-time" class="slide level2">
+<h2>Merge Running Time</h2>
+<p>Each recursive call: processes one element.</p>
+<p>How many calls? Exactly <span class="math inline">\(n\)</span> (total elements).</p>
+<p><strong>Running time: <span class="math inline">\(O(n)\)</span></strong></p>
+</section>
+<section id="why-is-merge-correct" class="slide level2">
+<h2>Why is Merge Correct?</h2>
+<p><strong>Induction</strong> on the total size <span class="math inline">\(n = |left| + |right|\)</span>.</p>
+<p><strong>Base cases</strong>: If either list is empty, return the other. ✓</p>
+<p><strong>Inductive step</strong>: Assume <code>merge</code> works for total size <span class="math inline">\(&lt; n\)</span>.</p>
+</section>
+<section id="merge-correctness-the-key-insight" class="slide level2">
+<h2>Merge Correctness: The Key Insight</h2>
+<div id="791cf255" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="04_mon_mergesort_files/figure-revealjs/cell-6-output-1.png" class="quarto-figure quarto-figure-center" width="950" height="401"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="merge-correctness-proof" class="slide level2">
+<h2>Merge Correctness: Proof</h2>
+<p><strong>Inductive step</strong>: Given sorted lists <code>left</code> and <code>right</code> with total size <span class="math inline">\(n\)</span>:</p>
+<ul>
+<li>Compare <code>left[0]</code> and <code>right[0]</code> (the two minima)</li>
+<li>The smaller one is the <strong>minimum</strong> of all elements</li>
+<li>Put it first, then recursively merge the rest (size <span class="math inline">\(n-1\)</span>)</li>
+<li>By IH, the recursive call returns a sorted list</li>
+<li>Prepending the min keeps it sorted ✓</li>
+</ul>
+<p><strong>Therefore, <code>merge</code> is correct for all inputs.</strong> ∎</p>
+</section></section>
+<section>
+<section id="merge-sort" class="title-slide slide level1 center">
+<h1>Merge Sort</h1>
+
+</section>
+<section id="ok-now-sort-this-array" class="slide level2">
+<h2>OK, Now Sort This Array</h2>
+<div id="39df9811" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="04_mon_mergesort_files/figure-revealjs/cell-7-output-1.png" class="quarto-figure quarto-figure-center" width="950" height="640"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="putting-it-together" class="slide level2">
+<h2>Putting It Together</h2>
 <div>
 <div id="pyodide-3" class="exercise-cell">
 
 </div>
 <script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHRpbWVfaXQoZnVuYywgYXJyKTpcbiAgICBzdGFydCA9IHRpbWUudGltZSgpXG4gICAgZnVuYyhhcnIpXG4gICAgcmV0dXJuIHRpbWUudGltZSgpIC0gc3RhcnRcblxucHJpbnQoXCJTaXplICAgICBPKG7CsikgICAgICBPKG4pXCIpXG5wcmludChcIi1cIiAqIDM1KVxuZm9yIG4gaW4gWzEwMDAsIDIwMDAsIDQwMDAsIDgwMDBdOlxuICAgIGFyciA9IGxpc3QocmFuZ2UobikpXG4gICAgdDEgPSB0aW1lX2l0KGhhc19kdXBfcXVhZHJhdGljLCBhcnIpXG4gICAgdDIgPSB0aW1lX2l0KGhhc19kdXBfbGluZWFyLCBhcnIpXG4gICAgcHJpbnQoZlwie246NX0gICB7dDE6LjRmfXMgICB7dDI6LjVmfXNcIikifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIG1lcmdlX3NvcnQoYXJyKTpcbiAgICAjIEJhc2UgY2FzZVxuICAgIGlmIGxlbihhcnIpIDw9IDE6XG4gICAgICAgIHJldHVybiBhcnJcblxuICAgICMgRGl2aWRlXG4gICAgbWlkID0gbGVuKGFycikgLy8gMlxuXG4gICAgIyBDb25xdWVyXG4gICAgbGVmdF9zb3J0ZWQgPSBtZXJnZV9zb3J0KGFycls6bWlkXSlcbiAgICByaWdodF9zb3J0ZWQgPSBtZXJnZV9zb3J0KGFyclttaWQ6XSlcblxuICAgICMgQ29tYmluZVxuICAgIHJldHVybiBtZXJnZShsZWZ0X3NvcnRlZCwgcmlnaHRfc29ydGVkKSJ9
 </script>
 </div>
-<aside class="notes">
-<p>“What do you notice?”</p>
-<p>O(n²): 4× slower when n doubles O(n): barely changes</p>
-<p>“The set gives O(1) lookup — transforms O(n²) into O(n).”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="what-happened" class="slide level2">
-<h2>What Happened</h2>
-<p>O(n²) → O(n)</p>
-<p>The <strong>set</strong> provides O(1) lookup.</p>
-<aside class="notes">
-<p>“This is the power of data structures.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="when-does-it-matter" class="title-slide slide level1 center">
-<h1>When Does It Matter?</h1>
-
-</section>
-<section id="small-n" class="slide level2">
-<h2>Small n</h2>
+<section id="does-it-work" class="slide level2">
+<h2>Does It Work?</h2>
 <div>
 <div id="pyodide-4" class="exercise-cell">
 
 </div>
 <script type="pyodide-4-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIHNsb3dfY29uc3RhbnQobik6XG4gICAgdGltZS5zbGVlcCgwLjAxKSAgIyAxMG1zIHNldHVwXG4gICAgcmV0dXJuIDQyXG5cbmRlZiBmYXN0X2xpbmVhcihuKTpcbiAgICB0b3RhbCA9IDBcbiAgICBmb3IgaSBpbiByYW5nZShuKTpcbiAgICAgICAgdG90YWwgKz0gaVxuICAgIHJldHVybiB0b3RhbFxuXG5mb3IgbiBpbiBbMTAsIDEwMCwgMTAwMF06XG4gICAgdDEgPSB0aW1lX2l0KHNsb3dfY29uc3RhbnQsIG4pXG4gICAgdDIgPSB0aW1lX2l0KGZhc3RfbGluZWFyLCBuKVxuICAgIHByaW50KGZcIm49e246NH06IE8oMSk9e3QxOi4zZn1zICBPKG4pPXt0MjouNWZ9c1wiKSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzcsIDEsIDYsIDQsIDUsIDMsIDIsIDhdXG5wcmludChmXCJPcmlnaW5hbDoge2Fycn1cIilcbnByaW50KGZcIlNvcnRlZDogICB7bWVyZ2Vfc29ydChhcnIpfVwiKSJ9
 </script>
 </div>
-<aside class="notes">
-<p>“At small n, constants dominate.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="large-n" class="slide level2">
-<h2>Large n</h2>
 <div>
 <div id="pyodide-5" class="exercise-cell">
 
 </div>
 <script type="pyodide-5-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZm9yIG4gaW4gWzEwMDAwLCAxMDAwMDAsIDEwMDAwMDBdOlxuICAgIHQxID0gdGltZV9pdChzbG93X2NvbnN0YW50LCBuKVxuICAgIHQyID0gdGltZV9pdChmYXN0X2xpbmVhciwgbilcbiAgICBwcmludChmXCJuPXtuOjd9OiBPKDEpPXt0MTouM2Z9cyAgTyhuKT17dDI6LjNmfXNcIikifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHJhbmRvbVxuYXJyID0gW3JhbmRvbS5yYW5kaW50KDEsIDEwMCkgZm9yIF8gaW4gcmFuZ2UoMTUpXVxucHJpbnQoZlwiT3JpZ2luYWw6IHthcnJ9XCIpXG5wcmludChmXCJTb3J0ZWQ6ICAge21lcmdlX3NvcnQoYXJyKX1cIikifQ==
 </script>
 </div>
-<aside class="notes">
-<p>“At large n, Big-O dominates.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-lesson" class="slide level2">
-<h2>The Lesson</h2>
-<p>Small data: write clear code.</p>
-<p>Big data: <strong>Big-O is destiny.</strong></p>
 </section></section>
 <section>
-<section id="back-to-shazam" class="title-slide slide level1 center">
-<h1>Back to Shazam</h1>
+<section id="why-does-it-work" class="title-slide slide level1 center">
+<h1>Why Does It Work?</h1>
 
 </section>
-<section id="the-full-picture" class="slide level2">
-<h2>The Full Picture</h2>
+<section id="proving-correctness" class="slide level2">
+<h2>Proving Correctness</h2>
+<p>Testing shows it works on examples. But how do we <strong>prove</strong> it always works?</p>
+<p><strong>Induction</strong> on the size of the input:</p>
 <ol type="1">
-<li>Naive: O(n) — check every song</li>
-<li>Smarter: O(log n) — binary search?</li>
-<li>Brilliant: O(1) — hash table</li>
+<li><strong>Base case</strong>: Lists of size 0 or 1</li>
+<li><strong>Inductive step</strong>: If it works for smaller lists, it works for size <span class="math inline">\(n\)</span></li>
 </ol>
+</section>
+<section id="the-induction-visualized" class="slide level2">
+<h2>The Induction Visualized</h2>
+<div id="b3077bcd" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="04_mon_mergesort_files/figure-revealjs/cell-8-output-1.png" class="quarto-figure quarto-figure-center" width="749" height="566"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-base-case" class="slide level2">
+<h2>The Base Case</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb4-2"><a></a>    <span class="cf">return</span> arr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A list with 0 or 1 elements is <strong>already sorted</strong>. ✓</p>
+</section>
+<section id="the-inductive-step" class="slide level2">
+<h2>The Inductive Step</h2>
+<p><strong>Assume</strong>: <code>merge_sort</code> correctly sorts any list of size <span class="math inline">\(&lt; n\)</span>.</p>
+<p><strong>Goal</strong>: Show <code>merge_sort</code> correctly sorts a list of size <span class="math inline">\(n\)</span>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>left_sorted <span class="op">=</span> merge_sort(arr[:mid])    <span class="co"># size &lt; n</span></span>
+<span id="cb5-2"><a></a>right_sorted <span class="op">=</span> merge_sort(arr[mid:])   <span class="co"># size &lt; n</span></span>
+<span id="cb5-3"><a></a><span class="cf">return</span> merge(left_sorted, right_sorted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>By our assumption, <code>left_sorted</code> and <code>right_sorted</code> are correctly sorted.</p>
+<p>Thus they are valid inputs to <code>merge</code>.</p>
+<p>We have already proved correctness of <code>merge</code>, so we are done!</p>
+</section>
+<section id="putting-it-together-1" class="slide level2">
+<h2>Putting It Together</h2>
+<ol type="1">
+<li>Base case: ✓ (trivially sorted)</li>
+<li>Inductive hypothesis: <code>merge_sort</code> works for sizes <span class="math inline">\(&lt; n\)</span></li>
+<li><code>left_sorted</code> is sorted (by IH, since size <span class="math inline">\(&lt; n\)</span>)</li>
+<li><code>right_sorted</code> is sorted (by IH, since size <span class="math inline">\(&lt; n\)</span>)</li>
+<li><code>merge</code> combines them correctly (by earlier proof)</li>
+<li>Therefore <code>merge_sort</code> works for size <span class="math inline">\(n\)</span> ✓</li>
+</ol>
+<p><strong>By induction, <code>merge_sort</code> is correct for all <span class="math inline">\(n\)</span>.</strong> ∎</p>
+</section>
+<section id="merge-sort-runtime-analysis" class="slide level2">
+<h2>Merge Sort Runtime Analysis</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> merge_sort(arr):</span>
+<span id="cb6-2"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">&lt;=</span> <span class="dv">1</span>:          <span class="co"># O(1)</span></span>
+<span id="cb6-3"><a></a>        <span class="cf">return</span> arr</span>
+<span id="cb6-4"><a></a>    mid <span class="op">=</span> <span class="bu">len</span>(arr) <span class="op">//</span> <span class="dv">2</span>        <span class="co"># O(1)</span></span>
+<span id="cb6-5"><a></a>    left <span class="op">=</span> merge_sort(arr[:mid])    <span class="co"># T(n/2)</span></span>
+<span id="cb6-6"><a></a>    right <span class="op">=</span> merge_sort(arr[mid:])   <span class="co"># T(n/2)</span></span>
+<span id="cb6-7"><a></a>    <span class="cf">return</span> merge(left, right)       <span class="co"># O(n)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>The recurrence</strong>:</p>
+<p><span class="math display">\[T(n) = 2T(n/2) + O(n)\]</span></p>
+</section>
+<section id="what-does-this-mean" class="slide level2">
+<h2>What Does This Mean?</h2>
+<p><span class="math display">\[T(n) = 2T(n/2) + n\]</span></p>
+<ul>
+<li>We make <strong>2 recursive calls</strong></li>
+<li>Each on a problem of size <strong>n/2</strong></li>
+<li>Plus <strong>n</strong> work to merge</li>
+</ul>
+<p>This is a <strong>recurrence relation</strong>: T(n) defined in terms of T(smaller).</p>
+</section></section>
+<section>
+<section id="visualizing-the-recursion" class="title-slide slide level1 center">
+<h1>Visualizing the Recursion</h1>
+
+</section>
+<section id="the-call-tree" class="slide level2">
+<h2>The Call Tree</h2>
+<pre><code>                merge_sort([7,1,6,4,5,3,2,8])
+                        /              \
+        merge_sort([7,1,6,4])    merge_sort([5,3,2,8])
+            /        \              /        \
+    ms([7,1])    ms([6,4])    ms([5,3])    ms([2,8])
+      /  \        /  \        /  \        /  \
+   [7]  [1]    [6]  [4]    [5]  [3]    [2]  [8]</code></pre>
+<p><strong>How deep does this go?</strong></p>
+</section>
+<section id="recursion-depth" class="slide level2">
+<h2>Recursion Depth</h2>
+<p>At each level, problem size halves: <span class="math inline">\(n \to n/2 \to n/4 \to \ldots \to 1\)</span></p>
+<p><strong>Depth</strong> = How many times can we halve <span class="math inline">\(n\)</span>?</p>
+<p><span class="math display">\[n \to n/2 \to n/4 \to \ldots \to 1\]</span></p>
+<p>Answer: <span class="math inline">\(\log_2 n\)</span> levels</p>
+</section>
+<section id="work-at-each-level" class="slide level2">
+<h2>Work at Each Level</h2>
+<pre><code>Level 0:     [n]                      n work (merge)
+            /   \
+Level 1:  [n/2] [n/2]                 n work (two merges of n/2)
+          / \   / \
+Level 2: [n/4]×4                      n work (four merges of n/4)
+         ...
+Level log n: [1]×n                    n work (base cases)</code></pre>
+<p><strong>Total work</strong>: <span class="math inline">\(n \times \log n = O(n \log n)\)</span></p>
 <aside class="notes">
-<p>“How does O(1) lookup work?”</p>
+<p>“This is the recursion tree method. Tuesday’s video will formalize this.”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -653,96 +598,173 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZm9yIG4gaW4gWzEwMDAwLCAx
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section></section>
+<section>
+<section id="recurrence-forms" class="title-slide slide level1 center">
+<h1>Recurrence Forms</h1>
+
 </section>
-<section id="hash-tables" class="slide level2">
-<h2>Hash Tables</h2>
-<p>Audio → spectrogram → landmarks → <strong>hash</strong></p>
-<p>Hash → <strong>direct lookup</strong> in table</p>
-<aside class="notes">
-<p>“Doesn’t matter if 1 million or 100 million songs.”</p>
-<p>“We’ll learn how in Week 5.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="the-big-idea" class="slide level2">
+<h2>The Big Idea</h2>
+<p>Different recursive structures - → different recurrences - → different running times!</p>
 </section>
-<section id="the-magic" class="slide level2">
-<h2>The Magic</h2>
+<section id="form-1-linear-shrinking" class="slide level2">
+<h2>Form 1: Linear Shrinking</h2>
+<p><strong>Example</strong>: Processing a list one element at a time</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">def</span> sum_list(arr):</span>
+<span id="cb9-2"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb9-3"><a></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb9-4"><a></a>    <span class="cf">return</span> arr[<span class="dv">0</span>] <span class="op">+</span> sum_list(arr[<span class="dv">1</span>:]) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="form-2-halving" class="slide level2">
+<h2>Form 2: Halving</h2>
+<p><strong>Example</strong>: Binary search</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="kw">def</span> binary_search(arr, target, lo, hi):</span>
+<span id="cb10-2"><a></a>    <span class="cf">if</span> lo <span class="op">&gt;</span> hi:</span>
+<span id="cb10-3"><a></a>        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb10-4"><a></a>    mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb10-5"><a></a>    <span class="cf">if</span> arr[mid] <span class="op">==</span> target:</span>
+<span id="cb10-6"><a></a>        <span class="cf">return</span> mid</span>
+<span id="cb10-7"><a></a>    <span class="cf">elif</span> arr[mid] <span class="op">&lt;</span> target:</span>
+<span id="cb10-8"><a></a>        <span class="cf">return</span> binary_search(arr, target, mid<span class="op">+</span><span class="dv">1</span>, hi)  </span>
+<span id="cb10-9"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb10-10"><a></a>        <span class="cf">return</span> binary_search(arr, target, lo, mid<span class="op">-</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="form-3-two-calls-halving-constant-work" class="slide level2">
+<h2>Form 3: Two Calls, Halving, Constant Work</h2>
+<p><strong>Example</strong>: <code>triangle_double</code> — calls itself twice!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="kw">def</span> triangle_double(n):</span>
+<span id="cb11-2"><a></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb11-3"><a></a>        <span class="cf">return</span> n</span>
+<span id="cb11-4"><a></a>    half <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb11-5"><a></a>    top <span class="op">=</span> n <span class="op">-</span> half</span>
+<span id="cb11-6"><a></a>    <span class="cf">return</span> triangle_double(half) <span class="op">+</span> triangle_double(half) <span class="op">+</span> top <span class="op">*</span> top</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="form-4-two-calls-halving-linear-work" class="slide level2">
+<h2>Form 4: Two Calls, Halving, Linear Work</h2>
+<p><strong>Example</strong>: Merge sort!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="kw">def</span> merge_sort(arr):</span>
+<span id="cb12-2"><a></a>    ...</span>
+<span id="cb12-3"><a></a>    left <span class="op">=</span> merge_sort(arr[:mid])    </span>
+<span id="cb12-4"><a></a>    right <span class="op">=</span> merge_sort(arr[mid:])   </span>
+<span id="cb12-5"><a></a>    <span class="cf">return</span> merge(left, right)       </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="form-5-linear-shrinking-linear-work" class="slide level2">
+<h2>Form 5: Linear Shrinking, Linear Work</h2>
+<p><strong>Example</strong>: Selection sort (find min, then sort rest)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="kw">def</span> selection_sort(arr):</span>
+<span id="cb13-2"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb13-3"><a></a>        <span class="cf">return</span> arr</span>
+<span id="cb13-4"><a></a>    min_idx <span class="op">=</span> find_min_index(arr)  </span>
+<span id="cb13-5"><a></a>    swap(arr, <span class="dv">0</span>, min_idx)</span>
+<span id="cb13-6"><a></a>    <span class="cf">return</span> [arr[<span class="dv">0</span>]] <span class="op">+</span> selection_sort(arr[<span class="dv">1</span>:])  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="closed-forms" class="slide level2">
+<h2>Closed Forms</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Database</th>
-<th>Linear</th>
-<th>Hash</th>
+<th>Algorithm</th>
+<th>Recurrence</th>
+<th>Solution</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1,000</td>
-<td>1 sec</td>
-<td>0.001 sec</td>
+<td>Binary search</td>
+<td><span class="math inline">\(T(n) = T(n/2) + O(1)\)</span></td>
+<td></td>
 </tr>
 <tr class="even">
-<td>1,000,000</td>
-<td>1000 sec</td>
-<td>0.001 sec</td>
+<td>Merge sort</td>
+<td><span class="math inline">\(T(n) = 2T(n/2) + O(n)\)</span></td>
+<td></td>
 </tr>
 <tr class="odd">
-<td>100,000,000</td>
-<td>27 hours</td>
-<td>0.001 sec</td>
+<td>Linear search</td>
+<td><span class="math inline">\(T(n) = T(n-1) + O(1)\)</span></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>triangle_double</code></td>
+<td><span class="math inline">\(T(n) = 2T(n/2) + O(1)\)</span></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Selection sort</td>
+<td><span class="math inline">\(T(n) = T(n-1) + O(n)\)</span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="closed-form-reasons" class="slide level2">
+<h2>Closed Form Reasons</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Recurrence</th>
+<th>Solution</th>
+<th>Why?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(T(n) = T(n-1) + 1\)</span></td>
+<td><span class="math inline">\(O(n)\)</span></td>
+<td><span class="math inline">\(n\)</span> levels × <span class="math inline">\(O(1)\)</span> work</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(T(n) = T(n/2) + 1\)</span></td>
+<td><span class="math inline">\(O(\log n)\)</span></td>
+<td><span class="math inline">\(\log n\)</span> levels × <span class="math inline">\(O(1)\)</span> work</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></td>
+<td><span class="math inline">\(O(n)\)</span></td>
+<td>Doubling nodes overwhelms depth</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(T(n) = 2T(n/2) + n\)</span></td>
+<td><span class="math inline">\(O(n \log n)\)</span></td>
+<td><span class="math inline">\(\log n\)</span> levels × <span class="math inline">\(O(n)\)</span> work</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(T(n) = T(n-1) + n\)</span></td>
+<td><span class="math inline">\(O(n^2)\)</span></td>
+<td><span class="math inline">\(n\)</span> levels × <span class="math inline">\(O(n)\)</span> avg work</td>
 </tr>
 </tbody>
 </table>
 </section></section>
 <section>
-<section id="week-1-complete" class="title-slide slide level1 center">
-<h1>Week 1 Complete</h1>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
 
 </section>
-<section id="the-two-pillars" class="slide level2">
-<h2>The Two Pillars</h2>
+<section id="what-we-learned-today" class="slide level2">
+<h2>What We Learned Today</h2>
 <ol type="1">
-<li><strong>Correctness</strong> — Does it work?</li>
-<li><strong>Efficiency</strong> — How fast?</li>
+<li><p><strong>Math vs.&nbsp;Time</strong>: Same functionality, different running times!</p></li>
+<li><p><strong>Merge sort</strong>: Divide, conquer, merge</p></li>
+<li><p><strong>MS recurrence</strong>: <span class="math inline">\(T(n) = 2T(n/2) + O(n)\)</span></p></li>
+<li><p><strong>Recursion sketches</strong>: Visualize depth × work per level</p></li>
+<li><p><strong>Recurrence forms</strong>: Different structures → different runtimes</p></li>
 </ol>
-<aside class="notes">
-<p>“An algorithm must be correct AND efficient.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="what-we-learned" class="slide level2">
-<h2>What We Learned</h2>
+<section id="coming-up" class="slide level2">
+<h2>Coming Up</h2>
 <ul>
-<li>Counting operations, discovering patterns</li>
-<li>Big-O as formal notation</li>
-<li>The hierarchy: O(1) to O(2ⁿ)</li>
-<li>Data structures change everything</li>
+<li><strong>Tuesday video</strong>: Solving recurrences formally (review for DSCI 220 folks)</li>
+<li><strong>Wednesday</strong>: Why <span class="math inline">\(O(n \log n)\)</span> is optimal for comparison sorting</li>
 </ul>
-</section>
-<section id="next-week" class="slide level2">
-<h2>Next Week</h2>
-<p><strong>Binary search</strong>: the power of sorted data.</p>
-<p><strong>Loop invariants</strong>: proving correctness.</p>
 <aside class="notes">
-<p>“Remember the halving pattern? Binary search IS that pattern.”</p>
-<p>“And we’ll finally prove that algorithms work — not just hope.”</p>
+<p>“If you took DSCI 220, the Tuesday video will be review. Feel free to skim it!”</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -754,321 +776,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZm9yIG4gaW4gWzEwMDAwLCAx
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section id="questions" class="slide level2">
-<h2>Questions?</h2>
-<div class="r-fit-text">
-<p>The right data structure</p>
-<p>+</p>
-<p>The right algorithm</p>
-<p>=</p>
-<p>Impossible → Instant</p>
-</div>
-<!-- extra slides to fit into narrative:
-
-## Example: Nested Loops
-
-``` uowpiaycv
-count = 0
-for i in range(n):
-    for j in range(n):
-        count += 1
-```
-
-Trace for n = 4. How many increments?
-
-:::{.notes}
-Let them trace: 16
-
-"Predict for n = 8?" (64)
-
-Double n → QUADRUPLE the work. QUADRATIC.
-:::
-
-## Nested Loops (variant)
-
-
-
-Trace for n = 5.
-
-:::{.notes}
-i=0: 0. i=1: 1. i=2: 2. i=3: 3. i=4: 4. Total: 10.
-
-0 + 1 + 2 + ... + (n-1) = n(n-1)/2
-
-Still quadratic!
-:::
-
-## The Triangle Sum
-
-$$1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2}$$
-
-:::{.notes}
-"This is O(n²), not O(n)."
-
-Whenever you see "all pairs" — expect quadratic.
-:::
-
-## The Halving Pattern
-
-
-
-Trace for n = 1000.
-
-:::{.notes}
-1000 → 500 → 250 → 125 → 62 → 31 → 15 → 7 → 3 → 1
-
-About 10 iterations. log₂(1000) ≈ 10.
-
-"What if n = 1,000,000?" (≈20)
-
-Double n → ONE more step. LOGARITHMIC.
-:::
-
-## Let's verify
-
-```uowpiaycv
-import math
-
-n = 1000
-i = n
-count = 0
-while i > 1:
-    print(f"i = {i}")
-    i = i // 2
-    count += 1
-
-print(f"\nIterations: {count}")
-print(f"log₂({n}) = {math.log2(n):.1f}")
-```
-
-## Pattern Summary
-
-| Pattern | What happens when n doubles? | Name |
-|---------|------------------------------|------|
-| Single loop | Work doubles | O(n) |
-| Nested loops | Work quadruples | O(n²) |
-| Halving | One more step | O(log n) |
-
-:::{.notes}
-"These are the building blocks."
-:::
-
-## Big-O Notation {.smaller}
-
-::: {.columns}
-::: {.column width="55%"}
-
-| Notation | Name |
-|----------|------|
-| O(1) | Constant |
-| O(log n) | Logarithmic |
-| O(n) | Linear |
-| O(n log n) | Linearithmic |
-| O(n²) | Quadratic |
-| O(2ⁿ) | Exponential |
-
-:::
-
-::: {.column width="45%"}
-
-::: {#563e48b0 .cell execution_count=9}
-
-::: {.cell-output .cell-output-display}
-![](AA_XXX_hierarchy_files/figure-revealjs/cell-10-output-1.png){width=470 height=374}
-:::
-:::
-
-
-:::
-:::
-
-:::{.notes}
-"We'll formalize this Wednesday."
-:::
-
-# DataFrame Operations
-
-## Which pattern?
-
-
-
-:::{.notes}
-Let them reason:
-
-- sum: touch every value → O(n)
-- filter: check every row → O(n)
-- loc: direct access → O(1)
-- merge: ???
-
-"Is merge O(n²)? It compares rows..."
-:::
-
-## The Merge Mystery
-
-`df.merge()` uses hashing internally.
-
-O(n), not O(n²).
-
-:::{.notes}
-"We'll learn how in Week 5."
-:::
-
-## Galactic Pizza
-
-```uowpiaycv
-#| echo: false
-import pandas as pd
-import numpy as np
-import time
-
-n = 500_000
-np.random.seed(42)
-
-df = pd.DataFrame({
-    'delivery_time': np.random.exponential(scale=30, size=n),
-    'planet': np.random.choice(['Earth', 'Mars', 'Europa', 'Titan'], n),
-})
-
-print(f"Rows: {len(df):,}")
-print(df.head(8))
-```
-
-## Two ways to compute the mean
-
-```uowpiaycv
-def iter_mean(df, col):
-    total = 0
-    for idx, row in df.iterrows():
-        total += row[col]
-    return total / len(df)
-
-start = time.time()
-avg1 = iter_mean(df, 'delivery_time')
-t1 = time.time() - start
-
-start = time.time()
-avg2 = df['delivery_time'].mean()
-t2 = time.time() - start
-
-print(f"Loop:       {t1:.3f} sec")
-print(f"Vectorized: {t2:.5f} sec")
-print(f"Speedup:    {t1/t2:,.0f}x")
-```
-
-:::{.notes}
-"Both are O(n). Why the difference?"
-:::
-
-## Same Big-O, Different Speed
-
-Both touch every row: O(n)
-
-But:
-
-- **Vectorized**: tiny constants (compiled C)
-- **Python loop**: large constants (interpreter overhead)
-
-:::{.notes}
-"Big-O tells you SCALING, not SPEED."
-:::
-
-# Summary
-
-## What we learned
-
-1. Trace code to count operations
-2. Cases: best, worst, average
-3. Patterns: linear, quadratic, logarithmic
-4. Big-O describes the shape
-
-## Wednesday
-
-The full hierarchy. Racing algorithms. Feeling the difference.
-
-:::{.notes}
-"And we'll finally see how Shazam's O(1) lookup works."
-:::
-
-
-<!-- from Monday: 
-
-
-## Constants Don't Matter
-
-T(n) = 2n + 1?
-
-:::{.notes}
-"Does the 2 matter? Does the +1 matter?"
-
-At n = 100,000,000, the constants are noise.
-
-What matters is the SHAPE: linear growth.
-
-"We write this as O(n)."
-:::
-
-## Growth Rates {.smaller}
-
-::: {.columns}
-::: {.column width="45%"}
-**Algorithm A**
-
-| n | time |
-|---|------|
-| 10 | 1 sec |
-| 50 | 5 sec |
-| 100 | 10 sec |
-
-**Algorithm B**
-
-| n | time |
-|---|------|
-| 10 | 1 sec |
-| 50 | 25 sec |
-| 100 | 100 sec |
-:::
-
-::: {.column width="55%"}
-
-::: {#9d01afc5 .cell execution_count=11}
-
-::: {.cell-output .cell-output-display}
-![](AA_XXX_hierarchy_files/figure-revealjs/cell-12-output-1.png){width=470 height=374}
-:::
-:::
-
-
-:::
-:::
-
-:::{.notes}
-"What's the pattern for A? For B?"
-
-A: linear (time ∝ n)
-B: quadratic (time ∝ n²)
-:::
-
-## What about pandas?
-
-You'll work with DataFrames that have **millions of rows**.
-
-Some operations are fast. Others are slow.
-
-:::{.notes}
-"Why?"
-
-- `df['col'].sum()` — must touch every value
-- `df.loc[12345]` — goes directly to one row
-- `df.iterrows()` — visits every row, with Python overhead
-
-"We'll learn to predict which is which."
-:::
-
-# Back to Shazam
-
-
--->
 
 
 <script type="pyodide-data">
