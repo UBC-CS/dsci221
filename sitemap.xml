@@ -2,94 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ubc-cs.github.io/dsci221/announcements.html</loc>
-    <lastmod>2026-01-26T06:14:22.221Z</lastmod>
+    <lastmod>2026-01-26T06:15:57.641Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/formatting.html</loc>
-    <lastmod>2026-01-26T06:14:22.275Z</lastmod>
+    <lastmod>2026-01-26T06:15:57.696Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/04_tue_recurrences.html</loc>
-    <lastmod>2026-01-26T06:14:22.647Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.065Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/02_tue_invariants.html</loc>
-    <lastmod>2026-01-26T06:14:22.646Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.064Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/01_mon_intro.html</loc>
-    <lastmod>2026-01-26T06:14:22.646Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.064Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/03_wed_recursion.html</loc>
-    <lastmod>2026-01-26T06:14:22.647Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.065Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/03_tue_binarysearch.html</loc>
-    <lastmod>2026-01-26T06:14:22.647Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.065Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/03_mon_invariants.html</loc>
-    <lastmod>2026-01-26T06:14:22.646Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.065Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/setup.html</loc>
-    <lastmod>2026-01-26T06:14:22.646Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.064Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/TODO.html</loc>
-    <lastmod>2026-01-26T06:14:22.202Z</lastmod>
+    <lastmod>2026-01-26T06:15:57.620Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/posts/00_welcome/index.html</loc>
-    <lastmod>2026-01-26T06:14:22.645Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.062Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/index.html</loc>
-    <lastmod>2026-01-26T06:14:22.645Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.062Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/labs/02_create-website.html</loc>
-    <lastmod>2026-01-26T06:14:22.645Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.062Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/LICENSE.html</loc>
-    <lastmod>2026-01-26T06:14:22.201Z</lastmod>
+    <lastmod>2026-01-26T06:15:57.620Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/summaries/01_weekly_summary.html</loc>
-    <lastmod>2026-01-26T06:14:22.647Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.065Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/about.html</loc>
-    <lastmod>2026-01-26T06:14:22.221Z</lastmod>
+    <lastmod>2026-01-26T06:15:57.641Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/01_wed_runtime.html</loc>
-    <lastmod>2026-01-26T06:14:22.646Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.064Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/02_mon_hierarchy.html</loc>
-    <lastmod>2026-01-26T06:14:22.646Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.064Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/04_mon_mergesort.html</loc>
-    <lastmod>2026-01-26T06:14:22.647Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.065Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/AA_XXX_hierarchy.html</loc>
-    <lastmod>2026-01-26T06:14:22.647Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.065Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/02_wed_correctness.html</loc>
-    <lastmod>2026-01-26T06:14:22.646Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.064Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/04_wed_sorting_lowerbound.html</loc>
-    <lastmod>2026-01-26T06:14:22.647Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.065Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/syllabus.html</loc>
-    <lastmod>2026-01-26T06:14:22.647Z</lastmod>
+    <lastmod>2026-01-26T06:15:58.065Z</lastmod>
   </url>
 </urlset>
