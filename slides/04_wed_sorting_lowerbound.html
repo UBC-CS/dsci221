@@ -149,18 +149,91 @@
 
   <p class="date">January 28, 2026</p>
 </section>
+<section class="slide level2">
+
+<p>In the Tuesday video, we saw recurrence forms and their solutions:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Recurrence</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(T(n) = T(n-1) + 1\)</span></td>
+<td><span class="math inline">\(O(n)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(T(n) = T(n/2) + 1\)</span></td>
+<td><span class="math inline">\(O(\log n)\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></td>
+<td><span class="math inline">\(O(n)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(T(n) = 2T(n/2) + n\)</span></td>
+<td><span class="math inline">\(O(n \log n)\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(T(n) = T(n-1) + n\)</span></td>
+<td><span class="math inline">\(O(n^2)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Today: How do we <strong>prove</strong> these solutions?</p>
+</section>
+<section id="two-methods" class="slide level2">
+<h2>Two Methods</h2>
+<ol type="1">
+<li><p><strong>Expansion method</strong>: Unroll the recurrence, find the pattern, prove it</p></li>
+<li><p><strong>Recursion tree method</strong>: Visualize as a tree, sum the work</p></li>
+</ol>
+<ul>
+<li>This is more of a sketch than a certainty</li>
+<li>covered in enough detail in Tuesday video</li>
+</ul>
+<p>Both give the same asymptotic answer. Choose whichever works for you!</p>
+</section>
 <section>
-<section id="the-big-question" class="title-slide slide level1 center">
-<h1>The Big Question</h1>
+<section id="method-1-expansion" class="title-slide slide level1 center">
+<h1>Method 1: Expansion</h1>
+
+</section>
+<section id="the-idea" class="slide level2">
+<h2>The Idea</h2>
+<p><strong>Unroll</strong> the recurrence step by step until you see a pattern.</p>
+<p>Then <strong>prove</strong> the pattern is correct (usually by induction).</p>
+</section>
+<section id="example-1-tn-tn-1-c" class="slide level2">
+<h2>Example 1: <span class="math inline">\(T(n) = T(n-1) + c\)</span></h2>
+<p><strong>Expand</strong>:</p>
+<p><span class="math display">\[T(n) = T(n-1) + c\]</span></p>
+</section>
+<section id="example-2-tn-tn2-c" class="slide level2">
+<h2>Example 2: <span class="math inline">\(T(n) = T(n/2) + c\)</span></h2>
+<p><strong>Expand</strong> (assume <span class="math inline">\(n = 2^k\)</span> for simplicity):</p>
+<p><span class="math display">\[T(n) = T(n/2) + c\]</span></p>
+</section>
+<section id="example-3-tn-2tn2-1" class="slide level2">
+<h2>Example 3: <span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></h2>
+<p><strong>Expand</strong> (assume <span class="math inline">\(n = 2^k\)</span> for simplicity)::</p>
+<p><span class="math display">\[T(n) = 2T(n/2) + 1\]</span></p>
+</section></section>
+<section>
+<section id="a-big-question-about-sorting" class="title-slide slide level1 center">
+<h1>A Big Question about Sorting</h1>
 
 </section>
 <section id="can-we-do-better" class="slide level2">
 <h2>Can We Do Better?</h2>
 <p>We’ve seen:</p>
 <ul>
-<li>Insertion sort: <span class="math inline">\(O(n^2)\)</span></li>
+<li>Insertion sort: <span class="math inline">\(O(n^2)\)</span> (PEX1, HW1)</li>
 <li>Selection sort: <span class="math inline">\(O(n^2)\)</span></li>
 <li>Merge sort: <span class="math inline">\(O(n \log n)\)</span></li>
+<li>csort: <span class="math inline">\(O(n)\)</span> (HW1)</li>
 </ul>
 <p><strong>Question</strong>: Is <span class="math inline">\(O(n \log n)\)</span> the best we can do?</p>
 <p>Or is there some clever algorithm that sorts in <span class="math inline">\(O(n)\)</span>?</p>
@@ -204,49 +277,97 @@ else:
 </section>
 <section id="example-sorting-3-elements" class="slide level2">
 <h2>Example: Sorting 3 Elements</h2>
-<p>Suppose we want to sort <span class="math inline">\([a, b, c]\)</span>.</p>
-<pre><code>                    a &lt; b?
-                   /     \
-                yes       no
-               /           \
-           b &lt; c?          a &lt; c?
-          /    \          /    \
-        yes    no       yes    no
-        /       \       /       \
-   [a,b,c]    a &lt; c?  [b,a,c]   b &lt; c?
-              /   \            /   \
-            yes   no         yes   no
-            /      \         /      \
-        [a,c,b]  [c,a,b]  [b,c,a]  [c,b,a]</code></pre>
+<p>Suppose we want to sort <span class="math inline">\([v_1, v_2, v_3]\)</span>.</p>
+<svg viewbox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
+  <!-- Level 0: Root -->
+  <rect x="250" y="10" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="300" y="30" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ &lt; v₂?</text>
+
+  <!-- Edges from root -->
+  <line x1="270" y1="40" x2="170" y2="70" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="330" y1="40" x2="430" y2="70" stroke="#7f8c8d" stroke-width="2"></line>
+
+  <!-- Level 1: Left node -->
+  <rect x="120" y="70" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="170" y="90" text-anchor="middle" font-size="14" fill="#2c3e50">v₂ &lt; v₃?</text>
+
+  <!-- Level 1: Right node -->
+  <rect x="380" y="70" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="430" y="90" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ &lt; v₃?</text>
+
+  <!-- Edges from level 1 left -->
+  <line x1="140" y1="100" x2="80" y2="140" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="200" y1="100" x2="260" y2="140" stroke="#7f8c8d" stroke-width="2"></line>
+
+  <!-- Edges from level 1 right -->
+  <line x1="400" y1="100" x2="340" y2="140" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="460" y1="100" x2="520" y2="140" stroke="#7f8c8d" stroke-width="2"></line>
+
+  <!-- Level 2: Leaf 1 (leftmost) -->
+  <rect x="30" y="140" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="80" y="160" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+
+  <!-- Level 2: Internal node 2 -->
+  <rect x="210" y="140" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="260" y="160" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ &lt; v₃?</text>
+
+  <!-- Level 2: Leaf 3 -->
+  <rect x="290" y="140" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="340" y="160" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+
+  <!-- Level 2: Internal node 4 -->
+  <rect x="470" y="140" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="520" y="160" text-anchor="middle" font-size="14" fill="#2c3e50">v₂ &lt; v₃?</text>
+
+  <!-- Edges from level 2 internal nodes -->
+  <line x1="235" y1="170" x2="175" y2="210" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="285" y1="170" x2="345" y2="210" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="495" y1="170" x2="435" y2="210" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="545" y1="170" x2="565" y2="210" stroke="#7f8c8d" stroke-width="2"></line>
+
+  <!-- Level 3: Leaves -->
+  <rect x="125" y="210" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="175" y="230" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+
+  <rect x="295" y="210" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="345" y="230" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+
+  <rect x="385" y="210" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="435" y="230" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+
+  <rect x="515" y="210" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="565" y="230" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+</svg>
 </section>
 <section id="what-the-tree-represents" class="slide level2">
 <h2>What the Tree Represents</h2>
 <ul>
-<li><strong>Internal nodes</strong>: Comparisons (questions)</li>
+<li><strong>Internal nodes</strong>: Comparisons</li>
 <li><strong>Edges</strong>: Answers (yes/no, or <span class="math inline">\(\leq\)</span> / <span class="math inline">\(&gt;\)</span>)</li>
-<li><strong>Leaves</strong>: Output permutations</li>
+<li><strong>Leaves</strong>: sorted ordering of the elements</li>
+<li><strong>Height</strong>: running time of the algorithm</li>
 </ul>
-<p><strong>Key insight</strong>: Each possible input ordering must lead to a different leaf!</p>
+<p><strong>Note</strong>: - There must be a leaf (endpoint) for each ordering of the elements - the tree itself is an encoding of an algorithm</p>
 </section>
 <section id="counting-leaves" class="slide level2">
 <h2>Counting Leaves</h2>
-<p>For <span class="math inline">\(n\)</span> elements, there are <span class="math inline">\(n!\)</span> possible input orderings.</p>
+<p>How many different rearrangements are possible for an <span class="math inline">\(n\)</span> element list?</p>
 <p>Each ordering needs its own leaf (otherwise we’d give the same answer for different inputs).</p>
-<p><strong>So</strong>: The decision tree must have <strong>at least <span class="math inline">\(n!\)</span> leaves</strong>.</p>
+<p>The decision tree must have at least ______ leaves!</p>
+</section>
+<section id="a-question-for-later" class="slide level2">
+<h2>A Question for Later</h2>
+<p>Whose answer we need now…</p>
+<p>A decision tree of height <span class="math inline">\(h\)</span> has at most _______ leaves?</p>
 </section></section>
 <section>
 <section id="the-lower-bound-proof" class="title-slide slide level1 center">
 <h1>The Lower Bound Proof</h1>
 
 </section>
-<section id="height-of-a-binary-tree" class="slide level2">
-<h2>Height of a Binary Tree</h2>
-<p><strong>Fact</strong>: A binary tree of height <span class="math inline">\(h\)</span> has at most <span class="math inline">\(2^h\)</span> leaves.</p>
-<p><strong>Proof</strong>: - Height 0: 1 leaf (<span class="math inline">\(2^0\)</span>) - Height 1: 2 leaves (<span class="math inline">\(2^1\)</span>) - Height <span class="math inline">\(h\)</span>: at most <span class="math inline">\(2^h\)</span> leaves</p>
-</section>
 <section id="connecting-height-to-comparisons" class="slide level2">
 <h2>Connecting Height to Comparisons</h2>
-<p>The <strong>height</strong> of the decision tree = <strong>maximum number of comparisons</strong> in the worst case.</p>
+<p>Recall: The <strong>height</strong> of the decision tree is the <strong>maximum number of comparisons</strong> in the worst case.</p>
 <p>If the tree has height <span class="math inline">\(h\)</span>, then:</p>
 <ul>
 <li>At most <span class="math inline">\(2^h\)</span> leaves</li>
@@ -255,23 +376,20 @@ else:
 <p>Therefore: <span class="math inline">\(2^h \geq n!\)</span></p>
 <p>Taking logarithms: <span class="math inline">\(h \geq \log_2(n!)\)</span></p>
 </section>
-<section id="how-big-is-logn" class="slide level2">
-<h2>How Big is <span class="math inline">\(\log(n!)\)</span>?</h2>
-<p><strong>Stirling’s approximation</strong>: <span class="math inline">\(n! \approx \sqrt{2\pi n} \left(\frac{n}{e}\right)^n\)</span></p>
-<p>Therefore:</p>
-<p><span class="math display">\[\log_2(n!) \approx n \log_2 n - n \log_2 e + O(\log n)\]</span></p>
-<p><strong>Simplifying</strong>: <span class="math inline">\(\log_2(n!) = \Theta(n \log n)\)</span></p>
+<section id="but-how-big-is-logn" class="slide level2">
+<h2>But How Big is <span class="math inline">\(\log(n!)\)</span>?</h2>
+<p><strong>Claim</strong>: <span class="math inline">\(\log(n!) = \Omega(n\log n)\)</span></p>
 </section>
-<section id="the-theorem" class="slide level2">
-<h2>The Theorem</h2>
-<p><strong>Theorem</strong>: Any comparison-based sorting algorithm requires <span class="math inline">\(\Omega(n \log n)\)</span> comparisons in the worst case.</p>
-<p><strong>Proof</strong>:</p>
+<section id="the-result" class="slide level2">
+<h2>The Result</h2>
+<p><strong>Observation</strong>: Any comparison-based sorting algorithm requires <span class="math inline">\(\Omega(n \log n)\)</span> comparisons in the worst case.</p>
+<p><strong>Justification</strong>:</p>
 <ol type="1">
 <li>Model the algorithm as a decision tree</li>
 <li>The tree needs at least <span class="math inline">\(n!\)</span> leaves</li>
 <li>A tree with <span class="math inline">\(\geq n!\)</span> leaves has height <span class="math inline">\(\geq \log_2(n!)\)</span></li>
 <li><span class="math inline">\(\log_2(n!) = \Theta(n \log n)\)</span></li>
-<li>Therefore, worst-case comparisons <span class="math inline">\(\geq \Omega(n \log n)\)</span> ∎</li>
+<li>Therefore, worst-case comparisons <span class="math inline">\(\Omega(n \log n)\)</span> ∎</li>
 </ol>
 <aside class="notes">
 <p>“This proof is remarkable: we didn’t analyze any specific algorithm. We proved a limit on ALL possible comparison-based sorting algorithms!”</p>
@@ -318,6 +436,11 @@ else:
 <td><span class="math inline">\(O(n^2)\)</span></td>
 <td>No</td>
 </tr>
+<tr class="odd">
+<td>Selection Sort</td>
+<td><span class="math inline">\(O(n^2)\)</span></td>
+<td>No</td>
+</tr>
 </tbody>
 </table>
 <p><strong>Merge sort achieves the theoretical limit.</strong></p>
@@ -340,7 +463,7 @@ else:
 
 </div>
 <script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGNvdW50aW5nX3NvcnQoYXJyLCBrKTpcbiAgICBcIlwiXCJTb3J0IGludGVnZXJzIGluIHJhbmdlIFswLCBrXS5cIlwiXCJcbiAgICBjb3VudHMgPSBbMF0gKiAoayArIDEpXG4gICAgZm9yIHggaW4gYXJyOlxuICAgICAgICBjb3VudHNbeF0gKz0gMVxuXG4gICAgcmVzdWx0ID0gW11cbiAgICBmb3IgaSBpbiByYW5nZShrICsgMSk6XG4gICAgICAgIHJlc3VsdC5leHRlbmQoW2ldICogY291bnRzW2ldKVxuICAgIHJldHVybiByZXN1bHQifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGNvdW50aW5nX3NvcnQoYXJyLCBrKTpcbiAgICBcIlwiXCJTb3J0IGludGVnZXJzIGluIHJhbmdlIFswOmtdLlwiXCJcIlxuICAgIGNvdW50cyA9IFswXSAqIGtcbiAgICBmb3IgeCBpbiBhcnI6XG4gICAgICAgIGNvdW50c1t4XSArPSAxXG5cbiAgICByZXN1bHQgPSBbXVxuICAgIGZvciBpIGluIHJhbmdlKGspOlxuICAgICAgICByZXN1bHQuZXh0ZW5kKFtpXSAqIGNvdW50c1tpXSlcbiAgICByZXR1cm4gcmVzdWx0In0=
 </script>
 </div>
 </section>
@@ -396,24 +519,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzQsIDIsIDAsIDMs
 </tbody>
 </table>
 <p>All exploit <strong>extra structure</strong> in the input.</p>
-</section></section>
-<section>
-<section id="the-sorting-landscape" class="title-slide slide level1 center">
-<h1>The Sorting Landscape</h1>
-
-</section>
-<section id="summary-of-sorting-algorithms" class="slide level2">
-<h2>Summary of Sorting Algorithms</h2>
-<div id="38185970" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-stdout">
-<pre><code>     Algorithm    Best   Worst Stable In-place
-    Merge Sort n log n n log n    Yes       No
-     Heap Sort n log n n log n     No      Yes
-    Quick Sort n log n      n²     No      Yes
-Insertion Sort       n      n²    Yes      Yes
- Counting Sort   n + k   n + k    Yes       No</code></pre>
-</div>
-</div>
 </section>
 <section id="pythons-timsort" class="slide level2">
 <h2>Python’s Timsort</h2>
@@ -460,45 +565,6 @@ Insertion Sort       n      n²    Yes      Yes
 <li>Later: Quick sort, binary search</li>
 </ul></li>
 </ol>
-</section>
-<section id="the-hierarchy-revisited" class="slide level2">
-<h2>The Hierarchy Revisited</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Complexity</th>
-<th>Example</th>
-<th>Achievable?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(O(1)\)</span></td>
-<td>Hash lookup</td>
-<td>Special cases</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(O(\log n)\)</span></td>
-<td>Binary search</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(O(n)\)</span></td>
-<td>Linear scan</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(O(n \log n)\)</span></td>
-<td>Sorting</td>
-<td><strong>Optimal for comparisons</strong></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(O(n^2)\)</span></td>
-<td>All pairs</td>
-<td>Sometimes unavoidable</td>
-</tr>
-</tbody>
-</table>
 </section></section>
 <section>
 <section id="summary" class="title-slide slide level1 center">
@@ -530,7 +596,7 @@ Insertion Sort       n      n²    Yes      Yes
 <h2>Looking Ahead</h2>
 <ul>
 <li><strong>PA1</strong>: Due Feb 8 — apply divide-and-conquer to closest pair</li>
-<li><strong>EX1</strong>: This week — covers analysis, loop invariants, recursion</li>
+<li><strong>EX1</strong>: This week — covers analysis, loop invariants</li>
 <li><strong>Next week</strong>: The dictionary trick — <span class="math inline">\(O(n^2) \to O(n)\)</span> transformations</li>
 </ul>
 </section>

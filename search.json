@@ -1403,111 +1403,6 @@
     "text": "Putting It Together\n\nBase case: ✓ (trivially sorted)\nInductive hypothesis: merge_sort works for sizes \\(&lt; n\\)\nleft_sorted is sorted (by IH, since size \\(&lt; n\\))\nright_sorted is sorted (by IH, since size \\(&lt; n\\))\nmerge combines them correctly (by earlier proof)\nTherefore merge_sort works for size \\(n\\) ✓\n\nBy induction, merge_sort is correct for all \\(n\\). ∎"
   },
   {
-    "objectID": "slides/04_mon_mergesort.html#merge-sort-runtime-analysis",
-    "href": "slides/04_mon_mergesort.html#merge-sort-runtime-analysis",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Merge Sort Runtime Analysis",
-    "text": "Merge Sort Runtime Analysis\ndef merge_sort(arr):\n    if len(arr) &lt;= 1:          # O(1)\n        return arr\n    mid = len(arr) // 2        # O(1)\n    left = merge_sort(arr[:mid])    # T(n/2)\n    right = merge_sort(arr[mid:])   # T(n/2)\n    return merge(left, right)       # O(n)\nThe recurrence:\n\\[T(n) = 2T(n/2) + O(n)\\]"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#what-does-this-mean",
-    "href": "slides/04_mon_mergesort.html#what-does-this-mean",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "What Does This Mean?",
-    "text": "What Does This Mean?\n\\[T(n) = 2T(n/2) + n\\]\n\nWe make 2 recursive calls\nEach on a problem of size n/2\nPlus n work to merge\n\nThis is a recurrence relation: T(n) defined in terms of T(smaller)."
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#the-call-tree",
-    "href": "slides/04_mon_mergesort.html#the-call-tree",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "The Call Tree",
-    "text": "The Call Tree\n                merge_sort([7,1,6,4,5,3,2,8])\n                        /              \\\n        merge_sort([7,1,6,4])    merge_sort([5,3,2,8])\n            /        \\              /        \\\n    ms([7,1])    ms([6,4])    ms([5,3])    ms([2,8])\n      /  \\        /  \\        /  \\        /  \\\n   [7]  [1]    [6]  [4]    [5]  [3]    [2]  [8]\nHow deep does this go?"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#recursion-depth",
-    "href": "slides/04_mon_mergesort.html#recursion-depth",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Recursion Depth",
-    "text": "Recursion Depth\nAt each level, problem size halves: \\(n \\to n/2 \\to n/4 \\to \\ldots \\to 1\\)\nDepth = How many times can we halve \\(n\\)?\n\\[n \\to n/2 \\to n/4 \\to \\ldots \\to 1\\]\nAnswer: \\(\\log_2 n\\) levels"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#work-at-each-level",
-    "href": "slides/04_mon_mergesort.html#work-at-each-level",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Work at Each Level",
-    "text": "Work at Each Level\nLevel 0:     [n]                      n work (merge)\n            /   \\\nLevel 1:  [n/2] [n/2]                 n work (two merges of n/2)\n          / \\   / \\\nLevel 2: [n/4]×4                      n work (four merges of n/4)\n         ...\nLevel log n: [1]×n                    n work (base cases)\nTotal work: \\(n \\times \\log n = O(n \\log n)\\)\n\n“This is the recursion tree method. Tuesday’s video will formalize this.”"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#the-big-idea",
-    "href": "slides/04_mon_mergesort.html#the-big-idea",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "The Big Idea",
-    "text": "The Big Idea\nDifferent recursive structures - → different recurrences - → different running times!"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#form-1-linear-shrinking",
-    "href": "slides/04_mon_mergesort.html#form-1-linear-shrinking",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Form 1: Linear Shrinking",
-    "text": "Form 1: Linear Shrinking\nExample: Processing a list one element at a time\ndef sum_list(arr):\n    if len(arr) == 0:\n        return 0\n    return arr[0] + sum_list(arr[1:]) \n\\(T(n) =\\)"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#form-2-halving",
-    "href": "slides/04_mon_mergesort.html#form-2-halving",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Form 2: Halving",
-    "text": "Form 2: Halving\nExample: Binary search\ndef binary_search(arr, target, lo, hi):\n    if lo &gt; hi:\n        return -1\n    mid = (lo + hi) // 2\n    if arr[mid] == target:\n        return mid\n    elif arr[mid] &lt; target:\n        return binary_search(arr, target, mid+1, hi)  \n    else:\n        return binary_search(arr, target, lo, mid-1)\n\\(T(n) =\\)"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#form-3-two-calls-halving-constant-work",
-    "href": "slides/04_mon_mergesort.html#form-3-two-calls-halving-constant-work",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Form 3: Two Calls, Halving, Constant Work",
-    "text": "Form 3: Two Calls, Halving, Constant Work\nExample: triangle_double — calls itself twice!\ndef triangle_double(n):\n    if n &lt;= 1:\n        return n\n    half = n // 2\n    top = n - half\n    return triangle_double(half) + triangle_double(half) + top * top\n\\(T(n) =\\)"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#form-4-two-calls-halving-linear-work",
-    "href": "slides/04_mon_mergesort.html#form-4-two-calls-halving-linear-work",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Form 4: Two Calls, Halving, Linear Work",
-    "text": "Form 4: Two Calls, Halving, Linear Work\nExample: Merge sort!\ndef merge_sort(arr):\n    ...\n    left = merge_sort(arr[:mid])    \n    right = merge_sort(arr[mid:])   \n    return merge(left, right)       \n\\(T(n) =\\)"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#form-5-linear-shrinking-linear-work",
-    "href": "slides/04_mon_mergesort.html#form-5-linear-shrinking-linear-work",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Form 5: Linear Shrinking, Linear Work",
-    "text": "Form 5: Linear Shrinking, Linear Work\nExample: Selection sort (find min, then sort rest)\ndef selection_sort(arr):\n    if len(arr) &lt;= 1:\n        return arr\n    min_idx = find_min_index(arr)  \n    swap(arr, 0, min_idx)\n    return [arr[0]] + selection_sort(arr[1:])  \n\\(T(n) =\\)"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#closed-forms",
-    "href": "slides/04_mon_mergesort.html#closed-forms",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Closed Forms",
-    "text": "Closed Forms\n\n\n\nAlgorithm\nRecurrence\nSolution\n\n\n\n\nBinary search\n\\(T(n) = T(n/2) + O(1)\\)\n\n\n\nMerge sort\n\\(T(n) = 2T(n/2) + O(n)\\)\n\n\n\nLinear search\n\\(T(n) = T(n-1) + O(1)\\)\n\n\n\ntriangle_double\n\\(T(n) = 2T(n/2) + O(1)\\)\n\n\n\nSelection sort\n\\(T(n) = T(n-1) + O(n)\\)"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#closed-form-reasons",
-    "href": "slides/04_mon_mergesort.html#closed-form-reasons",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Closed Form Reasons",
-    "text": "Closed Form Reasons\n\n\n\nRecurrence\nSolution\nWhy?\n\n\n\n\n\\(T(n) = T(n-1) + 1\\)\n\\(O(n)\\)\n\\(n\\) levels × \\(O(1)\\) work\n\n\n\\(T(n) = T(n/2) + 1\\)\n\\(O(\\log n)\\)\n\\(\\log n\\) levels × \\(O(1)\\) work\n\n\n\\(T(n) = 2T(n/2) + 1\\)\n\\(O(n)\\)\nDoubling nodes overwhelms depth\n\n\n\\(T(n) = 2T(n/2) + n\\)\n\\(O(n \\log n)\\)\n\\(\\log n\\) levels × \\(O(n)\\) work\n\n\n\\(T(n) = T(n-1) + n\\)\n\\(O(n^2)\\)\n\\(n\\) levels × \\(O(n)\\) avg work"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#what-we-learned-today",
-    "href": "slides/04_mon_mergesort.html#what-we-learned-today",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "What We Learned Today",
-    "text": "What We Learned Today\n\nMath vs. Time: Same functionality, different running times!\nMerge sort: Divide, conquer, merge\nMS recurrence: \\(T(n) = 2T(n/2) + O(n)\\)\nRecursion sketches: Visualize depth × work per level\nRecurrence forms: Different structures → different runtimes"
-  },
-  {
-    "objectID": "slides/04_mon_mergesort.html#coming-up",
-    "href": "slides/04_mon_mergesort.html#coming-up",
-    "title": "Merge Sort and Recurrence Forms",
-    "section": "Coming Up",
-    "text": "Coming Up\n\nTuesday video: Solving recurrences formally (review for DSCI 220 folks)\nWednesday: Why \\(O(n \\log n)\\) is optimal for comparison sorting\n\n\n“If you took DSCI 220, the Tuesday video will be review. Feel free to skim it!”"
-  },
-  {
     "objectID": "slides/AA_XXX_hierarchy.html#patterns",
     "href": "slides/AA_XXX_hierarchy.html#patterns",
     "title": "The Hierarchy of Speed",
@@ -1907,11 +1802,46 @@
     "text": "Practice Problems\nBefore Wednesday, try stating invariants for:\n\nreverse(arr) — reverse an array in place\nis_sorted(arr) — check if array is sorted\ncount(arr, target) — count occurrences of target\n\nThink: What’s true after processing \\(i\\) elements?"
   },
   {
+    "objectID": "slides/04_wed_sorting_lowerbound.html#two-methods",
+    "href": "slides/04_wed_sorting_lowerbound.html#two-methods",
+    "title": "The Sorting Lower Bound",
+    "section": "Two Methods",
+    "text": "Two Methods\n\nExpansion method: Unroll the recurrence, find the pattern, prove it\nRecursion tree method: Visualize as a tree, sum the work\n\n\nThis is more of a sketch than a certainty\ncovered in enough detail in Tuesday video\n\nBoth give the same asymptotic answer. Choose whichever works for you!"
+  },
+  {
+    "objectID": "slides/04_wed_sorting_lowerbound.html#the-idea",
+    "href": "slides/04_wed_sorting_lowerbound.html#the-idea",
+    "title": "The Sorting Lower Bound",
+    "section": "The Idea",
+    "text": "The Idea\nUnroll the recurrence step by step until you see a pattern.\nThen prove the pattern is correct (usually by induction)."
+  },
+  {
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-1-tn-tn-1-c",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-1-tn-tn-1-c",
+    "title": "The Sorting Lower Bound",
+    "section": "Example 1: \\(T(n) = T(n-1) + c\\)",
+    "text": "Example 1: \\(T(n) = T(n-1) + c\\)\nExpand:\n\\[T(n) = T(n-1) + c\\]"
+  },
+  {
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-2-tn-tn2-c",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-2-tn-tn2-c",
+    "title": "The Sorting Lower Bound",
+    "section": "Example 2: \\(T(n) = T(n/2) + c\\)",
+    "text": "Example 2: \\(T(n) = T(n/2) + c\\)\nExpand (assume \\(n = 2^k\\) for simplicity):\n\\[T(n) = T(n/2) + c\\]"
+  },
+  {
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-3-tn-2tn2-1",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-3-tn-2tn2-1",
+    "title": "The Sorting Lower Bound",
+    "section": "Example 3: \\(T(n) = 2T(n/2) + 1\\)",
+    "text": "Example 3: \\(T(n) = 2T(n/2) + 1\\)\nExpand (assume \\(n = 2^k\\) for simplicity)::\n\\[T(n) = 2T(n/2) + 1\\]"
+  },
+  {
     "objectID": "slides/04_wed_sorting_lowerbound.html#can-we-do-better",
     "href": "slides/04_wed_sorting_lowerbound.html#can-we-do-better",
     "title": "The Sorting Lower Bound",
     "section": "Can We Do Better?",
-    "text": "Can We Do Better?\nWe’ve seen:\n\nInsertion sort: \\(O(n^2)\\)\nSelection sort: \\(O(n^2)\\)\nMerge sort: \\(O(n \\log n)\\)\n\nQuestion: Is \\(O(n \\log n)\\) the best we can do?\nOr is there some clever algorithm that sorts in \\(O(n)\\)?"
+    "text": "Can We Do Better?\nWe’ve seen:\n\nInsertion sort: \\(O(n^2)\\) (PEX1, HW1)\nSelection sort: \\(O(n^2)\\)\nMerge sort: \\(O(n \\log n)\\)\ncsort: \\(O(n)\\) (HW1)\n\nQuestion: Is \\(O(n \\log n)\\) the best we can do?\nOr is there some clever algorithm that sorts in \\(O(n)\\)?"
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#the-surprising-answer",
@@ -1932,56 +1862,56 @@
     "href": "slides/04_wed_sorting_lowerbound.html#example-sorting-3-elements",
     "title": "The Sorting Lower Bound",
     "section": "Example: Sorting 3 Elements",
-    "text": "Example: Sorting 3 Elements\nSuppose we want to sort \\([a, b, c]\\).\n                    a &lt; b?\n                   /     \\\n                yes       no\n               /           \\\n           b &lt; c?          a &lt; c?\n          /    \\          /    \\\n        yes    no       yes    no\n        /       \\       /       \\\n   [a,b,c]    a &lt; c?  [b,a,c]   b &lt; c?\n              /   \\            /   \\\n            yes   no         yes   no\n            /      \\         /      \\\n        [a,c,b]  [c,a,b]  [b,c,a]  [c,b,a]"
+    "text": "Example: Sorting 3 Elements\nSuppose we want to sort \\([v_1, v_2, v_3]\\).\n\n  \n  \n  v₁ &lt; v₂?\n\n  \n  \n  \n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  \n\n  \n  \n  \n\n  \n  \n  [__, __, __]\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  [__, __, __]\n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  \n  \n  \n\n  \n  \n  [__, __, __]\n\n  \n  [__, __, __]\n\n  \n  [__, __, __]\n\n  \n  [__, __, __]"
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#what-the-tree-represents",
     "href": "slides/04_wed_sorting_lowerbound.html#what-the-tree-represents",
     "title": "The Sorting Lower Bound",
     "section": "What the Tree Represents",
-    "text": "What the Tree Represents\n\nInternal nodes: Comparisons (questions)\nEdges: Answers (yes/no, or \\(\\leq\\) / \\(&gt;\\))\nLeaves: Output permutations\n\nKey insight: Each possible input ordering must lead to a different leaf!"
+    "text": "What the Tree Represents\n\nInternal nodes: Comparisons\nEdges: Answers (yes/no, or \\(\\leq\\) / \\(&gt;\\))\nLeaves: sorted ordering of the elements\nHeight: running time of the algorithm\n\nNote: - There must be a leaf (endpoint) for each ordering of the elements - the tree itself is an encoding of an algorithm"
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#counting-leaves",
     "href": "slides/04_wed_sorting_lowerbound.html#counting-leaves",
     "title": "The Sorting Lower Bound",
     "section": "Counting Leaves",
-    "text": "Counting Leaves\nFor \\(n\\) elements, there are \\(n!\\) possible input orderings.\nEach ordering needs its own leaf (otherwise we’d give the same answer for different inputs).\nSo: The decision tree must have at least \\(n!\\) leaves."
+    "text": "Counting Leaves\nHow many different rearrangements are possible for an \\(n\\) element list?\nEach ordering needs its own leaf (otherwise we’d give the same answer for different inputs).\nThe decision tree must have at least ______ leaves!"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#height-of-a-binary-tree",
-    "href": "slides/04_wed_sorting_lowerbound.html#height-of-a-binary-tree",
+    "objectID": "slides/04_wed_sorting_lowerbound.html#a-question-for-later",
+    "href": "slides/04_wed_sorting_lowerbound.html#a-question-for-later",
     "title": "The Sorting Lower Bound",
-    "section": "Height of a Binary Tree",
-    "text": "Height of a Binary Tree\nFact: A binary tree of height \\(h\\) has at most \\(2^h\\) leaves.\nProof: - Height 0: 1 leaf (\\(2^0\\)) - Height 1: 2 leaves (\\(2^1\\)) - Height \\(h\\): at most \\(2^h\\) leaves"
+    "section": "A Question for Later",
+    "text": "A Question for Later\nWhose answer we need now…\nA decision tree of height \\(h\\) has at most _______ leaves?"
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#connecting-height-to-comparisons",
     "href": "slides/04_wed_sorting_lowerbound.html#connecting-height-to-comparisons",
     "title": "The Sorting Lower Bound",
     "section": "Connecting Height to Comparisons",
-    "text": "Connecting Height to Comparisons\nThe height of the decision tree = maximum number of comparisons in the worst case.\nIf the tree has height \\(h\\), then:\n\nAt most \\(2^h\\) leaves\nWe need at least \\(n!\\) leaves\n\nTherefore: \\(2^h \\geq n!\\)\nTaking logarithms: \\(h \\geq \\log_2(n!)\\)"
+    "text": "Connecting Height to Comparisons\nRecall: The height of the decision tree is the maximum number of comparisons in the worst case.\nIf the tree has height \\(h\\), then:\n\nAt most \\(2^h\\) leaves\nWe need at least \\(n!\\) leaves\n\nTherefore: \\(2^h \\geq n!\\)\nTaking logarithms: \\(h \\geq \\log_2(n!)\\)"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#how-big-is-logn",
-    "href": "slides/04_wed_sorting_lowerbound.html#how-big-is-logn",
+    "objectID": "slides/04_wed_sorting_lowerbound.html#but-how-big-is-logn",
+    "href": "slides/04_wed_sorting_lowerbound.html#but-how-big-is-logn",
     "title": "The Sorting Lower Bound",
-    "section": "How Big is \\(\\log(n!)\\)?",
-    "text": "How Big is \\(\\log(n!)\\)?\nStirling’s approximation: \\(n! \\approx \\sqrt{2\\pi n} \\left(\\frac{n}{e}\\right)^n\\)\nTherefore:\n\\[\\log_2(n!) \\approx n \\log_2 n - n \\log_2 e + O(\\log n)\\]\nSimplifying: \\(\\log_2(n!) = \\Theta(n \\log n)\\)"
+    "section": "But How Big is \\(\\log(n!)\\)?",
+    "text": "But How Big is \\(\\log(n!)\\)?\nClaim: \\(\\log(n!) = \\Omega(n\\log n)\\)"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#the-theorem",
-    "href": "slides/04_wed_sorting_lowerbound.html#the-theorem",
+    "objectID": "slides/04_wed_sorting_lowerbound.html#the-result",
+    "href": "slides/04_wed_sorting_lowerbound.html#the-result",
     "title": "The Sorting Lower Bound",
-    "section": "The Theorem",
-    "text": "The Theorem\nTheorem: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nProof:\n\nModel the algorithm as a decision tree\nThe tree needs at least \\(n!\\) leaves\nA tree with \\(\\geq n!\\) leaves has height \\(\\geq \\log_2(n!)\\)\n\\(\\log_2(n!) = \\Theta(n \\log n)\\)\nTherefore, worst-case comparisons \\(\\geq \\Omega(n \\log n)\\) ∎\n\n\n“This proof is remarkable: we didn’t analyze any specific algorithm. We proved a limit on ALL possible comparison-based sorting algorithms!”"
+    "section": "The Result",
+    "text": "The Result\nObservation: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nJustification:\n\nModel the algorithm as a decision tree\nThe tree needs at least \\(n!\\) leaves\nA tree with \\(\\geq n!\\) leaves has height \\(\\geq \\log_2(n!)\\)\n\\(\\log_2(n!) = \\Theta(n \\log n)\\)\nTherefore, worst-case comparisons \\(\\Omega(n \\log n)\\) ∎\n\n\n“This proof is remarkable: we didn’t analyze any specific algorithm. We proved a limit on ALL possible comparison-based sorting algorithms!”"
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#what-this-means",
     "href": "slides/04_wed_sorting_lowerbound.html#what-this-means",
     "title": "The Sorting Lower Bound",
     "section": "What This Means",
-    "text": "What This Means\n\n\n\nAlgorithm\nWorst Case\nOptimal?\n\n\n\n\nMerge Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nHeap Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nQuick Sort\n\\(O(n^2)\\)\nNo (but avg is optimal)\n\n\nInsertion Sort\n\\(O(n^2)\\)\nNo\n\n\n\nMerge sort achieves the theoretical limit."
+    "text": "What This Means\n\n\n\nAlgorithm\nWorst Case\nOptimal?\n\n\n\n\nMerge Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nHeap Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nQuick Sort\n\\(O(n^2)\\)\nNo (but avg is optimal)\n\n\nInsertion Sort\n\\(O(n^2)\\)\nNo\n\n\nSelection Sort\n\\(O(n^2)\\)\nNo\n\n\n\nMerge sort achieves the theoretical limit."
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#a-loophole",
@@ -2019,13 +1949,6 @@
     "text": "Other Linear-Time Sorts\n\n\n\nAlgorithm\nConstraint\nTime\n\n\n\n\nCounting Sort\nIntegers in \\([0, k]\\)\n\\(O(n + k)\\)\n\n\nRadix Sort\nFixed-width integers\n\\(O(d \\cdot n)\\)\n\n\nBucket Sort\nUniformly distributed\n\\(O(n)\\) expected\n\n\n\nAll exploit extra structure in the input."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#summary-of-sorting-algorithms",
-    "href": "slides/04_wed_sorting_lowerbound.html#summary-of-sorting-algorithms",
-    "title": "The Sorting Lower Bound",
-    "section": "Summary of Sorting Algorithms",
-    "text": "Summary of Sorting Algorithms\n\n\n     Algorithm    Best   Worst Stable In-place\n    Merge Sort n log n n log n    Yes       No\n     Heap Sort n log n n log n     No      Yes\n    Quick Sort n log n      n²     No      Yes\nInsertion Sort       n      n²    Yes      Yes\n Counting Sort   n + k   n + k    Yes       No"
-  },
-  {
     "objectID": "slides/04_wed_sorting_lowerbound.html#pythons-timsort",
     "href": "slides/04_wed_sorting_lowerbound.html#pythons-timsort",
     "title": "The Sorting Lower Bound",
@@ -2040,13 +1963,6 @@
     "text": "Why This Matters\n\nLower bounds tell us when to stop searching for better algorithms\nThe decision tree model appears again in:\n\nWeek 8: Binary search trees\nWeek 8: Wordle decision trees\n\nDivide-and-conquer analysis (recurrences) applies to:\n\nPA1: Closest pair\nLater: Quick sort, binary search"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#the-hierarchy-revisited",
-    "href": "slides/04_wed_sorting_lowerbound.html#the-hierarchy-revisited",
-    "title": "The Sorting Lower Bound",
-    "section": "The Hierarchy Revisited",
-    "text": "The Hierarchy Revisited\n\n\n\nComplexity\nExample\nAchievable?\n\n\n\n\n\\(O(1)\\)\nHash lookup\nSpecial cases\n\n\n\\(O(\\log n)\\)\nBinary search\nYes\n\n\n\\(O(n)\\)\nLinear scan\nYes\n\n\n\\(O(n \\log n)\\)\nSorting\nOptimal for comparisons\n\n\n\\(O(n^2)\\)\nAll pairs\nSometimes unavoidable"
-  },
-  {
     "objectID": "slides/04_wed_sorting_lowerbound.html#what-we-learned-this-week",
     "href": "slides/04_wed_sorting_lowerbound.html#what-we-learned-this-week",
     "title": "The Sorting Lower Bound",
@@ -2058,7 +1974,7 @@
     "href": "slides/04_wed_sorting_lowerbound.html#looking-ahead",
     "title": "The Sorting Lower Bound",
     "section": "Looking Ahead",
-    "text": "Looking Ahead\n\nPA1: Due Feb 8 — apply divide-and-conquer to closest pair\nEX1: This week — covers analysis, loop invariants, recursion\nNext week: The dictionary trick — \\(O(n^2) \\to O(n)\\) transformations"
+    "text": "Looking Ahead\n\nPA1: Due Feb 8 — apply divide-and-conquer to closest pair\nEX1: This week — covers analysis, loop invariants\nNext week: The dictionary trick — \\(O(n^2) \\to O(n)\\) transformations"
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#questions",
