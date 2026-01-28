@@ -222,219 +222,254 @@
 </section>
 <section id="what-this-video-covers" class="slide level2">
 <h2>What This Video Covers</h2>
-<p>On Monday, we saw recurrence forms and their solutions:</p>
+<p>We continued the discussion from class…</p>
+</section>
+<section id="merge-sort-runtime-analysis" class="slide level2">
+<h2>Merge Sort Runtime Analysis</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> merge_sort(arr):</span>
+<span id="cb1-2"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">&lt;=</span> <span class="dv">1</span>:          <span class="co"># O(1)</span></span>
+<span id="cb1-3"><a></a>        <span class="cf">return</span> arr</span>
+<span id="cb1-4"><a></a>    mid <span class="op">=</span> <span class="bu">len</span>(arr) <span class="op">//</span> <span class="dv">2</span>        <span class="co"># O(1)</span></span>
+<span id="cb1-5"><a></a>    left <span class="op">=</span> merge_sort(arr[:mid])    <span class="co"># T(n/2)</span></span>
+<span id="cb1-6"><a></a>    right <span class="op">=</span> merge_sort(arr[mid:])   <span class="co"># T(n/2)</span></span>
+<span id="cb1-7"><a></a>    <span class="cf">return</span> merge(left, right)       <span class="co"># O(n)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>The recurrence</strong>:</p>
+<p><span class="math display">\[T(n) = 2T(n/2) + O(n)\]</span></p>
+</section>
+<section id="what-does-this-mean" class="slide level2">
+<h2>What Does This Mean?</h2>
+<p><span class="math display">\[T(n) = 2T(n/2) + n\]</span></p>
+<ul>
+<li>We make <strong>2 recursive calls</strong></li>
+<li>Each on a problem of size <strong>n/2</strong></li>
+<li>Plus <strong>n</strong> work to merge</li>
+</ul>
+<p>This is a <strong>recurrence relation</strong>: T(n) defined in terms of T(smaller).</p>
+</section></section>
+<section>
+<section id="visualizing-the-recursion" class="title-slide slide level1 center">
+<h1>Visualizing the Recursion</h1>
+
+</section>
+<section id="the-call-tree" class="slide level2">
+<h2>The Call Tree</h2>
+<pre><code>                merge_sort([7,1,6,4,5,3,2,8])
+                        /              \
+        merge_sort([7,1,6,4])    merge_sort([5,3,2,8])
+            /        \              /        \
+    ms([7,1])    ms([6,4])    ms([5,3])    ms([2,8])
+      /  \        /  \        /  \        /  \
+   [7]  [1]    [6]  [4]    [5]  [3]    [2]  [8]</code></pre>
+<p><strong>How deep does this go?</strong></p>
+</section>
+<section id="recursion-depth" class="slide level2">
+<h2>Recursion Depth</h2>
+<p>At each level, problem size halves: <span class="math inline">\(n \to n/2 \to n/4 \to \ldots \to 1\)</span></p>
+<p><strong>Depth</strong> = How many times can we halve <span class="math inline">\(n\)</span>?</p>
+<p><span class="math display">\[n \to n/2 \to n/4 \to \ldots \to 1\]</span></p>
+<p>Answer: <span class="math inline">\(\log_2 n\)</span> levels</p>
+</section>
+<section id="work-at-each-level" class="slide level2">
+<h2>Work at Each Level</h2>
+<pre><code>Level 0:     [n]                      n work (merge)
+            /   \
+Level 1:  [n/2] [n/2]                 n work (two merges of n/2)
+          / \   / \
+Level 2: [n/4]×4                      n work (four merges of n/4)
+         ...
+Level log n: [1]×n                    n work (base cases)</code></pre>
+<p><strong>Total work</strong>: <span class="math inline">\(n \times \log n = O(n \log n)\)</span></p>
+<aside class="notes">
+<p>“This is the recursion tree method. Tuesday’s video will formalize this.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="recurrence-forms" class="title-slide slide level1 center">
+<h1>Recurrence Forms</h1>
+
+</section>
+<section id="the-big-idea" class="slide level2">
+<h2>The Big Idea</h2>
+<p>Different recursive structures - → different recurrences - → different running times!</p>
+</section>
+<section id="form-1-linear-shrinking" class="slide level2">
+<h2>Form 1: Linear Shrinking</h2>
+<p><strong>Example</strong>: Processing a list one element at a time</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> sum_list(arr):</span>
+<span id="cb4-2"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-3"><a></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb4-4"><a></a>    <span class="cf">return</span> arr[<span class="dv">0</span>] <span class="op">+</span> sum_list(arr[<span class="dv">1</span>:]) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="form-2-halving" class="slide level2">
+<h2>Form 2: Halving</h2>
+<p><strong>Example</strong>: Binary search</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> binary_search(arr, target, lo, hi):</span>
+<span id="cb5-2"><a></a>    <span class="cf">if</span> lo <span class="op">&gt;</span> hi:</span>
+<span id="cb5-3"><a></a>        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb5-4"><a></a>    mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb5-5"><a></a>    <span class="cf">if</span> arr[mid] <span class="op">==</span> target:</span>
+<span id="cb5-6"><a></a>        <span class="cf">return</span> mid</span>
+<span id="cb5-7"><a></a>    <span class="cf">elif</span> arr[mid] <span class="op">&lt;</span> target:</span>
+<span id="cb5-8"><a></a>        <span class="cf">return</span> binary_search(arr, target, mid<span class="op">+</span><span class="dv">1</span>, hi)  </span>
+<span id="cb5-9"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb5-10"><a></a>        <span class="cf">return</span> binary_search(arr, target, lo, mid<span class="op">-</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="form-3-two-calls-halving-constant-work" class="slide level2">
+<h2>Form 3: Two Calls, Halving, Constant Work</h2>
+<p><strong>Example</strong>: <code>triangle_double</code> — calls itself twice!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> triangle_double(n):</span>
+<span id="cb6-2"><a></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb6-3"><a></a>        <span class="cf">return</span> n</span>
+<span id="cb6-4"><a></a>    half <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb6-5"><a></a>    top <span class="op">=</span> n <span class="op">-</span> half</span>
+<span id="cb6-6"><a></a>    <span class="cf">return</span> triangle_double(half) <span class="op">+</span> triangle_double(half) <span class="op">+</span> top <span class="op">*</span> top</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="form-4-two-calls-halving-linear-work" class="slide level2">
+<h2>Form 4: Two Calls, Halving, Linear Work</h2>
+<p><strong>Example</strong>: Merge sort!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">def</span> merge_sort(arr):</span>
+<span id="cb7-2"><a></a>    ...</span>
+<span id="cb7-3"><a></a>    left <span class="op">=</span> merge_sort(arr[:mid])    </span>
+<span id="cb7-4"><a></a>    right <span class="op">=</span> merge_sort(arr[mid:])   </span>
+<span id="cb7-5"><a></a>    <span class="cf">return</span> merge(left, right)       </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="form-5-linear-shrinking-linear-work" class="slide level2">
+<h2>Form 5: Linear Shrinking, Linear Work</h2>
+<p><strong>Example</strong>: Selection sort (find min, then sort rest)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> selection_sort(arr):</span>
+<span id="cb8-2"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb8-3"><a></a>        <span class="cf">return</span> arr</span>
+<span id="cb8-4"><a></a>    min_idx <span class="op">=</span> find_min_index(arr)  </span>
+<span id="cb8-5"><a></a>    swap(arr, <span class="dv">0</span>, min_idx)</span>
+<span id="cb8-6"><a></a>    <span class="cf">return</span> [arr[<span class="dv">0</span>]] <span class="op">+</span> selection_sort(arr[<span class="dv">1</span>:])  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(T(n) =\)</span></p>
+</section>
+<section id="closed-forms" class="slide level2">
+<h2>Closed Forms</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
+<th>Algorithm</th>
 <th>Recurrence</th>
 <th>Solution</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td>Binary search</td>
+<td><span class="math inline">\(T(n) = T(n/2) + O(1)\)</span></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Merge sort</td>
+<td><span class="math inline">\(T(n) = 2T(n/2) + O(n)\)</span></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Linear search</td>
+<td><span class="math inline">\(T(n) = T(n-1) + O(1)\)</span></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>triangle_double</code></td>
+<td><span class="math inline">\(T(n) = 2T(n/2) + O(1)\)</span></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Selection sort</td>
+<td><span class="math inline">\(T(n) = T(n-1) + O(n)\)</span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="closed-form-reasons" class="slide level2">
+<h2>Closed Form Reasons</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Recurrence</th>
+<th>Solution</th>
+<th>Why?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
 <td><span class="math inline">\(T(n) = T(n-1) + 1\)</span></td>
 <td><span class="math inline">\(O(n)\)</span></td>
+<td><span class="math inline">\(n\)</span> levels × <span class="math inline">\(O(1)\)</span> work</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(T(n) = T(n/2) + 1\)</span></td>
 <td><span class="math inline">\(O(\log n)\)</span></td>
+<td><span class="math inline">\(\log n\)</span> levels × <span class="math inline">\(O(1)\)</span> work</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></td>
 <td><span class="math inline">\(O(n)\)</span></td>
+<td>Doubling nodes overwhelms depth</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(T(n) = 2T(n/2) + n\)</span></td>
 <td><span class="math inline">\(O(n \log n)\)</span></td>
+<td><span class="math inline">\(\log n\)</span> levels × <span class="math inline">\(O(n)\)</span> work</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(T(n) = T(n-1) + n\)</span></td>
 <td><span class="math inline">\(O(n^2)\)</span></td>
+<td><span class="math inline">\(n\)</span> levels × <span class="math inline">\(O(n)\)</span> avg work</td>
 </tr>
 </tbody>
 </table>
-<p>Today: How do we <strong>prove</strong> these solutions?</p>
-</section>
-<section id="if-you-took-dsci-220" class="slide level2">
-<h2>If You Took DSCI 220…</h2>
-<p>This material is review! Feel free to:</p>
-<ul>
-<li>Skim this video</li>
-<li>Skip to the merge sort proof at the end</li>
-<li>Use this as a refresher</li>
-</ul>
-</section>
-<section id="two-methods" class="slide level2">
-<h2>Two Methods</h2>
-<ol type="1">
-<li><p><strong>Expansion method</strong>: Unroll the recurrence, find the pattern, prove it</p></li>
-<li><p><strong>Recursion tree method</strong>: Visualize as a tree, sum the work</p></li>
-</ol>
-<p>Both give the same answer. Choose whichever works for you!</p>
-</section></section>
-<section>
-<section id="method-1-expansion" class="title-slide slide level1 center">
-<h1>Method 1: Expansion</h1>
-
-</section>
-<section id="the-idea" class="slide level2">
-<h2>The Idea</h2>
-<p><strong>Unroll</strong> the recurrence step by step until you see a pattern.</p>
-<p>Then <strong>prove</strong> the pattern is correct (usually by induction).</p>
-</section>
-<section id="example-1-tn-tn-1-c" class="slide level2">
-<h2>Example 1: <span class="math inline">\(T(n) = T(n-1) + c\)</span></h2>
-<p><strong>Expand</strong>:</p>
-<p><span class="math display">\[T(n) = T(n-1) + c\]</span></p>
-</section>
-<section id="example-2-tn-tn2-c" class="slide level2">
-<h2>Example 2: <span class="math inline">\(T(n) = T(n/2) + c\)</span></h2>
-<p><strong>Expand</strong> (assume <span class="math inline">\(n = 2^k\)</span> for simplicity):</p>
-<p><span class="math display">\[T(n) = T(n/2) + c\]</span></p>
-</section>
-<section id="example-3-tn-2tn2-1" class="slide level2">
-<h2>Example 3: <span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></h2>
-<p><strong>Expand</strong> (assume <span class="math inline">\(n = 2^k\)</span> for simplicity)::</p>
-<p><span class="math display">\[T(n) = 2T(n/2) + 1\]</span></p>
-</section></section>
-<section>
-<section id="method-2-recursion-trees" class="title-slide slide level1 center">
-<h1>Method 2: Recursion Trees</h1>
-
-</section>
-<section id="the-idea-1" class="slide level2">
-<h2>The Idea</h2>
-<p>Draw the recursion as a <strong>tree</strong>:</p>
-<ul>
-<li>Each node represents work done at that call</li>
-<li>Children represent recursive calls</li>
-<li><strong>Sum all the nodes</strong> to get total work</li>
-</ul>
-</section>
-<section id="example-tn-2tn2-cn" class="slide level2">
-<h2>Example: <span class="math inline">\(T(n) = 2T(n/2) + cn\)</span></h2>
-<pre><code>Level 0:           [cn]                    → cn work
-                  /   \
-Level 1:       [cn/2] [cn/2]                → cn/2 + cn/2 = cn work
-               /  \   /  \
-Level 2:    [cn/4][cn/4][cn/4][cn/4]          → 4 × cn/4 = cn work
-            ...
-Level k:    [c] × n                       → n × c = cn work</code></pre>
-</section>
-<section id="analyzing-the-tree" class="slide level2">
-<h2>Analyzing the Tree</h2>
-<p><strong>Questions to answer</strong>:</p>
-<ol type="1">
-<li>How much work at each level?</li>
-<li>How many levels?</li>
-<li>What’s the total?</li>
-</ol>
-</section>
-<section id="for-tn-2tn2-n" class="slide level2">
-<h2>For <span class="math inline">\(T(n) = 2T(n/2) + n\)</span></h2>
-<ol type="1">
-<li><p><strong>Work at level <span class="math inline">\(i\)</span></strong>: <span class="math inline">\(n\)</span> (it’s the same at every level!)</p></li>
-<li><p><strong>Number of levels</strong>: <span class="math inline">\(\log_2 n + 1\)</span> (from <span class="math inline">\(n\)</span> down to <span class="math inline">\(1\)</span>)</p></li>
-<li><p><strong>Total work</strong>: <span class="math inline">\(n \times (\log n + 1) = O(n \log n)\)</span> ✓</p></li>
-</ol>
-</section>
-<section id="recursion-tree-tn-2tn2-1" class="slide level2">
-<h2>Recursion Tree: <span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></h2>
-<pre><code>Level 0:           [1]                    → 1 work
-                  /   \
-Level 1:        [1]   [1]                 → 2 work
-               /  \   /  \
-Level 2:    [1] [1] [1] [1]               → 4 work
-            ...
-Level k:    [1] × n                       → n work</code></pre>
-<p><strong>Work at level <span class="math inline">\(i\)</span></strong>: <span class="math inline">\(2^i\)</span></p>
-</section></section>
-<section>
-<section id="the-merge-sort-proof" class="title-slide slide level1 center">
-<h1>The Merge Sort Proof</h1>
-
-</section>
-<section id="the-recurrence" class="slide level2">
-<h2>The Recurrence</h2>
-<p>From Monday’s lecture:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> merge_sort(arr):</span>
-<span id="cb3-2"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(arr) <span class="op">&lt;=</span> <span class="dv">1</span>:          <span class="co"># O(1)</span></span>
-<span id="cb3-3"><a></a>        <span class="cf">return</span> arr</span>
-<span id="cb3-4"><a></a>    mid <span class="op">=</span> <span class="bu">len</span>(arr) <span class="op">//</span> <span class="dv">2</span>        <span class="co"># O(1)</span></span>
-<span id="cb3-5"><a></a>    left <span class="op">=</span> merge_sort(arr[:mid])    <span class="co"># T(n/2)</span></span>
-<span id="cb3-6"><a></a>    right <span class="op">=</span> merge_sort(arr[mid:])   <span class="co"># T(n/2)</span></span>
-<span id="cb3-7"><a></a>    <span class="cf">return</span> merge(left, right)       <span class="co"># O(n)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><span class="math display">\[T(n) = 2T(n/2) + cn, \quad T(1) = d\]</span></p>
-</section>
-<section id="the-formal-proof" class="slide level2">
-<h2>The Formal Proof</h2>
-<p><strong>Claim</strong>: <span class="math inline">\(T(n) \leq cn\log n + dn\)</span> for some constants <span class="math inline">\(c,d &gt; 0\)</span> and all <span class="math inline">\(n \geq 1\)</span>.</p>
-<p><strong>Base case</strong>: $T(1) =</p>
-<p><strong>Inductive step</strong>: Assume <span class="math inline">\(T(k) \leq ck\log k + dk\)</span> for all <span class="math inline">\(k &lt; n\)</span>.</p>
-<p><span class="math display">\[T(n) = 2T(n/2) + cn\]</span></p>
 </section></section>
 <section>
 <section id="summary" class="title-slide slide level1 center">
 <h1>Summary</h1>
 
 </section>
-<section id="two-methods-for-solving-recurrences" class="slide level2">
-<h2>Two Methods for Solving Recurrences</h2>
-<p><strong>Expansion method</strong>:</p>
+<section id="what-we-learned-today" class="slide level2">
+<h2>What We Learned Today</h2>
 <ol type="1">
-<li>Unroll step by step</li>
-<li>Find the pattern</li>
-<li>Sum the series</li>
-</ol>
-<p><strong>Recursion tree method</strong>:</p>
-<ol type="1">
-<li>Draw the tree</li>
-<li>Calculate work at each level</li>
-<li>Sum across all levels</li>
+<li><p><strong>Math vs.&nbsp;Time</strong>: Same functionality, different running times!</p></li>
+<li><p><strong>Merge sort</strong>: Divide, conquer, merge</p></li>
+<li><p><strong>MS recurrence</strong>: <span class="math inline">\(T(n) = 2T(n/2) + O(n)\)</span></p></li>
+<li><p><strong>Recursion sketches</strong>: Visualize depth × work per level</p></li>
+<li><p><strong>Recurrence forms</strong>: Different structures → different runtimes</p></li>
 </ol>
 </section>
-<section id="the-key-patterns" class="slide level2">
-<h2>The Key Patterns</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Recurrence</th>
-<th>Tree Shape</th>
-<th>Solution</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(T(n) = T(n-1) + 1\)</span></td>
-<td>Linear chain</td>
-<td><span class="math inline">\(O(n)\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(T(n) = T(n/2) + 1\)</span></td>
-<td>Short chain</td>
-<td><span class="math inline">\(O(\log n)\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></td>
-<td>Full tree, const work</td>
-<td><span class="math inline">\(O(n)\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(T(n) = 2T(n/2) + n\)</span></td>
-<td>Full tree, linear work</td>
-<td><span class="math inline">\(O(n \log n)\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(T(n) = T(n-1) + n\)</span></td>
-<td>Linear chain, linear work</td>
-<td><span class="math inline">\(O(n^2)\)</span></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="whats-next" class="slide level2">
-<h2>What’s Next</h2>
-<p><strong>Wednesday</strong>: Can we do better than <span class="math inline">\(O(n \log n)\)</span> for sorting?</p>
+<section id="coming-up" class="slide level2">
+<h2>Coming Up</h2>
+<ul>
+<li><strong>Tuesday video</strong>: Solving recurrences formally (review for DSCI 220 folks)</li>
+<li><strong>Wednesday</strong>: Why <span class="math inline">\(O(n \log n)\)</span> is optimal for comparison sorting</li>
+</ul>
+<aside class="notes">
+<p>“If you took DSCI 220, the Tuesday video will be review. Feel free to skim it!”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 <script type="ojs-module-contents">

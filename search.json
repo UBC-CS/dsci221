@@ -22,119 +22,112 @@
     "href": "slides/04_tue_recurrences.html#what-this-video-covers",
     "title": "Solving Recurrences",
     "section": "What This Video Covers",
-    "text": "What This Video Covers\nOn Monday, we saw recurrence forms and their solutions:\n\n\n\nRecurrence\nSolution\n\n\n\n\n\\(T(n) = T(n-1) + 1\\)\n\\(O(n)\\)\n\n\n\\(T(n) = T(n/2) + 1\\)\n\\(O(\\log n)\\)\n\n\n\\(T(n) = 2T(n/2) + 1\\)\n\\(O(n)\\)\n\n\n\\(T(n) = 2T(n/2) + n\\)\n\\(O(n \\log n)\\)\n\n\n\\(T(n) = T(n-1) + n\\)\n\\(O(n^2)\\)\n\n\n\nToday: How do we prove these solutions?"
+    "text": "What This Video Covers\nWe continued the discussion from class…"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#if-you-took-dsci-220",
-    "href": "slides/04_tue_recurrences.html#if-you-took-dsci-220",
+    "objectID": "slides/04_tue_recurrences.html#merge-sort-runtime-analysis",
+    "href": "slides/04_tue_recurrences.html#merge-sort-runtime-analysis",
     "title": "Solving Recurrences",
-    "section": "If You Took DSCI 220…",
-    "text": "If You Took DSCI 220…\nThis material is review! Feel free to:\n\nSkim this video\nSkip to the merge sort proof at the end\nUse this as a refresher"
+    "section": "Merge Sort Runtime Analysis",
+    "text": "Merge Sort Runtime Analysis\ndef merge_sort(arr):\n    if len(arr) &lt;= 1:          # O(1)\n        return arr\n    mid = len(arr) // 2        # O(1)\n    left = merge_sort(arr[:mid])    # T(n/2)\n    right = merge_sort(arr[mid:])   # T(n/2)\n    return merge(left, right)       # O(n)\nThe recurrence:\n\\[T(n) = 2T(n/2) + O(n)\\]"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#two-methods",
-    "href": "slides/04_tue_recurrences.html#two-methods",
+    "objectID": "slides/04_tue_recurrences.html#what-does-this-mean",
+    "href": "slides/04_tue_recurrences.html#what-does-this-mean",
     "title": "Solving Recurrences",
-    "section": "Two Methods",
-    "text": "Two Methods\n\nExpansion method: Unroll the recurrence, find the pattern, prove it\nRecursion tree method: Visualize as a tree, sum the work\n\nBoth give the same answer. Choose whichever works for you!"
+    "section": "What Does This Mean?",
+    "text": "What Does This Mean?\n\\[T(n) = 2T(n/2) + n\\]\n\nWe make 2 recursive calls\nEach on a problem of size n/2\nPlus n work to merge\n\nThis is a recurrence relation: T(n) defined in terms of T(smaller)."
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#the-idea",
-    "href": "slides/04_tue_recurrences.html#the-idea",
+    "objectID": "slides/04_tue_recurrences.html#the-call-tree",
+    "href": "slides/04_tue_recurrences.html#the-call-tree",
     "title": "Solving Recurrences",
-    "section": "The Idea",
-    "text": "The Idea\nUnroll the recurrence step by step until you see a pattern.\nThen prove the pattern is correct (usually by induction)."
+    "section": "The Call Tree",
+    "text": "The Call Tree\n                merge_sort([7,1,6,4,5,3,2,8])\n                        /              \\\n        merge_sort([7,1,6,4])    merge_sort([5,3,2,8])\n            /        \\              /        \\\n    ms([7,1])    ms([6,4])    ms([5,3])    ms([2,8])\n      /  \\        /  \\        /  \\        /  \\\n   [7]  [1]    [6]  [4]    [5]  [3]    [2]  [8]\nHow deep does this go?"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#example-1-tn-tn-1-c",
-    "href": "slides/04_tue_recurrences.html#example-1-tn-tn-1-c",
+    "objectID": "slides/04_tue_recurrences.html#recursion-depth",
+    "href": "slides/04_tue_recurrences.html#recursion-depth",
     "title": "Solving Recurrences",
-    "section": "Example 1: \\(T(n) = T(n-1) + c\\)",
-    "text": "Example 1: \\(T(n) = T(n-1) + c\\)\nExpand:\n\\[T(n) = T(n-1) + c\\]"
+    "section": "Recursion Depth",
+    "text": "Recursion Depth\nAt each level, problem size halves: \\(n \\to n/2 \\to n/4 \\to \\ldots \\to 1\\)\nDepth = How many times can we halve \\(n\\)?\n\\[n \\to n/2 \\to n/4 \\to \\ldots \\to 1\\]\nAnswer: \\(\\log_2 n\\) levels"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#example-2-tn-tn2-c",
-    "href": "slides/04_tue_recurrences.html#example-2-tn-tn2-c",
+    "objectID": "slides/04_tue_recurrences.html#work-at-each-level",
+    "href": "slides/04_tue_recurrences.html#work-at-each-level",
     "title": "Solving Recurrences",
-    "section": "Example 2: \\(T(n) = T(n/2) + c\\)",
-    "text": "Example 2: \\(T(n) = T(n/2) + c\\)\nExpand (assume \\(n = 2^k\\) for simplicity):\n\\[T(n) = T(n/2) + c\\]"
+    "section": "Work at Each Level",
+    "text": "Work at Each Level\nLevel 0:     [n]                      n work (merge)\n            /   \\\nLevel 1:  [n/2] [n/2]                 n work (two merges of n/2)\n          / \\   / \\\nLevel 2: [n/4]×4                      n work (four merges of n/4)\n         ...\nLevel log n: [1]×n                    n work (base cases)\nTotal work: \\(n \\times \\log n = O(n \\log n)\\)\n\n“This is the recursion tree method. Tuesday’s video will formalize this.”"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#example-3-tn-2tn2-1",
-    "href": "slides/04_tue_recurrences.html#example-3-tn-2tn2-1",
+    "objectID": "slides/04_tue_recurrences.html#the-big-idea",
+    "href": "slides/04_tue_recurrences.html#the-big-idea",
     "title": "Solving Recurrences",
-    "section": "Example 3: \\(T(n) = 2T(n/2) + 1\\)",
-    "text": "Example 3: \\(T(n) = 2T(n/2) + 1\\)\nExpand (assume \\(n = 2^k\\) for simplicity)::\n\\[T(n) = 2T(n/2) + 1\\]"
+    "section": "The Big Idea",
+    "text": "The Big Idea\nDifferent recursive structures - → different recurrences - → different running times!"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#the-idea-1",
-    "href": "slides/04_tue_recurrences.html#the-idea-1",
+    "objectID": "slides/04_tue_recurrences.html#form-1-linear-shrinking",
+    "href": "slides/04_tue_recurrences.html#form-1-linear-shrinking",
     "title": "Solving Recurrences",
-    "section": "The Idea",
-    "text": "The Idea\nDraw the recursion as a tree:\n\nEach node represents work done at that call\nChildren represent recursive calls\nSum all the nodes to get total work"
+    "section": "Form 1: Linear Shrinking",
+    "text": "Form 1: Linear Shrinking\nExample: Processing a list one element at a time\ndef sum_list(arr):\n    if len(arr) == 0:\n        return 0\n    return arr[0] + sum_list(arr[1:]) \n\\(T(n) =\\)"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#example-tn-2tn2-cn",
-    "href": "slides/04_tue_recurrences.html#example-tn-2tn2-cn",
+    "objectID": "slides/04_tue_recurrences.html#form-2-halving",
+    "href": "slides/04_tue_recurrences.html#form-2-halving",
     "title": "Solving Recurrences",
-    "section": "Example: \\(T(n) = 2T(n/2) + cn\\)",
-    "text": "Example: \\(T(n) = 2T(n/2) + cn\\)\nLevel 0:           [cn]                    → cn work\n                  /   \\\nLevel 1:       [cn/2] [cn/2]                → cn/2 + cn/2 = cn work\n               /  \\   /  \\\nLevel 2:    [cn/4][cn/4][cn/4][cn/4]          → 4 × cn/4 = cn work\n            ...\nLevel k:    [c] × n                       → n × c = cn work"
+    "section": "Form 2: Halving",
+    "text": "Form 2: Halving\nExample: Binary search\ndef binary_search(arr, target, lo, hi):\n    if lo &gt; hi:\n        return -1\n    mid = (lo + hi) // 2\n    if arr[mid] == target:\n        return mid\n    elif arr[mid] &lt; target:\n        return binary_search(arr, target, mid+1, hi)  \n    else:\n        return binary_search(arr, target, lo, mid-1)\n\\(T(n) =\\)"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#analyzing-the-tree",
-    "href": "slides/04_tue_recurrences.html#analyzing-the-tree",
+    "objectID": "slides/04_tue_recurrences.html#form-3-two-calls-halving-constant-work",
+    "href": "slides/04_tue_recurrences.html#form-3-two-calls-halving-constant-work",
     "title": "Solving Recurrences",
-    "section": "Analyzing the Tree",
-    "text": "Analyzing the Tree\nQuestions to answer:\n\nHow much work at each level?\nHow many levels?\nWhat’s the total?"
+    "section": "Form 3: Two Calls, Halving, Constant Work",
+    "text": "Form 3: Two Calls, Halving, Constant Work\nExample: triangle_double — calls itself twice!\ndef triangle_double(n):\n    if n &lt;= 1:\n        return n\n    half = n // 2\n    top = n - half\n    return triangle_double(half) + triangle_double(half) + top * top\n\\(T(n) =\\)"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#for-tn-2tn2-n",
-    "href": "slides/04_tue_recurrences.html#for-tn-2tn2-n",
+    "objectID": "slides/04_tue_recurrences.html#form-4-two-calls-halving-linear-work",
+    "href": "slides/04_tue_recurrences.html#form-4-two-calls-halving-linear-work",
     "title": "Solving Recurrences",
-    "section": "For \\(T(n) = 2T(n/2) + n\\)",
-    "text": "For \\(T(n) = 2T(n/2) + n\\)\n\nWork at level \\(i\\): \\(n\\) (it’s the same at every level!)\nNumber of levels: \\(\\log_2 n + 1\\) (from \\(n\\) down to \\(1\\))\nTotal work: \\(n \\times (\\log n + 1) = O(n \\log n)\\) ✓"
+    "section": "Form 4: Two Calls, Halving, Linear Work",
+    "text": "Form 4: Two Calls, Halving, Linear Work\nExample: Merge sort!\ndef merge_sort(arr):\n    ...\n    left = merge_sort(arr[:mid])    \n    right = merge_sort(arr[mid:])   \n    return merge(left, right)       \n\\(T(n) =\\)"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#recursion-tree-tn-2tn2-1",
-    "href": "slides/04_tue_recurrences.html#recursion-tree-tn-2tn2-1",
+    "objectID": "slides/04_tue_recurrences.html#form-5-linear-shrinking-linear-work",
+    "href": "slides/04_tue_recurrences.html#form-5-linear-shrinking-linear-work",
     "title": "Solving Recurrences",
-    "section": "Recursion Tree: \\(T(n) = 2T(n/2) + 1\\)",
-    "text": "Recursion Tree: \\(T(n) = 2T(n/2) + 1\\)\nLevel 0:           [1]                    → 1 work\n                  /   \\\nLevel 1:        [1]   [1]                 → 2 work\n               /  \\   /  \\\nLevel 2:    [1] [1] [1] [1]               → 4 work\n            ...\nLevel k:    [1] × n                       → n work\nWork at level \\(i\\): \\(2^i\\)"
+    "section": "Form 5: Linear Shrinking, Linear Work",
+    "text": "Form 5: Linear Shrinking, Linear Work\nExample: Selection sort (find min, then sort rest)\ndef selection_sort(arr):\n    if len(arr) &lt;= 1:\n        return arr\n    min_idx = find_min_index(arr)  \n    swap(arr, 0, min_idx)\n    return [arr[0]] + selection_sort(arr[1:])  \n\\(T(n) =\\)"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#the-recurrence",
-    "href": "slides/04_tue_recurrences.html#the-recurrence",
+    "objectID": "slides/04_tue_recurrences.html#closed-forms",
+    "href": "slides/04_tue_recurrences.html#closed-forms",
     "title": "Solving Recurrences",
-    "section": "The Recurrence",
-    "text": "The Recurrence\nFrom Monday’s lecture:\ndef merge_sort(arr):\n    if len(arr) &lt;= 1:          # O(1)\n        return arr\n    mid = len(arr) // 2        # O(1)\n    left = merge_sort(arr[:mid])    # T(n/2)\n    right = merge_sort(arr[mid:])   # T(n/2)\n    return merge(left, right)       # O(n)\n\\[T(n) = 2T(n/2) + cn, \\quad T(1) = d\\]"
+    "section": "Closed Forms",
+    "text": "Closed Forms\n\n\n\nAlgorithm\nRecurrence\nSolution\n\n\n\n\nBinary search\n\\(T(n) = T(n/2) + O(1)\\)\n\n\n\nMerge sort\n\\(T(n) = 2T(n/2) + O(n)\\)\n\n\n\nLinear search\n\\(T(n) = T(n-1) + O(1)\\)\n\n\n\ntriangle_double\n\\(T(n) = 2T(n/2) + O(1)\\)\n\n\n\nSelection sort\n\\(T(n) = T(n-1) + O(n)\\)"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#the-formal-proof",
-    "href": "slides/04_tue_recurrences.html#the-formal-proof",
+    "objectID": "slides/04_tue_recurrences.html#closed-form-reasons",
+    "href": "slides/04_tue_recurrences.html#closed-form-reasons",
     "title": "Solving Recurrences",
-    "section": "The Formal Proof",
-    "text": "The Formal Proof\nClaim: \\(T(n) \\leq cn\\log n + dn\\) for some constants \\(c,d &gt; 0\\) and all \\(n \\geq 1\\).\nBase case: $T(1) =\nInductive step: Assume \\(T(k) \\leq ck\\log k + dk\\) for all \\(k &lt; n\\).\n\\[T(n) = 2T(n/2) + cn\\]"
+    "section": "Closed Form Reasons",
+    "text": "Closed Form Reasons\n\n\n\nRecurrence\nSolution\nWhy?\n\n\n\n\n\\(T(n) = T(n-1) + 1\\)\n\\(O(n)\\)\n\\(n\\) levels × \\(O(1)\\) work\n\n\n\\(T(n) = T(n/2) + 1\\)\n\\(O(\\log n)\\)\n\\(\\log n\\) levels × \\(O(1)\\) work\n\n\n\\(T(n) = 2T(n/2) + 1\\)\n\\(O(n)\\)\nDoubling nodes overwhelms depth\n\n\n\\(T(n) = 2T(n/2) + n\\)\n\\(O(n \\log n)\\)\n\\(\\log n\\) levels × \\(O(n)\\) work\n\n\n\\(T(n) = T(n-1) + n\\)\n\\(O(n^2)\\)\n\\(n\\) levels × \\(O(n)\\) avg work"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#two-methods-for-solving-recurrences",
-    "href": "slides/04_tue_recurrences.html#two-methods-for-solving-recurrences",
+    "objectID": "slides/04_tue_recurrences.html#what-we-learned-today",
+    "href": "slides/04_tue_recurrences.html#what-we-learned-today",
     "title": "Solving Recurrences",
-    "section": "Two Methods for Solving Recurrences",
-    "text": "Two Methods for Solving Recurrences\nExpansion method:\n\nUnroll step by step\nFind the pattern\nSum the series\n\nRecursion tree method:\n\nDraw the tree\nCalculate work at each level\nSum across all levels"
+    "section": "What We Learned Today",
+    "text": "What We Learned Today\n\nMath vs. Time: Same functionality, different running times!\nMerge sort: Divide, conquer, merge\nMS recurrence: \\(T(n) = 2T(n/2) + O(n)\\)\nRecursion sketches: Visualize depth × work per level\nRecurrence forms: Different structures → different runtimes"
   },
   {
-    "objectID": "slides/04_tue_recurrences.html#the-key-patterns",
-    "href": "slides/04_tue_recurrences.html#the-key-patterns",
+    "objectID": "slides/04_tue_recurrences.html#coming-up",
+    "href": "slides/04_tue_recurrences.html#coming-up",
     "title": "Solving Recurrences",
-    "section": "The Key Patterns",
-    "text": "The Key Patterns\n\n\n\nRecurrence\nTree Shape\nSolution\n\n\n\n\n\\(T(n) = T(n-1) + 1\\)\nLinear chain\n\\(O(n)\\)\n\n\n\\(T(n) = T(n/2) + 1\\)\nShort chain\n\\(O(\\log n)\\)\n\n\n\\(T(n) = 2T(n/2) + 1\\)\nFull tree, const work\n\\(O(n)\\)\n\n\n\\(T(n) = 2T(n/2) + n\\)\nFull tree, linear work\n\\(O(n \\log n)\\)\n\n\n\\(T(n) = T(n-1) + n\\)\nLinear chain, linear work\n\\(O(n^2)\\)"
-  },
-  {
-    "objectID": "slides/04_tue_recurrences.html#whats-next",
-    "href": "slides/04_tue_recurrences.html#whats-next",
-    "title": "Solving Recurrences",
-    "section": "What’s Next",
-    "text": "What’s Next\nWednesday: Can we do better than \\(O(n \\log n)\\) for sorting?"
+    "section": "Coming Up",
+    "text": "Coming Up\n\nTuesday video: Solving recurrences formally (review for DSCI 220 folks)\nWednesday: Why \\(O(n \\log n)\\) is optimal for comparison sorting\n\n\n“If you took DSCI 220, the Tuesday video will be review. Feel free to skim it!”"
   },
   {
     "objectID": "slides/02_tue_invariants.html#from-monday",
@@ -1802,39 +1795,46 @@
     "text": "Practice Problems\nBefore Wednesday, try stating invariants for:\n\nreverse(arr) — reverse an array in place\nis_sorted(arr) — check if array is sorted\ncount(arr, target) — count occurrences of target\n\nThink: What’s true after processing \\(i\\) elements?"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#two-methods",
-    "href": "slides/04_wed_sorting_lowerbound.html#two-methods",
+    "objectID": "slides/04_wed_sorting_lowerbound.html#two-methods-of-speculating",
+    "href": "slides/04_wed_sorting_lowerbound.html#two-methods-of-speculating",
     "title": "The Sorting Lower Bound",
-    "section": "Two Methods",
-    "text": "Two Methods\n\nExpansion method: Unroll the recurrence, find the pattern, prove it\nRecursion tree method: Visualize as a tree, sum the work\n\n\nThis is more of a sketch than a certainty\ncovered in enough detail in Tuesday video\n\nBoth give the same asymptotic answer. Choose whichever works for you!"
+    "section": "Two Methods of Speculating",
+    "text": "Two Methods of Speculating\n\nExpansion method: Unroll the recurrence, find the pattern\nRecursion tree method: Visualize as a tree, sum the work\n\n\nThis is more of a sketch than a certainty\ncovered in enough detail in Tuesday video\n\nBoth give the same asymptotic answer. Choose whichever works for you!"
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#the-idea",
     "href": "slides/04_wed_sorting_lowerbound.html#the-idea",
     "title": "The Sorting Lower Bound",
     "section": "The Idea",
-    "text": "The Idea\nUnroll the recurrence step by step until you see a pattern.\nThen prove the pattern is correct (usually by induction)."
+    "text": "The Idea\nUnroll the recurrence step by step until you see a pattern.\nThen apply the pattern to the base case to terminate."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#example-1-tn-tn-1-c",
-    "href": "slides/04_wed_sorting_lowerbound.html#example-1-tn-tn-1-c",
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-1",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-1",
     "title": "The Sorting Lower Bound",
-    "section": "Example 1: \\(T(n) = T(n-1) + c\\)",
-    "text": "Example 1: \\(T(n) = T(n-1) + c\\)\nExpand:\n\\[T(n) = T(n-1) + c\\]"
+    "section": "Example 1:",
+    "text": "Example 1:\n\\(T(n) = T(n-1) + c\\)"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#example-2-tn-tn2-c",
-    "href": "slides/04_wed_sorting_lowerbound.html#example-2-tn-tn2-c",
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-2",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-2",
     "title": "The Sorting Lower Bound",
-    "section": "Example 2: \\(T(n) = T(n/2) + c\\)",
-    "text": "Example 2: \\(T(n) = T(n/2) + c\\)\nExpand (assume \\(n = 2^k\\) for simplicity):\n\\[T(n) = T(n/2) + c\\]"
+    "section": "Example 2:",
+    "text": "Example 2:\n(assume \\(n = 2^k\\) for simplicity):\n\\(T(n) = T(n/2) + c\\)"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#example-3-tn-2tn2-1",
-    "href": "slides/04_wed_sorting_lowerbound.html#example-3-tn-2tn2-1",
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-3",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-3",
     "title": "The Sorting Lower Bound",
-    "section": "Example 3: \\(T(n) = 2T(n/2) + 1\\)",
-    "text": "Example 3: \\(T(n) = 2T(n/2) + 1\\)\nExpand (assume \\(n = 2^k\\) for simplicity)::\n\\[T(n) = 2T(n/2) + 1\\]"
+    "section": "Example 3:",
+    "text": "Example 3:\n(assume \\(n = 2^k\\) for simplicity)::\n\\(T(n) = 2T(n/2) + 1\\)"
+  },
+  {
+    "objectID": "slides/04_wed_sorting_lowerbound.html#speculation-is-not-a-proof",
+    "href": "slides/04_wed_sorting_lowerbound.html#speculation-is-not-a-proof",
+    "title": "The Sorting Lower Bound",
+    "section": "Speculation is not a proof!!",
+    "text": "Speculation is not a proof!!\nClaim: The running time of merge-sort on data of size \\(n\\) is \\(T(n) = O(n\\log n)\\).\nProof: Prove that there is a constant \\(c\\) so that \\(T(n) \\leq cn\\log n\\) for sufficiently large \\(n\\).\n\\(T(n) = 2T(n/2) + n, n &gt; 1\\)\nBy IH, \\(T(n)\\leq 2\\cdot c(n/2)T(\\log n/2) + n\\)\n\\(=cn\\log n - cn + n\\)\n\\(\\leq cn\\log n\\) when ______"
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#can-we-do-better",
@@ -1869,7 +1869,7 @@
     "href": "slides/04_wed_sorting_lowerbound.html#what-the-tree-represents",
     "title": "The Sorting Lower Bound",
     "section": "What the Tree Represents",
-    "text": "What the Tree Represents\n\nInternal nodes: Comparisons\nEdges: Answers (yes/no, or \\(\\leq\\) / \\(&gt;\\))\nLeaves: sorted ordering of the elements\nHeight: running time of the algorithm\n\nNote: - There must be a leaf (endpoint) for each ordering of the elements - the tree itself is an encoding of an algorithm"
+    "text": "What the Tree Represents\n\nInternal nodes: Comparisons\nEdges: Answers (yes/no, or \\(&lt;\\) / \\(\\geq\\))\nLeaves: sorted ordering of the elements\nHeight: running time of the algorithm\n\nNote:\n\nThere must be a leaf (endpoint) for each ordering of the elements\nthe tree itself is an encoding of an algorithm"
   },
   {
     "objectID": "slides/04_wed_sorting_lowerbound.html#counting-leaves",

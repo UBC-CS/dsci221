@@ -184,10 +184,10 @@
 </table>
 <p>Today: How do we <strong>prove</strong> these solutions?</p>
 </section>
-<section id="two-methods" class="slide level2">
-<h2>Two Methods</h2>
+<section id="two-methods-of-speculating" class="slide level2">
+<h2>Two Methods of Speculating</h2>
 <ol type="1">
-<li><p><strong>Expansion method</strong>: Unroll the recurrence, find the pattern, prove it</p></li>
+<li><p><strong>Expansion method</strong>: Unroll the recurrence, find the pattern</p></li>
 <li><p><strong>Recursion tree method</strong>: Visualize as a tree, sum the work</p></li>
 </ol>
 <ul>
@@ -204,22 +204,30 @@
 <section id="the-idea" class="slide level2">
 <h2>The Idea</h2>
 <p><strong>Unroll</strong> the recurrence step by step until you see a pattern.</p>
-<p>Then <strong>prove</strong> the pattern is correct (usually by induction).</p>
+<p>Then apply the pattern to the base case to terminate.</p>
 </section>
-<section id="example-1-tn-tn-1-c" class="slide level2">
-<h2>Example 1: <span class="math inline">\(T(n) = T(n-1) + c\)</span></h2>
-<p><strong>Expand</strong>:</p>
-<p><span class="math display">\[T(n) = T(n-1) + c\]</span></p>
+<section id="example-1" class="slide level2">
+<h2>Example 1:</h2>
+<p><span class="math inline">\(T(n) = T(n-1) + c\)</span></p>
 </section>
-<section id="example-2-tn-tn2-c" class="slide level2">
-<h2>Example 2: <span class="math inline">\(T(n) = T(n/2) + c\)</span></h2>
-<p><strong>Expand</strong> (assume <span class="math inline">\(n = 2^k\)</span> for simplicity):</p>
-<p><span class="math display">\[T(n) = T(n/2) + c\]</span></p>
+<section id="example-2" class="slide level2">
+<h2>Example 2:</h2>
+<p>(assume <span class="math inline">\(n = 2^k\)</span> for simplicity):</p>
+<p><span class="math inline">\(T(n) = T(n/2) + c\)</span></p>
 </section>
-<section id="example-3-tn-2tn2-1" class="slide level2">
-<h2>Example 3: <span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></h2>
-<p><strong>Expand</strong> (assume <span class="math inline">\(n = 2^k\)</span> for simplicity)::</p>
-<p><span class="math display">\[T(n) = 2T(n/2) + 1\]</span></p>
+<section id="example-3" class="slide level2">
+<h2>Example 3:</h2>
+<p>(assume <span class="math inline">\(n = 2^k\)</span> for simplicity)::</p>
+<p><span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></p>
+</section>
+<section id="speculation-is-not-a-proof" class="slide level2">
+<h2>Speculation is not a proof!!</h2>
+<p><strong>Claim</strong>: The running time of merge-sort on data of size <span class="math inline">\(n\)</span> is <span class="math inline">\(T(n) = O(n\log n)\)</span>.</p>
+<p><strong>Proof</strong>: Prove that there is a constant <span class="math inline">\(c\)</span> so that <span class="math inline">\(T(n) \leq cn\log n\)</span> for sufficiently large <span class="math inline">\(n\)</span>.</p>
+<p><span class="math inline">\(T(n) = 2T(n/2) + n, n &gt; 1\)</span></p>
+<p>By IH, <span class="math inline">\(T(n)\leq 2\cdot c(n/2)T(\log n/2) + n\)</span></p>
+<p><span class="math inline">\(=cn\log n - cn + n\)</span></p>
+<p><span class="math inline">\(\leq cn\log n\)</span> when ______</p>
 </section></section>
 <section>
 <section id="a-big-question-about-sorting" class="title-slide slide level1 center">
@@ -343,11 +351,15 @@ else:
 <h2>What the Tree Represents</h2>
 <ul>
 <li><strong>Internal nodes</strong>: Comparisons</li>
-<li><strong>Edges</strong>: Answers (yes/no, or <span class="math inline">\(\leq\)</span> / <span class="math inline">\(&gt;\)</span>)</li>
+<li><strong>Edges</strong>: Answers (yes/no, or <span class="math inline">\(&lt;\)</span> / <span class="math inline">\(\geq\)</span>)</li>
 <li><strong>Leaves</strong>: sorted ordering of the elements</li>
 <li><strong>Height</strong>: running time of the algorithm</li>
 </ul>
-<p><strong>Note</strong>: - There must be a leaf (endpoint) for each ordering of the elements - the tree itself is an encoding of an algorithm</p>
+<p><strong>Note</strong>:</p>
+<ul>
+<li>There must be a leaf (endpoint) for each ordering of the elements</li>
+<li>the tree itself is an encoding of an algorithm</li>
+</ul>
 </section>
 <section id="counting-leaves" class="slide level2">
 <h2>Counting Leaves</h2>
