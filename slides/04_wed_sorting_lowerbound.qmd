@@ -17,9 +17,9 @@ In the Tuesday video, we saw recurrence forms and their solutions:
 Today: How do we **prove** these solutions?
 
 
-## Two Methods
+## Two Methods of Speculating
 
-1. **Expansion method**: Unroll the recurrence, find the pattern, prove it
+1. **Expansion method**: Unroll the recurrence, find the pattern 
 
 2. **Recursion tree method**: Visualize as a tree, sum the work
   - This is more of a sketch than a certainty
@@ -33,31 +33,44 @@ Both give the same asymptotic answer. Choose whichever works for you!
 
 **Unroll** the recurrence step by step until you see a pattern.
 
-Then **prove** the pattern is correct (usually by induction).
+Then apply the pattern to the base case to terminate.
 
-## Example 1: $T(n) = T(n-1) + c$
+## Example 1:
 
-**Expand**:
-
-$$T(n) = T(n-1) + c$$
+$T(n) = T(n-1) + c$
 
 
 
 
 
 
-## Example 2: $T(n) = T(n/2) + c$
+## Example 2:
 
-**Expand** (assume $n = 2^k$ for simplicity):
+(assume $n = 2^k$ for simplicity):
 
-$$T(n) = T(n/2) + c$$
+$T(n) = T(n/2) + c$
 
 
-## Example 3: $T(n) = 2T(n/2) + 1$
+## Example 3:
 
-**Expand** (assume $n = 2^k$ for simplicity)::
+(assume $n = 2^k$ for simplicity)::
 
-$$T(n) = 2T(n/2) + 1$$
+$T(n) = 2T(n/2) + 1$
+
+## Speculation is not a proof!!
+
+**Claim**: The running time of merge-sort on data of size $n$ is $T(n) = O(n\log n)$. 
+
+**Proof**: 
+Prove that there is a constant $c$ so that $T(n) \leq cn\log n$ for sufficiently large $n$.
+
+$T(n) = 2T(n/2) + n, n > 1$
+
+By IH, $T(n)\leq 2\cdot c(n/2)T(\log n/2) + n$
+
+$=cn\log n - cn + n$ 
+
+$\leq cn\log n$ when \_\_\_\_\_\_
 
 
 # A Big Question about Sorting
@@ -174,13 +187,14 @@ Suppose we want to sort $[v_1, v_2, v_3]$.
 ## What the Tree Represents
 
 - **Internal nodes**: Comparisons 
-- **Edges**: Answers (yes/no, or $\leq$ / $>$)
+- **Edges**: Answers (yes/no, or $<$ / $\geq$)
 - **Leaves**: sorted ordering of the elements
 - **Height**: running time of the algorithm
 
 **Note**: 
- - There must be a leaf (endpoint) for each ordering of the elements
- - the tree itself is an encoding of an algorithm
+
+  - There must be a leaf (endpoint) for each ordering of the elements
+  - the tree itself is an encoding of an algorithm
 
 ## Counting Leaves
 
