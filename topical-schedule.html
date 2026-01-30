@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Announcements – DSCI 221: Data Structures and Algorithms for Data Science</title>
+<title>topical-schedule – DSCI 221: Data Structures and Algorithms for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -74,70 +72,14 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-subtitle','listing-description','listing-date','listing-image','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles/styles.css">
-<link rel="alternate" type="application/rss+xml" title="DSCI 221: Data Structures and Algorithms for Data Science" href="announcements.xml" data-external="1"><meta property="og:title" content="Announcements – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:title" content="DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Course website for DSCI 221 of the Department of Computer Science at the University of British Columbia">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="Announcements – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:title" content="DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Course website for DSCI 221 of the Department of Computer Science at the University of British Columbia">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -322,7 +264,7 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">Announcements</h1>
+          <h1 class="quarto-secondary-nav-title"></h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -360,7 +302,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./announcements.html" class="sidebar-item-text sidebar-link active">
+  <a href="./announcements.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Announcements</span></a>
   </div>
 </li>
@@ -437,66 +379,397 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="b3JpZW50YXRpb24=">orientation <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#dsci-221-topical-schedule" id="toc-dsci-221-topical-schedule" class="nav-link active" data-scroll-target="#dsci-221-topical-schedule">DSCI 221: Topical Schedule</a>
+  <ul class="collapse">
+  <li><a href="#course-overview" id="toc-course-overview" class="nav-link" data-scroll-target="#course-overview">Course Overview</a></li>
+  <li><a href="#schedule-summary" id="toc-schedule-summary" class="nav-link" data-scroll-target="#schedule-summary">Schedule Summary</a>
+  <ul class="collapse">
+  <li><a href="#part-1-foundations-weeks-14" id="toc-part-1-foundations-weeks-14" class="nav-link" data-scroll-target="#part-1-foundations-weeks-14">Part 1: Foundations (Weeks 1–4)</a></li>
+  <li><a href="#part-2-lookup-order-weeks-58" id="toc-part-2-lookup-order-weeks-58" class="nav-link" data-scroll-target="#part-2-lookup-order-weeks-58">Part 2: Lookup &amp; Order (Weeks 5–8)</a></li>
+  <li><a href="#part-3-connections-weeks-912" id="toc-part-3-connections-weeks-912" class="nav-link" data-scroll-target="#part-3-connections-weeks-912">Part 3: Connections (Weeks 9–12)</a></li>
+  </ul></li>
+  <li><a href="#detailed-topic-outline" id="toc-detailed-topic-outline" class="nav-link" data-scroll-target="#detailed-topic-outline">Detailed Topic Outline</a>
+  <ul class="collapse">
+  <li><a href="#week-1-the-speed-of-thought" id="toc-week-1-the-speed-of-thought" class="nav-link" data-scroll-target="#week-1-the-speed-of-thought">Week 1: The Speed of Thought</a></li>
+  <li><a href="#week-2-searching-for-answers" id="toc-week-2-searching-for-answers" class="nav-link" data-scroll-target="#week-2-searching-for-answers">Week 2: Searching for Answers</a></li>
+  <li><a href="#week-3-the-recursion-revelation" id="toc-week-3-the-recursion-revelation" class="nav-link" data-scroll-target="#week-3-the-recursion-revelation">Week 3: The Recursion Revelation</a></li>
+  <li><a href="#week-4-sorting-as-superpower" id="toc-week-4-sorting-as-superpower" class="nav-link" data-scroll-target="#week-4-sorting-as-superpower">Week 4: Sorting as Superpower</a></li>
+  <li><a href="#week-5-the-dictionary-trick" id="toc-week-5-the-dictionary-trick" class="nav-link" data-scroll-target="#week-5-the-dictionary-trick">Week 5: The Dictionary Trick</a></li>
+  <li><a href="#week-6-stacks-queues-and-mazes" id="toc-week-6-stacks-queues-and-mazes" class="nav-link" data-scroll-target="#week-6-stacks-queues-and-mazes">Week 6: Stacks, Queues, and Mazes</a></li>
+  <li><a href="#week-8-trees-as-recursive-structures" id="toc-week-8-trees-as-recursive-structures" class="nav-link" data-scroll-target="#week-8-trees-as-recursive-structures">Week 8: Trees as Recursive Structures</a></li>
+  <li><a href="#week-9-priority-queues" id="toc-week-9-priority-queues" class="nav-link" data-scroll-target="#week-9-priority-queues">Week 9: Priority Queues</a></li>
+  <li><a href="#week-10-graphs-i" id="toc-week-10-graphs-i" class="nav-link" data-scroll-target="#week-10-graphs-i">Week 10: Graphs I</a></li>
+  <li><a href="#week-11-graphs-ii" id="toc-week-11-graphs-ii" class="nav-link" data-scroll-target="#week-11-graphs-ii">Week 11: Graphs II</a></li>
+  <li><a href="#week-12-optimization-and-limits" id="toc-week-12-optimization-and-limits" class="nav-link" data-scroll-target="#week-12-optimization-and-limits">Week 12: Optimization and Limits</a></li>
+  </ul></li>
+  <li><a href="#assessment-schedule" id="toc-assessment-schedule" class="nav-link" data-scroll-target="#assessment-schedule">Assessment Schedule</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/UBC-CS/dsci221/blob/main/topical-schedule.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/UBC-CS/dsci221/edit/main/topical-schedule.md" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/UBC-CS/dsci221/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title d-none d-lg-block">Announcements</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
 
+<section id="dsci-221-topical-schedule" class="level1">
+<h1>DSCI 221: Topical Schedule</h1>
+<p><strong>Term:</strong> 2025 Winter Term 2 (January–April 2026)</p>
+<section id="course-overview" class="level2">
+<h2 class="anchored" data-anchor-id="course-overview">Course Overview</h2>
+<p>This course introduces fundamental data structures and algorithms through the lens of data science applications. Topics include sorting, searching, recursion, hash tables, trees, heaps, and graphs.</p>
+<hr>
+</section>
+<section id="schedule-summary" class="level2">
+<h2 class="anchored" data-anchor-id="schedule-summary">Schedule Summary</h2>
+<section id="part-1-foundations-weeks-14" class="level3">
+<h3 class="anchored" data-anchor-id="part-1-foundations-weeks-14">Part 1: Foundations (Weeks 1–4)</h3>
+<p><em>How do we measure “fast”? Recursion as a problem-solving superpower.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 20%">
+<col style="width: 23%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Week</th>
+<th>Dates</th>
+<th>Topics</th>
+<th>Assessments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Jan 5–9</td>
+<td><strong>The Speed of Thought</strong>: Algorithm analysis, Big-O notation, loop analysis</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Jan 12–16</td>
+<td><strong>Searching for Answers</strong>: Loop invariants, correctness proofs, binary search</td>
+<td>Lab 1</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Jan 19–23</td>
+<td><strong>The Recursion Revelation</strong>: Recursive thinking, structural induction, recurrence relations</td>
+<td>HW1 due (Sun)</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Jan 26–30</td>
+<td><strong>Sorting as Superpower</strong>: Merge sort, recurrence solving, sorting lower bounds</td>
+<td>EX1 (Thu)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="part-2-lookup-order-weeks-58" class="level3">
+<h3 class="anchored" data-anchor-id="part-2-lookup-order-weeks-58">Part 2: Lookup &amp; Order (Weeks 5–8)</h3>
+<p><em>Dictionary magic and the stack/queue mindset.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 20%">
+<col style="width: 23%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Week</th>
+<th>Dates</th>
+<th>Topics</th>
+<th>Assessments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>5</td>
+<td>Feb 2–6</td>
+<td><strong>The Dictionary Trick</strong>: Hash tables, O(1) lookup, two-sum problem</td>
+<td>PA1 due (Sun)</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Feb 9–13</td>
+<td><strong>Stacks, Queues, and Mazes</strong>: DFS vs BFS, maze solving, ADT specifications</td>
+<td>EX2 (Thu), HW2 due (Sun)</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Feb 16–20</td>
+<td><strong>Reading Week</strong></td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Feb 23–27</td>
+<td><strong>Trees as Recursive Structures</strong>: Binary trees, BSTs, balanced trees</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="part-3-connections-weeks-912" class="level3">
+<h3 class="anchored" data-anchor-id="part-3-connections-weeks-912">Part 3: Connections (Weeks 9–12)</h3>
+<p><em>When data has relationships: graphs, paths, and the limits of computation.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 20%">
+<col style="width: 23%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Week</th>
+<th>Dates</th>
+<th>Topics</th>
+<th>Assessments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>9</td>
+<td>Mar 2–6</td>
+<td><strong>Priority Queues</strong>: Heaps, top-k problems, heapsort</td>
+<td>EX3 (Thu), PA2 due (Sun)</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Mar 9–13</td>
+<td><strong>Graphs I</strong>: Graph representations, BFS, DFS, Union-Find</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Mar 16–20</td>
+<td><strong>Graphs II</strong>: Weighted graphs, Dijkstra’s algorithm</td>
+<td>EX4 (Thu)</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>Mar 23–27</td>
+<td><strong>Optimization &amp; Limits</strong>: MST, graph coloring, P vs NP</td>
+<td>PA3 due (Sun)</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>Mar 30–Apr 3</td>
+<td><strong>Course Synthesis</strong>: Choosing data structures, review</td>
+<td>EX5 (Thu)</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>Apr 6–10</td>
+<td>Easter / Wrap-up</td>
+<td>HW3 due (Sun)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="detailed-topic-outline" class="level2">
+<h2 class="anchored" data-anchor-id="detailed-topic-outline">Detailed Topic Outline</h2>
+<section id="week-1-the-speed-of-thought" class="level3">
+<h3 class="anchored" data-anchor-id="week-1-the-speed-of-thought">Week 1: The Speed of Thought</h3>
+<p><em>Puzzle: How does Shazam identify a song from 3 seconds of audio, searching millions of songs?</em></p>
+<ul>
+<li>Why algorithm efficiency matters at scale</li>
+<li>Counting operations, parameterizing by input size</li>
+<li>Big-O, Big-Omega, Big-Theta: formal definitions</li>
+<li>Analyzing loops: linear, nested, triangular</li>
+<li>The complexity hierarchy: O(1), O(log n), O(n), O(n log n), O(n²), O(2ⁿ)</li>
+</ul>
+</section>
+<section id="week-2-searching-for-answers" class="level3">
+<h3 class="anchored" data-anchor-id="week-2-searching-for-answers">Week 2: Searching for Answers</h3>
+<p><em>Puzzle: I’m thinking of a number between 1 and 1,000,000. How few guesses do you need?</em></p>
+<ul>
+<li>Loop invariants: Initialization, Maintenance, Termination</li>
+<li>Proving algorithm correctness</li>
+<li>Binary search: the power of sorted data</li>
+<li>Best, worst, and average case analysis</li>
+</ul>
+</section>
+<section id="week-3-the-recursion-revelation" class="level3">
+<h3 class="anchored" data-anchor-id="week-3-the-recursion-revelation">Week 3: The Recursion Revelation</h3>
+<p><em>Puzzle: Why is the coastline of Britain infinitely long?</em></p>
+<ul>
+<li>Self-similarity and recursive thinking</li>
+<li>Recursive definitions: lists, trees</li>
+<li>Structural induction</li>
+<li>Introduction to recurrence relations</li>
+</ul>
+</section>
+<section id="week-4-sorting-as-superpower" class="level3">
+<h3 class="anchored" data-anchor-id="week-4-sorting-as-superpower">Week 4: Sorting as Superpower</h3>
+<p><em>Puzzle: Find the two most similar faces among 10 million photos.</em></p>
+<ul>
+<li>Merge sort: divide and conquer</li>
+<li>Recurrence relations: T(n) = 2T(n/2) + O(n)</li>
+<li>Solving recurrences: expansion, recursion trees</li>
+<li>The comparison sorting lower bound: Ω(n log n)</li>
+</ul>
+</section>
+<section id="week-5-the-dictionary-trick" class="level3">
+<h3 class="anchored" data-anchor-id="week-5-the-dictionary-trick">Week 5: The Dictionary Trick</h3>
+<p><em>Puzzle: Given 1 million numbers, find two that sum to exactly 2024.</em></p>
+<ul>
+<li>The O(n²) → O(n) transformation</li>
+<li>Hash tables and O(1) average-case lookup</li>
+<li>Dictionary patterns: “Have I seen this before?”</li>
+<li>Hash functions and collision handling (conceptual)</li>
+</ul>
+</section>
+<section id="week-6-stacks-queues-and-mazes" class="level3">
+<h3 class="anchored" data-anchor-id="week-6-stacks-queues-and-mazes">Week 6: Stacks, Queues, and Mazes</h3>
+<p><em>Puzzle: You wake up in a maze. How do you guarantee finding the exit?</em></p>
+<ul>
+<li>Abstract Data Types (ADTs)</li>
+<li>Stacks: LIFO, DFS maze solving, call stack</li>
+<li>Queues: FIFO, BFS maze solving, shortest paths</li>
+<li>Comparing DFS and BFS</li>
+</ul>
+</section>
+<section id="week-8-trees-as-recursive-structures" class="level3">
+<h3 class="anchored" data-anchor-id="week-8-trees-as-recursive-structures">Week 8: Trees as Recursive Structures</h3>
+<p><em>Puzzle: What’s the optimal first guess in Wordle?</em></p>
+<ul>
+<li>Binary trees as recursive structures</li>
+<li>Tree traversals: preorder, inorder, postorder</li>
+<li>Binary Search Trees: insert, find, delete</li>
+<li>Balanced trees: the O(log n) guarantee (conceptual)</li>
+</ul>
+</section>
+<section id="week-9-priority-queues" class="level3">
+<h3 class="anchored" data-anchor-id="week-9-priority-queues">Week 9: Priority Queues</h3>
+<p><em>Puzzle: Track the top 10 trending hashtags from 500 million daily tweets.</em></p>
+<ul>
+<li>Priority queue ADT</li>
+<li>Heaps: structure and heap property</li>
+<li>Heap operations: insert, extract-min, heapify</li>
+<li>Top-k problems, heapsort</li>
+</ul>
+</section>
+<section id="week-10-graphs-i" class="level3">
+<h3 class="anchored" data-anchor-id="week-10-graphs-i">Week 10: Graphs I</h3>
+<p><em>Puzzle: What’s the shortest path from any actor to Kevin Bacon?</em></p>
+<ul>
+<li>Graph terminology: vertices, edges, directed/undirected</li>
+<li>Representations: adjacency list vs adjacency matrix</li>
+<li>BFS: shortest paths in unweighted graphs</li>
+<li>DFS: exploring and backtracking</li>
+<li>Union-Find: dynamic connectivity</li>
+</ul>
+</section>
+<section id="week-11-graphs-ii" class="level3">
+<h3 class="anchored" data-anchor-id="week-11-graphs-ii">Week 11: Graphs II</h3>
+<p><em>Puzzle: Find the cheapest flight from Vancouver to Tokyo.</em></p>
+<ul>
+<li>Weighted graphs</li>
+<li>Dijkstra’s algorithm</li>
+<li>Priority queue implementation</li>
+<li>Correctness proof</li>
+</ul>
+</section>
+<section id="week-12-optimization-and-limits" class="level3">
+<h3 class="anchored" data-anchor-id="week-12-optimization-and-limits">Week 12: Optimization and Limits</h3>
+<p><em>Puzzle: Schedule 500 final exams so no student has two at once.</em></p>
+<ul>
+<li>Minimum Spanning Trees: Prim’s algorithm</li>
+<li>Graph coloring and NP-completeness</li>
+<li>P vs NP (conceptual)</li>
+<li>When “good enough” is good enough</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="assessment-schedule" class="level2">
+<h2 class="anchored" data-anchor-id="assessment-schedule">Assessment Schedule</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Assessment</th>
+<th>Topics</th>
+<th>Due/Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>HW1</td>
+<td>Big-O, loop invariants</td>
+<td>Week 3 Sunday</td>
+</tr>
+<tr class="even">
+<td>EX1</td>
+<td>Analysis, loop invariants, recursion</td>
+<td>Week 4 Thursday</td>
+</tr>
+<tr class="odd">
+<td>PA1</td>
+<td>Divide-and-conquer (closest pair)</td>
+<td>Week 5 Sunday</td>
+</tr>
+<tr class="even">
+<td>HW2</td>
+<td>Recurrences, dictionaries, sorting</td>
+<td>Week 6 Sunday</td>
+</tr>
+<tr class="odd">
+<td>EX2</td>
+<td>Stacks, queues, dictionaries</td>
+<td>Week 6 Thursday</td>
+</tr>
+<tr class="even">
+<td>PA2</td>
+<td>Heap-based application</td>
+<td>Week 9 Sunday</td>
+</tr>
+<tr class="odd">
+<td>EX3</td>
+<td>Trees, heaps</td>
+<td>Week 9 Thursday</td>
+</tr>
+<tr class="even">
+<td>EX4</td>
+<td>Graphs, Dijkstra</td>
+<td>Week 11 Thursday</td>
+</tr>
+<tr class="odd">
+<td>PA3</td>
+<td>Graph algorithms</td>
+<td>Week 12 Sunday</td>
+</tr>
+<tr class="even">
+<td>EX5</td>
+<td>Comprehensive</td>
+<td>Week 13 Thursday</td>
+</tr>
+<tr class="odd">
+<td>HW3</td>
+<td>Graphs, shortest paths</td>
+<td>Week 14 Sunday</td>
+</tr>
+</tbody>
+</table>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="b3JpZW50YXRpb24=" data-listing-date-sort="1767571200000" data-listing-file-modified-sort="1769800305720" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="98">
-<div class="thumbnail"><a href="./posts/00_welcome/index.html" class="no-external">
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</section>
+</section>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/00_welcome/index.html" class="no-external">Welcome to DSCI 221!</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/00_welcome/index.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="./posts/00_welcome/index.html" class="no-external">
-<p>Data Structures for Data Science</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/00_welcome/index.html" class="no-external">
-<div class="listing-date">
-Jan 5, 2026
-</div>
-<div class="listing-reading-time">1 min</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -918,7 +1191,7 @@ Jan 5, 2026
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/UBC-CS/dsci221/blob/main/announcements.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/UBC-CS/dsci221/edit/main/announcements.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/UBC-CS/dsci221/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/UBC-CS/dsci221/blob/main/topical-schedule.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/UBC-CS/dsci221/edit/main/topical-schedule.md" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/UBC-CS/dsci221/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>UBC’s Point Grey Campus is located on the traditional, ancestral, and unceded territory of the <a href="https://www.musqueam.bc.ca/">xʷməθkʷəy̓ə (Musqueam)</a> people.</p>
 </div>
