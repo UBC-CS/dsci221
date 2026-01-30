@@ -18,7 +18,7 @@ Welcome to DSCI 221, where we study the fundamental data structures and algorith
 
 - **TA: Oscar Cheng**
   📧 [oscar.cheng@ubc.ca](mailto:oscar.cheng@ubc.ca)
-  ⏰ TBD · 🏢 TBD
+  ⏰ Thu · 🏢 ICICS x150 DLC table 6
 
 ## Communication
 
