@@ -1,41 +1,14 @@
-# DSCI 221: Data Structures and Algorithms for Data Science
+# DSCI 221: Topical Schedule
 
 **Term:** 2025 Winter Term 2 (January–April 2026)
-**Credits:** 3
-**Prerequisites:** DSCI 220 (or equivalent programming experience in Python)
 
-## Course Description
+## Course Overview
 
-This course introduces fundamental data structures and algorithms through the lens of data science applications. Students learn to analyze algorithm efficiency using Big-O notation, prove correctness using loop invariants, and select appropriate data structures for computational problems. Topics include sorting, searching, recursion, hash tables, trees, heaps, and graphs—all grounded in real-world puzzles from audio fingerprinting to social network analysis.
-
-## Learning Outcomes
-
-By the end of this course, students will be able to:
-
-1. **Analyze** algorithm efficiency using Big-O, Big-Omega, and Big-Theta notation
-2. **Prove** algorithm correctness using loop invariants (Initialization, Maintenance, Termination)
-3. **Solve** recurrence relations arising from divide-and-conquer algorithms
-4. **Select** appropriate data structures (arrays, dictionaries, stacks, queues, heaps, trees, graphs) for given problems
-5. **Implement** classic algorithms including binary search, merge sort, BFS, DFS, and Dijkstra's algorithm
-6. **Recognize** the limits of efficient computation (P vs NP, NP-completeness)
-
-## Course Format
-
-- **Lectures:** Monday and Wednesday
-- **Video content:** Tuesday (asynchronous)
-- **Lab:** Weekly hands-on programming exercises
-
-## Instructor
-
-[Instructor name and contact information]
-
-## Office Hours
-
-[Office hours schedule]
+This course introduces fundamental data structures and algorithms through the lens of data science applications. Topics include sorting, searching, recursion, hash tables, trees, heaps, and graphs.
 
 ---
 
-## Topical Schedule
+## Schedule Summary
 
 ### Part 1: Foundations (Weeks 1–4)
 *How do we measure "fast"? Recursion as a problem-solving superpower.*
@@ -165,16 +138,7 @@ By the end of this course, students will be able to:
 
 ---
 
-## Assessments
-
-| Assessment | Weight | Description |
-|------------|--------|-------------|
-| Labs | 10% | Weekly hands-on programming exercises |
-| Homeworks (HW1–HW3) | 20% | Written assignments: proofs, analysis |
-| Programming Assignments (PA1–PA3) | 30% | Larger implementation projects |
-| Examlets (EX1–EX5) | 40% | In-class assessments throughout term |
-
-### Assessment Schedule
+## Assessment Schedule
 
 | Assessment | Topics | Due/Date |
 |------------|--------|----------|
@@ -189,24 +153,3 @@ By the end of this course, students will be able to:
 | PA3 | Graph algorithms | Week 12 Sunday |
 | EX5 | Comprehensive | Week 13 Thursday |
 | HW3 | Graphs, shortest paths | Week 14 Sunday |
-
----
-
-## Required Materials
-
-- **Textbook:** No required textbook. Course materials provided on Canvas.
-- **Software:** Python 3.10+, Jupyter notebooks
-- **Platform:** PrairieLearn for assignments and examlets
-
-## Academic Integrity
-
-Students are expected to complete all work independently unless explicitly stated otherwise. Collaboration policies for each assessment type:
-
-- **Labs:** Collaboration encouraged; submit your own work
-- **Homeworks:** Discussion allowed; write-ups must be individual
-- **Programming Assignments:** Individual work; cite any external resources
-- **Examlets:** Individual work; closed-book unless otherwise specified
-
-## Accessibility
-
-Students with disabilities who require accommodations should contact the Centre for Accessibility as early as possible.
