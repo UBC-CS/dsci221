@@ -210,19 +210,3 @@ Students are expected to complete all work independently unless explicitly state
 ## Accessibility
 
 Students with disabilities who require accommodations should contact the Centre for Accessibility as early as possible.
-
----
-
-## Topics Covered vs. CPSC 221
-
-This course covers similar algorithmic content to CPSC 221 (Basic Algorithms and Data Structures) with key differences:
-
-| DSCI 221 | CPSC 221 |
-|----------|----------|
-| Python | C++ |
-| Data science applications | General CS applications |
-| High-level data structures (dict, heapq) | Low-level implementations |
-| Conceptual hash tables | Collision resolution details |
-| Conceptual balanced trees | AVL/Red-Black rotations |
-
-**Rigor preserved:** Both courses cover formal Big-O definitions, loop invariants, recurrence relations, correctness proofs, and algorithm analysis at equivalent depth.
