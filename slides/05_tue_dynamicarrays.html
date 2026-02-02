@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.27">
 
-  <meta name="dcterms.date" content="2026-01-12">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Hierarchy of Speed</title>
+  <meta name="dcterms.date" content="2026-02-03">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Dynamic Arrays</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -31,6 +31,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7e745c094e38f47e1e49ac7c09d7c9b4.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -129,11 +195,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 2, Monday">
+<meta property="og:title" content="Dynamic Arrays – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 5, Tuesday (Video)">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 2, Monday">
+<meta name="twitter:title" content="Dynamic Arrays – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 5, Tuesday (Video)">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -141,39 +207,46 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The Hierarchy of Speed</h1>
-  <p class="subtitle">Week 2, Monday</p>
+  <h1 class="title">Dynamic Arrays</h1>
+  <p class="subtitle">Week 5, Tuesday (Video)</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 12, 2026</p>
-</section>
-<section id="announcements" class="slide level2">
-<h2>Announcements</h2>
-<ul>
-<li>Labs begin this week!
-<ul>
-<li>Monday 1-3pm or Tuesday 4-6pm</li>
-</ul></li>
-</ul>
+  <p class="date">February 3, 2026</p>
 </section>
 <section>
-<section id="warm-up-code-analysis" class="title-slide slide level1 center">
-<h1>Warm-up: Code Analysis</h1>
+<section id="the-problem" class="title-slide slide level1 center">
+<h1>The Problem</h1>
 
 </section>
-<section id="rules" class="slide level2">
-<h2>Rules</h2>
-<p>For <span class="math inline">\(T(n)\)</span>, the running time of an algorithm on input of size <span class="math inline">\(n\)</span>…</p>
-<ol type="1">
-<li>Constants don’t matter: <span class="math inline">\(5n = O(n)\)</span></li>
-<li>Lower terms don’t matter: <span class="math inline">\(n^2 + n = O(n^2)\)</span></li>
-<li>Log base doesn’t matter: <span class="math inline">\(log_2 n = O(log_{10}n)\)</span></li>
-</ol>
+<section id="how-does-pythons-list-work" class="slide level2">
+<h2>How Does Python’s List Work?</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>items <span class="op">=</span> []</span>
+<span id="cb1-2"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000000</span>):</span>
+<span id="cb1-3"><a></a>    items.append(i)  <span class="co"># How can this keep growing?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>The mystery</strong>: Arrays have fixed size in memory. How does <code>append</code> work when the array is “full”?</p>
+</section>
+<section id="the-naive-approach" class="slide level2">
+<h2>The Naive Approach</h2>
+<p>What if we allocated exactly the space we need?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> append(<span class="va">self</span>, item):</span>
+<span id="cb2-2"><a></a>    new_array <span class="op">=</span> allocate(<span class="bu">len</span>(<span class="va">self</span>) <span class="op">+</span> <span class="dv">1</span>)  <span class="co"># Make room for one more</span></span>
+<span id="cb2-3"><a></a>    copy <span class="bu">all</span> items to new_array           <span class="co"># O(n) work!</span></span>
+<span id="cb2-4"><a></a>    new_array[<span class="bu">len</span>(<span class="va">self</span>)] <span class="op">=</span> item</span>
+<span id="cb2-5"><a></a>    <span class="va">self</span>.data <span class="op">=</span> new_array</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<svg viewbox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
+  <!-- Grid background for annotation -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternunits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e0e0e0" stroke-width="1"></path>
+    </pattern>
+  </defs>
+  <rect width="700" height="200" fill="url(#grid)"></rect>
+</svg>
 <aside class="notes">
-<p>“What’s the intuition for #3?”</p>
-<p>All logs differ by a constant factor. log₂n = log₁₀n / log₁₀2</p>
+<p><strong>Problem</strong>: Every append costs O(n).</p>
+<p>n appends would cost <span class="math inline">\(1 + 2 + 3 + \ldots + n = O(n^2)\)</span>!</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -186,301 +259,285 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="example-1" class="slide level2">
-<h2>Example 1</h2>
-<div>
-<div id="pyodide-1" class="exercise-cell">
+<section id="we-need-a-better-strategy" class="slide level2">
+<h2>We Need a Better Strategy</h2>
+<p><strong>Key insight</strong>: Don’t resize every time. Resize <em>strategically</em>.</p>
+<p>Two strategies to consider:</p>
+<ol type="1">
+<li><strong>Add a constant</strong>: When full, add <span class="math inline">\(c\)</span> extra slots</li>
+<li><strong>Double</strong>: When full, double the capacity</li>
+</ol>
+<p>Which is better?</p>
+</section></section>
+<section>
+<section id="strategy-1-add-a-constant" class="title-slide slide level1 center">
+<h1>Strategy 1: Add a Constant</h1>
 
-</div>
-<script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGNvbXB1dGVNZWFuKGFycik6XG4gICAgdG90YWwgPSAwXG4gICAgZm9yIHggaW4gYXJyOlxuICAgICAgICB0b3RhbCArPSB4XG4gICAgcmV0dXJuIHRvdGFsIC8gbGVuKGFycikifQ==
-</script>
-</div>
+</section>
+<section id="add-c2-extra-slots-each-time" class="slide level2 smaller">
+<h2>Add c=2 Extra Slots Each Time</h2>
+<p>Starting with capacity 2:</p>
+<svg viewbox="0 0 420 230" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
+  <!-- Row 1: capacity 2 -->
+  <rect x="10" y="8" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="40" y="8" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="160" y="24" font-size="12" fill="#666">capacity = 2</text>
+
+  <!-- Row 2: capacity 4 -->
+  <rect x="10" y="44" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="40" y="44" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="70" y="44" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="100" y="44" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="160" y="60" font-size="12" fill="#666">capacity = 4, copy 2</text>
+
+  <!-- Row 3: capacity 6 -->
+  <rect x="10" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="40" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="70" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="100" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="130" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="160" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="210" y="96" font-size="12" fill="#666">capacity = 6, copy 4</text>
+
+  <!-- Row 4: capacity 8 -->
+  <rect x="10" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="40" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="70" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="100" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="130" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="160" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="190" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="220" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="270" y="132" font-size="12" fill="#666">capacity = 8, copy 6</text>
+
+  <!-- Row 5: capacity 10 -->
+  <rect x="10" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="40" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="70" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="100" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="130" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="160" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="190" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="220" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="250" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="280" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="330" y="168" font-size="12" fill="#666">copy 8</text>
+
+  <!-- Summary -->
+  <text x="10" y="205" font-size="12" fill="#333">Copies: 2 + 4 + 6 + 8 + ... = O(n²)</text>
+</svg>
+</section>
+<section id="counting-the-work" class="slide level2">
+<h2>Counting the Work</h2>
+<p>Let <span class="math inline">\(n = 2^k\)</span> for some <span class="math inline">\(k\)</span> (makes counting easier).</p>
+<p>Resizes happen at sizes 2, 4, 6, 8, …, <span class="math inline">\(n\)</span>.</p>
+<p>That’s <span class="math inline">\(n/2\)</span> resize events, copying <span class="math inline">\(2 + 4 + 6 + \ldots + n\)</span> items.</p>
+<p><span class="math display">\[2 + 4 + 6 + \ldots + n = 2(1 + 2 + 3 + \ldots + n/2) = 2 \cdot \frac{(n/2)(n/2 + 1)}{2}\]</span></p>
+<p><span class="math display">\[= \frac{n}{2} \cdot \frac{n+2}{2} = \frac{n^2 + 2n}{4} = O(n^2)\]</span></p>
+<p><strong>Verdict</strong>: <span class="math inline">\(O(n^2)\)</span> total copies, or <span class="math inline">\(O(n)\)</span> per append on average.</p>
+</section></section>
+<section>
+<section id="strategy-2-double-the-capacity" class="title-slide slide level1 center">
+<h1>Strategy 2: Double the Capacity</h1>
+
+</section>
+<section id="double-when-full" class="slide level2 smaller">
+<h2>Double When Full</h2>
+<p>Starting with capacity 1:</p>
+<svg viewbox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
+  <!-- Row 1: capacity 1 -->
+  <rect x="10" y="10" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="70" y="30" font-size="14" fill="#666">capacity = 1</text>
+
+  <!-- Row 2: capacity 2 -->
+  <rect x="10" y="60" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="50" y="60" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="110" y="80" font-size="14" fill="#666">capacity = 2, copy 1</text>
+
+  <!-- Row 3: capacity 4 -->
+  <rect x="10" y="110" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="50" y="110" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="90" y="110" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="130" y="110" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="190" y="130" font-size="14" fill="#666">capacity = 4, copy 2</text>
+
+  <!-- Row 4: capacity 8 -->
+  <rect x="10" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="50" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="90" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="130" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="170" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="210" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="250" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="290" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="350" y="180" font-size="14" fill="#666">capacity = 8, copy 4</text>
+
+  <!-- Row 5: capacity 16 (same 40x30 cells) -->
+  <rect x="10" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="50" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="90" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="130" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="170" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="210" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="250" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="290" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="330" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="370" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="410" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="450" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="490" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="530" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="570" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <rect x="610" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"></rect>
+  <text x="10" y="260" font-size="14" fill="#666">capacity = 16, copy 8</text>
+
+  <!-- Summary -->
+  <text x="10" y="300" font-size="14" fill="#333">Copies: 1 + 2 + 4 + 8 + ... = O(n)</text>
+</svg>
+</section>
+<section id="counting-the-work-1" class="slide level2">
+<h2>Counting the Work</h2>
+<p>Again, let <span class="math inline">\(n = 2^k\)</span>.</p>
+<p>Resizes happen when we fill capacities 1, 2, 4, 8, …, <span class="math inline">\(n/2\)</span>.</p>
+<p>That’s <span class="math inline">\(k\)</span> resize events (at capacities <span class="math inline">\(2^0, 2^1, \ldots, 2^{k-1}\)</span>).</p>
+<p>Total copies: <span class="math inline">\(1 + 2 + 4 + 8 + \ldots + n/2\)</span></p>
+<p>This is a geometric series!</p>
+<p><span class="math display">\[1 + 2 + 4 + \ldots + 2^{k-1} = 2^k - 1 = n - 1 = O(n)\]</span></p>
+<p><strong>Verdict</strong>: <span class="math inline">\(O(n)\)</span> total copies, or <span class="math inline">\(O(1)\)</span> per append on average!</p>
+</section>
+<section id="observe" class="slide level2" data-background-iframe="viz/array_resizing.html" data-background-interactive="true">
+<h2>Observe</h2>
+</section>
+<section id="the-punchline" class="slide level2">
+<h2>The Punchline</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">8</th>
-<th style="text-align: center;">9</th>
-<th style="text-align: center;">10</th>
-<th style="text-align: center;">11</th>
+<th>Strategy</th>
+<th>Total work for n appends</th>
+<th>Average per append</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
+<td>Add constant k</td>
+<td><span class="math inline">\(O(n^2)\)</span></td>
+<td><span class="math inline">\(O(n)\)</span></td>
+</tr>
+<tr class="even">
+<td>Double</td>
+<td><span class="math inline">\(O(n)\)</span></td>
+<td><span class="math inline">\(O(1)\)</span></td>
 </tr>
 </tbody>
 </table>
+<p><strong>Doubling wins!</strong> This is why Python lists (and Java ArrayLists, C++ vectors) all use doubling.</p>
+<p>I think I would have 2 questions…</p>
 <ul>
-<li>Python questions?</li>
-<li>What’s the worst-case running time?</li>
+<li></li>
+<li></li>
 </ul>
-<aside class="notes">
-<p>One pass through the array. <span class="math inline">\(\Theta(n)\)</span>, tight.</p>
-<p>“We’ll see this again later with pandas.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="example-2" class="slide level2 smaller">
-<h2>Example 2</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div>
-<div id="pyodide-2" class="exercise-cell">
-
-</div>
-<script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxuZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgZm9yIGogaW4gcmFuZ2Uobik6XG4gICAgICAgIGNvdW50ICs9IDEifQ==
-</script>
-</div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
-<ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 17th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 32nd element counted?</p></li>
-<li><p>What’s the worst-case running time?</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div id="153914b5" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02_mon_hierarchy_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-<aside class="notes">
-<p>Let them trace: i=2, j=4 for 17th. i=5, j=1 for 32nd.</p>
-<p>“Predict for n = 8?” (64)</p>
-<p>Double n → QUADRUPLE the work. <span class="math inline">\(\Theta(n^2)\)</span>, tight.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="example-3" class="slide level2 smaller">
-<h2>Example 3</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div>
-<div id="pyodide-3" class="exercise-cell">
-
-</div>
-<script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxuZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgZm9yIGogaW4gcmFuZ2UoaSk6XG4gICAgICAgIGNvdW50ICs9IDEifQ==
-</script>
-</div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
-<ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 4th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 12th element counted?</p></li>
-<li><p>What’s the worst-case running time?</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div id="1a33faa4" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02_mon_hierarchy_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-<aside class="notes">
-<p>i=2: j=0,1 (2 elements). i=3: j=0,1,2 (3 elements). So 4th is i=3, j=0.</p>
-<p><span class="math inline">\(0 + 1 + 2 + \ldots + (n-1) = n(n-1)/2\)</span></p>
-<p>Still <span class="math inline">\(\Theta(n^2)\)</span>, tight! The triangle is half the square.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section></section>
 <section>
-<section id="from-last-week" class="title-slide slide level1 center">
-<h1>From Last Week</h1>
+<section id="amortized-analysis" class="title-slide slide level1 center">
+<h1>Amortized Analysis</h1>
 
 </section>
-<section id="the-two-pillars" class="slide level2">
-<h2>The Two Pillars</h2>
-<ol type="1">
-<li><strong>Correctness</strong> — Does it work?</li>
-<li><strong>Efficiency</strong> — How fast?</li>
-</ol>
-<aside class="notes">
-<p>“Last week: efficiency. This week: we add correctness.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-analysis-recipe" class="slide level2">
-<h2>The Analysis Recipe</h2>
-<ol type="1">
-<li><strong>Establish the case</strong> — usually worst case</li>
-<li><strong>Analyze the function</strong> — count operations for that case</li>
-<li><strong>State the bound:</strong>
+<section id="what-is-amortized-cost" class="slide level2">
+<h2>What is “Amortized” Cost?</h2>
+<p><strong>Amortized</strong> = “averaged over a sequence of operations”</p>
+<p>Individual appends have different costs:</p>
 <ul>
-<li><span class="math inline">\(\Theta\)</span> (or “tight <span class="math inline">\(O\)</span>”) if you know it’s exact</li>
-<li><span class="math inline">\(O\)</span> if you’re only claiming an upper bound</li>
-<li><span class="math inline">\(\Omega\)</span> if you’re only claiming a lower bound</li>
-</ul></li>
-</ol>
-<aside class="notes">
-<p>“When we say ‘binary search is <span class="math inline">\(O(\log n)\)</span>’ we mean it’s <em>tight</em> — <span class="math inline">\(\Theta(\log n)\)</span>. We’re not hedging.”</p>
-<p>“First: which case? Then: what’s the function? Then: is it tight or just a bound?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<li>Most appends: <span class="math inline">\(O(1)\)</span> (just put item in empty slot)</li>
+<li>Occasional appends: <span class="math inline">\(O(n)\)</span> (need to resize and copy)</li>
+</ul>
+<p>But averaged over <span class="math inline">\(n\)</span> operations: <span class="math inline">\(O(1)\)</span> each!</p>
+</section>
+<section id="the-banking-analogy" class="slide level2">
+<h2>The Banking Analogy</h2>
+<p>Think of it like a savings account:</p>
+<ul>
+<li>Each append “deposits” 3 coins</li>
+<li>Inserting the item costs 1 coin</li>
+<li>Save 2 coins for future copying</li>
+</ul>
+<p>When we double from size <span class="math inline">\(n\)</span> to <span class="math inline">\(2n\)</span>:</p>
+<ul>
+<li>We have <span class="math inline">\(n\)</span> saved coins (from n/2 cheap appends)</li>
+<li>Copying costs <span class="math inline">\(n\)</span> coins</li>
+<li>We break even!</li>
+</ul>
+</section>
+<section id="amortized-neq-average-case" class="slide level2">
+<h2>Amortized <span class="math inline">\(\neq\)</span> Average Case</h2>
+<p><strong>Average case</strong>: Random inputs, expected behavior</p>
+<p><strong>Amortized</strong>: Worst case, but spread over many operations</p>
+<p>Amortized O(1) is a <strong>guarantee</strong>:</p>
+<blockquote>
+<p>“Any sequence of n operations takes O(n) time total.”</p>
+</blockquote>
 </section></section>
 <section>
-<section id="the-hierarchy" class="title-slide slide level1 center">
-<h1>The Hierarchy</h1>
+<section id="why-this-matters" class="title-slide slide level1 center">
+<h1>Why This Matters</h1>
 
 </section>
-<section id="big-o-is-a-set" class="slide level2">
-<h2>Big-<span class="math inline">\(O\)</span> is a Set</h2>
-<p><span class="math inline">\(O(g(n))\)</span> is the <strong>set</strong> of all functions <span class="math inline">\(f(n)\)</span> satisfying the definition.</p>
-<p><span class="math display">\[O(n) = \{f(n) : \exists c &gt; 0, n_0 \geq 0 \text{ such that } f(n) \leq c \cdot n \text{ for all } n \geq n_0\}\]</span></p>
-<aside class="notes">
-<p>“From discrete math: Big-O defines a SET of functions.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="python-lists-use-doubling" class="slide level2">
+<h2>Python Lists Use Doubling</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> sys</span>
+<span id="cb3-2"><a></a></span>
+<span id="cb3-3"><a></a>items <span class="op">=</span> []</span>
+<span id="cb3-4"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb3-5"><a></a>    items.append(i)</span>
+<span id="cb3-6"><a></a>    <span class="bu">print</span>(<span class="ss">f"len=</span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">:2d}</span><span class="ss">, size=</span><span class="sc">{</span>sys<span class="sc">.</span>getsizeof(items)<span class="sc">}</span><span class="ss"> bytes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You’ll see the size jump at certain points (the doublings!).</p>
 </section>
-<section id="the-ladder" class="slide level2">
-<h2>The Ladder</h2>
-<p><span class="math display">\[O(1) \subset O(\log n) \subset O(n) \subset O(n \log n) \subset O(n^2) \subset O(2^n)\]</span></p>
-<p>Each class contains all the ones to its left.</p>
-<aside class="notes">
-<p>“Every <span class="math inline">\(O(1)\)</span> function is also <span class="math inline">\(O(n)\)</span>, also <span class="math inline">\(O(n^2)\)</span>, etc.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="a-common-abuse-of-notation" class="slide level2">
-<h2>A Common Abuse of Notation</h2>
-<p>We write: <span class="math inline">\(\quad 4n + 2 = O(n)\)</span></p>
-<p>We mean: <span class="math inline">\(\quad 4n + 2 \in O(n)\)</span></p>
-<aside class="notes">
-<p>“You’ll see this everywhere. Just remember: we’re really talking about set membership.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="true-or-false" class="slide level2 activity">
-<h2>True or False?</h2>
+<section id="the-tradeoff" class="slide level2">
+<h2>The Tradeoff</h2>
+<p><strong>Doubling pros</strong>:</p>
 <ul>
-<li><span class="math inline">\(3n + 2 \in O(n)\)</span></li>
-<li><span class="math inline">\(3n + 2 \in O(n^2)\)</span></li>
-<li><span class="math inline">\(n^2 \in O(n)\)</span></li>
-<li><span class="math inline">\(5 \in O(1)\)</span></li>
-<li><span class="math inline">\(5 \in O(n)\)</span></li>
+<li>O(1) amortized append</li>
+<li>Fast!</li>
 </ul>
-<aside class="notes">
-<p>T, T, F, T, T</p>
-<p>“If <span class="math inline">\(f \in O(g)\)</span> and <span class="math inline">\(O(g) \subset O(h)\)</span>, then <span class="math inline">\(f \in O(h)\)</span>.”</p>
-<p>“Let’s see what these mean at scale.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p><strong>Doubling cons</strong>:</p>
+<ul>
+<li>Up to 2× wasted space</li>
+<li>Individual operations can be slow (unpredictable)</li>
+</ul>
+<p>For most applications, the speed is worth the space.</p>
+</section>
+<section id="where-else-does-this-apply" class="slide level2">
+<h2>Where Else Does This Apply?</h2>
+<p>Same analysis works for:</p>
+<ul>
+<li><strong>Hash table resizing</strong> (Week 5)</li>
+<li><strong>Heap arrays</strong> (Week 9)</li>
+<li><strong>Any growable array structure</strong></li>
+</ul>
+<p>The doubling trick is everywhere!</p>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
+
+</section>
+<section id="key-takeaways" class="slide level2">
+<h2>Key Takeaways</h2>
+<ol type="1">
+<li><p><strong>Arrays are fixed size</strong> — growing requires copying</p></li>
+<li><p><strong>Add-constant strategy</strong>: <span class="math inline">\(O(n^2)\)</span> for n appends (bad!)</p></li>
+<li><p><strong>Doubling strategy</strong>: <span class="math inline">\(O(n)\)</span> for n appends (good!)</p></li>
+<li><p><strong>Amortized O(1)</strong>: Expensive operations are rare enough to average out</p></li>
+<li><p><strong>This is how Python lists work</strong>!</p></li>
+</ol>
+</section>
+<section id="coming-up" class="slide level2">
+<h2>Coming Up</h2>
+<p><strong>Wednesday</strong>: Back to stacks and queues — exploring mazes with DFS and BFS!</p>
 
 
-<script type="pyodide-data">
-eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
-</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">

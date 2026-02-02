@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.27">
 
-  <meta name="dcterms.date" content="2026-01-28">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Sorting Lower Bound</title>
+  <meta name="dcterms.date" content="2026-02-02">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Stacks</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -129,11 +129,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="The Sorting Lower Bound – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 4, Wednesday">
+<meta property="og:title" content="Stacks – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 5, Monday">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="The Sorting Lower Bound – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 4, Wednesday">
+<meta name="twitter:title" content="Stacks – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 5, Monday">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -141,94 +141,14 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The Sorting Lower Bound</h1>
-  <p class="subtitle">Week 4, Wednesday</p>
+  <h1 class="title">Stacks</h1>
+  <p class="subtitle">Week 5, Monday</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 28, 2026</p>
+  <p class="date">February 2, 2026</p>
 </section>
-<section class="slide level2">
-
-<p>In the Tuesday video, we saw recurrence forms and their solutions:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Recurrence</th>
-<th>Solution</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(T(n) = T(n-1) + 1\)</span></td>
-<td><span class="math inline">\(O(n)\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(T(n) = T(n/2) + 1\)</span></td>
-<td><span class="math inline">\(O(\log n)\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></td>
-<td><span class="math inline">\(O(n)\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(T(n) = 2T(n/2) + n\)</span></td>
-<td><span class="math inline">\(O(n \log n)\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(T(n) = T(n-1) + n\)</span></td>
-<td><span class="math inline">\(O(n^2)\)</span></td>
-</tr>
-</tbody>
-</table>
-<p>Today: How do we <strong>prove</strong> these solutions?</p>
-</section>
-<section id="two-methods-of-speculating" class="slide level2">
-<h2>Two Methods of Speculating</h2>
-<ol type="1">
-<li><p><strong>Expansion method</strong>: Unroll the recurrence, find the pattern</p></li>
-<li><p><strong>Recursion tree method</strong>: Visualize as a tree, sum the work</p></li>
-</ol>
-<ul>
-<li>This is more of a sketch than a certainty</li>
-<li>covered in enough detail in Tuesday video</li>
-</ul>
-<p>Both give the same asymptotic answer. Choose whichever works for you!</p>
-</section>
-<section>
-<section id="method-1-expansion" class="title-slide slide level1 center">
-<h1>Method 1: Expansion</h1>
-
-</section>
-<section id="the-idea" class="slide level2">
-<h2>The Idea</h2>
-<p><strong>Unroll</strong> the recurrence step by step until you see a pattern.</p>
-<p>Then apply the pattern to the base case to terminate.</p>
-</section>
-<section id="example-1" class="slide level2">
-<h2>Example 1:</h2>
-<p><span class="math inline">\(T(n) = T(n-1) + c\)</span></p>
-</section>
-<section id="example-2" class="slide level2">
-<h2>Example 2:</h2>
-<p>(assume <span class="math inline">\(n = 2^k\)</span> for simplicity):</p>
-<p><span class="math inline">\(T(n) = T(n/2) + c\)</span></p>
-</section>
-<section id="example-3" class="slide level2">
-<h2>Example 3:</h2>
-<p>(assume <span class="math inline">\(n = 2^k\)</span> for simplicity)::</p>
-<p><span class="math inline">\(T(n) = 2T(n/2) + 1\)</span></p>
-</section>
-<section id="speculation-is-not-a-proof" class="slide level2">
-<h2>Speculation is not a proof!!</h2>
-<p><strong>Claim</strong>: The running time of merge-sort on data of size <span class="math inline">\(n\)</span> is <span class="math inline">\(T(n) = O(n\log n)\)</span>.</p>
-<p><strong>Proof</strong>: Prove that there is a constant <span class="math inline">\(c\)</span> so that <span class="math inline">\(T(n) \leq cn\log n\)</span> for sufficiently large <span class="math inline">\(n\)</span>.</p>
-<p><span class="math inline">\(T(n) = 2T(n/2) + n, n &gt; 1\)</span></p>
-<p>By IH, <span class="math inline">\(T(n)\leq 2\cdot c(n/2)T(\log n/2) + n\)</span></p>
-<p><span class="math inline">\(=cn\log n - cn + n\)</span></p>
-<p><span class="math inline">\(\leq cn\log n\)</span> when ______</p>
-</section></section>
 <section>
 <section id="a-big-question-about-sorting" class="title-slide slide level1 center">
 <h1>A Big Question about Sorting</h1>
@@ -241,7 +161,6 @@
 <li>Insertion sort: <span class="math inline">\(O(n^2)\)</span> (PEX1, HW1)</li>
 <li>Selection sort: <span class="math inline">\(O(n^2)\)</span></li>
 <li>Merge sort: <span class="math inline">\(O(n \log n)\)</span></li>
-<li>csort: <span class="math inline">\(O(n)\)</span> (HW1)</li>
 </ul>
 <p><strong>Question</strong>: Is <span class="math inline">\(O(n \log n)\)</span> the best we can do?</p>
 <p>Or is there some clever algorithm that sorts in <span class="math inline">\(O(n)\)</span>?</p>
@@ -286,65 +205,65 @@ else:
 <section id="example-sorting-3-elements" class="slide level2">
 <h2>Example: Sorting 3 Elements</h2>
 <p>Suppose we want to sort <span class="math inline">\([v_1, v_2, v_3]\)</span>.</p>
-<svg viewbox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
+<svg viewbox="0 0 860 260" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
   <!-- Level 0: Root -->
-  <rect x="250" y="10" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
-  <text x="300" y="30" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ &lt; v₂?</text>
+  <rect x="360" y="10" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="410" y="30" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ &lt; v₂?</text>
 
   <!-- Edges from root -->
-  <line x1="270" y1="40" x2="170" y2="70" stroke="#7f8c8d" stroke-width="2"></line>
-  <line x1="330" y1="40" x2="430" y2="70" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="380" y1="40" x2="220" y2="70" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="440" y1="40" x2="600" y2="70" stroke="#7f8c8d" stroke-width="2"></line>
 
   <!-- Level 1: Left node -->
-  <rect x="120" y="70" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
-  <text x="170" y="90" text-anchor="middle" font-size="14" fill="#2c3e50">v₂ &lt; v₃?</text>
+  <rect x="170" y="70" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="220" y="90" text-anchor="middle" font-size="14" fill="#2c3e50">v₂ &lt; v₃?</text>
 
   <!-- Level 1: Right node -->
-  <rect x="380" y="70" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
-  <text x="430" y="90" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ &lt; v₃?</text>
+  <rect x="550" y="70" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="600" y="90" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ &lt; v₃?</text>
 
   <!-- Edges from level 1 left -->
-  <line x1="140" y1="100" x2="80" y2="140" stroke="#7f8c8d" stroke-width="2"></line>
-  <line x1="200" y1="100" x2="260" y2="140" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="195" y1="100" x2="110" y2="130" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="245" y1="100" x2="330" y2="130" stroke="#7f8c8d" stroke-width="2"></line>
 
   <!-- Edges from level 1 right -->
-  <line x1="400" y1="100" x2="340" y2="140" stroke="#7f8c8d" stroke-width="2"></line>
-  <line x1="460" y1="100" x2="520" y2="140" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="575" y1="100" x2="490" y2="130" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="625" y1="100" x2="710" y2="130" stroke="#7f8c8d" stroke-width="2"></line>
 
   <!-- Level 2: Leaf 1 (leftmost) -->
-  <rect x="30" y="140" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
-  <text x="80" y="160" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+  <rect x="60" y="130" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="110" y="150" text-anchor="middle" font-size="14" fill="#2c3e50">[v₁, v₂, v₃]</text>
 
   <!-- Level 2: Internal node 2 -->
-  <rect x="210" y="140" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
-  <text x="260" y="160" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ &lt; v₃?</text>
+  <rect x="280" y="130" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="330" y="150" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ &lt; v₃?</text>
 
   <!-- Level 2: Leaf 3 -->
-  <rect x="290" y="140" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
-  <text x="340" y="160" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+  <rect x="440" y="130" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="490" y="150" text-anchor="middle" font-size="14" fill="#2c3e50">[v₂, v₁, v₃]</text>
 
   <!-- Level 2: Internal node 4 -->
-  <rect x="470" y="140" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
-  <text x="520" y="160" text-anchor="middle" font-size="14" fill="#2c3e50">v₂ &lt; v₃?</text>
+  <rect x="660" y="130" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"></rect>
+  <text x="710" y="150" text-anchor="middle" font-size="14" fill="#2c3e50">v₂ &lt; v₃?</text>
 
   <!-- Edges from level 2 internal nodes -->
-  <line x1="235" y1="170" x2="175" y2="210" stroke="#7f8c8d" stroke-width="2"></line>
-  <line x1="285" y1="170" x2="345" y2="210" stroke="#7f8c8d" stroke-width="2"></line>
-  <line x1="495" y1="170" x2="435" y2="210" stroke="#7f8c8d" stroke-width="2"></line>
-  <line x1="545" y1="170" x2="565" y2="210" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="305" y1="160" x2="250" y2="190" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="355" y1="160" x2="410" y2="190" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="685" y1="160" x2="630" y2="190" stroke="#7f8c8d" stroke-width="2"></line>
+  <line x1="735" y1="160" x2="790" y2="190" stroke="#7f8c8d" stroke-width="2"></line>
 
   <!-- Level 3: Leaves -->
-  <rect x="125" y="210" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
-  <text x="175" y="230" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+  <rect x="200" y="190" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="250" y="210" text-anchor="middle" font-size="14" fill="#2c3e50">[v₁, v₃, v₂]</text>
 
-  <rect x="295" y="210" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
-  <text x="345" y="230" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+  <rect x="360" y="190" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="410" y="210" text-anchor="middle" font-size="14" fill="#2c3e50">[v₃, v₁, v₂]</text>
 
-  <rect x="385" y="210" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
-  <text x="435" y="230" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+  <rect x="580" y="190" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="630" y="210" text-anchor="middle" font-size="14" fill="#2c3e50">[v₂, v₃, v₁]</text>
 
-  <rect x="515" y="210" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
-  <text x="565" y="230" text-anchor="middle" font-size="14" fill="#2c3e50">[__, __, __]</text>
+  <rect x="740" y="190" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"></rect>
+  <text x="790" y="210" text-anchor="middle" font-size="14" fill="#2c3e50">[v₃, v₂, v₁]</text>
 </svg>
 </section>
 <section id="what-the-tree-represents" class="slide level2">
@@ -365,7 +284,7 @@ else:
 <h2>Counting Leaves</h2>
 <p>How many different rearrangements are possible for an <span class="math inline">\(n\)</span> element list?</p>
 <p>Each ordering needs its own leaf (otherwise we’d give the same answer for different inputs).</p>
-<p>The decision tree must have at least ______ leaves!</p>
+<p>The decision tree must have at least <span class="math inline">\(n!\)</span> leaves!</p>
 </section>
 <section id="a-question-for-later" class="slide level2">
 <h2>A Question for Later</h2>
@@ -388,9 +307,20 @@ else:
 <p>Therefore: <span class="math inline">\(2^h \geq n!\)</span></p>
 <p>Taking logarithms: <span class="math inline">\(h \geq \log_2(n!)\)</span></p>
 </section>
-<section id="but-how-big-is-logn" class="slide level2">
+<section id="but-how-big-is-logn" class="slide level2 smaller">
 <h2>But How Big is <span class="math inline">\(\log(n!)\)</span>?</h2>
 <p><strong>Claim</strong>: <span class="math inline">\(\log(n!) = \Omega(n\log n)\)</span></p>
+<p><strong>Proof</strong>: <span class="math display">\[
+\begin{align}
+\log(n!) &amp;= \log n + \log(n-1) + \cdots + \log 2 + \log 1 \\
+&amp;\geq \log n + \log(n-1) + \cdots + \log\left(\tfrac{n}{2}\right) &amp; \text{(drop small half)} \\
+&amp;\geq \tfrac{n}{2} \cdot \log\left(\tfrac{n}{2}\right) &amp; \text{(each term } \geq \log(n/2)\text{)} \\
+&amp;= \tfrac{n}{2}\log n - \tfrac{n}{2} \\
+&amp;= \tfrac{n}{4}\log n + \tfrac{n}{4}\log n - \tfrac{n}{2} \\
+&amp;\geq \tfrac{n}{4}\log n &amp; \text{(when } \log n \geq 2 \text{, i.e., } n \geq 4\text{)} \\
+&amp;= \Omega(n \log n) \quad \blacksquare
+\end{align}
+\]</span></p>
 </section>
 <section id="the-result" class="slide level2">
 <h2>The Result</h2>
@@ -456,54 +386,11 @@ else:
 </tbody>
 </table>
 <p><strong>Merge sort achieves the theoretical limit.</strong></p>
-</section></section>
-<section>
-<section id="breaking-the-barrier" class="title-slide slide level1 center">
-<h1>Breaking the Barrier?</h1>
-
 </section>
-<section id="a-loophole" class="slide level2">
-<h2>A Loophole</h2>
+<section id="can-we-beat-on-log-n" class="slide level2">
+<h2>Can We Beat <span class="math inline">\(O(n \log n)\)</span>?</h2>
 <p>The lower bound applies to <strong>comparison-based</strong> sorts.</p>
-<p>What if we don’t compare elements?</p>
-</section>
-<section id="counting-sort-when-elements-are-small-integers" class="slide level2">
-<h2>Counting Sort: When Elements are Small Integers</h2>
-<p><strong>Idea</strong>: If elements are integers in range <span class="math inline">\([0, k]\)</span>, count occurrences!</p>
-<div>
-<div id="pyodide-1" class="exercise-cell">
-
-</div>
-<script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGNvdW50aW5nX3NvcnQoYXJyLCBrKTpcbiAgICBcIlwiXCJTb3J0IGludGVnZXJzIGluIHJhbmdlIFswOmtdLlwiXCJcIlxuICAgIGNvdW50cyA9IFswXSAqIGtcbiAgICBmb3IgeCBpbiBhcnI6XG4gICAgICAgIGNvdW50c1t4XSArPSAxXG5cbiAgICByZXN1bHQgPSBbXVxuICAgIGZvciBpIGluIHJhbmdlKGspOlxuICAgICAgICByZXN1bHQuZXh0ZW5kKFtpXSAqIGNvdW50c1tpXSlcbiAgICByZXR1cm4gcmVzdWx0In0=
-</script>
-</div>
-</section>
-<section id="counting-sort-in-action" class="slide level2">
-<h2>Counting Sort in Action</h2>
-<div>
-<div id="pyodide-2" class="exercise-cell">
-
-</div>
-<script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzQsIDIsIDAsIDMsIDIsIDEsIDQsIDJdXG5wcmludChmXCJPcmlnaW5hbDoge2Fycn1cIilcbnByaW50KGZcIlNvcnRlZDogICB7Y291bnRpbmdfc29ydChhcnIsIDQpfVwiKSJ9
-</script>
-</div>
-<p><strong>Running time</strong>: <span class="math inline">\(O(n + k)\)</span></p>
-<p>If <span class="math inline">\(k = O(n)\)</span>, this is <span class="math inline">\(O(n)\)</span>—<strong>linear time</strong>!</p>
-</section>
-<section id="the-catch" class="slide level2">
-<h2>The Catch</h2>
-<p>Counting sort requires:</p>
-<ul>
-<li>Elements must be integers (or convertible to integers)</li>
-<li>Range <span class="math inline">\(k\)</span> must be known and reasonable</li>
-<li>Uses <span class="math inline">\(O(k)\)</span> extra space</li>
-</ul>
-<p><strong>Not a general-purpose sort</strong>—but incredibly useful when it applies!</p>
-</section>
-<section id="other-linear-time-sorts" class="slide level2">
-<h2>Other Linear-Time Sorts</h2>
+<p>If we know something about the input, we can do better:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -523,28 +410,31 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzQsIDIsIDAsIDMs
 <td>Fixed-width integers</td>
 <td><span class="math inline">\(O(d \cdot n)\)</span></td>
 </tr>
-<tr class="odd">
-<td>Bucket Sort</td>
-<td>Uniformly distributed</td>
-<td><span class="math inline">\(O(n)\)</span> expected</td>
-</tr>
 </tbody>
 </table>
-<p>All exploit <strong>extra structure</strong> in the input.</p>
+<p><strong>In practice</strong>: Just use Python’s <code>sorted()</code> (Timsort, <span class="math inline">\(O(n \log n)\)</span>).</p>
 </section>
-<section id="pythons-timsort" class="slide level2">
-<h2>Python’s Timsort</h2>
-<p>Python’s built-in <code>sorted()</code> uses <strong>Timsort</strong>:</p>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
 <ul>
-<li>Hybrid of merge sort and insertion sort</li>
-<li>Exploits “runs” of already-sorted data</li>
-<li><span class="math inline">\(O(n \log n)\)</span> worst case</li>
-<li><span class="math inline">\(O(n)\)</span> on nearly-sorted data</li>
-<li>Stable</li>
+<li>Labs this week will close up sorting.</li>
+<li>Sorting has been a good playground for examples.</li>
 </ul>
-<p><strong>In practice</strong>: Just use <code>sorted()</code>!</p>
+</section></section>
+<section>
+<section id="ordered-search" class="title-slide slide level1 center">
+<h1>Ordered Search</h1>
+
+</section>
+<section id="the-maze" class="slide level2">
+<h2>The Maze</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>You wake up in a maze. Every room has a number. Some rooms have multiple exits.</p>
+<p><strong>Question</strong>: How do you explore systematically to find the way out?</p>
+<p><a href="https://www.youtube.com/watch?v=8qrZ1clEp-Y" class="uri">https://www.youtube.com/watch?v=8qrZ1clEp-Y</a></p>
 <aside class="notes">
-<p>“Timsort is named after Tim Peters, who designed it for Python in 2002. It’s now used in Java, Android, and many other systems.”</p>
+<p>we don’t have yarn!</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -556,66 +446,37 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzQsIDIsIDAsIDMs
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section></section>
-<section>
-<section id="connection-to-this-course" class="title-slide slide level1 center">
-<h1>Connection to This Course</h1>
-
+</div><div class="column" style="width:50%;">
+<p><img data-src="../images/su4ariadne.png"></p>
+</div></div>
 </section>
-<section id="why-this-matters" class="slide level2">
-<h2>Why This Matters</h2>
-<ol type="1">
-<li><p><strong>Lower bounds</strong> tell us when to stop searching for better algorithms</p></li>
-<li><p><strong>The decision tree model</strong> appears again in:</p>
-<ul>
-<li>Week 8: Binary search trees</li>
-<li>Week 8: Wordle decision trees</li>
-</ul></li>
-<li><p><strong>Divide-and-conquer analysis</strong> (recurrences) applies to:</p>
-<ul>
-<li>PA1: Closest pair</li>
-<li>Later: Quick sort, binary search</li>
-</ul></li>
-</ol>
-</section></section>
-<section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
-
+<section id="section" class="slide level2" data-background-iframe="viz/maze_explorer.html" data-background-interactive="true">
+<h2></h2>
 </section>
-<section id="what-we-learned-this-week" class="slide level2">
-<h2>What We Learned This Week</h2>
-<p><strong>Monday</strong>: Merge Sort + Recurrence Forms</p>
+<section id="what-did-you-notice" class="slide level2">
+<h2>What Did You Notice?</h2>
+<p>Write down everything you noticed:</p>
 <ul>
-<li>Designed merge sort, saw <span class="math inline">\(T(n) = 2T(n/2) + O(n)\)</span></li>
-<li>Five recurrence patterns and their solutions</li>
-<li>Matching algorithms to recurrences</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
 </ul>
-<p><strong>Tuesday Video</strong>: Solving Recurrences</p>
-<ul>
-<li>Expansion method with formal proofs</li>
-<li>Recursion tree method</li>
-<li>Proved merge sort is <span class="math inline">\(O(n \log n)\)</span></li>
-</ul>
-<p><strong>Wednesday</strong>: Lower Bounds</p>
-<ul>
-<li><span class="math inline">\(\Omega(n \log n)\)</span> is optimal for comparison sorts</li>
-<li>Decision tree argument</li>
-<li>Non-comparison sorts can break the barrier</li>
-</ul>
-</section>
-<section id="looking-ahead" class="slide level2">
-<h2>Looking Ahead</h2>
-<ul>
-<li><strong>PA1</strong>: Due Feb 8 — apply divide-and-conquer to closest pair</li>
-<li><strong>EX1</strong>: This week — covers analysis, loop invariants</li>
-<li><strong>Next week</strong>: The dictionary trick — <span class="math inline">\(O(n^2) \to O(n)\)</span> transformations</li>
-</ul>
-</section>
-<section id="questions" class="slide level2">
-<h2>Questions?</h2>
 <aside class="notes">
-<p>Good luck on EX1!</p>
+<p><strong>Bag</strong> (random):</p>
+<ul>
+<li>Chaotic, unpredictable order</li>
+<li>Hard to reason about</li>
+<li>Different every time</li>
+</ul>
+<p><strong>Stack</strong> (LIFO):</p>
+<ul>
+<li>Goes deep first</li>
+<li>Backtracks when stuck</li>
+<li>Consistent, predictable</li>
+<li>tells us something aobut shape of the maze.</li>
+</ul>
+<p><strong>Queue</strong> (FIFO): - explores at same depth before moving on. - consistent, predictable</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -627,13 +488,34 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYXJyID0gWzQsIDIsIDAsIDMs
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
+<section id="abstract-data-type-adt-stack" class="slide level2 smaller">
+<h2>Abstract Data Type (ADT) Stack</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>Programmatic realization of a ________________.</p>
+<p>&nbsp;</p>
+<p>Stack functions:</p>
+<ul>
+<li>Insert: <code>push(item)</code></li>
+<li>Remove: <code>pop()</code> <span class="math inline">\(\rightarrow\)</span> <code>item</code></li>
+</ul>
+<p><code>List</code> functions:</p>
+<ul>
+<li>Insert: <code>append(item)</code></li>
+<li>Remove: <code>pop()</code> <span class="math inline">\(\rightarrow\)</span> <code>item</code></li>
+</ul>
+</div><div class="column" style="width:30%;">
+<p><img data-src="../images/su6pez.png"></p>
+</div></div>
+</section>
+<section id="tuesday-video" class="slide level2">
+<h2>Tuesday Video:</h2>
+<p>“Dynamic Array Diversion”</p>
 
 
-<script type="pyodide-data">
-eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
-</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">

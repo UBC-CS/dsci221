@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maze Explorer</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .controls {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .radio-group {
+      display: flex;
+      gap: 10px;
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .radio-group label:hover {
+      border-color: #888;
+    }
+    .radio-group input:checked + span {
+      font-weight: bold;
+    }
+    .radio-group label:has(input:checked) {
+      border-color: #4a90d9;
+      background: #e8f4fc;
+    }
+    .radio-group input {
+      display: none;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .step-btn { background: #4a90d9; color: white; }
+    .step-btn:hover { background: #3a7bc8; }
+    .run-btn { background: #5cb85c; color: white; }
+    .run-btn:hover { background: #4cae4c; }
+    .reset-btn { background: #f0ad4e; color: white; }
+    .reset-btn:hover { background: #ec971f; }
+    .viz-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #maze-container, #structure-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <div class="radio-group">
+      <label><input type="radio" name="structure" value="bag" checked><span>Bag</span></label>
+      <label><input type="radio" name="structure" value="stack"><span>Stack</span></label>
+      <label><input type="radio" name="structure" value="queue"><span>Queue</span></label>
+    </div>
+    <button class="step-btn" id="stepBtn">Step</button>
+    <button class="run-btn" id="runBtn">Run to End</button>
+    <button class="reset-btn" id="resetBtn">New Maze</button>
+  </div>
+  <div class="viz-container">
+    <div id="maze-container"></div>
+    <div id="structure-container"></div>
+  </div>
+
+  <script>
+    // State
+    let maze = null;
+    let visited = new Set();
+    let container = [];  // Items: {key, dist, pred, x, y}
+    let distances = new Map();  // Track distance from start for each cell
+    let nextBagSlot = 0;  // Counter for assigning bag positions
+    let current = null;
+    let path = [];
+    let done = false;
+    let structureType = 'bag';
+
+    // Maze parameters - using CPSC 221 approach with axial coordinates
+    const hexSize = 32;  // "size" in CPSC 221 = full width
+    const mazeRadius = 3;  // Hexagonal maze with this many rings from center
+
+    // Directions: N=0, NE=1, SE=2, S=3, SW=4, NW=5 (clockwise from top)
+    const N = 0, NE = 1, SE = 2, S = 3, SW = 4, NW = 5;
+
+    // Neighbor coordinate offsets in axial coords (from CPSC 221 HexBoard.cpp)
+    function getNeighCoords(q, r) {
+      return [
+        {q: q, r: r - 1},      // N
+        {q: q + 1, r: r - 1},  // NE
+        {q: q + 1, r: r},      // SE
+        {q: q, r: r + 1},      // S
+        {q: q - 1, r: r + 1},  // SW
+        {q: q - 1, r: r}       // NW
+      ];
+    }
+
+    // Get the side (direction) from this cell to a neighbor (from CPSC 221 HexCell.cpp)
+    function getNeighbourSide(q, r, nq, nr) {
+      if (nq === q && nr === r - 1) return N;
+      if (nq === q + 1 && nr === r - 1) return NE;
+      if (nq === q + 1 && nr === r) return SE;
+      if (nq === q && nr === r + 1) return S;
+      if (nq === q - 1 && nr === r + 1) return SW;
+      return NW;
+    }
+
+    // Opposite sides
+    function oppositeSide(side) {
+      return [S, SW, NW, N, NE, SE][side];
+    }
+
+    // Convert axial to offset coords (from CPSC 221 DrawMaze.cpp)
+    function axialToOffset(q, r) {
+      const x = q;
+      const y = r + Math.floor((q - (q & 1)) / 2);
+      return {x, y};
+    }
+
+    // Get draw parameters (from CPSC 221 DrawMaze.cpp)
+    function getDrawParams() {
+      const a_size = hexSize / 2;
+      const height = hexSize * Math.sqrt(3);
+      const b_size = height / 2;
+      return {a_size, b_size, height};
+    }
+
+    // Distance in axial coordinates (from CPSC 221 HexBoard.cpp)
+    function axialDistance(q1, r1, q2, r2) {
+      return (Math.abs(q1 - q2) + Math.abs(q1 + r1 - q2 - r2) + Math.abs(r1 - r2)) / 2;
+    }
+
+    // Get cell pixel params (from CPSC 221 DrawMaze.cpp get_cell_params)
+    function getCellParams(q, r) {
+      const params = getDrawParams();
+      const offset = axialToOffset(q, r);
+      const x = offset.x;
+      const y = offset.y;
+
+      // Center the hexagonal grid (offset by mazeRadius)
+      const cx = hexSize + 3 * (x + mazeRadius + 1) * params.a_size;
+      let cy = params.b_size + (y + mazeRadius + 1) * params.height;
+
+      if (x % 2 !== 0) {
+        cy += params.b_size;
+      }
+
+      // Vertex positions (flat-top hex)
+      const x_fw = cx - hexSize;          // far west
+      const x_nw = cx - params.a_size;    // near west
+      const x_ne = cx + params.a_size;    // near east
+      const x_fe = cx + hexSize;          // far east
+
+      const y_n = cy - params.b_size;     // north
+      const y_m = cy;                      // middle
+      const y_s = cy + params.b_size;     // south
+
+      return {cx, cy, x_fw, x_nw, x_ne, x_fe, y_n, y_m, y_s};
+    }
+
+    // Union-Find for Kruskal's algorithm
+    class UnionFind {
+      constructor() {
+        this.parent = new Map();
+        this.rank = new Map();
+      }
+
+      makeSet(x) {
+        this.parent.set(x, x);
+        this.rank.set(x, 0);
+      }
+
+      find(x) {
+        if (this.parent.get(x) !== x) {
+          this.parent.set(x, this.find(this.parent.get(x)));  // Path compression
+        }
+        return this.parent.get(x);
+      }
+
+      union(x, y) {
+        const rootX = this.find(x);
+        const rootY = this.find(y);
+        if (rootX === rootY) return false;  // Already connected
+
+        // Union by rank
+        if (this.rank.get(rootX) < this.rank.get(rootY)) {
+          this.parent.set(rootX, rootY);
+        } else if (this.rank.get(rootX) > this.rank.get(rootY)) {
+          this.parent.set(rootY, rootX);
+        } else {
+          this.parent.set(rootY, rootX);
+          this.rank.set(rootX, this.rank.get(rootX) + 1);
+        }
+        return true;
+      }
+    }
+
+    function generateMaze() {
+      const cells = new Map();  // key: "q,r", value: cell object
+      let id = 1;
+
+      // Create hexagonal grid of cells (like CPSC 221 create_board)
+      // Using the range formula from https://www.redblobgames.com/grids/hexagons/#range
+      for (let q = -mazeRadius; q <= mazeRadius; q++) {
+        for (let r = Math.max(-mazeRadius, -q - mazeRadius); r <= Math.min(mazeRadius, -q + mazeRadius); r++) {
+          const key = `${q},${r}`;
+          cells.set(key, {
+            id: id++,
+            q: q,
+            r: r,
+            walls: [true, true, true, true, true, true]  // N, NE, SE, S, SW, NW
+          });
+        }
+      }
+
+      // Build maze using Kruskal's algorithm for more branching
+      const uf = new UnionFind();
+      const walls = [];  // List of all walls: {key1, key2, dir}
+
+      // Initialize union-find and collect all walls
+      for (const [key, cell] of cells) {
+        uf.makeSet(key);
+        const neighCoords = getNeighCoords(cell.q, cell.r);
+
+        // Only add walls to neighbors with higher keys to avoid duplicates
+        for (let d = 0; d < 6; d++) {
+          const n = neighCoords[d];
+          const nKey = `${n.q},${n.r}`;
+          if (cells.has(nKey) && nKey > key) {
+            walls.push({key1: key, key2: nKey, dir: d});
+          }
+        }
+      }
+
+      // Shuffle walls randomly
+      for (let i = walls.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [walls[i], walls[j]] = [walls[j], walls[i]];
+      }
+
+      // Remove walls that connect different components
+      for (const wall of walls) {
+        if (uf.union(wall.key1, wall.key2)) {
+          // Remove wall from both cells
+          const cell1 = cells.get(wall.key1);
+          const cell2 = cells.get(wall.key2);
+          cell1.walls[wall.dir] = false;
+          cell2.walls[oppositeSide(wall.dir)] = false;
+        }
+      }
+
+      maze = cells;
+      return cells;
+    }
+
+    function getPassableNeighbors(cellKey) {
+      const cell = maze.get(cellKey);
+      const neighbors = [];
+      const neighCoords = getNeighCoords(cell.q, cell.r);
+
+      for (let d = 0; d < 6; d++) {
+        if (!cell.walls[d]) {
+          const n = neighCoords[d];
+          const nKey = `${n.q},${n.r}`;
+          if (maze.has(nKey)) {
+            neighbors.push(nKey);
+          }
+        }
+      }
+      return neighbors;
+    }
+
+    // Pre-compute bag slot positions (scattered within the circle)
+    const bagSlotPositions = [];
+    for (let i = 0; i < 30; i++) {
+      const angle = (i * 2.4 + i * i * 0.5) % (2 * Math.PI);
+      const r = 30 + (i * 17) % 60;
+      bagSlotPositions.push({
+        x: 150 + r * Math.cos(angle),
+        y: 200 + r * Math.sin(angle)
+      });
+    }
+
+    function getBagPosition() {
+      if (nextBagSlot < bagSlotPositions.length) {
+        return bagSlotPositions[nextBagSlot++];
+      }
+      // Fallback for overflow
+      return {x: 150, y: 200};
+    }
+
+    function initState() {
+      maze = generateMaze();
+      visited = new Set();
+      distances = new Map();
+      distances.set("0,0", 0);
+      nextBagSlot = 0;
+      const pos = getBagPosition();
+      container = [{key: "0,0", dist: 0, pred: null, x: pos.x, y: pos.y}];
+      current = null;
+      path = [];
+      done = false;
+    }
+
+    function step() {
+      if (done || container.length === 0) {
+        done = true;
+        return;
+      }
+
+      let next;
+      if (structureType === 'stack') {
+        next = container.pop();
+      } else if (structureType === 'queue') {
+        next = container.shift();
+      } else {
+        const idx = Math.floor(Math.random() * container.length);
+        next = container.splice(idx, 1)[0];
+      }
+
+      const nextKey = next.key;
+      const nextDist = next.dist;
+
+      visited.add(nextKey);
+      current = nextKey;
+      path.push(nextKey);
+
+      const neighbors = getPassableNeighbors(nextKey);
+      for (const nKey of neighbors) {
+        const alreadyInContainer = container.some(item => item.key === nKey);
+        if (!visited.has(nKey) && !alreadyInContainer) {
+          const nDist = nextDist + 1;
+          distances.set(nKey, nDist);
+          const pos = getBagPosition();
+          container.push({key: nKey, dist: nDist, pred: nextKey, x: pos.x, y: pos.y});
+        }
+      }
+
+      if (container.length === 0) done = true;
+    }
+
+    // Maze visualization
+    const mazeSketch = (p) => {
+      p.setup = () => {
+        p.createCanvas(600, 520);
+        p.textAlign(p.CENTER, p.CENTER);
+      };
+
+      p.draw = () => {
+        p.background(250);
+        if (!maze) return;
+
+        // Draw cell backgrounds (from CPSC 221 draw_hexagon)
+        for (const [key, cell] of maze) {
+          const cp = getCellParams(cell.q, cell.r);
+
+          const inContainer = container.some(item => item.key === key);
+          if (key === current) p.fill(255, 100, 100);
+          else if (visited.has(key)) p.fill(180, 230, 180);
+          else if (inContainer) p.fill(255, 240, 150);
+          else p.fill(245, 245, 245);
+
+          p.noStroke();
+          p.beginShape();
+          p.vertex(cp.x_fw, cp.y_m);
+          p.vertex(cp.x_nw, cp.y_n);
+          p.vertex(cp.x_ne, cp.y_n);
+          p.vertex(cp.x_fe, cp.y_m);
+          p.vertex(cp.x_ne, cp.y_s);
+          p.vertex(cp.x_nw, cp.y_s);
+          p.endShape(p.CLOSE);
+
+          // Cell number
+          p.fill(0);
+          p.textSize(14);
+          p.text(cell.id, cp.cx, cp.cy);
+        }
+
+        // Draw walls - each cell draws all 6 of its walls if they exist
+        p.stroke(40);
+        p.strokeWeight(3);
+        p.strokeCap(p.ROUND);
+
+        for (const [key, cell] of maze) {
+          const cp = getCellParams(cell.q, cell.r);
+
+          // N wall: x_nw,y_n to x_ne,y_n
+          if (cell.walls[N]) {
+            p.line(cp.x_nw, cp.y_n, cp.x_ne, cp.y_n);
+          }
+
+          // NE wall: x_ne,y_n to x_fe,y_m
+          if (cell.walls[NE]) {
+            p.line(cp.x_ne, cp.y_n, cp.x_fe, cp.y_m);
+          }
+
+          // SE wall: x_fe,y_m to x_ne,y_s
+          if (cell.walls[SE]) {
+            p.line(cp.x_fe, cp.y_m, cp.x_ne, cp.y_s);
+          }
+
+          // S wall: x_ne,y_s to x_nw,y_s
+          if (cell.walls[S]) {
+            p.line(cp.x_ne, cp.y_s, cp.x_nw, cp.y_s);
+          }
+
+          // SW wall: x_fw,y_m to x_nw,y_s
+          if (cell.walls[SW]) {
+            p.line(cp.x_fw, cp.y_m, cp.x_nw, cp.y_s);
+          }
+
+          // NW wall: x_fw,y_m to x_nw,y_n
+          if (cell.walls[NW]) {
+            p.line(cp.x_fw, cp.y_m, cp.x_nw, cp.y_n);
+          }
+        }
+
+        // Legend
+        p.textAlign(p.LEFT);
+        p.textSize(14);
+        p.fill(255, 100, 100); p.noStroke(); p.ellipse(500, 40, 16, 16);
+        p.fill(0); p.text("current", 514, 43);
+        p.fill(180, 230, 180); p.ellipse(500, 65, 16, 16);
+        p.fill(0); p.text("visited", 514, 68);
+        p.fill(255, 240, 150); p.ellipse(500, 90, 16, 16);
+        p.fill(0); p.text("in bucket", 514, 93);
+
+        // Visit order
+        p.textAlign(p.LEFT);
+        p.textSize(16);
+        p.fill(0);
+        const orderStr = path.map(k => maze.get(k).id).join(" → ");
+        const displayStr = orderStr.length > 60 ? orderStr.slice(0, 60) + "..." : orderStr;
+        p.text("Order: " + (displayStr || "(click Step)"), 20, 500);
+      };
+    };
+
+    // Structure visualization
+    const structureSketch = (p) => {
+      p.setup = () => {
+        p.createCanvas(300, 440);
+        p.textAlign(p.CENTER, p.CENTER);
+      };
+
+      p.draw = () => {
+        p.background(250);
+        if (!maze) return;
+
+        p.fill(0);
+        p.textSize(20);
+        p.textAlign(p.LEFT);
+        p.textStyle(p.BOLD);
+        p.text(structureType.toUpperCase(), 20, 35);
+        p.textStyle(p.NORMAL);
+
+        if (structureType === 'bag') {
+          p.noFill();
+          p.stroke(100);
+          p.strokeWeight(2);
+          p.ellipse(150, 200, 200, 200);
+
+          p.fill(255, 240, 150);
+          p.stroke(60);
+          p.strokeWeight(1);
+          for (const item of container) {
+            p.ellipse(item.x, item.y, 44, 44);
+            p.fill(0);
+            p.noStroke();
+            p.textSize(14);
+            const cellId = maze.get(item.key).id;
+            p.text(cellId, item.x, item.y - 6);
+            p.fill(100);
+            p.textSize(10);
+            p.text("d=" + item.dist, item.x, item.y + 8);
+            p.fill(255, 240, 150);
+            p.stroke(60);
+          }
+          p.fill(100);
+          p.noStroke();
+          p.textSize(14);
+          p.textAlign(p.CENTER);
+          p.text("(random pick)", 150, 330);
+
+          // Show current cell below
+          if (current) {
+            p.fill(255, 100, 100);
+            p.stroke(60);
+            p.strokeWeight(1);
+            p.ellipse(150, 370, 44, 44);
+            p.fill(0);
+            p.noStroke();
+            p.textSize(14);
+            p.text(maze.get(current).id, 150, 364);
+            p.fill(100);
+            p.textSize(10);
+            p.text("d=" + distances.get(current), 150, 378);
+          }
+
+        } else if (structureType === 'stack') {
+          const boxH = 40;
+          const maxShow = 7;
+          const showItems = container.slice(-maxShow);
+          const containerTop = 60;
+          const containerBottom = 360;
+          const containerLeft = 70;
+          const containerRight = 210;
+
+          // Draw stack container (open at top)
+          p.stroke(80);
+          p.strokeWeight(3);
+          p.noFill();
+          // Left wall
+          p.line(containerLeft, containerTop, containerLeft, containerBottom);
+          // Right wall
+          p.line(containerRight, containerTop, containerRight, containerBottom);
+          // Bottom
+          p.line(containerLeft, containerBottom, containerRight, containerBottom);
+
+          // Draw items from bottom up
+          for (let i = 0; i < showItems.length; i++) {
+            const y = containerBottom - (i + 1) * boxH;
+            p.fill(255, 240, 150);
+            p.stroke(60);
+            p.strokeWeight(1);
+            p.rect(containerLeft + 5, y, containerRight - containerLeft - 10, boxH - 2, 4);
+            p.fill(0);
+            p.noStroke();
+            p.textAlign(p.CENTER);
+            p.textSize(14);
+            const cellId = maze.get(showItems[i].key).id;
+            const dist = showItems[i].dist;
+            p.text(cellId, (containerLeft + containerRight) / 2, y + boxH/2 - 7);
+            p.fill(100);
+            p.textSize(11);
+            p.text("d=" + dist, (containerLeft + containerRight) / 2, y + boxH/2 + 8);
+          }
+
+          if (container.length > maxShow) {
+            p.fill(100);
+            p.textSize(14);
+            p.textAlign(p.CENTER);
+            p.text("+" + (container.length - maxShow) + " more", (containerLeft + containerRight) / 2, containerBottom + 20);
+          }
+
+          // Arrow showing push/pop at top
+          if (showItems.length > 0) {
+            const topY = containerBottom - showItems.length * boxH;
+            p.fill(200, 50, 50);
+            p.noStroke();
+            p.textSize(14);
+            p.textAlign(p.LEFT);
+            p.text("← pop", containerRight + 10, topY + boxH/2);
+          }
+          p.fill(50, 150, 50);
+          p.textAlign(p.LEFT);
+          p.textSize(12);
+          p.text("push →", containerRight + 10, containerTop + 10);
+
+          // Show current cell below stack
+          if (current) {
+            p.fill(255, 100, 100);
+            p.stroke(60);
+            p.strokeWeight(1);
+            p.ellipse((containerLeft + containerRight) / 2, containerBottom + 50, 44, 44);
+            p.fill(0);
+            p.noStroke();
+            p.textAlign(p.CENTER);
+            p.textSize(14);
+            p.text(maze.get(current).id, (containerLeft + containerRight) / 2, containerBottom + 44);
+            p.fill(100);
+            p.textSize(10);
+            p.text("d=" + distances.get(current), (containerLeft + containerRight) / 2, containerBottom + 58);
+          }
+
+        } else {
+          // Queue: show items with their distances, with walls on sides
+          const boxW = 46;
+          const boxH = 50;
+          const maxShow = 5;
+          const showItems = container.slice(0, maxShow);
+          const queueTop = 145;
+          const queueBottom = queueTop + boxH + 10;
+          const queueLeft = 10;
+          const queueRight = 280;
+
+          // Draw queue container (walls on top and bottom, open at ends)
+          p.stroke(80);
+          p.strokeWeight(3);
+          p.noFill();
+          // Top wall
+          p.line(queueLeft, queueTop, queueRight, queueTop);
+          // Bottom wall
+          p.line(queueLeft, queueBottom, queueRight, queueBottom);
+
+          // Draw items
+          for (let i = 0; i < showItems.length; i++) {
+            p.fill(255, 240, 150);
+            p.stroke(60);
+            p.strokeWeight(1);
+            p.rect(queueLeft + 8 + i * boxW, queueTop + 5, boxW - 4, boxH, 4);
+            p.fill(0);
+            p.noStroke();
+            p.textAlign(p.CENTER);
+            p.textSize(14);
+            const cellId = maze.get(showItems[i].key).id;
+            const dist = showItems[i].dist;
+            p.text(cellId, queueLeft + 8 + i * boxW + (boxW-4)/2, queueTop + 23);
+            p.fill(100);
+            p.textSize(11);
+            p.text("d=" + dist, queueLeft + 8 + i * boxW + (boxW-4)/2, queueTop + 43);
+          }
+
+          if (container.length > maxShow) {
+            p.fill(100);
+            p.textSize(12);
+            p.textAlign(p.LEFT);
+            p.text("+" + (container.length - maxShow), queueLeft + 8 + maxShow * boxW + 5, queueTop + 33);
+          }
+
+          // Arrows showing enqueue/dequeue
+          p.fill(200, 50, 50);
+          p.noStroke();
+          p.textSize(12);
+          p.textAlign(p.CENTER);
+          p.text("dequeue", queueLeft - 3, queueTop + 33);
+          p.text("←", queueLeft + 3, queueTop + 50);
+
+          p.fill(50, 150, 50);
+          p.textAlign(p.CENTER);
+          p.text("←", queueRight - 3, queueTop + 33);
+          p.text("enqueue", queueRight - 3, queueTop + 50);
+
+          // Add note about BFS property
+          p.textAlign(p.CENTER);
+          p.textSize(12);
+          p.fill(80);
+          p.text("Process all d=k before d=k+1", 150, queueBottom + 25);
+
+          // Show current cell below queue
+          if (current) {
+            p.fill(255, 100, 100);
+            p.stroke(60);
+            p.strokeWeight(1);
+            p.ellipse(50, queueBottom + 70, 44, 44);
+            p.fill(0);
+            p.noStroke();
+            p.textAlign(p.CENTER);
+            p.textSize(14);
+            p.text(maze.get(current).id, 50, queueBottom + 64);
+            p.fill(100);
+            p.textSize(10);
+            p.text("d=" + distances.get(current), 50, queueBottom + 78);
+          }
+        }
+      };
+    };
+
+    // Initialize
+    initState();
+    new p5(mazeSketch, 'maze-container');
+    new p5(structureSketch, 'structure-container');
+
+    // Event listeners
+    document.querySelectorAll('input[name="structure"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        structureType = e.target.value;
+      });
+    });
+
+    document.getElementById('stepBtn').addEventListener('click', step);
+
+    document.getElementById('runBtn').addEventListener('click', () => {
+      while (!done && container.length > 0) {
+        step();
+      }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      initState();
+    });
+  </script>
+</body>
+</html>
