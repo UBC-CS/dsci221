@@ -2,106 +2,106 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ubc-cs.github.io/dsci221/announcements.html</loc>
-    <lastmod>2026-02-02T09:56:21.704Z</lastmod>
+    <lastmod>2026-02-02T09:57:38.932Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/formatting.html</loc>
-    <lastmod>2026-02-02T09:56:21.764Z</lastmod>
+    <lastmod>2026-02-02T09:57:38.992Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/docs/marimo-grading-framework-analysis.html</loc>
-    <lastmod>2026-02-02T09:56:21.720Z</lastmod>
+    <lastmod>2026-02-02T09:57:38.948Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/02_wed_correctness.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.364Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/AA_XXX_hierarchy.html</loc>
-    <lastmod>2026-02-02T09:56:22.136Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.365Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/01_mon_intro.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.364Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/03_wed_recursion.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.365Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/03_tue_binarysearch.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.364Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/05_tue_dynamicarrays.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.365Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/about.html</loc>
-    <lastmod>2026-02-02T09:56:21.704Z</lastmod>
+    <lastmod>2026-02-02T09:57:38.932Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/summaries/01_weekly_summary.html</loc>
-    <lastmod>2026-02-02T09:56:22.136Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.365Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/LICENSE.html</loc>
-    <lastmod>2026-02-02T09:56:21.682Z</lastmod>
+    <lastmod>2026-02-02T09:57:38.911Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/labs/02_create-website.html</loc>
-    <lastmod>2026-02-02T09:56:22.133Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.362Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/index.html</loc>
-    <lastmod>2026-02-02T09:56:22.132Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.362Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/posts/00_welcome/index.html</loc>
-    <lastmod>2026-02-02T09:56:22.133Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.362Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/TODO.html</loc>
-    <lastmod>2026-02-02T09:56:21.682Z</lastmod>
+    <lastmod>2026-02-02T09:57:38.911Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/setup.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.364Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/03_mon_invariants.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.364Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/01_wed_runtime.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.364Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/02_mon_hierarchy.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.364Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/04_mon_mergesort.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.365Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/05_mon_stacks.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.365Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/02_tue_invariants.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.364Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/slides/04_tue_recurrences.html</loc>
-    <lastmod>2026-02-02T09:56:22.135Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.365Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/data/pa1_wildlife/PA1_CONCEPT.html</loc>
-    <lastmod>2026-02-02T09:56:21.719Z</lastmod>
+    <lastmod>2026-02-02T09:57:38.947Z</lastmod>
   </url>
   <url>
     <loc>https://ubc-cs.github.io/dsci221/syllabus.html</loc>
-    <lastmod>2026-02-02T09:56:22.136Z</lastmod>
+    <lastmod>2026-02-02T09:57:39.365Z</lastmod>
   </url>
 </urlset>
