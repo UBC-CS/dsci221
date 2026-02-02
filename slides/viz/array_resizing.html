@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Array Resizing Strategies</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 20px;
+      padding-top: 160px;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+      color: #333;
+    }
+    .controls {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      align-items: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background: #3498db;
+      color: white;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    button:disabled {
+      background: #bdc3c7;
+      cursor: not-allowed;
+    }
+    #resetBtn {
+      background: #e74c3c;
+    }
+    #resetBtn:hover {
+      background: #c0392b;
+    }
+    .container {
+      display: flex;
+      gap: 30px;
+    }
+    .panel {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .panel h2 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      text-align: center;
+    }
+    .stats {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+    }
+    .stats-label {
+      color: #666;
+    }
+    .stats-value {
+      font-weight: bold;
+      color: #333;
+    }
+    .highlight {
+      color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <h1>Across n appends, how much time is spent copying?</h1>
+
+  <div class="controls">
+    <button id="appendBtn">Append Item</button>
+    <button id="append8Btn">Append to n=8</button>
+    <button id="append16Btn">Append to n=16</button>
+    <button id="append32Btn">Append to n=32</button>
+    <button id="resetBtn">Reset</button>
+  </div>
+
+  <div class="container">
+    <div class="panel">
+      <h2>Strategy 1: Add 2</h2>
+      <div id="add2-container"></div>
+      <div class="stats" id="add2-stats"></div>
+    </div>
+    <div class="panel">
+      <h2>Strategy 2: Double</h2>
+      <div id="double-container"></div>
+      <div class="stats" id="double-stats"></div>
+    </div>
+  </div>
+
+  <script>
+    // State for both strategies
+    let add2State = {
+      items: [],
+      capacity: 2,
+      totalCopies: 0,
+      resizeCount: 0,
+      history: []  // Track copies at each resize
+    };
+
+    let doubleState = {
+      items: [],
+      capacity: 1,
+      totalCopies: 0,
+      resizeCount: 0,
+      history: []
+    };
+
+    let animating = false;
+    let animationQueue = [];
+    let speed = 200;
+
+    function resetState() {
+      add2State = {
+        items: [],
+        capacity: 2,
+        totalCopies: 0,
+        resizeCount: 0,
+        history: []
+      };
+      doubleState = {
+        items: [],
+        capacity: 1,
+        totalCopies: 0,
+        resizeCount: 0,
+        history: []
+      };
+      animationQueue = [];
+      animating = false;
+      updateStats();
+    }
+
+    function appendItem(state, strategy) {
+      const events = [];
+
+      // Check if resize needed
+      if (state.items.length >= state.capacity) {
+        const oldCapacity = state.capacity;
+        const copies = state.items.length;
+
+        if (strategy === 'add2') {
+          state.capacity += 2;
+        } else {
+          state.capacity *= 2;
+        }
+
+        state.totalCopies += copies;
+        state.resizeCount++;
+        state.history.push(copies);
+
+        events.push({type: 'resize', oldCapacity, newCapacity: state.capacity, copies});
+      }
+
+      // Add the item
+      state.items.push(state.items.length + 1);
+      events.push({type: 'insert', index: state.items.length - 1});
+
+      return events;
+    }
+
+    async function doAppend() {
+      if (animating) return;
+
+      const add2Events = appendItem(add2State, 'add2');
+      const doubleEvents = appendItem(doubleState, 'double');
+
+      // Animate both
+      animating = true;
+      await animateEvents(add2Events, doubleEvents);
+      animating = false;
+
+      updateStats();
+    }
+
+    async function appendToN(targetN) {
+      if (animating) return;
+      animating = true;
+
+      while (add2State.items.length < targetN) {
+        const add2Events = appendItem(add2State, 'add2');
+        const doubleEvents = appendItem(doubleState, 'double');
+        await animateEvents(add2Events, doubleEvents);
+        updateStats();
+      }
+
+      animating = false;
+    }
+
+    async function animateEvents(add2Events, doubleEvents) {
+      // Simple delay for visual feedback
+      await new Promise(resolve => setTimeout(resolve, speed));
+    }
+
+    function updateStats() {
+      const n = add2State.items.length;
+
+      document.getElementById('add2-stats').innerHTML = `
+        <div class="stats-row">
+          <span class="stats-label">Items:</span>
+          <span class="stats-value">${add2State.items.length}</span>
+        </div>
+        <div class="stats-row">
+          <span class="stats-label">Capacity:</span>
+          <span class="stats-value">${add2State.capacity}</span>
+        </div>
+        <div class="stats-row">
+          <span class="stats-label">Resizes:</span>
+          <span class="stats-value">${add2State.resizeCount}</span>
+        </div>
+        <div class="stats-row">
+          <span class="stats-label">Total Copies:</span>
+          <span class="stats-value highlight">${add2State.totalCopies}</span>
+        </div>
+        <div class="stats-row">
+          <span class="stats-label">Avg Cost/Append:</span>
+          <span class="stats-value">${n > 0 ? ((add2State.totalCopies + n) / n).toFixed(2) : '0'}</span>
+        </div>
+      `;
+
+      document.getElementById('double-stats').innerHTML = `
+        <div class="stats-row">
+          <span class="stats-label">Items:</span>
+          <span class="stats-value">${doubleState.items.length}</span>
+        </div>
+        <div class="stats-row">
+          <span class="stats-label">Capacity:</span>
+          <span class="stats-value">${doubleState.capacity}</span>
+        </div>
+        <div class="stats-row">
+          <span class="stats-label">Resizes:</span>
+          <span class="stats-value">${doubleState.resizeCount}</span>
+        </div>
+        <div class="stats-row">
+          <span class="stats-label">Total Copies:</span>
+          <span class="stats-value highlight">${doubleState.totalCopies}</span>
+        </div>
+        <div class="stats-row">
+          <span class="stats-label">Avg Cost/Append:</span>
+          <span class="stats-value">${n > 0 ? ((doubleState.totalCopies + n) / n).toFixed(2) : '0'}</span>
+        </div>
+      `;
+    }
+
+    // Visualization for Add-2 strategy
+    const add2Sketch = (p) => {
+      const cellSize = 28;
+      const maxCols = 10;
+
+      p.setup = () => {
+        p.createCanvas(320, 350);
+      };
+
+      p.draw = () => {
+        p.background(255);
+
+        const state = add2State;
+        const cols = Math.min(state.capacity, maxCols);
+        const rows = Math.ceil(state.capacity / maxCols);
+
+        // Draw array cells
+        for (let i = 0; i < state.capacity; i++) {
+          const col = i % maxCols;
+          const row = Math.floor(i / maxCols);
+          const x = 10 + col * (cellSize + 2);
+          const y = 10 + row * (cellSize + 4);
+
+          // Cell background
+          if (i < state.items.length) {
+            p.fill(100, 200, 100);  // Filled
+          } else {
+            p.fill(240, 240, 240);  // Empty
+          }
+          p.stroke(100);
+          p.strokeWeight(1);
+          p.rect(x, y, cellSize, cellSize, 3);
+
+          // Item value
+          if (i < state.items.length) {
+            p.fill(255);
+            p.noStroke();
+            p.textAlign(p.CENTER, p.CENTER);
+            p.textSize(12);
+            p.text(state.items[i], x + cellSize/2, y + cellSize/2);
+          }
+        }
+
+        // Draw copy history as bar chart
+        const chartY = 180;
+        const chartHeight = 150;
+        const barWidth = 12;
+
+        p.fill(0);
+        p.noStroke();
+        p.textSize(12);
+        p.textAlign(p.LEFT);
+        p.text("Copies per resize:", 10, chartY);
+
+        if (state.history.length > 0) {
+          const maxCopies = Math.max(...state.history, 10);
+
+          for (let i = 0; i < state.history.length; i++) {
+            const barHeight = (state.history[i] / maxCopies) * (chartHeight - 40);
+            const x = 10 + i * (barWidth + 3);
+            const y = chartY + chartHeight - barHeight - 10;
+
+            p.fill(231, 76, 60);
+            p.noStroke();
+            p.rect(x, y, barWidth, barHeight, 2);
+
+            // Label
+            p.fill(100);
+            p.textSize(9);
+            p.textAlign(p.CENTER);
+            p.text(state.history[i], x + barWidth/2, y - 5);
+          }
+        }
+
+        // Total line
+        p.fill(100);
+        p.textSize(11);
+        p.textAlign(p.LEFT);
+        p.text(`Total: ${state.totalCopies} copies`, 10, chartY + chartHeight + 5);
+      };
+    };
+
+    // Visualization for Double strategy
+    const doubleSketch = (p) => {
+      const cellSize = 28;
+      const maxCols = 10;
+
+      p.setup = () => {
+        p.createCanvas(320, 350);
+      };
+
+      p.draw = () => {
+        p.background(255);
+
+        const state = doubleState;
+        const cols = Math.min(state.capacity, maxCols);
+        const rows = Math.ceil(state.capacity / maxCols);
+
+        // Draw array cells
+        for (let i = 0; i < state.capacity; i++) {
+          const col = i % maxCols;
+          const row = Math.floor(i / maxCols);
+          const x = 10 + col * (cellSize + 2);
+          const y = 10 + row * (cellSize + 4);
+
+          // Cell background
+          if (i < state.items.length) {
+            p.fill(52, 152, 219);  // Filled (blue)
+          } else {
+            p.fill(240, 240, 240);  // Empty
+          }
+          p.stroke(100);
+          p.strokeWeight(1);
+          p.rect(x, y, cellSize, cellSize, 3);
+
+          // Item value
+          if (i < state.items.length) {
+            p.fill(255);
+            p.noStroke();
+            p.textAlign(p.CENTER, p.CENTER);
+            p.textSize(12);
+            p.text(state.items[i], x + cellSize/2, y + cellSize/2);
+          }
+        }
+
+        // Draw copy history as bar chart
+        const chartY = 180;
+        const chartHeight = 150;
+        const barWidth = 20;
+
+        p.fill(0);
+        p.noStroke();
+        p.textSize(12);
+        p.textAlign(p.LEFT);
+        p.text("Copies per resize:", 10, chartY);
+
+        if (state.history.length > 0) {
+          // Use same scale as add2 for fair comparison
+          const maxCopies = Math.max(...add2State.history, ...state.history, 10);
+
+          for (let i = 0; i < state.history.length; i++) {
+            const barHeight = (state.history[i] / maxCopies) * (chartHeight - 40);
+            const x = 10 + i * (barWidth + 8);
+            const y = chartY + chartHeight - barHeight - 10;
+
+            p.fill(52, 152, 219);
+            p.noStroke();
+            p.rect(x, y, barWidth, barHeight, 2);
+
+            // Label
+            p.fill(100);
+            p.textSize(10);
+            p.textAlign(p.CENTER);
+            p.text(state.history[i], x + barWidth/2, y - 5);
+          }
+        }
+
+        // Total line
+        p.fill(100);
+        p.textSize(11);
+        p.textAlign(p.LEFT);
+        p.text(`Total: ${state.totalCopies} copies`, 10, chartY + chartHeight + 5);
+      };
+    };
+
+    // Initialize
+    new p5(add2Sketch, 'add2-container');
+    new p5(doubleSketch, 'double-container');
+    updateStats();
+
+    // Event listeners
+    document.getElementById('appendBtn').addEventListener('click', doAppend);
+    document.getElementById('append8Btn').addEventListener('click', () => appendToN(8));
+    document.getElementById('append16Btn').addEventListener('click', () => appendToN(16));
+    document.getElementById('append32Btn').addEventListener('click', () => appendToN(32));
+    document.getElementById('resetBtn').addEventListener('click', resetState);
+  </script>
+</body>
+</html>

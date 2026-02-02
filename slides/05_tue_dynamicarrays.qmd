@@ -1,0 +1,316 @@
+---
+title: "Dynamic Arrays"
+subtitle: "Week 5, Tuesday (Video)"
+date: 2026-02-03
+---
+
+# The Problem
+
+## How Does Python's List Work?
+
+```python
+items = []
+for i in range(1000000):
+    items.append(i)  # How can this keep growing?
+```
+
+**The mystery**: Arrays have fixed size in memory. How does `append` work when the array is "full"?
+
+## The Naive Approach
+
+What if we allocated exactly the space we need?
+
+```python
+def append(self, item):
+    new_array = allocate(len(self) + 1)  # Make room for one more
+    copy all items to new_array           # O(n) work!
+    new_array[len(self)] = item
+    self.data = new_array
+```
+```{=html}
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
+  <!-- Grid background for annotation -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e0e0e0" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="700" height="200" fill="url(#grid)"/>
+</svg>
+```
+
+::: notes
+**Problem**: Every append costs O(n).
+
+n appends would cost $1 + 2 + 3 + \ldots + n = O(n^2)$!
+:::
+
+## We Need a Better Strategy
+
+**Key insight**: Don't resize every time. Resize *strategically*.
+
+Two strategies to consider:
+
+1. **Add a constant**: When full, add $c$ extra slots
+2. **Double**: When full, double the capacity
+
+Which is better?
+
+# Strategy 1: Add a Constant
+
+## Add c=2 Extra Slots Each Time {.smaller}
+
+Starting with capacity 2:
+
+```{=html}
+<svg viewBox="0 0 420 230" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
+  <!-- Row 1: capacity 2 -->
+  <rect x="10" y="8" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="40" y="8" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="160" y="24" font-size="12" fill="#666">capacity = 2</text>
+
+  <!-- Row 2: capacity 4 -->
+  <rect x="10" y="44" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="40" y="44" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="70" y="44" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="100" y="44" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="160" y="60" font-size="12" fill="#666">capacity = 4, copy 2</text>
+
+  <!-- Row 3: capacity 6 -->
+  <rect x="10" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="40" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="70" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="100" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="130" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="160" y="80" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="210" y="96" font-size="12" fill="#666">capacity = 6, copy 4</text>
+
+  <!-- Row 4: capacity 8 -->
+  <rect x="10" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="40" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="70" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="100" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="130" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="160" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="190" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="220" y="116" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="270" y="132" font-size="12" fill="#666">capacity = 8, copy 6</text>
+
+  <!-- Row 5: capacity 10 -->
+  <rect x="10" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="40" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="70" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="100" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="130" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="160" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="190" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="220" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="250" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="280" y="152" width="30" height="24" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="330" y="168" font-size="12" fill="#666">copy 8</text>
+
+  <!-- Summary -->
+  <text x="10" y="205" font-size="12" fill="#333">Copies: 2 + 4 + 6 + 8 + ... = O(n²)</text>
+</svg>
+```
+
+## Counting the Work
+
+Let $n = 2^k$ for some $k$ (makes counting easier).
+
+Resizes happen at sizes 2, 4, 6, 8, ..., $n$.
+
+That's $n/2$ resize events, copying $2 + 4 + 6 + \ldots + n$ items.
+
+$$2 + 4 + 6 + \ldots + n = 2(1 + 2 + 3 + \ldots + n/2) = 2 \cdot \frac{(n/2)(n/2 + 1)}{2}$$
+
+$$= \frac{n}{2} \cdot \frac{n+2}{2} = \frac{n^2 + 2n}{4} = O(n^2)$$
+
+**Verdict**: $O(n^2)$ total copies, or $O(n)$ per append on average.
+
+# Strategy 2: Double the Capacity
+
+## Double When Full {.smaller}
+
+Starting with capacity 1:
+
+```{=html}
+<svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
+  <!-- Row 1: capacity 1 -->
+  <rect x="10" y="10" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="70" y="30" font-size="14" fill="#666">capacity = 1</text>
+
+  <!-- Row 2: capacity 2 -->
+  <rect x="10" y="60" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="50" y="60" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="110" y="80" font-size="14" fill="#666">capacity = 2, copy 1</text>
+
+  <!-- Row 3: capacity 4 -->
+  <rect x="10" y="110" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="50" y="110" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="90" y="110" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="130" y="110" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="190" y="130" font-size="14" fill="#666">capacity = 4, copy 2</text>
+
+  <!-- Row 4: capacity 8 -->
+  <rect x="10" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="50" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="90" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="130" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="170" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="210" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="250" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="290" y="160" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="350" y="180" font-size="14" fill="#666">capacity = 8, copy 4</text>
+
+  <!-- Row 5: capacity 16 (same 40x30 cells) -->
+  <rect x="10" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="50" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="90" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="130" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="170" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="210" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="250" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="290" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="330" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="370" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="410" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="450" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="490" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="530" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="570" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <rect x="610" y="210" width="40" height="30" fill="#f8f9fa" stroke="#333" stroke-width="2"/>
+  <text x="10" y="260" font-size="14" fill="#666">capacity = 16, copy 8</text>
+
+  <!-- Summary -->
+  <text x="10" y="300" font-size="14" fill="#333">Copies: 1 + 2 + 4 + 8 + ... = O(n)</text>
+</svg>
+```
+
+## Counting the Work
+
+Again, let $n = 2^k$.
+
+Resizes happen when we fill capacities 1, 2, 4, 8, ..., $n/2$.
+
+That's $k$ resize events (at capacities $2^0, 2^1, \ldots, 2^{k-1}$).
+
+Total copies: $1 + 2 + 4 + 8 + \ldots + n/2$
+
+This is a geometric series!
+
+$$1 + 2 + 4 + \ldots + 2^{k-1} = 2^k - 1 = n - 1 = O(n)$$
+
+**Verdict**: $O(n)$ total copies, or $O(1)$ per append on average!
+
+
+## Observe {background-iframe="viz/array_resizing.html" background-interactive="true"}
+
+## The Punchline
+
+| Strategy | Total work for n appends | Average per append |
+|----------|-------------------------|-------------------|
+| Add constant k | $O(n^2)$ | $O(n)$ |
+| Double | $O(n)$ | $O(1)$ |
+
+**Doubling wins!** This is why Python lists (and Java ArrayLists, C++ vectors) all use doubling.
+
+I think I would have 2 questions...
+
+- 
+
+- 
+
+# Amortized Analysis
+
+## What is "Amortized" Cost?
+
+**Amortized** = "averaged over a sequence of operations"
+
+Individual appends have different costs:
+
+- Most appends: $O(1)$ (just put item in empty slot)
+- Occasional appends: $O(n)$ (need to resize and copy)
+
+But averaged over $n$ operations: $O(1)$ each!
+
+## The Banking Analogy
+
+Think of it like a savings account:
+
+- Each append "deposits" 3 coins
+- Inserting the item costs 1 coin
+- Save 2 coins for future copying
+
+When we double from size $n$ to $2n$:
+
+- We have $n$ saved coins (from n/2 cheap appends)
+- Copying costs $n$ coins
+- We break even!
+
+## Amortized $\neq$ Average Case
+
+**Average case**: Random inputs, expected behavior
+
+**Amortized**: Worst case, but spread over many operations
+
+Amortized O(1) is a **guarantee**:
+
+> "Any sequence of n operations takes O(n) time total."
+
+# Why This Matters
+
+## Python Lists Use Doubling
+
+```python
+import sys
+
+items = []
+for i in range(20):
+    items.append(i)
+    print(f"len={len(items):2d}, size={sys.getsizeof(items)} bytes")
+```
+
+You'll see the size jump at certain points (the doublings!).
+
+## The Tradeoff
+
+**Doubling pros**:
+
+- O(1) amortized append
+- Fast!
+
+**Doubling cons**:
+
+- Up to 2× wasted space
+- Individual operations can be slow (unpredictable)
+
+For most applications, the speed is worth the space.
+
+## Where Else Does This Apply?
+
+Same analysis works for:
+
+- **Hash table resizing** (Week 5)
+- **Heap arrays** (Week 9)
+- **Any growable array structure**
+
+The doubling trick is everywhere!
+
+# Summary
+
+## Key Takeaways
+
+1. **Arrays are fixed size** — growing requires copying
+
+2. **Add-constant strategy**: $O(n^2)$ for n appends (bad!)
+
+3. **Doubling strategy**: $O(n)$ for n appends (good!)
+
+4. **Amortized O(1)**: Expensive operations are rare enough to average out
+
+5. **This is how Python lists work**!
+
+## Coming Up
+
+**Wednesday**: Back to stacks and queues — exploring mazes with DFS and BFS!

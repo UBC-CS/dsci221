@@ -1,0 +1,305 @@
+---
+title: "Stacks"
+subtitle: "Week 5, Monday"
+date: 2026-02-02
+---
+
+# A Big Question about Sorting
+
+## Can We Do Better?
+
+We've seen:
+
+- Insertion sort: $O(n^2)$ (PEX1, HW1)
+- Selection sort: $O(n^2)$
+- Merge sort: $O(n \log n)$
+
+**Question**: Is $O(n \log n)$ the best we can do?
+
+Or is there some clever algorithm that sorts in $O(n)$?
+
+## The Surprising Answer
+
+**Theorem**: Any comparison-based sorting algorithm requires $\Omega(n \log n)$ comparisons in the worst case.
+
+This means:
+
+- Merge sort is **optimal**
+- No comparison sort can do better
+- $O(n \log n)$ is a fundamental barrier
+
+:::{.notes}
+"This is one of the most beautiful results in CS: we can prove a lower bound on ALL possible algorithms, not just the ones we know about."
+:::
+
+# Decision Trees
+
+## The Key Idea
+
+Every comparison-based sort makes decisions by comparing pairs of elements:
+
+```
+if arr[i] < arr[j]:
+    ...
+else:
+    ...
+```
+
+We can model the algorithm as a **binary tree** of decisions.
+
+## Example: Sorting 3 Elements
+
+Suppose we want to sort $[v_1, v_2, v_3]$.
+
+```{=html}
+<svg viewBox="0 0 860 260" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: system-ui, sans-serif;">
+  <!-- Level 0: Root -->
+  <rect x="360" y="10" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"/>
+  <text x="410" y="30" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ < v₂?</text>
+
+  <!-- Edges from root -->
+  <line x1="380" y1="40" x2="220" y2="70" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="440" y1="40" x2="600" y2="70" stroke="#7f8c8d" stroke-width="2"/>
+
+  <!-- Level 1: Left node -->
+  <rect x="170" y="70" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"/>
+  <text x="220" y="90" text-anchor="middle" font-size="14" fill="#2c3e50">v₂ < v₃?</text>
+
+  <!-- Level 1: Right node -->
+  <rect x="550" y="70" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"/>
+  <text x="600" y="90" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ < v₃?</text>
+
+  <!-- Edges from level 1 left -->
+  <line x1="195" y1="100" x2="110" y2="130" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="245" y1="100" x2="330" y2="130" stroke="#7f8c8d" stroke-width="2"/>
+
+  <!-- Edges from level 1 right -->
+  <line x1="575" y1="100" x2="490" y2="130" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="625" y1="100" x2="710" y2="130" stroke="#7f8c8d" stroke-width="2"/>
+
+  <!-- Level 2: Leaf 1 (leftmost) -->
+  <rect x="60" y="130" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+  <text x="110" y="150" text-anchor="middle" font-size="14" fill="#2c3e50">[v₁, v₂, v₃]</text>
+
+  <!-- Level 2: Internal node 2 -->
+  <rect x="280" y="130" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"/>
+  <text x="330" y="150" text-anchor="middle" font-size="14" fill="#2c3e50">v₁ < v₃?</text>
+
+  <!-- Level 2: Leaf 3 -->
+  <rect x="440" y="130" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+  <text x="490" y="150" text-anchor="middle" font-size="14" fill="#2c3e50">[v₂, v₁, v₃]</text>
+
+  <!-- Level 2: Internal node 4 -->
+  <rect x="660" y="130" width="100" height="30" rx="5" fill="#e8f4fc" stroke="#3498db" stroke-width="2"/>
+  <text x="710" y="150" text-anchor="middle" font-size="14" fill="#2c3e50">v₂ < v₃?</text>
+
+  <!-- Edges from level 2 internal nodes -->
+  <line x1="305" y1="160" x2="250" y2="190" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="355" y1="160" x2="410" y2="190" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="685" y1="160" x2="630" y2="190" stroke="#7f8c8d" stroke-width="2"/>
+  <line x1="735" y1="160" x2="790" y2="190" stroke="#7f8c8d" stroke-width="2"/>
+
+  <!-- Level 3: Leaves -->
+  <rect x="200" y="190" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+  <text x="250" y="210" text-anchor="middle" font-size="14" fill="#2c3e50">[v₁, v₃, v₂]</text>
+
+  <rect x="360" y="190" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+  <text x="410" y="210" text-anchor="middle" font-size="14" fill="#2c3e50">[v₃, v₁, v₂]</text>
+
+  <rect x="580" y="190" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+  <text x="630" y="210" text-anchor="middle" font-size="14" fill="#2c3e50">[v₂, v₃, v₁]</text>
+
+  <rect x="740" y="190" width="100" height="30" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+  <text x="790" y="210" text-anchor="middle" font-size="14" fill="#2c3e50">[v₃, v₂, v₁]</text>
+</svg>
+```
+
+## What the Tree Represents
+
+- **Internal nodes**: Comparisons 
+- **Edges**: Answers (yes/no, or $<$ / $\geq$)
+- **Leaves**: sorted ordering of the elements
+- **Height**: running time of the algorithm
+
+**Note**: 
+
+  - There must be a leaf (endpoint) for each ordering of the elements
+  - the tree itself is an encoding of an algorithm
+
+## Counting Leaves
+
+How many different rearrangements are possible for an $n$ element list?
+
+Each ordering needs its own leaf (otherwise we'd give the same answer for different inputs).
+
+The decision tree must have at least $n!$ leaves! 
+
+## A Question for Later
+
+Whose answer we need now...
+
+A decision tree of height $h$ has at most \_\_\_\_\_\_\_ leaves?
+
+# The Lower Bound Proof
+
+## Connecting Height to Comparisons
+
+Recall: The **height** of the decision tree is the **maximum number of comparisons** in the worst case.
+
+If the tree has height $h$, then:
+
+- At most $2^h$ leaves
+- We need at least $n!$ leaves
+
+Therefore: $2^h \geq n!$
+
+Taking logarithms: $h \geq \log_2(n!)$
+
+## But How Big is $\log(n!)$? {.smaller}
+
+**Claim**: $\log(n!) = \Omega(n\log n)$
+
+**Proof**:
+$$
+\begin{align}
+\log(n!) &= \log n + \log(n-1) + \cdots + \log 2 + \log 1 \\
+&\geq \log n + \log(n-1) + \cdots + \log\left(\tfrac{n}{2}\right) & \text{(drop small half)} \\
+&\geq \tfrac{n}{2} \cdot \log\left(\tfrac{n}{2}\right) & \text{(each term } \geq \log(n/2)\text{)} \\
+&= \tfrac{n}{2}\log n - \tfrac{n}{2} \\
+&= \tfrac{n}{4}\log n + \tfrac{n}{4}\log n - \tfrac{n}{2} \\
+&\geq \tfrac{n}{4}\log n & \text{(when } \log n \geq 2 \text{, i.e., } n \geq 4\text{)} \\
+&= \Omega(n \log n) \quad \blacksquare
+\end{align}
+$$
+
+## The Result
+
+**Observation**: Any comparison-based sorting algorithm requires $\Omega(n \log n)$ comparisons in the worst case.
+
+**Justification**:
+
+1. Model the algorithm as a decision tree
+2. The tree needs at least $n!$ leaves
+3. A tree with $\geq n!$ leaves has height $\geq \log_2(n!)$
+4. $\log_2(n!) = \Theta(n \log n)$
+5. Therefore, worst-case comparisons $\Omega(n \log n)$ ∎
+
+:::{.notes}
+"This proof is remarkable: we didn't analyze any specific algorithm. We proved a limit on ALL possible comparison-based sorting algorithms!"
+:::
+
+## What This Means
+
+| Algorithm | Worst Case | Optimal? |
+|-----------|-----------|----------|
+| Merge Sort | $O(n \log n)$ | **Yes!** |
+| Heap Sort | $O(n \log n)$ | **Yes!** |
+| Quick Sort | $O(n^2)$ | No (but avg is optimal) |
+| Insertion Sort | $O(n^2)$ | No |
+| Selection Sort | $O(n^2)$ | No |
+
+**Merge sort achieves the theoretical limit.**
+
+## Can We Beat $O(n \log n)$?
+
+The lower bound applies to **comparison-based** sorts.
+
+If we know something about the input, we can do better:
+
+| Algorithm | Constraint | Time |
+|-----------|------------|------|
+| Counting Sort | Integers in $[0, k]$ | $O(n + k)$ |
+| Radix Sort | Fixed-width integers | $O(d \cdot n)$ |
+
+**In practice**: Just use Python's `sorted()` (Timsort, $O(n \log n)$).
+
+## Summary
+
+- Labs this week will close up sorting. 
+- Sorting has been a good playground for examples. 
+
+# Ordered Search
+
+## The Maze
+
+::::: {.columns}
+::: {.column width=50%}
+You wake up in a maze. Every room has a number. Some rooms have multiple exits.
+
+**Question**: How do you explore systematically to find the way out?
+
+<https://www.youtube.com/watch?v=8qrZ1clEp-Y>
+
+::: notes
+we don't have yarn!
+:::
+:::
+::: {.column width=50%}
+![](/images/su4ariadne.png)
+:::
+:::::
+
+## {background-iframe="viz/maze_explorer.html" background-interactive="true"}
+
+## What Did You Notice?
+
+Write down everything you noticed:
+
+- 
+
+- 
+
+- 
+
+- 
+
+::: notes
+
+**Bag** (random):
+
+- Chaotic, unpredictable order
+- Hard to reason about
+- Different every time
+
+**Stack** (LIFO):
+
+- Goes deep first
+- Backtracks when stuck
+- Consistent, predictable
+- tells us something aobut shape of the maze.
+
+**Queue** (FIFO):
+- explores at same depth before moving on.
+- consistent, predictable
+
+:::
+
+## Abstract Data Type (ADT) Stack {.smaller}
+
+::::: {.columns}
+::: {.column width=70%}
+Programmatic realization of a \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_.
+
+\ 
+
+Stack functions:
+
+* Insert: `push(item)`
+* Remove: `pop()` $\rightarrow$ `item`
+
+`List` functions:
+
+* Insert: `append(item)`
+* Remove: `pop()` $\rightarrow$ `item`
+
+:::
+::: {.column width=30%}
+![](/images/su6pez.png)
+:::
+:::::
+
+## Tuesday Video:
+
+"Dynamic Array Diversion"
+
+

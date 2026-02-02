@@ -1,0 +1,391 @@
+---
+title: "Maze Search Visualization Test"
+format: html
+---
+
+# Ordered Search: Bag vs Stack vs Queue
+
+```{ojs}
+//| echo: false
+
+p5 = require("p5")
+
+// Maze generation and search state
+mutable searchState = ({
+  maze: null,
+  visited: new Set(),
+  container: [],  // bag, stack, or queue
+  current: null,
+  path: [],
+  done: false
+})
+
+// Structure type selection
+viewof structureType = Inputs.radio(
+  ["bag", "stack", "queue"],
+  {value: "bag", label: "Data Structure:"}
+)
+
+// Control buttons
+viewof stepBtn = Inputs.button("Step")
+viewof runBtn = Inputs.button("Run to End")
+viewof resetBtn = Inputs.button("Start Over")
+
+// Hex maze parameters
+hexSize = 30
+cols = 7
+rows = 5
+
+// Generate hex grid coordinates
+function hexToPixel(q, r) {
+  const x = hexSize * (3/2 * q);
+  const y = hexSize * (Math.sqrt(3)/2 * q + Math.sqrt(3) * r);
+  return {x: x + 150, y: y + 100};
+}
+
+// Generate a random spanning tree maze (no cycles)
+function generateMaze() {
+  const cells = [];
+  const edges = [];
+  let id = 1;
+
+  // Create hex grid cells
+  for (let r = 0; r < rows; r++) {
+    for (let q = 0; q < cols; q++) {
+      // Offset for odd rows
+      const qOffset = r % 2 === 1 ? 0.5 : 0;
+      cells.push({
+        id: id++,
+        q: q + qOffset,
+        r: r,
+        neighbors: []
+      });
+    }
+  }
+
+  // Define potential edges (6 directions for hex)
+  const directions = [
+    {dq: 1, dr: 0},   // E
+    {dq: 0.5, dr: 1}, // SE
+    {dq: -0.5, dr: 1}, // SW
+    {dq: -1, dr: 0},  // W
+    {dq: -0.5, dr: -1}, // NW
+    {dq: 0.5, dr: -1}  // NE
+  ];
+
+  // Build adjacency using Prim's algorithm for spanning tree
+  const inTree = new Set([0]);
+  const frontier = [];
+
+  // Add initial cell's potential edges
+  for (let i = 1; i < cells.length; i++) {
+    const c0 = cells[0];
+    const c1 = cells[i];
+    const dist = Math.sqrt((c0.q - c1.q)**2 + (c0.r - c1.r)**2);
+    if (dist < 1.5) {
+      frontier.push({from: 0, to: i, weight: Math.random()});
+    }
+  }
+
+  while (inTree.size < cells.length && frontier.length > 0) {
+    // Sort by weight and pick smallest
+    frontier.sort((a, b) => a.weight - b.weight);
+
+    // Find first edge to a cell not in tree
+    let edgeIdx = frontier.findIndex(e => !inTree.has(e.to));
+    if (edgeIdx === -1) break;
+
+    const edge = frontier.splice(edgeIdx, 1)[0];
+    inTree.add(edge.to);
+
+    // Add bidirectional neighbor links
+    cells[edge.from].neighbors.push(edge.to);
+    cells[edge.to].neighbors.push(edge.from);
+
+    // Add new frontier edges
+    for (let i = 0; i < cells.length; i++) {
+      if (!inTree.has(i)) {
+        const c0 = cells[edge.to];
+        const c1 = cells[i];
+        const dist = Math.sqrt((c0.q - c1.q)**2 + (c0.r - c1.r)**2);
+        if (dist < 1.5) {
+          frontier.push({from: edge.to, to: i, weight: Math.random()});
+        }
+      }
+    }
+  }
+
+  // Sort neighbors clockwise from top (for consistent ordering)
+  for (const cell of cells) {
+    cell.neighbors.sort((a, b) => {
+      const ca = cells[a];
+      const cb = cells[b];
+      const angleA = Math.atan2(ca.r - cell.r, ca.q - cell.q);
+      const angleB = Math.atan2(cb.r - cell.r, cb.q - cell.q);
+      // Start from top (-PI/2) and go clockwise
+      const normA = (angleA + Math.PI * 2.5) % (Math.PI * 2);
+      const normB = (angleB + Math.PI * 2.5) % (Math.PI * 2);
+      return normA - normB;
+    });
+  }
+
+  return cells;
+}
+
+// Initialize or reset state
+function initState() {
+  const maze = generateMaze();
+  return {
+    maze: maze,
+    visited: new Set(),
+    container: [{cellIdx: 0, fromIdx: -1}],  // start at cell 0
+    current: null,
+    path: [],
+    done: false
+  };
+}
+
+// Take one step
+function step(state, structType) {
+  if (state.done || state.container.length === 0) {
+    return {...state, done: true};
+  }
+
+  let next;
+  if (structType === "stack") {
+    next = state.container.pop();  // LIFO
+  } else if (structType === "queue") {
+    next = state.container.shift();  // FIFO
+  } else {
+    // Bag: random selection
+    const idx = Math.floor(Math.random() * state.container.length);
+    next = state.container.splice(idx, 1)[0];
+  }
+
+  const newVisited = new Set(state.visited);
+  newVisited.add(next.cellIdx);
+
+  const newPath = [...state.path, next.cellIdx];
+
+  // Add unvisited neighbors to container (clockwise from top)
+  const cell = state.maze[next.cellIdx];
+  const newContainer = [...state.container];
+
+  for (const neighborIdx of cell.neighbors) {
+    if (!newVisited.has(neighborIdx)) {
+      newContainer.push({cellIdx: neighborIdx, fromIdx: next.cellIdx});
+    }
+  }
+
+  return {
+    maze: state.maze,
+    visited: newVisited,
+    container: newContainer,
+    current: next.cellIdx,
+    path: newPath,
+    done: newContainer.length === 0
+  };
+}
+
+// Handle button clicks
+{
+  resetBtn;
+  mutable searchState = initState();
+}
+
+{
+  stepBtn;
+  if (!searchState.done) {
+    mutable searchState = step(searchState, structureType);
+  }
+}
+
+{
+  runBtn;
+  let s = searchState;
+  while (!s.done && s.container.length > 0) {
+    s = step(s, structureType);
+  }
+  mutable searchState = s;
+}
+
+// Draw the maze
+createSketch = function(sketch) {
+  const div = document.createElement("div");
+  new p5(sketch, div);
+  return div;
+}
+
+mazeViz = createSketch((p) => {
+  p.setup = function() {
+    p.createCanvas(500, 350);
+    p.textAlign(p.CENTER, p.CENTER);
+  };
+
+  p.draw = function() {
+    p.background(250);
+
+    const state = searchState;
+    if (!state.maze) return;
+
+    // Draw edges
+    p.stroke(100);
+    p.strokeWeight(2);
+    for (const cell of state.maze) {
+      const pos = hexToPixel(cell.q, cell.r);
+      for (const nIdx of cell.neighbors) {
+        if (nIdx > state.maze.indexOf(cell)) {
+          const nPos = hexToPixel(state.maze[nIdx].q, state.maze[nIdx].r);
+          p.line(pos.x, pos.y, nPos.x, nPos.y);
+        }
+      }
+    }
+
+    // Draw cells
+    for (let i = 0; i < state.maze.length; i++) {
+      const cell = state.maze[i];
+      const pos = hexToPixel(cell.q, cell.r);
+
+      // Color based on state
+      if (i === state.current) {
+        p.fill(255, 100, 100);  // Current: red
+      } else if (state.visited.has(i)) {
+        p.fill(200, 255, 200);  // Visited: green
+      } else if (state.container.some(c => c.cellIdx === i)) {
+        p.fill(255, 255, 150);  // In container: yellow
+      } else {
+        p.fill(255);  // Unvisited: white
+      }
+
+      p.stroke(50);
+      p.strokeWeight(2);
+
+      // Draw hexagon
+      p.beginShape();
+      for (let a = 0; a < 6; a++) {
+        const angle = p.PI / 3 * a - p.PI / 6;
+        p.vertex(pos.x + hexSize * 0.8 * p.cos(angle),
+                 pos.y + hexSize * 0.8 * p.sin(angle));
+      }
+      p.endShape(p.CLOSE);
+
+      // Draw cell number
+      p.fill(0);
+      p.noStroke();
+      p.textSize(14);
+      p.text(cell.id, pos.x, pos.y);
+    }
+
+    // Draw visit order
+    p.fill(0);
+    p.textSize(12);
+    p.textAlign(p.LEFT);
+    p.text("Visit order: " + state.path.map(i => state.maze[i].id).join(" → "), 10, 330);
+  };
+});
+
+// Draw the data structure visualization
+containerViz = createSketch((p) => {
+  p.setup = function() {
+    p.createCanvas(300, 200);
+    p.textAlign(p.CENTER, p.CENTER);
+  };
+
+  p.draw = function() {
+    p.background(250);
+
+    const state = searchState;
+    if (!state.maze) return;
+
+    const items = state.container.map(c => state.maze[c.cellIdx].id);
+
+    p.fill(0);
+    p.textSize(14);
+    p.textAlign(p.LEFT);
+    p.text(structureType.toUpperCase(), 10, 20);
+
+    if (structureType === "bag") {
+      // Circular random arrangement
+      p.noFill();
+      p.stroke(100);
+      p.ellipse(150, 110, 140, 140);
+
+      p.fill(255, 255, 150);
+      p.stroke(50);
+      for (let i = 0; i < items.length; i++) {
+        // Random-ish positions in circle
+        const angle = (i * 2.3 + i * i * 0.7) % (2 * p.PI);
+        const r = 30 + (i * 17) % 35;
+        const x = 150 + r * p.cos(angle);
+        const y = 110 + r * p.sin(angle);
+        p.ellipse(x, y, 28, 28);
+        p.fill(0);
+        p.noStroke();
+        p.text(items[i], x, y);
+        p.fill(255, 255, 150);
+        p.stroke(50);
+      }
+    } else if (structureType === "stack") {
+      // Vertical stack (top = last element = what we pop)
+      const boxH = 25;
+      const startY = 180 - items.length * boxH;
+
+      for (let i = 0; i < items.length; i++) {
+        const y = startY + i * boxH;
+        p.fill(255, 255, 150);
+        p.stroke(50);
+        p.rect(100, y, 100, boxH);
+        p.fill(0);
+        p.noStroke();
+        p.textAlign(p.CENTER, p.CENTER);
+        p.text(items[items.length - 1 - i], 150, y + boxH/2);
+      }
+
+      // Arrow showing pop direction
+      if (items.length > 0) {
+        p.stroke(255, 0, 0);
+        p.strokeWeight(2);
+        p.line(210, startY + boxH/2, 240, startY + boxH/2);
+        p.line(230, startY + boxH/2 - 8, 240, startY + boxH/2);
+        p.line(230, startY + boxH/2 + 8, 240, startY + boxH/2);
+        p.strokeWeight(1);
+      }
+    } else {
+      // Horizontal queue (left = first = what we dequeue)
+      const boxW = 35;
+      const startX = 20;
+
+      for (let i = 0; i < Math.min(items.length, 7); i++) {
+        const x = startX + i * boxW;
+        p.fill(255, 255, 150);
+        p.stroke(50);
+        p.rect(x, 80, boxW, 40);
+        p.fill(0);
+        p.noStroke();
+        p.textAlign(p.CENTER, p.CENTER);
+        p.text(items[i], x + boxW/2, 100);
+      }
+
+      if (items.length > 7) {
+        p.fill(0);
+        p.text("..." + (items.length - 7) + " more", 150, 140);
+      }
+
+      // Arrow showing dequeue direction
+      if (items.length > 0) {
+        p.stroke(255, 0, 0);
+        p.strokeWeight(2);
+        p.line(startX + boxW/2, 130, startX + boxW/2, 150);
+        p.line(startX + boxW/2 - 8, 140, startX + boxW/2, 150);
+        p.line(startX + boxW/2 + 8, 140, startX + boxW/2, 150);
+        p.strokeWeight(1);
+      }
+    }
+  };
+});
+```
+
+<div style="display: flex; gap: 20px;">
+<div>{mazeViz}</div>
+<div>{containerViz}</div>
+</div>
