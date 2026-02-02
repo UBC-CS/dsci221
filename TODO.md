@@ -37,6 +37,7 @@
 ## Course Setup (Canvas/Infrastructure)
 - [ ] Schedule class Zoom meetings in Canvas
 - [ ] Set up appointment service for office hours (also in Canvas)
+- [ ] Create midterm survey
 
 ## Assessments
 

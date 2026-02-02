@@ -3,6 +3,8 @@ project:
     port: 4200
   type: website
   output-dir: _site
+  resources:
+    - "slides/viz/*.html"
 
   # post-render:
   #   - R/combine-pdfs.R
