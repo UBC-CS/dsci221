@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candy Hearts Factory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka:wght@400;500;600&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(135deg, #2d3436 0%, #1a1a2e 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .title {
+      font-family: 'Pacifico', cursive;
+      font-size: 42px;
+      color: #e84393;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 20px;
+      color: #fab1a0;
+      margin-bottom: 15px;
+      font-style: italic;
+    }
+    .controls {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 12px 28px;
+      font-size: 18px;
+      font-family: 'Fredoka', sans-serif;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .step-btn {
+      background: linear-gradient(135deg, #e84393 0%, #d63384 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(232, 67, 147, 0.4);
+    }
+    .step-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(232, 67, 147, 0.5);
+    }
+    .reset-btn {
+      background: linear-gradient(135deg, #636e72 0%, #535c60 100%);
+      color: white;
+    }
+    .reset-btn:hover {
+      transform: translateY(-2px);
+    }
+    #canvas-container {
+      background: rgba(45, 52, 54, 0.8);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .hint {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 14px;
+      color: #636e72;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">The Candy Hearts Factory</div>
+  <div class="subtitle">A tale of love, stacks, and unexpected self-discovery...</div>
+  <div class="controls">
+    <button class="step-btn" id="stepBtn">Next →</button>
+    <button class="reset-btn" id="resetBtn">Restart</button>
+  </div>
+  <div id="canvas-container"></div>
+  <div class="hint">Press → to advance, R to restart</div>
+
+  <script>
+    // Story state
+    let storyStep = 0;
+    let factoryImg = null;
+
+    // Animation state
+    let animating = false;
+    let animationProgress = 0;
+    let movingHearts = [];
+
+    // Stack state: each stack is array of {letter, color}
+    let stacks = [];
+
+    // Heart colors - soft pastels
+    const colors = {
+      'O': '#ffb6c1',  // pink
+      'Y': '#fffacd',  // yellow
+      'M': '#e6e6fa',  // lavender
+      'E': '#98fb98',  // green
+      'V': '#add8e6',  // blue
+      'U': '#dda0dd',  // plum
+    };
+
+    // Story script with immersive narrative featuring Aron and Sophia
+    const story = [
+      // Opening - factory scene
+      {
+        text: "It was Valentine's Eve...",
+        subtext: "...and you were stuck working the late shift at the Candy Hearts Factory.",
+        action: "show_factory"
+      },
+      {
+        text: "Suddenly, Aron burst through the door!",
+        subtext: "\"I know how to find your one true love!\" he exclaimed.",
+        action: "show_factory"
+      },
+      {
+        text: "Aron continued excitedly...",
+        subtext: "\"The secret is in the candy hearts! Follow my instructions exactly!\"",
+        action: "show_factory"
+      },
+      // Transition to stacks
+      {
+        text: "You look at the conveyor belts...",
+        subtext: "Three stacks of candy hearts, each with a letter.",
+        action: "reset"
+      },
+      // Part 1: Aron's instructions (one at a time - wrong way)
+      {
+        text: "Aron says:",
+        subtext: '"Move 2 hearts from belt 3 to belt 2!"',
+        action: "none"
+      },
+      {
+        text: "You grab the top heart...",
+        subtext: "Moving U to belt 2",
+        action: "move_one",
+        from: 2, to: 1, letter: 'U'
+      },
+      {
+        text: "...then the next one.",
+        subtext: "Moving O to belt 2",
+        action: "move_one",
+        from: 2, to: 1, letter: 'O'
+      },
+      {
+        text: "Aron continues:",
+        subtext: '"Now move 1 from belt 2 to belt 1!"',
+        action: "none"
+      },
+      {
+        text: "Easy enough!",
+        subtext: "Moving O to belt 1",
+        action: "move_one",
+        from: 1, to: 0, letter: 'O'
+      },
+      {
+        text: "Aron's final instruction:",
+        subtext: '"Move 2 from belt 1 to belt 3!"',
+        action: "none"
+      },
+      {
+        text: "First one...",
+        subtext: "Moving O to belt 3",
+        action: "move_one",
+        from: 0, to: 2, letter: 'O'
+      },
+      {
+        text: "...and the second!",
+        subtext: "Moving M to belt 3",
+        action: "move_one",
+        from: 0, to: 2, letter: 'M'
+      },
+      {
+        text: '"Now read the top hearts!"',
+        subtext: "Y... U... M...",
+        action: "highlight_tops",
+        result: "YUM"
+      },
+      {
+        text: "YUM?!",
+        subtext: "That's not a name! That's what you say about pizza!",
+        action: "show_result",
+        result: "YUM",
+        resultColor: '#ff6b6b'
+      },
+      {
+        text: "Sophia walks over from her station...",
+        subtext: '"Wait — did you move them one at a time?"',
+        action: "none"
+      },
+      {
+        text: "Sophia thinks for a moment.",
+        subtext: '"I think the instruction means we should move them together!"',
+        action: "none"
+      },
+      // Part 2: Sophia's correction (all at once - right way)
+      {
+        text: "Sophia resets the belts.",
+        subtext: '"Let\'s see if this is how it actually works..."',
+        action: "reset"
+      },
+      {
+        text: "Sophia demonstrates:",
+        subtext: '"Move 2 from belt 3 to belt 2 — they stay stacked!"',
+        action: "move_together",
+        from: 2, to: 1, count: 2
+      },
+      {
+        text: '"Move 1 from belt 2 to belt 1"',
+        subtext: "Just the top one: U",
+        action: "move_one",
+        from: 1, to: 0, letter: 'U'
+      },
+      {
+        text: '"Move 2 from belt 1 to belt 3"',
+        subtext: "M and U travel together!",
+        action: "move_together",
+        from: 0, to: 2, count: 2
+      },
+      {
+        text: "Moment of truth... read the tops!",
+        subtext: "Y... O... U...",
+        action: "highlight_tops",
+        result: "YOU"
+      },
+      {
+        text: "YOU!",
+        subtext: '"Your one true love was YOU all along!" cheers Sophia.',
+        action: "show_result",
+        result: "YOU",
+        resultColor: '#e84393'
+      },
+      {
+        text: "The End",
+        subtext: "Happy Valentine's Day! Now go solve YOUR candy heart puzzle...",
+        action: "show_result",
+        result: "♥",
+        resultColor: '#e84393'
+      }
+    ];
+
+    function resetStacks() {
+      stacks = [
+        [{letter: 'O', color: colors['O']}, {letter: 'Y', color: colors['Y']}, {letter: 'M', color: colors['M']}],
+        [{letter: 'E', color: colors['E']}, {letter: 'M', color: colors['M']}, {letter: 'O', color: colors['O']}, {letter: 'V', color: colors['V']}],
+        [{letter: 'Y', color: colors['Y']}, {letter: 'O', color: colors['O']}, {letter: 'U', color: colors['U']}]
+      ];
+      movingHearts = [];
+      animating = false;
+    }
+
+    function getStackX(stackIdx) {
+      return 150 + stackIdx * 200;
+    }
+
+    function getHeartY(stackIdx, heightIdx) {
+      return 290 - heightIdx * 42;  // Tighter spacing for tall stacks
+    }
+
+    function executeAction(step) {
+      const action = story[step];
+
+      if (action.action === "reset") {
+        resetStacks();
+      } else if (action.action === "move_one") {
+        // Move single heart with animation
+        const fromStack = stacks[action.from];
+        if (fromStack.length > 0) {
+          const heart = fromStack.pop();
+          const fromX = getStackX(action.from);
+          const fromY = getHeartY(action.from, fromStack.length);
+          const toX = getStackX(action.to);
+          const toY = getHeartY(action.to, stacks[action.to].length);
+
+          movingHearts = [{
+            heart: heart,
+            fromX: fromX,
+            fromY: fromY,
+            toX: toX,
+            toY: toY,
+            toStack: action.to
+          }];
+          animating = true;
+          animationProgress = 0;
+        }
+      } else if (action.action === "move_together") {
+        // Move multiple hearts together with animation
+        const fromStack = stacks[action.from];
+        const hearts = [];
+        for (let i = 0; i < action.count && fromStack.length > 0; i++) {
+          hearts.unshift(fromStack.pop());
+        }
+
+        movingHearts = [];
+        for (let i = 0; i < hearts.length; i++) {
+          const fromX = getStackX(action.from);
+          const fromY = getHeartY(action.from, fromStack.length + hearts.length - 1 - i);
+          const toX = getStackX(action.to);
+          const toY = getHeartY(action.to, stacks[action.to].length + i);
+
+          movingHearts.push({
+            heart: hearts[i],
+            fromX: fromX,
+            fromY: fromY,
+            toX: toX,
+            toY: toY,
+            toStack: action.to,
+            index: i
+          });
+        }
+        animating = true;
+        animationProgress = 0;
+      }
+    }
+
+    function finishAnimation() {
+      for (const mh of movingHearts) {
+        stacks[mh.toStack].push(mh.heart);
+      }
+      movingHearts = [];
+      animating = false;
+    }
+
+    function nextStep() {
+      if (animating) {
+        // Skip to end of animation
+        finishAnimation();
+        return;
+      }
+
+      if (storyStep < story.length - 1) {
+        storyStep++;
+        executeAction(storyStep);
+      }
+    }
+
+    function restart() {
+      storyStep = 0;
+      resetStacks();
+    }
+
+    const sketch = (p) => {
+      p.preload = () => {
+        // Load the factory image
+        factoryImg = p.loadImage('sweethart-factory.svg');
+      };
+
+      p.setup = () => {
+        p.createCanvas(700, 480);
+        p.textAlign(p.CENTER, p.CENTER);
+        resetStacks();
+      };
+
+      p.draw = () => {
+        const currentStep = story[storyStep];
+
+        // Factory scene for opening
+        if (currentStep.action === "show_factory") {
+          // Draw the factory image
+          if (factoryImg) {
+            p.image(factoryImg, 0, 70, 700, 394);
+          } else {
+            // Fallback gradient background
+            p.background(74, 85, 104);
+          }
+
+          // Semi-transparent overlay for text readability
+          p.fill(0, 0, 0, 120);
+          p.noStroke();
+          p.rect(0, 0, 700, 90);
+          p.rect(0, 420, 700, 60);
+
+          // Draw story text
+          p.fill(255);
+          p.textSize(26);
+          p.textStyle(p.BOLD);
+          p.text(currentStep.text, 350, 35);
+
+          if (currentStep.subtext) {
+            p.textSize(18);
+            p.textStyle(p.ITALIC);
+            p.fill(250, 177, 160);
+            p.text(currentStep.subtext, 350, 65);
+          }
+          p.textStyle(p.NORMAL);
+
+          // Step indicator
+          p.fill(200);
+          p.textSize(12);
+          p.text(`${storyStep + 1} / ${story.length}`, 350, 455);
+          return;
+        }
+
+        // Regular background for stack scenes
+        p.background(45, 52, 54);
+
+        // Special case: show big result (centered, no stacks)
+        if (currentStep.action === "show_result") {
+          p.fill(currentStep.resultColor);
+          p.textSize(140);
+          p.textStyle(p.BOLD);
+          p.text(currentStep.result, 350, 180);
+          p.textStyle(p.NORMAL);
+
+          // Add sparkles for the final screens
+          if (currentStep.result === "YOU" || currentStep.result === "♥") {
+            drawSparkles(p);
+          }
+
+          // Draw text below
+          p.fill(255);
+          p.textSize(24);
+          p.textStyle(p.BOLD);
+          p.text(currentStep.text, 350, 380);
+          if (currentStep.subtext) {
+            p.textSize(16);
+            p.textStyle(p.ITALIC);
+            p.fill(250, 177, 160);
+            p.text(currentStep.subtext, 350, 410);
+          }
+          p.textStyle(p.NORMAL);
+
+          // Step indicator
+          p.fill(100);
+          p.textSize(12);
+          p.text(`${storyStep + 1} / ${story.length}`, 350, 455);
+          return;
+        }
+
+        // Draw conveyor belts with labels
+        p.fill(120);
+        p.noStroke();
+        for (let i = 0; i < 3; i++) {
+          // Belt
+          p.fill(100);
+          p.rect(getStackX(i) - 50, 310, 100, 10, 5);
+          // Belt stripes
+          p.fill(80);
+          for (let j = 0; j < 5; j++) {
+            p.rect(getStackX(i) - 45 + j * 20, 312, 8, 6, 2);
+          }
+        }
+
+        // Belt labels
+        p.fill(180);
+        p.textSize(16);
+        p.textStyle(p.BOLD);
+        for (let i = 0; i < 3; i++) {
+          p.text(`Belt ${i + 1}`, getStackX(i), 335);
+        }
+        p.textStyle(p.NORMAL);
+
+        // Draw stacks
+        for (let s = 0; s < 3; s++) {
+          for (let h = 0; h < stacks[s].length; h++) {
+            const heart = stacks[s][h];
+            const x = getStackX(s);
+            const y = getHeartY(s, h);
+
+            // Highlight top hearts if needed
+            let highlight = false;
+            if (currentStep.action === "highlight_tops" && h === stacks[s].length - 1) {
+              highlight = true;
+            }
+
+            drawHeart(p, x, y, heart.letter, heart.color, highlight);
+          }
+        }
+
+        // Draw moving hearts with animation
+        if (animating) {
+          animationProgress += 0.025;
+
+          if (animationProgress >= 1) {
+            finishAnimation();
+          } else {
+            const t = animationProgress;
+
+            for (const mh of movingHearts) {
+              // Arc path: go up, across, then down
+              const midY = Math.min(mh.fromY, mh.toY) - 70;
+
+              let x, y;
+              if (t < 0.33) {
+                // Going up
+                const localT = t / 0.33;
+                x = mh.fromX;
+                y = p.lerp(mh.fromY, midY, easeInOut(localT));
+              } else if (t < 0.66) {
+                // Going across
+                const localT = (t - 0.33) / 0.33;
+                x = p.lerp(mh.fromX, mh.toX, easeInOut(localT));
+                y = midY;
+              } else {
+                // Going down
+                const localT = (t - 0.66) / 0.34;
+                x = mh.toX;
+                y = p.lerp(midY, mh.toY, easeInOut(localT));
+              }
+
+              drawHeart(p, x, y, mh.heart.letter, mh.heart.color, true);
+            }
+          }
+        }
+
+        // Draw story text at bottom (below the stacks)
+        p.fill(255);
+        p.textSize(24);
+        p.textStyle(p.BOLD);
+        p.text(currentStep.text, 350, 380);
+
+        if (currentStep.subtext) {
+          p.textSize(16);
+          p.textStyle(p.ITALIC);
+          p.fill(250, 177, 160);  // #fab1a0 - warm peachy color
+          p.text(currentStep.subtext, 350, 410);
+        }
+        p.textStyle(p.NORMAL);
+
+        // Step indicator
+        p.fill(100);
+        p.textSize(12);
+        p.text(`${storyStep + 1} / ${story.length}`, 350, 455);
+      };
+
+      function easeInOut(t) {
+        return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      }
+
+      function drawHeart(p, x, y, letter, color, highlight) {
+        p.push();
+
+        // Shadow
+        p.noStroke();
+        p.fill(0, 0, 0, 30);
+        p.rect(x - 27, y - 14, 60, 36, 12);
+
+        // Heart shape (rounded rectangle) - slightly smaller
+        if (highlight) {
+          // Glowing effect
+          p.fill(255, 255, 100, 100);
+          p.rect(x - 33, y - 20, 66, 42, 14);
+          p.stroke(255, 255, 100);
+          p.strokeWeight(3);
+        } else {
+          p.stroke(214, 51, 132);
+          p.strokeWeight(2);
+        }
+        p.fill(color);
+        p.rect(x - 30, y - 18, 60, 36, 12);
+
+        // Letter
+        p.noStroke();
+        p.fill(214, 51, 132);
+        p.textSize(22);
+        p.textStyle(p.BOLD);
+        p.text(letter, x, y);
+        p.textStyle(p.NORMAL);
+        p.pop();
+      }
+
+      function drawSparkles(p) {
+        const time = p.millis() / 1000;
+        p.noStroke();
+        for (let i = 0; i < 12; i++) {
+          const angle = (i / 12) * p.TWO_PI + time;
+          const radius = 140 + Math.sin(time * 2 + i) * 20;
+          const x = 350 + Math.cos(angle) * radius;
+          const y = 180 + Math.sin(angle) * radius * 0.6;  // Moved up with the text
+          const size = 4 + Math.sin(time * 3 + i * 0.5) * 2;
+
+          p.fill(255, 255, 100, 200);
+          drawStar(p, x, y, size);
+        }
+      }
+
+      function drawStar(p, x, y, size) {
+        p.push();
+        p.translate(x, y);
+        p.beginShape();
+        for (let i = 0; i < 4; i++) {
+          const angle = (i / 4) * p.TWO_PI - p.PI / 4;
+          p.vertex(Math.cos(angle) * size, Math.sin(angle) * size);
+          const innerAngle = angle + p.PI / 4;
+          p.vertex(Math.cos(innerAngle) * size * 0.4, Math.sin(innerAngle) * size * 0.4);
+        }
+        p.endShape(p.CLOSE);
+        p.pop();
+      }
+    };
+
+    new p5(sketch, 'canvas-container');
+
+    document.getElementById('stepBtn').addEventListener('click', nextStep);
+    document.getElementById('resetBtn').addEventListener('click', restart);
+
+    // Keyboard support (spacebar excluded - conflicts with Reveal.js)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        nextStep();
+        e.stopPropagation();
+      } else if (e.key === 'r' || e.key === 'R') {
+        restart();
+        e.stopPropagation();
+      }
+    });
+  </script>
+</body>
+</html>

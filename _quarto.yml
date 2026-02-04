@@ -5,6 +5,7 @@ project:
   output-dir: _site
   resources:
     - "slides/viz/*.html"
+    - "slides/viz/*.svg"
 
   # post-render:
   #   - R/combine-pdfs.R

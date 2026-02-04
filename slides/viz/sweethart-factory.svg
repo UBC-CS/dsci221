@@ -1,0 +1,277 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <!-- Pencil/sketch texture filter -->
+    <filter id="sketchy" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    
+    <!-- Soft glow for windows -->
+    <filter id="windowGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Warm light glow -->
+    <radialGradient id="warmGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFF5E0;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#F5D89A;stop-opacity:0.8"/>
+    </radialGradient>
+    
+    <!-- Sky gradient - soft night blue -->
+    <linearGradient id="nightSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A5568"/>
+      <stop offset="60%" style="stop-color:#6B7B8C"/>
+      <stop offset="100%" style="stop-color:#8B9AAB"/>
+    </linearGradient>
+    
+    <!-- Snow ground gradient -->
+    <linearGradient id="snowGround" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8EEF2"/>
+      <stop offset="100%" style="stop-color:#D1DCE5"/>
+    </linearGradient>
+    
+    <!-- Building wall texture -->
+    <pattern id="brickTexture" patternUnits="userSpaceOnUse" width="20" height="10">
+      <rect width="20" height="10" fill="#D4A5A5"/>
+      <path d="M0,0 L20,0 M10,0 L10,5 M0,5 L20,5 M0,5 L0,10 M20,5 L20,10" stroke="#C49494" stroke-width="0.5" fill="none" opacity="0.3"/>
+    </pattern>
+    
+    <!-- Roof shingle pattern -->
+    <pattern id="shingles" patternUnits="userSpaceOnUse" width="16" height="12">
+      <path d="M0,12 Q8,8 16,12" stroke="#6B5B4F" stroke-width="1.5" fill="none" opacity="0.4"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background sky -->
+  <rect width="1600" height="900" fill="url(#nightSky)"/>
+  
+  <!-- Distant soft hills -->
+  <ellipse cx="400" cy="620" rx="500" ry="120" fill="#7A8A9A" opacity="0.4" filter="url(#sketchy)"/>
+  <ellipse cx="1200" cy="640" rx="600" ry="100" fill="#6A7A8A" opacity="0.35" filter="url(#sketchy)"/>
+  
+  <!-- Snow ground -->
+  <path d="M0,580 Q200,560 400,575 Q600,590 800,570 Q1000,555 1200,572 Q1400,585 1600,565 L1600,900 L0,900 Z" fill="url(#snowGround)" filter="url(#sketchy)"/>
+  
+  <!-- Snow drifts -->
+  <ellipse cx="200" cy="750" rx="180" ry="40" fill="#F0F5F8" opacity="0.7" filter="url(#sketchy)"/>
+  <ellipse cx="1400" cy="780" rx="200" ry="50" fill="#EDF2F5" opacity="0.6" filter="url(#sketchy)"/>
+  <ellipse cx="750" cy="820" rx="250" ry="45" fill="#F2F7FA" opacity="0.5" filter="url(#sketchy)"/>
+  
+  <!-- Main building body -->
+  <g filter="url(#sketchy)">
+    <!-- Building base - warm pink/brick color -->
+    <path d="M500,280 L500,620 L1100,620 L1100,280 Q800,260 500,280" fill="#D4A5A5" stroke="#8B6B6B" stroke-width="2.5"/>
+    
+    <!-- Building texture overlay -->
+    <path d="M500,280 L500,620 L1100,620 L1100,280 Q800,260 500,280" fill="url(#brickTexture)" opacity="0.3"/>
+    
+    <!-- Main roof -->
+    <path d="M460,280 L800,140 L1140,280 Z" fill="#8B7355" stroke="#6B5340" stroke-width="2.5"/>
+    <path d="M460,280 L800,140 L1140,280 Z" fill="url(#shingles)"/>
+    
+    <!-- Chimney -->
+    <rect x="950" y="160" width="60" height="120" fill="#9B8B7B" stroke="#6B5B4B" stroke-width="2"/>
+    <ellipse cx="980" cy="160" rx="35" ry="8" fill="#8B7B6B" stroke="#5B4B3B" stroke-width="1.5"/>
+    
+    <!-- Smoke from chimney - gentle wisps -->
+    <path d="M980,155 Q990,130 975,100 Q960,70 980,40" stroke="#B8C4D0" stroke-width="8" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <path d="M975,150 Q960,120 978,85 Q995,55 970,25" stroke="#C8D4E0" stroke-width="6" fill="none" opacity="0.3" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Left wing/addition -->
+  <g filter="url(#sketchy)">
+    <path d="M320,380 L320,620 L500,620 L500,380 Z" fill="#DEAFAF" stroke="#8B6B6B" stroke-width="2"/>
+    <path d="M300,380 L410,300 L520,380 Z" fill="#9B8365" stroke="#6B5340" stroke-width="2"/>
+  </g>
+  
+  <!-- Right wing/addition -->
+  <g filter="url(#sketchy)">
+    <path d="M1100,420 L1100,620 L1250,620 L1250,420 Z" fill="#DEAFAF" stroke="#8B6B6B" stroke-width="2"/>
+    <path d="M1080,420 L1175,350 L1270,420 Z" fill="#9B8365" stroke="#6B5340" stroke-width="2"/>
+  </g>
+  
+  <!-- Windows with warm glow -->
+  <!-- Main building windows - row 1 -->
+  <g filter="url(#windowGlow)">
+    <rect x="560" y="320" width="70" height="90" rx="5" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="2"/>
+    <rect x="680" y="320" width="70" height="90" rx="5" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="2"/>
+    <rect x="850" y="320" width="70" height="90" rx="5" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="2"/>
+    <rect x="970" y="320" width="70" height="90" rx="5" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="2"/>
+  </g>
+  
+  <!-- Window panes -->
+  <g stroke="#A08060" stroke-width="1.5" fill="none">
+    <line x1="595" y1="320" x2="595" y2="410"/>
+    <line x1="560" y1="365" x2="630" y2="365"/>
+    <line x1="715" y1="320" x2="715" y2="410"/>
+    <line x1="680" y1="365" x2="750" y2="365"/>
+    <line x1="885" y1="320" x2="885" y2="410"/>
+    <line x1="850" y1="365" x2="920" y2="365"/>
+    <line x1="1005" y1="320" x2="1005" y2="410"/>
+    <line x1="970" y1="365" x2="1040" y2="365"/>
+  </g>
+  
+  <!-- Main building windows - row 2 -->
+  <g filter="url(#windowGlow)">
+    <rect x="560" y="460" width="70" height="90" rx="5" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="2"/>
+    <rect x="680" y="460" width="70" height="90" rx="5" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="2"/>
+    <rect x="850" y="460" width="70" height="90" rx="5" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="2"/>
+    <rect x="970" y="460" width="70" height="90" rx="5" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="2"/>
+  </g>
+  
+  <!-- Window panes row 2 -->
+  <g stroke="#A08060" stroke-width="1.5" fill="none">
+    <line x1="595" y1="460" x2="595" y2="550"/>
+    <line x1="560" y1="505" x2="630" y2="505"/>
+    <line x1="715" y1="460" x2="715" y2="550"/>
+    <line x1="680" y1="505" x2="750" y2="505"/>
+    <line x1="885" y1="460" x2="885" y2="550"/>
+    <line x1="850" y1="505" x2="920" y2="505"/>
+    <line x1="1005" y1="460" x2="1005" y2="550"/>
+    <line x1="970" y1="505" x2="1040" y2="505"/>
+  </g>
+  
+  <!-- Side wing windows -->
+  <g filter="url(#windowGlow)">
+    <rect x="365" y="440" width="55" height="70" rx="4" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="1.5"/>
+    <rect x="1135" y="470" width="55" height="70" rx="4" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="1.5"/>
+  </g>
+  
+  <!-- Attic round window -->
+  <g filter="url(#windowGlow)">
+    <ellipse cx="800" cy="210" rx="35" ry="35" fill="url(#warmGlow)" stroke="#8B6B5B" stroke-width="2"/>
+    <line x1="800" y1="175" x2="800" y2="245" stroke="#A08060" stroke-width="1.5"/>
+    <line x1="765" y1="210" x2="835" y2="210" stroke="#A08060" stroke-width="1.5"/>
+  </g>
+  
+  <!-- Front door -->
+  <g filter="url(#sketchy)">
+    <rect x="760" y="520" width="80" height="100" rx="8" fill="#6B4A3A" stroke="#4A3228" stroke-width="2.5"/>
+    <ellipse cx="800" cy="520" rx="40" ry="20" fill="#7B5A4A" stroke="#4A3228" stroke-width="2"/>
+    <!-- Door details -->
+    <rect x="772" y="540" width="22" height="35" rx="2" fill="#5A3A2A" opacity="0.5"/>
+    <rect x="806" y="540" width="22" height="35" rx="2" fill="#5A3A2A" opacity="0.5"/>
+    <!-- Door knob with glow -->
+    <circle cx="825" cy="575" r="5" fill="#E8D4A0" filter="url(#windowGlow)"/>
+    <!-- Door light -->
+    <ellipse cx="800" cy="620" rx="60" ry="15" fill="#FFF5E0" opacity="0.3"/>
+  </g>
+  
+  <!-- Small sign post -->
+  <g filter="url(#sketchy)">
+    <rect x="620" y="540" width="8" height="90" fill="#6B5B4B" stroke="#4B3B2B" stroke-width="1"/>
+    <!-- Sign board -->
+    <rect x="580" y="530" width="90" height="45" rx="4" fill="#F5E6D3" stroke="#8B7B6B" stroke-width="1.5"/>
+    <!-- Decorative snow on sign -->
+    <path d="M578,530 Q590,525 605,528 Q630,522 655,527 Q668,524 672,530" fill="#F8FCFF" stroke="none"/>
+  </g>
+  
+  <!-- Decorative elements - small bushes/shrubs covered in snow -->
+  <g filter="url(#sketchy)">
+    <ellipse cx="550" cy="610" rx="40" ry="25" fill="#5B6B5B" stroke="#3B4B3B" stroke-width="1.5"/>
+    <ellipse cx="550" cy="600" rx="35" ry="15" fill="#E8F0F5" opacity="0.8"/>
+    
+    <ellipse cx="1050" cy="615" rx="35" ry="22" fill="#5B6B5B" stroke="#3B4B3B" stroke-width="1.5"/>
+    <ellipse cx="1050" cy="605" rx="30" ry="12" fill="#E8F0F5" opacity="0.8"/>
+  </g>
+  
+  <!-- Small path to door -->
+  <path d="M800,620 Q800,680 780,750 Q760,820 720,900" fill="none" stroke="#C8B8A8" stroke-width="45" opacity="0.4" stroke-linecap="round" filter="url(#sketchy)"/>
+  <path d="M800,620 Q800,680 780,750 Q760,820 720,900" fill="none" stroke="#D8C8B8" stroke-width="35" opacity="0.3" stroke-linecap="round"/>
+  
+  <!-- Falling snow - various sizes for depth -->
+  <g fill="#FFFFFF" opacity="0.9">
+    <!-- Large close snowflakes -->
+    <circle cx="100" cy="150" r="4"><animate attributeName="cy" from="-20" to="920" dur="8s" repeatCount="indefinite"/></circle>
+    <circle cx="300" cy="80" r="3.5"><animate attributeName="cy" from="-50" to="920" dur="9s" repeatCount="indefinite"/></circle>
+    <circle cx="500" cy="200" r="4"><animate attributeName="cy" from="-30" to="920" dur="7.5s" repeatCount="indefinite"/></circle>
+    <circle cx="700" cy="120" r="3"><animate attributeName="cy" from="-40" to="920" dur="8.5s" repeatCount="indefinite"/></circle>
+    <circle cx="900" cy="50" r="3.5"><animate attributeName="cy" from="-60" to="920" dur="9.5s" repeatCount="indefinite"/></circle>
+    <circle cx="1100" cy="180" r="4"><animate attributeName="cy" from="-20" to="920" dur="7s" repeatCount="indefinite"/></circle>
+    <circle cx="1300" cy="90" r="3"><animate attributeName="cy" from="-45" to="920" dur="8.2s" repeatCount="indefinite"/></circle>
+    <circle cx="1500" cy="140" r="3.5"><animate attributeName="cy" from="-35" to="920" dur="9.2s" repeatCount="indefinite"/></circle>
+  </g>
+  
+  <g fill="#FFFFFF" opacity="0.7">
+    <!-- Medium snowflakes -->
+    <circle cx="150" cy="300" r="2.5"><animate attributeName="cy" from="-20" to="920" dur="10s" repeatCount="indefinite"/></circle>
+    <circle cx="250" cy="400" r="2"><animate attributeName="cy" from="-80" to="920" dur="11s" repeatCount="indefinite"/></circle>
+    <circle cx="450" cy="350" r="2.5"><animate attributeName="cy" from="-40" to="920" dur="9s" repeatCount="indefinite"/></circle>
+    <circle cx="550" cy="280" r="2"><animate attributeName="cy" from="-60" to="920" dur="10.5s" repeatCount="indefinite"/></circle>
+    <circle cx="650" cy="420" r="2.5"><animate attributeName="cy" from="-30" to="920" dur="8.8s" repeatCount="indefinite"/></circle>
+    <circle cx="750" cy="380" r="2"><animate attributeName="cy" from="-70" to="920" dur="11.5s" repeatCount="indefinite"/></circle>
+    <circle cx="950" cy="320" r="2.5"><animate attributeName="cy" from="-50" to="920" dur="9.5s" repeatCount="indefinite"/></circle>
+    <circle cx="1050" cy="450" r="2"><animate attributeName="cy" from="-25" to="920" dur="10.2s" repeatCount="indefinite"/></circle>
+    <circle cx="1150" cy="370" r="2.5"><animate attributeName="cy" from="-55" to="920" dur="8.5s" repeatCount="indefinite"/></circle>
+    <circle cx="1250" cy="290" r="2"><animate attributeName="cy" from="-65" to="920" dur="11.2s" repeatCount="indefinite"/></circle>
+    <circle cx="1350" cy="410" r="2.5"><animate attributeName="cy" from="-35" to="920" dur="9.8s" repeatCount="indefinite"/></circle>
+    <circle cx="1450" cy="340" r="2"><animate attributeName="cy" from="-75" to="920" dur="10.8s" repeatCount="indefinite"/></circle>
+  </g>
+  
+  <g fill="#FFFFFF" opacity="0.5">
+    <!-- Small distant snowflakes -->
+    <circle cx="80" cy="500" r="1.5"><animate attributeName="cy" from="-30" to="920" dur="12s" repeatCount="indefinite"/></circle>
+    <circle cx="180" cy="550" r="1"><animate attributeName="cy" from="-90" to="920" dur="13s" repeatCount="indefinite"/></circle>
+    <circle cx="280" cy="480" r="1.5"><animate attributeName="cy" from="-50" to="920" dur="11.5s" repeatCount="indefinite"/></circle>
+    <circle cx="380" cy="520" r="1"><animate attributeName="cy" from="-70" to="920" dur="12.5s" repeatCount="indefinite"/></circle>
+    <circle cx="480" cy="490" r="1.5"><animate attributeName="cy" from="-40" to="920" dur="11s" repeatCount="indefinite"/></circle>
+    <circle cx="580" cy="540" r="1"><animate attributeName="cy" from="-85" to="920" dur="13.5s" repeatCount="indefinite"/></circle>
+    <circle cx="680" cy="510" r="1.5"><animate attributeName="cy" from="-55" to="920" dur="12.2s" repeatCount="indefinite"/></circle>
+    <circle cx="780" cy="530" r="1"><animate attributeName="cy" from="-75" to="920" dur="11.8s" repeatCount="indefinite"/></circle>
+    <circle cx="880" cy="495" r="1.5"><animate attributeName="cy" from="-45" to="920" dur="12.8s" repeatCount="indefinite"/></circle>
+    <circle cx="980" cy="545" r="1"><animate attributeName="cy" from="-65" to="920" dur="13.2s" repeatCount="indefinite"/></circle>
+    <circle cx="1080" cy="505" r="1.5"><animate attributeName="cy" from="-35" to="920" dur="11.2s" repeatCount="indefinite"/></circle>
+    <circle cx="1180" cy="535" r="1"><animate attributeName="cy" from="-80" to="920" dur="12.6s" repeatCount="indefinite"/></circle>
+    <circle cx="1280" cy="515" r="1.5"><animate attributeName="cy" from="-60" to="920" dur="13.8s" repeatCount="indefinite"/></circle>
+    <circle cx="1380" cy="525" r="1"><animate attributeName="cy" from="-50" to="920" dur="11.6s" repeatCount="indefinite"/></circle>
+    <circle cx="1480" cy="500" r="1.5"><animate attributeName="cy" from="-70" to="920" dur="12.4s" repeatCount="indefinite"/></circle>
+    <circle cx="1550" cy="550" r="1"><animate attributeName="cy" from="-40" to="920" dur="13.4s" repeatCount="indefinite"/></circle>
+  </g>
+  
+  <!-- Extra tiny snowflakes for atmosphere -->
+  <g fill="#FFFFFF" opacity="0.35">
+    <circle cx="50" cy="200" r="1"><animate attributeName="cy" from="-20" to="920" dur="14s" repeatCount="indefinite"/></circle>
+    <circle cx="200" cy="150" r="0.8"><animate attributeName="cy" from="-60" to="920" dur="15s" repeatCount="indefinite"/></circle>
+    <circle cx="350" cy="220" r="1"><animate attributeName="cy" from="-40" to="920" dur="13.5s" repeatCount="indefinite"/></circle>
+    <circle cx="600" cy="180" r="0.8"><animate attributeName="cy" from="-80" to="920" dur="14.5s" repeatCount="indefinite"/></circle>
+    <circle cx="820" cy="240" r="1"><animate attributeName="cy" from="-30" to="920" dur="15.5s" repeatCount="indefinite"/></circle>
+    <circle cx="1000" cy="170" r="0.8"><animate attributeName="cy" from="-70" to="920" dur="14.2s" repeatCount="indefinite"/></circle>
+    <circle cx="1200" cy="210" r="1"><animate attributeName="cy" from="-50" to="920" dur="13.8s" repeatCount="indefinite"/></circle>
+    <circle cx="1400" cy="160" r="0.8"><animate attributeName="cy" from="-90" to="920" dur="15.2s" repeatCount="indefinite"/></circle>
+    <circle cx="1520" cy="230" r="1"><animate attributeName="cy" from="-35" to="920" dur="14.8s" repeatCount="indefinite"/></circle>
+  </g>
+  
+  <!-- Snow on roof -->
+  <g filter="url(#sketchy)">
+    <path d="M455,285 Q550,270 650,265 Q750,255 800,145 Q850,255 950,265 Q1050,270 1145,285" fill="#F0F5F8" stroke="none"/>
+    <path d="M295,385 Q350,375 410,305 Q470,375 525,385" fill="#EDF2F5" stroke="none"/>
+    <path d="M1075,425 Q1130,415 1175,355 Q1220,415 1275,425" fill="#EDF2F5" stroke="none"/>
+  </g>
+  
+  <!-- Snow on chimney -->
+  <ellipse cx="980" cy="160" rx="38" ry="10" fill="#F5FAFD" filter="url(#sketchy)"/>
+  
+  <!-- Warm light spill from windows onto snow -->
+  <g opacity="0.15">
+    <ellipse cx="595" cy="630" rx="50" ry="20" fill="#FFE5A0"/>
+    <ellipse cx="715" cy="630" rx="50" ry="20" fill="#FFE5A0"/>
+    <ellipse cx="885" cy="630" rx="50" ry="20" fill="#FFE5A0"/>
+    <ellipse cx="1005" cy="630" rx="50" ry="20" fill="#FFE5A0"/>
+    <ellipse cx="800" cy="640" rx="70" ry="25" fill="#FFE5A0"/>
+  </g>
+  
+  <!-- Sketchy hand-drawn overlay lines for texture -->
+  <g stroke="#5A4A3A" stroke-width="0.5" opacity="0.15" fill="none">
+    <path d="M502,285 Q600,275 700,280 Q800,275 900,282 Q1000,278 1098,285"/>
+    <path d="M502,350 L1098,348"/>
+    <path d="M502,450 L1098,452"/>
+    <path d="M322,385 Q380,382 498,385"/>
+    <path d="M1102,425 Q1150,422 1248,425"/>
+  </g>
+  
+</svg>

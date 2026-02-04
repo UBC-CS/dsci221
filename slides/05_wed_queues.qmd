@@ -1,0 +1,64 @@
+---
+title: "Queues"
+subtitle: "Week 5, Wednesday"
+date: 2026-02-04
+---
+
+## Recap: Stack ADT {.smaller}
+
+::::: {.columns}
+::: {.column width=70%}
+Programmatic realization of a **pile of stuff**.
+
+\
+
+Stack functions:
+
+* Insert: `push(item)`
+* Remove: `pop()` → `item`
+
+**LIFO**: Last In, First Out
+
+:::
+::: {.column width=30%}
+![](/images/su6pez.png)
+:::
+:::::
+
+## Abstract Data Type (ADT) Queue {.smaller}
+
+::::: {.columns}
+::: {.column width=60%}
+Programmatic realization of **standing in line**.
+
+\
+
+Queue functions:
+
+* Insert: `enqueue(item)`
+* Remove: `dequeue()` → `item`
+
+**FIFO**: First In, First Out
+
+\
+
+Python: `from collections import deque`
+
+* Insert: `append(item)`
+* Remove: `popleft()` → `item`
+
+:::
+::: {.column width=40%}
+![](/images/penguins.jpg){fig-alt="A line of penguins on an ice floe, jumping into the ocean one by one."}
+:::
+:::::
+
+## {background-iframe="viz/candy_hearts_story.html" background-interactive="true"}
+
+## Your Turn {.activity}
+
+Each of you has been given your own set of instructions that when executed, will reveal something great.
+
+Complete the [activity in PL](https://us.prairielearn.com/pl/course_instance/205477/assessment/2643647) to solve the puzzle!
+
+
