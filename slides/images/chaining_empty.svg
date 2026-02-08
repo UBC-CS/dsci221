@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 220">
+  <!-- Slot 0: empty -->
+  <rect x="20" y="10" width="40" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="28" text-anchor="end" font-family="monospace" font-size="12" fill="#666">0</text>
+  <text x="40" y="28" text-anchor="middle" font-family="monospace" font-size="11" fill="#999">[ ]</text>
+
+  <!-- Slot 1: empty -->
+  <rect x="20" y="38" width="40" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="56" text-anchor="end" font-family="monospace" font-size="12" fill="#666">1</text>
+  <text x="40" y="56" text-anchor="middle" font-family="monospace" font-size="11" fill="#999">[ ]</text>
+
+  <!-- Slot 2: empty -->
+  <rect x="20" y="66" width="40" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="84" text-anchor="end" font-family="monospace" font-size="12" fill="#666">2</text>
+  <text x="40" y="84" text-anchor="middle" font-family="monospace" font-size="11" fill="#999">[ ]</text>
+
+  <!-- Slot 3: empty -->
+  <rect x="20" y="94" width="40" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="112" text-anchor="end" font-family="monospace" font-size="12" fill="#666">3</text>
+  <text x="40" y="112" text-anchor="middle" font-family="monospace" font-size="11" fill="#999">[ ]</text>
+
+  <!-- Slot 4: empty -->
+  <rect x="20" y="122" width="40" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="140" text-anchor="end" font-family="monospace" font-size="12" fill="#666">4</text>
+  <text x="40" y="140" text-anchor="middle" font-family="monospace" font-size="11" fill="#999">[ ]</text>
+
+  <!-- Slot 5: empty -->
+  <rect x="20" y="150" width="40" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="168" text-anchor="end" font-family="monospace" font-size="12" fill="#666">5</text>
+  <text x="40" y="168" text-anchor="middle" font-family="monospace" font-size="11" fill="#999">[ ]</text>
+
+  <!-- Slot 6: empty -->
+  <rect x="20" y="178" width="40" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="196" text-anchor="end" font-family="monospace" font-size="12" fill="#666">6</text>
+  <text x="40" y="196" text-anchor="middle" font-family="monospace" font-size="11" fill="#999">[ ]</text>
+</svg>

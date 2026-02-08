@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.27">
 
-  <meta name="dcterms.date" content="2026-01-12">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Hierarchy of Speed</title>
+  <meta name="dcterms.date" content="2026-02-12">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Magic of O(1) Lookup</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -31,6 +31,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7e745c094e38f47e1e49ac7c09d7c9b4.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -129,11 +195,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 2, Monday">
+<meta property="og:title" content="The Magic of O(1) Lookup – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 6, Thursday Video">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 2, Monday">
+<meta name="twitter:title" content="The Magic of O(1) Lookup – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 6, Thursday Video">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -141,102 +207,58 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The Hierarchy of Speed</h1>
-  <p class="subtitle">Week 2, Monday</p>
+  <h1 class="title">The Magic of O(1) Lookup</h1>
+  <p class="subtitle">Week 6, Thursday Video</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 12, 2026</p>
+  <p class="date">February 12, 2026</p>
 </section>
-<section id="announcements" class="slide level2">
-<h2>Announcements</h2>
-<ul>
-<li>Labs begin this week!
-<ul>
-<li>Monday 1-3pm or Tuesday 4-6pm</li>
-</ul></li>
-</ul>
-</section>
-<section>
-<section id="warm-up-code-analysis" class="title-slide slide level1 center">
-<h1>Warm-up: Code Analysis</h1>
-
-</section>
-<section id="rules" class="slide level2">
-<h2>Rules</h2>
-<p>For <span class="math inline">\(T(n)\)</span>, the running time of an algorithm on input of size <span class="math inline">\(n\)</span>…</p>
-<ol type="1">
-<li>Constants don’t matter: <span class="math inline">\(5n = O(n)\)</span></li>
-<li>Lower terms don’t matter: <span class="math inline">\(n^2 + n = O(n^2)\)</span></li>
-<li>Log base doesn’t matter: <span class="math inline">\(log_2 n = O(log_{10}n)\)</span></li>
-</ol>
-<aside class="notes">
-<p>“What’s the intuition for #3?”</p>
-<p>All logs differ by a constant factor. log₂n = log₁₀n / log₁₀2</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="example-1" class="slide level2">
-<h2>Example 1</h2>
-<div>
-<div id="pyodide-1" class="exercise-cell">
-
-</div>
-<script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGNvbXB1dGVNZWFuKGFycik6XG4gICAgdG90YWwgPSAwXG4gICAgZm9yIHggaW4gYXJyOlxuICAgICAgICB0b3RhbCArPSB4XG4gICAgcmV0dXJuIHRvdGFsIC8gbGVuKGFycikifQ==
-</script>
-</div>
+<section id="the-dictionary-dream" class="slide level2">
+<h2>The Dictionary Dream</h2>
+<p>What if we could do this?</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">8</th>
-<th style="text-align: center;">9</th>
-<th style="text-align: center;">10</th>
-<th style="text-align: center;">11</th>
+<th>Operation</th>
+<th>Time</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
+<td>Insert</td>
+<td>O(1)</td>
+</tr>
+<tr class="even">
+<td>Find</td>
+<td>O(1)</td>
+</tr>
+<tr class="odd">
+<td>Delete</td>
+<td>O(1)</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>Python questions?</li>
-<li>What’s the worst-case running time?</li>
-</ul>
+<p>No searching. No sorting. Just… <em>know</em> where everything is.</p>
+</section>
+<section id="pythons-dict-and-set" class="slide level2">
+<h2>Python’s <code>dict</code> and <code>set</code></h2>
+<p>You’ve been using this magic all along:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>seen <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb1-2"><a></a>seen.add(<span class="st">"apple"</span>)      <span class="co"># O(1)</span></span>
+<span id="cb1-3"><a></a><span class="co">"apple"</span> <span class="kw">in</span> seen        <span class="co"># O(1)</span></span>
+<span id="cb1-4"><a></a></span>
+<span id="cb1-5"><a></a>ages <span class="op">=</span> {}</span>
+<span id="cb1-6"><a></a>ages[<span class="st">"Alice"</span>] <span class="op">=</span> <span class="dv">25</span>     <span class="co"># O(1)</span></span>
+<span id="cb1-7"><a></a>ages[<span class="st">"Alice"</span>]          <span class="co"># O(1) → 25</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>How does this work?</strong></p>
+</section>
+<section id="a-hash-table" class="slide level2">
+<h2>A Hash Table</h2>
 <aside class="notes">
-<p>One pass through the array. <span class="math inline">\(\Theta(n)\)</span>, tight.</p>
-<p>“We’ll see this again later with pandas.”</p>
+<p>I’ll annotate the diagram on the right to show what’s happening as we trace through the code. Bottom line: “we call this setup a hash table.” Other names: associative array (the interface), hashmap, or just map.</p>
+<p>i’ll also point out that everthing is O(1)!</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -248,40 +270,32 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGNvbXB1dGVNZWFuKGFy
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section id="example-2" class="slide level2 smaller">
-<h2>Example 2</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div>
-<div id="pyodide-2" class="exercise-cell">
-
-</div>
-<script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxuZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgZm9yIGogaW4gcmFuZ2Uobik6XG4gICAgICAgIGNvdW50ICs9IDEifQ==
-</script>
-</div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
-<ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 17th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 32nd element counted?</p></li>
-<li><p>What’s the worst-case running time?</p></li>
-</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>ages <span class="op">=</span> {}</span>
+<span id="cb2-2"><a></a>ages[<span class="st">"Alice"</span>] <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb2-3"><a></a>ages[<span class="st">"Bob"</span>] <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb2-4"><a></a><span class="bu">print</span>(ages[<span class="st">"Alice"</span>])  <span class="co"># → 25</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A <strong>hash table</strong> consists of:</p>
+<ol type="1">
+<li>An <strong>array</strong> of slots</li>
+<li>A <strong>hash function</strong>: key → index</li>
+<li>??</li>
+</ol>
 </div><div class="column" style="width:50%;">
-<div id="00a3eaaf" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02_mon_hierarchy_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
+<p><img data-src="images/hash_table_basic.svg" style="width:100.0%"></p>
 </div></div>
+</section>
+<section id="whats-a-hash-function" class="slide level2">
+<h2>What’s a Hash Function?</h2>
+<p>A function that turns any key into an integer.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="bu">hash</span>(<span class="st">"hello"</span>)      <span class="co"># → 8743927429234</span></span>
+<span id="cb3-2"><a></a><span class="bu">hash</span>(<span class="st">"world"</span>)      <span class="co"># → -3847293742938</span></span>
+<span id="cb3-3"><a></a><span class="bu">hash</span>(<span class="dv">42</span>)           <span class="co"># → 42</span></span>
+<span id="cb3-4"><a></a><span class="bu">hash</span>((<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))    <span class="co"># → 529344067295497451</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then we use <code>% m</code> to fit it into our array of size m.</p>
 <aside class="notes">
-<p>Let them trace: i=2, j=4 for 17th. i=5, j=1 for 32nd.</p>
-<p>“Predict for n = 8?” (64)</p>
-<p>Double n → QUADRUPLE the work. <span class="math inline">\(\Theta(n^2)\)</span>, tight.</p>
+<p>We discussed hash functions in detail in DSCI 220, but I’ll remind you of the key results.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -294,175 +308,184 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxu
           display:block!important;
       }</style></aside>
 </section>
-<section id="example-3" class="slide level2 smaller">
-<h2>Example 3</h2>
+<section id="what-makes-a-good-hash-function" class="slide level2">
+<h2>What Makes a Good Hash Function?</h2>
+<ol type="1">
+<li><strong>Spreads data uniformly</strong> across the table (SUHA)</li>
+<li><strong>Computed in O(1)</strong> time</li>
+<li><strong>Deterministic</strong>: if <code>k1 == k2</code>, then <code>h(k1) == h(k2)</code></li>
+</ol>
+<p>But “spreads uniformly” doesn’t mean two keys <em>won’t</em> land in the same cell…</p>
+</section>
+<section id="the-adversary-problem" class="slide level2 smaller">
+<h2>The Adversary Problem</h2>
+<aside class="notes">
+<p>Use this to explain why we need universal hashing. A nefarious person who knows our hash function could deliberately choose keys that all hash to the same slot → O(n) worst case!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+<img data-src="images/keyspace_adversary.svg" style="width:90.0%" class="r-stretch"><p><strong>Solution</strong>: <strong>Universal hashing</strong> — randomly choose the hash function at runtime.</p>
+<p>The adversary can’t predict which keys will collide!</p>
+</section>
+<section id="the-problem-collisions" class="slide level2">
+<h2>The Problem: Collisions</h2>
+<p>What if two keys hash to the same index?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="bu">hash</span>(<span class="st">"apple"</span>) <span class="op">%</span> <span class="dv">7</span>  <span class="co"># → 3</span></span>
+<span id="cb4-2"><a></a><span class="bu">hash</span>(<span class="st">"grape"</span>) <span class="op">%</span> <span class="dv">7</span>  <span class="co"># → 3  # Uh oh!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is called a <strong>collision</strong>.</p>
+<p>With only <span class="math inline">\(\sqrt{m}\)</span> keys in a table of size <span class="math inline">\(m\)</span>, we <em>expect</em> at least one collision.</p>
+<p>(This is the birthday paradox you saw in DSCI 220!)</p>
+<aside class="notes">
+<p>i’m going to rewrite this in annotation to be with data of size n, even a table of size n^2 isn’t adequate to make collisions rare.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="collisions-are-inevitable" class="slide level2">
+<h2>Collisions Are Inevitable</h2>
+<p>Even with a “good” hash function, collisions happen.</p>
+<p><strong>Why?</strong> Because we’re mapping a huge keyspace into a small array.</p>
+<ul>
+<li>Possible strings: practically infinite</li>
+<li>Array size: maybe 1000 slots</li>
+</ul>
+<p>We need a <strong>collision resolution strategy</strong>.</p>
+<aside class="notes">
+<p>two general approaches, a) use the cells as buckets, or b) put the key in some other cell (turn the hash function into a hash process)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="strategy-separate-chaining" class="slide level2">
+<h2>Strategy: Separate Chaining</h2>
+<p>Each slot holds a <strong>list</strong> of items that hash there.</p>
 <div class="columns">
-<div class="column" style="width:50%;">
-<div>
-<div id="pyodide-3" class="exercise-cell">
-
-</div>
-<script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxuZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgZm9yIGogaW4gcmFuZ2UoaSk6XG4gICAgICAgIGNvdW50ICs9IDEifQ==
-</script>
-</div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
-<ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 4th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 12th element counted?</p></li>
-<li><p>What’s the worst-case running time?</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div id="0599749a" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02_mon_hierarchy_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
+<div class="column" style="width:55%;">
+<p>Insert <code>{16, 8, 4, 13, 29, 11, 22}</code> with <code>h(k) = k % 7</code>:</p>
+</div><div class="column" style="width:45%;">
+<p><img data-src="images/chaining_empty.svg" style="width:100.0%"></p>
 </div></div>
-<aside class="notes">
-<p>i=2: j=0,1 (2 elements). i=3: j=0,1,2 (3 elements). So 4th is i=3, j=0.</p>
-<p><span class="math inline">\(0 + 1 + 2 + \ldots + (n-1) = n(n-1)/2\)</span></p>
-<p>Still <span class="math inline">\(\Theta(n^2)\)</span>, tight! The triangle is half the square.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="from-last-week" class="title-slide slide level1 center">
-<h1>From Last Week</h1>
-
 </section>
-<section id="the-two-pillars" class="slide level2">
-<h2>The Two Pillars</h2>
+<section id="separate-chaining-analysis" class="slide level2 smaller">
+<h2>Separate Chaining: Analysis</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>To <strong>find</strong> a key:</p>
 <ol type="1">
-<li><strong>Correctness</strong> — Does it work?</li>
-<li><strong>Efficiency</strong> — How fast?</li>
+<li>Hash to get the slot: O(1)</li>
+<li>Search the list at that slot: O(length of list)</li>
 </ol>
-<aside class="notes">
-<p>“Last week: efficiency. This week: we add correctness.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p><strong>Key question:</strong> How long are the lists?</p>
+</div><div class="column" style="width:45%;">
+<p><img data-src="images/chaining_filled.svg" style="width:100.0%"></p>
+</div></div>
 </section>
-<section id="the-analysis-recipe" class="slide level2">
-<h2>The Analysis Recipe</h2>
-<ol type="1">
-<li><strong>Establish the case</strong> — usually worst case</li>
-<li><strong>Analyze the function</strong> — count operations for that case</li>
-<li><strong>State the bound:</strong>
+<section id="the-load-factor" class="slide level2 smaller">
+<h2>The Load Factor</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Load factor</strong> <span class="math inline">\(\alpha = n/m\)</span></p>
 <ul>
-<li><span class="math inline">\(\Theta\)</span> (or “tight <span class="math inline">\(O\)</span>”) if you know it’s exact</li>
-<li><span class="math inline">\(O\)</span> if you’re only claiming an upper bound</li>
-<li><span class="math inline">\(\Omega\)</span> if you’re only claiming a lower bound</li>
-</ul></li>
-</ol>
-<aside class="notes">
-<p>“When we say ‘binary search is <span class="math inline">\(O(\log n)\)</span>’ we mean it’s <em>tight</em> — <span class="math inline">\(\Theta(\log n)\)</span>. We’re not hedging.”</p>
-<p>“First: which case? Then: what’s the function? Then: is it tight or just a bound?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="the-hierarchy" class="title-slide slide level1 center">
-<h1>The Hierarchy</h1>
-
-</section>
-<section id="big-o-is-a-set" class="slide level2">
-<h2>Big-<span class="math inline">\(O\)</span> is a Set</h2>
-<p><span class="math inline">\(O(g(n))\)</span> is the <strong>set</strong> of all functions <span class="math inline">\(f(n)\)</span> satisfying the definition.</p>
-<p><span class="math display">\[O(n) = \{f(n) : \exists c &gt; 0, n_0 \geq 0 \text{ such that } f(n) \leq c \cdot n \text{ for all } n \geq n_0\}\]</span></p>
-<aside class="notes">
-<p>“From discrete math: Big-O defines a SET of functions.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-ladder" class="slide level2">
-<h2>The Ladder</h2>
-<p><span class="math display">\[O(1) \subset O(\log n) \subset O(n) \subset O(n \log n) \subset O(n^2) \subset O(2^n)\]</span></p>
-<p>Each class contains all the ones to its left.</p>
-<aside class="notes">
-<p>“Every <span class="math inline">\(O(1)\)</span> function is also <span class="math inline">\(O(n)\)</span>, also <span class="math inline">\(O(n^2)\)</span>, etc.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="a-common-abuse-of-notation" class="slide level2">
-<h2>A Common Abuse of Notation</h2>
-<p>We write: <span class="math inline">\(\quad 4n + 2 = O(n)\)</span></p>
-<p>We mean: <span class="math inline">\(\quad 4n + 2 \in O(n)\)</span></p>
-<aside class="notes">
-<p>“You’ll see this everywhere. Just remember: we’re really talking about set membership.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="true-or-false" class="slide level2 activity">
-<h2>True or False?</h2>
-<ul>
-<li><span class="math inline">\(3n + 2 \in O(n)\)</span></li>
-<li><span class="math inline">\(3n + 2 \in O(n^2)\)</span></li>
-<li><span class="math inline">\(n^2 \in O(n)\)</span></li>
-<li><span class="math inline">\(5 \in O(1)\)</span></li>
-<li><span class="math inline">\(5 \in O(n)\)</span></li>
+<li><span class="math inline">\(n\)</span> = number of items stored</li>
+<li><span class="math inline">\(m\)</span> = number of slots (array size)</li>
 </ul>
+<p>If items are spread evenly, each list has length <span class="math inline">\(\approx \alpha\)</span>.</p>
+<p><strong>Under uniform hashing assumption:</strong></p>
+<ul>
+<li>Expected time to find = <span class="math inline">\(O(1 + \alpha)\)</span></li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p><img data-src="images/chaining_filled.svg" style="width:100.0%"></p>
+</div></div>
+</section>
+<section id="strategy-linear-probing" class="slide level2">
+<h2>Strategy: Linear Probing</h2>
+<p>Instead of chaining, store items <em>directly in the array</em>.</p>
+<p>If slot <code>h(k)</code> is full, try <code>h(k)+1</code>, then <code>h(k)+2</code>, …</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> insert(key, value):</span>
+<span id="cb5-2"><a></a>    i <span class="op">=</span> <span class="bu">hash</span>(key) <span class="op">%</span> m</span>
+<span id="cb5-3"><a></a>    <span class="cf">while</span> array[i] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb5-4"><a></a>        i <span class="op">=</span> (i <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> m  <span class="co"># probe next slot</span></span>
+<span id="cb5-5"><a></a>    array[i] <span class="op">=</span> (key, value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Advantage</strong>: No linked lists, better cache performance.</p>
+<p><strong>Disadvantage</strong>: Clustering — full regions grow and merge.</p>
+</section>
+<section id="linear-probing-watch-and-listen" class="slide level2" data-background-iframe="viz/linear_probing.html">
+<h2>Linear Probing: Watch and Listen</h2>
 <aside class="notes">
-<p>T, T, F, T, T</p>
-<p>“If <span class="math inline">\(f \in O(g)\)</span> and <span class="math inline">\(O(g) \subset O(h)\)</span>, then <span class="math inline">\(f \in O(h)\)</span>.”</p>
-<p>“Let’s see what these mean at scale.”</p>
+<p>This visualization inserts 1000 items into a table of size 1000. Listen for when insertion becomes “too slow.” Students inevitably identify ~2/3 as the threshold — which matches the analytical result!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="double-hashing-watch-and-listen" class="slide level2" data-background-iframe="viz/double_hashing.html">
+<h2>Double Hashing: Watch and Listen</h2>
+<aside class="notes">
+<p>Now let’s try double hashing. Notice it doesn’t slow down as dramatically — the probes stay short even at higher load factors because we avoid clustering.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-secret-to-o1-keep-alpha-constant" class="slide level2 smaller">
+<h2>The Secret to O(1): Keep <span class="math inline">\(\alpha\)</span> Constant!</h2>
+<p>Remember: <span class="math inline">\(\alpha = n/m\)</span></p>
+<ul>
+<li><strong><span class="math inline">\(n\)</span></strong> = number of items (we can’t control this — users insert what they want!)</li>
+<li><strong><span class="math inline">\(m\)</span></strong> = table size (we <em>can</em> control this)</li>
+</ul>
+<p>If we keep <span class="math inline">\(\alpha\)</span> constant (say, <span class="math inline">\(\alpha \le 2/3\)</span>), then:</p>
+<ul>
+<li>Expected probes = <span class="math inline">\(O(1)\)</span></li>
+<li>Expected find time = <span class="math inline">\(O(1)\)</span></li>
+<li>Expected insert time = <span class="math inline">\(O(1)\)</span></li>
+</ul>
+<p><strong>But wait…</strong> as <span class="math inline">\(n\)</span> grows, <span class="math inline">\(\alpha\)</span> grows! Unless we grow <span class="math inline">\(m\)</span> too…</p>
+</section>
+<section id="performance-vs-load-factor" class="slide level2">
+<h2>Performance vs Load Factor</h2>
+<aside class="notes">
+<p>As <span class="math inline">\(\alpha\)</span> increases, expected probes increase. Linear probing degrades faster than double hashing or chaining. The key insight: all strategies blow up as <span class="math inline">\(\alpha \to 1\)</span>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -475,12 +498,129 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxu
           display:block!important;
       }</style></aside>
 
+<img data-src="images/probing_performance.svg" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Expected probes vs load factor for different strategies</p></section>
+<section id="the-punchline-resizing" class="slide level2 smaller">
+<h2>The Punchline: Resizing</h2>
+<aside class="notes">
+<p>again, i like the way i did this in old slides.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>The old message:</p>
+<ol type="1">
+<li>When the array fills,</li>
+<li><strong>Double</strong> the array size</li>
+<li><strong>Copy</strong> all items to the new array</li>
+</ol>
+<p>This single resize costs O(n)…</p>
+</div><div class="column" style="width:45%;">
+<p><img data-src="images/resize_arrays.svg" style="width:100.0%"></p>
+</div></div>
+</section>
+<section id="amortized-o1" class="slide level2">
+<h2>Amortized O(1)</h2>
+<p>You’ve seen this movie before! (Dynamic arrays, Week 5)</p>
+<ul>
+<li>Most inserts: O(1)</li>
+<li>Occasional resize: O(n)</li>
+</ul>
+<p>Using the same accounting trick:</p>
+<p><strong>Amortized cost per insert = O(1)</strong></p>
+</section>
+<section id="the-full-picture" class="slide level2">
+<h2>The Full Picture</h2>
+<p>Hash table operations are <strong>O(1) expected, amortized</strong>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Operation</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Insert</td>
+<td>O(1) expected, amortized</td>
+</tr>
+<tr class="even">
+<td>Find</td>
+<td>O(1) expected</td>
+</tr>
+<tr class="odd">
+<td>Delete</td>
+<td>O(1) expected</td>
+</tr>
+</tbody>
+</table>
+<p>“Expected” = assuming good hash function “Amortized” = averaging over many operations</p>
+</section>
+<section id="why-expected" class="slide level2">
+<h2>Why “Expected”?</h2>
+<p>The O(1) relies on:</p>
+<ol type="1">
+<li>A good hash function that spreads keys uniformly</li>
+<li>No adversary choosing keys to cause collisions</li>
+</ol>
+<p>In practice, Python’s built-in hash functions are excellent.</p>
+<p><strong>Worst case</strong> (all keys collide): O(n) — but this almost never happens.</p>
+</section>
+<section id="pythons-implementation" class="slide level2">
+<h2>Python’s Implementation</h2>
+<p>Python <code>dict</code> uses:</p>
+<ul>
+<li>Open addressing (not chaining) — items stored directly in array</li>
+<li>Resizes at <span class="math inline">\(\alpha \approx 2/3\)</span></li>
+<li>Sophisticated probing to handle collisions</li>
+</ul>
+<p>You don’t need to know the details — just that it’s <strong>O(1)</strong>!</p>
+<aside class="notes">
+<p>Python doesn’t use linear probing — it uses a variant called <strong>“pseudo-random probing”</strong> or more specifically, a technique based on the full hash value. The probe sequence uses the formula: <code>j = ((5*j) + 1 + perturb) % 2**i</code> where <code>perturb</code> starts as the full hash and gets shifted right each iteration.</p>
+<p>This avoids linear probing’s clustering problem while maintaining good cache behavior. The key insight: it visits every slot eventually (guaranteed by math), but in a scattered pattern that depends on the full hash value, not just <code>hash % m</code>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<p><strong>Hash tables</strong> give O(1) lookup by:</p>
+<ol type="1">
+<li>Using a <strong>hash function</strong> to map keys → array indices</li>
+<li>Handling <strong>collisions</strong> (e.g., with chaining)</li>
+<li><strong>Resizing</strong> (double, copy, re-hash) to keep load factor constant</li>
+</ol>
+<p>This is the magic behind Python’s <code>dict</code> and <code>set</code>.</p>
+</section>
+<section id="whats-next" class="slide level2">
+<h2>What’s Next</h2>
+<p><strong>Wednesday</strong>: The dictionary trick in action!</p>
+<ul>
+<li>Two-Sum: O(n²) → O(n)</li>
+<li>Anagram detection</li>
+<li>Frequency counting</li>
+</ul>
+<p>The pattern: “Have I seen this before?” = dictionary lookup</p>
 
-<script type="pyodide-data">
-eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
-</script>
+
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -493,7 +633,7 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2RO
 <script type="vfs-file">
 W10=
 </script>
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

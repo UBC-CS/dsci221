@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Double Hashing Visualization</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stats {
+      display: flex;
+      gap: 30px;
+      font-size: 1.2rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      font-family: 'Courier New', monospace;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .load-factor {
+      color: #4ecdc4;
+    }
+
+    .load-factor.warning {
+      color: #f39c12;
+    }
+
+    .load-factor.danger {
+      color: #e74c3c;
+    }
+
+    .inserted {
+      color: #3498db;
+    }
+
+    .probes {
+      color: #9b59b6;
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    #startBtn {
+      background: #27ae60;
+      color: white;
+    }
+
+    #startBtn:hover {
+      background: #2ecc71;
+    }
+
+    #startBtn:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+    #resetBtn {
+      background: #e74c3c;
+      color: white;
+    }
+
+    #resetBtn:hover {
+      background: #c0392b;
+    }
+
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .speed-control label {
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    .speed-control input {
+      width: 120px;
+    }
+
+    .grid-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .grid-label {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      padding: 8px 20px;
+      border-radius: 4px;
+      color: #3498db;
+      background: rgba(52, 152, 219, 0.2);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(50, 1fr);
+      gap: 1px;
+      background: #2d2d44;
+      padding: 2px;
+      border-radius: 4px;
+    }
+
+    .cell {
+      width: 14px;
+      height: 14px;
+      background: #16213e;
+      border-radius: 2px;
+      transition: background-color 0.15s;
+    }
+
+    .cell.filled {
+      background: #3498db;
+    }
+
+    .cell.probing {
+      background: #ff9ff3;
+    }
+
+    .cell.just-filled {
+      background: #5dade2;
+      box-shadow: 0 0 8px #5dade2;
+    }
+
+    .info {
+      margin-top: 20px;
+      text-align: center;
+      color: #888;
+      font-size: 0.95rem;
+      max-width: 700px;
+      line-height: 1.5;
+    }
+
+    .highlight {
+      color: #4ecdc4;
+      font-weight: 600;
+    }
+
+    .question {
+      margin-top: 15px;
+      padding: 15px 25px;
+      background: #2d2d44;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      color: #f39c12;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value load-factor" id="loadFactor">0.000</div>
+        <div class="stat-label">Load Factor (α = n/m)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value inserted" id="inserted">0</div>
+        <div class="stat-label">Items Inserted</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value probes" id="lastProbes">0</div>
+        <div class="stat-label">Probes (last insert)</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn">Start</button>
+      <button id="resetBtn">Reset</button>
+      <div class="speed-control">
+        <label>Speed:</label>
+        <input type="range" id="speedSlider" min="1" max="100" value="50">
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <div class="grid-label">Double Hashing</div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="info">
+    <p>Watch and <span class="highlight">listen</span> as we insert 1000 items into a hash table.</p>
+    <p>Each chime = one insertion. Pink cells = probing sequence.</p>
+    <div class="question">Compare with linear probing — does it slow down at the same load factor?</div>
+  </div>
+
+  <script>
+    const TABLE_SIZE = 1000;
+
+    let table = new Array(TABLE_SIZE).fill(false);
+    let inserted = 0;
+    let running = false;
+
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playChime() {
+      if (!audioCtx) return;
+
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+      oscillator.type = 'sine';
+      gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + 0.08);
+    }
+
+    function hash(value) {
+      return Math.abs((value * 2654435761) % TABLE_SIZE);
+    }
+
+    function hash2(value) {
+      // Secondary hash function for double hashing
+      // Must return a value coprime to TABLE_SIZE (which is 1000)
+      return 1 + Math.abs((value * 1327217883) % (TABLE_SIZE - 1));
+    }
+
+    function createGrid() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      for (let i = 0; i < TABLE_SIZE; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.id = `cell-${i}`;
+        grid.appendChild(cell);
+      }
+    }
+
+    function updateStats(probeCount) {
+      const loadFactor = inserted / TABLE_SIZE;
+      const lfElement = document.getElementById('loadFactor');
+      lfElement.textContent = loadFactor.toFixed(3);
+
+      lfElement.classList.remove('warning', 'danger');
+      if (loadFactor >= 0.67) {
+        lfElement.classList.add('danger');
+      } else if (loadFactor >= 0.5) {
+        lfElement.classList.add('warning');
+      }
+
+      document.getElementById('inserted').textContent = inserted;
+      document.getElementById('lastProbes').textContent = probeCount;
+    }
+
+    function clearProbing() {
+      const grid = document.getElementById('grid');
+      grid.querySelectorAll('.cell.probing').forEach(cell => {
+        cell.classList.remove('probing');
+      });
+      grid.querySelectorAll('.cell.just-filled').forEach(cell => {
+        cell.classList.remove('just-filled');
+        cell.classList.add('filled');
+      });
+    }
+
+    async function insertOne() {
+      if (inserted >= TABLE_SIZE) {
+        running = false;
+        document.getElementById('startBtn').disabled = false;
+        return false;
+      }
+
+      const value = Math.floor(Math.random() * 1000000);
+      let index = hash(value);
+      const step = hash2(value);
+      let probeCount = 0;
+
+      clearProbing();
+
+      // Double hashing
+      while (table[index]) {
+        document.getElementById(`cell-${index}`).classList.add('probing');
+        probeCount++;
+        await sleep(40);
+        index = (index + step) % TABLE_SIZE;
+      }
+
+      table[index] = true;
+      const cell = document.getElementById(`cell-${index}`);
+      cell.classList.remove('probing');
+      cell.classList.add('just-filled');
+
+      inserted++;
+      playChime();
+      updateStats(probeCount + 1);
+
+      return true;
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function getDelay() {
+      const speed = document.getElementById('speedSlider').value;
+      return Math.max(5, 200 / (speed / 10));
+    }
+
+    async function runInsertion() {
+      running = true;
+      document.getElementById('startBtn').disabled = true;
+      document.getElementById('startBtn').textContent = 'Running...';
+
+      while (running && inserted < TABLE_SIZE) {
+        const success = await insertOne();
+        if (!success) break;
+        await sleep(getDelay());
+      }
+
+      document.getElementById('startBtn').disabled = false;
+      document.getElementById('startBtn').textContent = running ? 'Continue' : 'Start';
+      running = false;
+    }
+
+    function reset() {
+      running = false;
+      table = new Array(TABLE_SIZE).fill(false);
+      inserted = 0;
+
+      createGrid();
+      updateStats(0);
+
+      document.getElementById('startBtn').disabled = false;
+      document.getElementById('startBtn').textContent = 'Start';
+    }
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+      initAudio();
+      if (!running) {
+        runInsertion();
+      }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', reset);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        initAudio();
+        if (!running) {
+          runInsertion();
+        } else {
+          running = false;
+        }
+      } else if (e.key === 'r' || e.key === 'R') {
+        reset();
+      }
+    });
+
+    // Click anywhere to start (helps with iframe focus issues)
+    document.body.addEventListener('click', (e) => {
+      if (e.target.id !== 'resetBtn' && e.target.id !== 'speedSlider') {
+        initAudio();
+        if (!running) {
+          runInsertion();
+        }
+      }
+    });
+
+    createGrid();
+    updateStats(0);
+  </script>
+</body>
+</html>
