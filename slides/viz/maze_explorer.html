@@ -282,6 +282,21 @@
         }
       }
 
+      // Add cycles by removing a few extra walls (3-5 random walls)
+      const remainingWalls = walls.filter(w => {
+        const cell1 = cells.get(w.key1);
+        return cell1.walls[w.dir];  // Wall still exists
+      });
+      const numExtraToRemove = Math.min(remainingWalls.length, 3 + Math.floor(Math.random() * 3));
+      for (let i = 0; i < numExtraToRemove; i++) {
+        const idx = Math.floor(Math.random() * remainingWalls.length);
+        const wall = remainingWalls.splice(idx, 1)[0];
+        const cell1 = cells.get(wall.key1);
+        const cell2 = cells.get(wall.key2);
+        cell1.walls[wall.dir] = false;
+        cell2.walls[oppositeSide(wall.dir)] = false;
+      }
+
       maze = cells;
       return cells;
     }
@@ -333,6 +348,11 @@
       current = null;
       path = [];
       done = false;
+
+      // For queue: mark start as visited when enqueued
+      if (structureType === 'queue') {
+        visited.add("0,0");
+      }
     }
 
     function step() {
@@ -354,18 +374,46 @@
       const nextKey = next.key;
       const nextDist = next.dist;
 
-      visited.add(nextKey);
+      // For stack/bag: mark visited when POPPING (allows duplicates in container)
+      // For queue: already marked when enqueued
+      if (structureType === 'stack' || structureType === 'bag') {
+        // Skip if already visited (can happen with cycles when using stack)
+        if (visited.has(nextKey)) {
+          // Try again with next item
+          if (container.length > 0) {
+            step();
+          } else {
+            done = true;
+          }
+          return;
+        }
+        visited.add(nextKey);
+      }
+
       current = nextKey;
       path.push(nextKey);
 
       const neighbors = getPassableNeighbors(nextKey);
       for (const nKey of neighbors) {
-        const alreadyInContainer = container.some(item => item.key === nKey);
-        if (!visited.has(nKey) && !alreadyInContainer) {
-          const nDist = nextDist + 1;
-          distances.set(nKey, nDist);
-          const pos = getBagPosition();
-          container.push({key: nKey, dist: nDist, pred: nextKey, x: pos.x, y: pos.y});
+        if (structureType === 'queue') {
+          // Queue: mark visited when ENQUEUEING (prevents duplicates)
+          if (!visited.has(nKey)) {
+            visited.add(nKey);
+            const nDist = nextDist + 1;
+            distances.set(nKey, nDist);
+            const pos = getBagPosition();
+            container.push({key: nKey, dist: nDist, pred: nextKey, x: pos.x, y: pos.y});
+          }
+        } else {
+          // Stack/Bag: don't check visited when adding, only when popping
+          // But avoid adding if already in container (optimization)
+          const alreadyInContainer = container.some(item => item.key === nKey);
+          if (!visited.has(nKey) && !alreadyInContainer) {
+            const nDist = nextDist + 1;
+            distances.set(nKey, nDist);
+            const pos = getBagPosition();
+            container.push({key: nKey, dist: nDist, pred: nextKey, x: pos.x, y: pos.y});
+          }
         }
       }
 
@@ -697,6 +745,8 @@
     document.querySelectorAll('input[name="structure"]').forEach(radio => {
       radio.addEventListener('change', (e) => {
         structureType = e.target.value;
+        // Reset when changing structure type to apply correct visited logic
+        initState();
       });
     });
 
