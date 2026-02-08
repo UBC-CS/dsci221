@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Letters in the Mountains</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Lora', serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .title {
+      font-family: 'Cinzel', serif;
+      font-size: 36px;
+      color: #e94560;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      font-family: 'Lora', serif;
+      font-size: 18px;
+      color: #a3c4bc;
+      margin-bottom: 15px;
+      font-style: italic;
+    }
+    .controls {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 12px 28px;
+      font-size: 16px;
+      font-family: 'Lora', serif;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .step-btn {
+      background: linear-gradient(135deg, #e94560 0%, #c73659 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+    }
+    .step-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+    }
+    .reset-btn {
+      background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+      color: white;
+    }
+    .reset-btn:hover {
+      transform: translateY(-2px);
+    }
+    #canvas-container {
+      background: rgba(26, 26, 46, 0.9);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      border: 2px solid #e94560;
+    }
+    .hint {
+      font-family: 'Lora', serif;
+      font-size: 13px;
+      color: #636e72;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">Donkey's Love Letter</div>
+  <div class="subtitle">A tale of distance, waves, and finding the shortest path to Dragon...</div>
+  <div class="controls">
+    <button class="step-btn" id="stepBtn">Next →</button>
+    <button class="reset-btn" id="resetBtn">Restart</button>
+  </div>
+  <div id="canvas-container"></div>
+  <div class="hint">Press → to advance, R to restart</div>
+
+  <script>
+    // Story state
+    let storyStep = 0;
+
+    // Animation state
+    let animating = false;
+    let animationProgress = 0;
+    let messengerPathIndex = 0;
+
+    // Display state
+    let showDistances = false;
+    let showPath = false;
+    let showMessenger = false;
+
+    // The terrain - heights from a(0) to z(25)
+    const terrainStr = [
+      "aabqponm",
+      "abcryxxl",
+      "accszzxk",
+      "acctuvwj",
+      "abdefghi"
+    ];
+
+    // Parse terrain
+    const terrain = [];
+    const startPos = {r: 0, c: 0};
+    const endPos = {r: 2, c: 5};  // One of the 'z' cells
+
+    for (let r = 0; r < terrainStr.length; r++) {
+      terrain[r] = [];
+      for (let c = 0; c < terrainStr[r].length; c++) {
+        let ch = terrainStr[r][c];
+        let height = ch.charCodeAt(0) - 'a'.charCodeAt(0);
+        terrain[r][c] = {ch: ch, height: height};
+      }
+    }
+
+    // BFS state
+    let distances = {};
+    let parents = {};  // parent pointers: key -> {r, c} of parent
+    let maxDistanceShown = -1;
+    let pathToEnd = [];
+
+    function cellKey(r, c) {
+      return `${r},${c}`;
+    }
+
+    function canClimbTo(fromHeight, toHeight) {
+      return toHeight <= fromHeight + 1;
+    }
+
+    function getNeighbors(r, c) {
+      const neighbors = [];
+      const dirs = [[-1,0], [1,0], [0,-1], [0,1]];
+      for (const [dr, dc] of dirs) {
+        const nr = r + dr;
+        const nc = c + dc;
+        if (nr >= 0 && nr < terrain.length && nc >= 0 && nc < terrain[0].length) {
+          if (canClimbTo(terrain[r][c].height, terrain[nr][nc].height)) {
+            neighbors.push({r: nr, c: nc});
+          }
+        }
+      }
+      return neighbors;
+    }
+
+    // Compute all BFS distances and parents at once (we'll reveal them progressively)
+    function computeAllDistances() {
+      distances = {};
+      parents = {};
+      distances[cellKey(startPos.r, startPos.c)] = 0;
+      parents[cellKey(startPos.r, startPos.c)] = null;  // start has no parent
+      const queue = [{...startPos}];
+
+      while (queue.length > 0) {
+        const current = queue.shift();
+        const currentDist = distances[cellKey(current.r, current.c)];
+
+        for (const neighbor of getNeighbors(current.r, current.c)) {
+          const key = cellKey(neighbor.r, neighbor.c);
+          if (distances[key] === undefined) {
+            distances[key] = currentDist + 1;
+            parents[key] = {r: current.r, c: current.c};  // track parent
+            queue.push(neighbor);
+          }
+        }
+      }
+    }
+
+    function findPath() {
+      pathToEnd = [];
+      const endKey = cellKey(endPos.r, endPos.c);
+
+      if (distances[endKey] === undefined) return;
+
+      // Use a stack to reverse the parent pointers!
+      // We follow parents from end to start, pushing onto stack
+      const stack = [];
+      let current = {...endPos};
+
+      while (current !== null) {
+        stack.push({...current});
+        const parent = parents[cellKey(current.r, current.c)];
+        current = parent;
+      }
+
+      // Pop from stack to get path from start to end
+      while (stack.length > 0) {
+        pathToEnd.push(stack.pop());
+      }
+    }
+
+    function resetAll() {
+      storyStep = 0;
+      distances = {};
+      parents = {};
+      maxDistanceShown = -1;
+      pathToEnd = [];
+      showDistances = false;
+      showPath = false;
+      showMessenger = false;
+      animating = false;
+      animationProgress = 0;
+      messengerPathIndex = 0;
+    }
+
+    // Story script
+    const story = [
+      {
+        text: "In a valley nestled among the peaks...",
+        subtext: "...lived Donkey, who had an important letter to deliver.",
+        setup: () => { showDistances = false; showPath = false; showMessenger = false; maxDistanceShown = -1; }
+      },
+      {
+        text: "The letter must reach Dragon at the castle on the highest peak.",
+        subtext: "But Donkey can only climb one elevation at a time!",
+        setup: () => {}
+      },
+      {
+        text: "From height 'a', Donkey can step to 'a' or 'b'...",
+        subtext: "From 'c', he can reach 'a', 'b', 'c', or 'd'. But not 'e' or higher!",
+        setup: () => {}
+      },
+      {
+        text: "Donkey asked us for help finding the shortest path.",
+        subtext: "Let's use BFS! We explore outward in waves, like ripples in water...",
+        setup: () => { computeAllDistances(); showDistances = true; maxDistanceShown = 0; }
+      },
+      {
+        text: "Wave 1: All cells reachable in 1 step",
+        subtext: "The search spreads to neighbors Donkey can climb to.",
+        setup: () => { maxDistanceShown = 1; }
+      },
+      {
+        text: "Wave 2: All cells reachable in 2 steps",
+        subtext: "Each wave explores one step further...",
+        setup: () => { maxDistanceShown = 2; }
+      },
+      {
+        text: "Wave 3: The pattern continues...",
+        subtext: "We discover cells in order of distance from start.",
+        setup: () => { maxDistanceShown = 3; }
+      },
+      {
+        text: "Wave 4...",
+        subtext: "BFS guarantees we find the shortest path first!",
+        setup: () => { maxDistanceShown = 4; }
+      },
+      {
+        text: "Wave 5...",
+        subtext: "Notice how we climb gradually through the terrain.",
+        setup: () => { maxDistanceShown = 5; }
+      },
+      {
+        text: "Wave 6...",
+        subtext: "Almost there...",
+        setup: () => { maxDistanceShown = 6; }
+      },
+      {
+        text: "Wave 7...",
+        subtext: "The wave approaches Dragon's castle!",
+        setup: () => { maxDistanceShown = 7; }
+      },
+      {
+        text: "Continuing the search...",
+        subtext: "BFS explores all reachable cells.",
+        setup: () => { maxDistanceShown = 100; }  // Show all
+      },
+      {
+        text: "We found Dragon's castle!",
+        subtext: "Using parent pointers, we trace back to give Donkey directions...",
+        setup: () => { findPath(); showPath = true; }
+      },
+      {
+        text: "Now Donkey knows the way!",
+        subtext: "We did BFS; Donkey just follows our path.",
+        setup: () => { showMessenger = true; animating = true; animationProgress = 0; }
+      },
+      {
+        text: "The End",
+        subtext: "BFS: Explore by distance, find shortest paths!",
+        setup: () => { animating = false; }
+      }
+    ];
+
+    function nextStep() {
+      if (animating) {
+        animating = false;
+        return;
+      }
+
+      if (storyStep < story.length - 1) {
+        storyStep++;
+        story[storyStep].setup();
+      }
+    }
+
+    function restart() {
+      resetAll();
+      story[0].setup();
+    }
+
+    const sketch = (p) => {
+      const CELL_SIZE = 50;
+      const GRID_OFFSET_X = 100;
+      const GRID_OFFSET_Y = 60;
+
+      p.setup = () => {
+        p.createCanvas(600, 420);
+        p.textAlign(p.CENTER, p.CENTER);
+        resetAll();
+        story[0].setup();
+      };
+
+      p.draw = () => {
+        p.background(26, 26, 46);
+
+        const currentStep = story[storyStep];
+
+        // Draw terrain grid
+        for (let r = 0; r < terrain.length; r++) {
+          for (let c = 0; c < terrain[0].length; c++) {
+            const x = GRID_OFFSET_X + c * CELL_SIZE;
+            const y = GRID_OFFSET_Y + r * CELL_SIZE;
+            const cell = terrain[r][c];
+            const key = cellKey(r, c);
+
+            // Background color based on height (green valleys to brown peaks)
+            const heightRatio = cell.height / 25;
+            const bgR = p.lerp(100, 139, heightRatio);
+            const bgG = p.lerp(180, 90, heightRatio);
+            const bgB = p.lerp(100, 43, heightRatio);
+
+            let fillR = bgR, fillG = bgG, fillB = bgB;
+
+            // Highlight visited cells (if showing distances and within current wave)
+            const dist = distances[key];
+            if (showDistances && dist !== undefined && dist <= maxDistanceShown) {
+              // Wave color - blue tint, fading as distance increases
+              const waveFade = Math.min(1, dist / 15);
+              fillR = p.lerp(80, bgR, waveFade);
+              fillG = p.lerp(140, bgG, waveFade);
+              fillB = p.lerp(255, bgB, waveFade);
+            }
+
+            // Highlight path with gradient based on altitude
+            if (showPath) {
+              const onPath = pathToEnd.some(pos => pos.r === r && pos.c === c);
+              if (onPath) {
+                // Gradient from light pink (a=0) to fully saturated (z=25)
+                const altitudeRatio = cell.height / 25;
+                // Light pink: rgb(255, 220, 230), Full pink: rgb(233, 69, 96)
+                fillR = p.lerp(255, 233, altitudeRatio);
+                fillG = p.lerp(220, 69, altitudeRatio);
+                fillB = p.lerp(230, 96, altitudeRatio);
+              }
+            }
+
+            p.fill(fillR, fillG, fillB);
+            p.stroke(40);
+            p.strokeWeight(1);
+            p.rect(x, y, CELL_SIZE, CELL_SIZE, 4);
+
+            // Draw height letter
+            p.fill(255, 255, 255, 200);
+            p.noStroke();
+            p.textSize(16);
+            p.textStyle(p.NORMAL);
+            p.text(cell.ch, x + CELL_SIZE/2, y + CELL_SIZE/2);
+
+            // Draw distance if within current wave
+            if (showDistances && dist !== undefined && dist <= maxDistanceShown) {
+              p.fill(255, 255, 100);
+              p.textSize(11);
+              p.textStyle(p.BOLD);
+              p.text(dist, x + CELL_SIZE - 12, y + 12);
+
+              // Draw tiny arrow pointing toward parent
+              const parent = parents[key];
+              if (parent !== null && parent !== undefined) {
+                const dr = parent.r - r;  // direction to parent
+                const dc = parent.c - c;
+                const cx = x + CELL_SIZE / 2;
+                const cy = y + CELL_SIZE / 2;
+
+                // Arrow position on edge of cell, pointing toward parent
+                const arrowSize = 6;
+                let ax, ay, angle;
+
+                if (dr === -1) { // parent is above
+                  ax = cx; ay = y + 4;
+                  angle = -p.HALF_PI;
+                } else if (dr === 1) { // parent is below
+                  ax = cx; ay = y + CELL_SIZE - 4;
+                  angle = p.HALF_PI;
+                } else if (dc === -1) { // parent is left
+                  ax = x + 4; ay = cy;
+                  angle = p.PI;
+                } else { // parent is right
+                  ax = x + CELL_SIZE - 4; ay = cy;
+                  angle = 0;
+                }
+
+                // Draw arrow pointing toward parent
+                p.push();
+                p.translate(ax, ay);
+                p.rotate(angle);
+                p.fill(255, 200, 100, 220);
+                p.noStroke();
+                p.triangle(0, 0, -arrowSize, -arrowSize/2, -arrowSize, arrowSize/2);
+                p.pop();
+              }
+            }
+          }
+        }
+
+        // Draw start marker (S)
+        {
+          const x = GRID_OFFSET_X + startPos.c * CELL_SIZE + CELL_SIZE/2;
+          const y = GRID_OFFSET_Y + startPos.r * CELL_SIZE + CELL_SIZE/2;
+          p.fill(100, 200, 100);
+          p.stroke(255);
+          p.strokeWeight(2);
+          p.ellipse(x, y, 30, 30);
+          p.fill(255);
+          p.noStroke();
+          p.textSize(14);
+          p.textStyle(p.BOLD);
+          p.text("S", x, y);
+        }
+
+        // Draw end marker - Dragon's castle
+        {
+          const x = GRID_OFFSET_X + endPos.c * CELL_SIZE + CELL_SIZE/2;
+          const y = GRID_OFFSET_Y + endPos.r * CELL_SIZE + CELL_SIZE/2;
+          // Castle base
+          p.fill(100, 80, 80);
+          p.stroke(60);
+          p.strokeWeight(1);
+          p.rect(x - 14, y - 4, 28, 18, 2);
+          // Castle towers
+          p.rect(x - 16, y - 14, 10, 14);
+          p.rect(x + 6, y - 14, 10, 14);
+          // Dragon (simple) - perched on castle
+          p.fill(200, 60, 80);
+          p.noStroke();
+          // Body
+          p.ellipse(x, y - 16, 16, 10);
+          // Head
+          p.ellipse(x + 10, y - 18, 8, 7);
+          // Wings
+          p.fill(180, 50, 70);
+          p.triangle(x - 4, y - 16, x - 12, y - 26, x + 2, y - 20);
+          p.triangle(x + 4, y - 16, x + 12, y - 26, x - 2, y - 20);
+          // Eye
+          p.fill(255, 200, 0);
+          p.ellipse(x + 12, y - 19, 2, 2);
+        }
+
+        // Draw messenger
+        if (showMessenger && pathToEnd.length > 0) {
+          let mx, my;
+
+          if (animating) {
+            animationProgress += 0.006;
+            const t = Math.min(animationProgress, 1);
+            const pathT = t * (pathToEnd.length - 1);
+            const idx = Math.floor(pathT);
+            const frac = pathT - idx;
+
+            if (idx >= pathToEnd.length - 1) {
+              mx = GRID_OFFSET_X + pathToEnd[pathToEnd.length - 1].c * CELL_SIZE + CELL_SIZE/2;
+              my = GRID_OFFSET_Y + pathToEnd[pathToEnd.length - 1].r * CELL_SIZE + CELL_SIZE/2;
+              animating = false;
+            } else {
+              const from = pathToEnd[idx];
+              const to = pathToEnd[idx + 1];
+              mx = GRID_OFFSET_X + p.lerp(from.c, to.c, frac) * CELL_SIZE + CELL_SIZE/2;
+              my = GRID_OFFSET_Y + p.lerp(from.r, to.r, frac) * CELL_SIZE + CELL_SIZE/2;
+            }
+          } else {
+            // Show at end
+            mx = GRID_OFFSET_X + pathToEnd[pathToEnd.length - 1].c * CELL_SIZE + CELL_SIZE/2;
+            my = GRID_OFFSET_Y + pathToEnd[pathToEnd.length - 1].r * CELL_SIZE + CELL_SIZE/2;
+          }
+
+          // Draw Donkey
+          // Body (gray oval)
+          p.fill(140, 140, 150);
+          p.stroke(80);
+          p.strokeWeight(1);
+          p.ellipse(mx, my, 22, 16);
+          // Head
+          p.fill(150, 150, 160);
+          p.ellipse(mx + 10, my - 6, 14, 12);
+          // Ears (long!)
+          p.fill(140, 140, 150);
+          p.noStroke();
+          p.ellipse(mx + 6, my - 18, 5, 12);
+          p.ellipse(mx + 14, my - 18, 5, 12);
+          // Inner ears (pink)
+          p.fill(200, 160, 160);
+          p.ellipse(mx + 6, my - 17, 2, 6);
+          p.ellipse(mx + 14, my - 17, 2, 6);
+          // Eye
+          p.fill(40);
+          p.ellipse(mx + 12, my - 7, 3, 3);
+          // Snout
+          p.fill(180, 170, 170);
+          p.ellipse(mx + 16, my - 4, 6, 5);
+          // Legs
+          p.stroke(100);
+          p.strokeWeight(2);
+          p.line(mx - 6, my + 6, mx - 6, my + 14);
+          p.line(mx + 6, my + 6, mx + 6, my + 14);
+          // Letter in mouth
+          p.fill(255, 200, 200);
+          p.noStroke();
+          p.rect(mx + 18, my - 6, 8, 6, 1);
+          p.fill(233, 69, 96);
+          p.textSize(5);
+          p.text("♥", mx + 22, my - 3);
+        }
+
+        // Draw legend
+        p.fill(200);
+        p.noStroke();
+        p.textSize(12);
+        p.textStyle(p.NORMAL);
+        p.textAlign(p.LEFT, p.CENTER);
+        p.text("Heights: a=0 (valley) → z=25 (peak)", GRID_OFFSET_X, GRID_OFFSET_Y + terrain.length * CELL_SIZE + 20);
+        p.text("Rule: Can climb at most +1 height per step", GRID_OFFSET_X, GRID_OFFSET_Y + terrain.length * CELL_SIZE + 38);
+        p.textAlign(p.CENTER, p.CENTER);
+
+        // Draw story text
+        p.fill(255);
+        p.textSize(20);
+        p.textStyle(p.BOLD);
+        p.text(currentStep.text, 300, 360);
+
+        if (currentStep.subtext) {
+          p.textSize(14);
+          p.textStyle(p.ITALIC);
+          p.fill(163, 196, 188);
+          p.text(currentStep.subtext, 300, 385);
+        }
+        p.textStyle(p.NORMAL);
+
+        // Step indicator
+        p.fill(100);
+        p.textSize(11);
+        p.text(`${storyStep + 1} / ${story.length}`, 300, 408);
+
+        // Finale sparkles
+        if (storyStep === story.length - 1) {
+          drawSparkles(p);
+        }
+      };
+
+      function drawSparkles(p) {
+        const time = p.millis() / 1000;
+        p.noStroke();
+        for (let i = 0; i < 8; i++) {
+          const angle = (i / 8) * p.TWO_PI + time;
+          const radius = 180 + Math.sin(time * 2 + i) * 20;
+          const x = 300 + Math.cos(angle) * radius;
+          const y = 180 + Math.sin(angle) * radius * 0.5;
+          const size = 4 + Math.sin(time * 3 + i * 0.5) * 2;
+
+          p.fill(255, 220, 100, 200);
+          p.ellipse(x, y, size, size);
+        }
+      }
+    };
+
+    new p5(sketch, 'canvas-container');
+
+    document.getElementById('stepBtn').addEventListener('click', nextStep);
+    document.getElementById('resetBtn').addEventListener('click', restart);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        nextStep();
+        e.stopPropagation();
+      } else if (e.key === 'r' || e.key === 'R') {
+        restart();
+        e.stopPropagation();
+      }
+    });
+  </script>
+</body>
+</html>

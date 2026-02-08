@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" width="500" height="350">
+  <style>
+    .heart { stroke: #d63384; stroke-width: 2; }
+    .letter { font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #d63384; text-anchor: middle; }
+    .label { font-family: Arial, sans-serif; font-size: 18px; fill: #666; text-anchor: middle; }
+    .belt { fill: #ddd; stroke: #999; stroke-width: 1; }
+    .instruction { font-family: Arial, sans-serif; font-size: 14px; fill: #fff; text-anchor: middle; }
+
+    /* Animation keyframes */
+    @keyframes moveU_step1 {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-130px, 40px); }
+    }
+    @keyframes moveO_step1 {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-130px, 0px); }
+    }
+
+    .move1-U { animation: moveU_step1 0.8s ease-in-out forwards; animation-delay: 0.2s; }
+    .move1-O { animation: moveO_step1 0.8s ease-in-out forwards; animation-delay: 1s; }
+  </style>
+
+  <!-- Conveyor belts -->
+  <rect class="belt" x="80" y="280" width="80" height="10" rx="2"/>
+  <rect class="belt" x="210" y="280" width="80" height="10" rx="2"/>
+  <rect class="belt" x="340" y="280" width="80" height="10" rx="2"/>
+
+  <!-- Belt labels -->
+  <text class="label" x="120" y="310">1</text>
+  <text class="label" x="250" y="310">2</text>
+  <text class="label" x="380" y="310">3</text>
+
+  <!-- Stack 1: O, Y, M (bottom to top) - STATIC -->
+  <g id="stack1">
+    <rect class="heart" x="90" y="240" width="60" height="35" rx="8" fill="#ffb6c1"/>
+    <text class="letter" x="120" y="265">O</text>
+    <rect class="heart" x="90" y="200" width="60" height="35" rx="8" fill="#fffacd"/>
+    <text class="letter" x="120" y="225">Y</text>
+    <rect class="heart" x="90" y="160" width="60" height="35" rx="8" fill="#e6e6fa"/>
+    <text class="letter" x="120" y="185">M</text>
+  </g>
+
+  <!-- Stack 2: E, M, O, V (bottom to top) - STATIC base -->
+  <g id="stack2-base">
+    <rect class="heart" x="220" y="240" width="60" height="35" rx="8" fill="#98fb98"/>
+    <text class="letter" x="250" y="265">E</text>
+    <rect class="heart" x="220" y="200" width="60" height="35" rx="8" fill="#e6e6fa"/>
+    <text class="letter" x="250" y="225">M</text>
+    <rect class="heart" x="220" y="160" width="60" height="35" rx="8" fill="#ffb6c1"/>
+    <text class="letter" x="250" y="185">O</text>
+    <rect class="heart" x="220" y="120" width="60" height="35" rx="8" fill="#add8e6"/>
+    <text class="letter" x="250" y="145">V</text>
+  </g>
+
+  <!-- Stack 3: Y at bottom - STATIC -->
+  <g id="stack3-base">
+    <rect class="heart" x="350" y="240" width="60" height="35" rx="8" fill="#fffacd"/>
+    <text class="letter" x="380" y="265">Y</text>
+  </g>
+
+  <!-- Moving pieces from Stack 3 -->
+  <g id="moving-O" class="move1-O">
+    <rect class="heart" x="350" y="200" width="60" height="35" rx="8" fill="#ffb6c1"/>
+    <text class="letter" x="380" y="225">O</text>
+  </g>
+
+  <g id="moving-U" class="move1-U">
+    <rect class="heart" x="350" y="160" width="60" height="35" rx="8" fill="#dda0dd"/>
+    <text class="letter" x="380" y="185">U</text>
+  </g>
+
+  <!-- Instruction text at top -->
+  <text class="instruction" x="250" y="30" style="font-size: 16px;">Move 2 from belt 3 to belt 2</text>
+  <text class="instruction" x="250" y="55" style="font-size: 13px; fill: #aaa;">(one at a time)</text>
+</svg>

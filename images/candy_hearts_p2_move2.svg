@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <style>
+    .heart { stroke: #d63384; stroke-width: 2; }
+    .letter { font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #d63384; text-anchor: middle; }
+    .label { font-family: Arial, sans-serif; font-size: 18px; fill: #666; text-anchor: middle; }
+    .belt { fill: #ddd; stroke: #999; stroke-width: 1; }
+  </style>
+
+  <!-- After: Move 1 from belt 2 to belt 1 -->
+  <!-- U moves to stack 1 -->
+  <!-- Stack 1: O, Y, M, U -->
+  <!-- Stack 2: E, M, O, V, O -->
+  <!-- Stack 3: Y -->
+
+  <!-- Conveyor belts -->
+  <rect class="belt" x="30" y="250" width="80" height="10" rx="2"/>
+  <rect class="belt" x="160" y="250" width="80" height="10" rx="2"/>
+  <rect class="belt" x="290" y="250" width="80" height="10" rx="2"/>
+
+  <!-- Belt labels -->
+  <text class="label" x="70" y="280">1</text>
+  <text class="label" x="200" y="280">2</text>
+  <text class="label" x="330" y="280">3</text>
+
+  <!-- Stack 1: O, Y, M, U (bottom to top) -->
+  <rect class="heart" x="40" y="210" width="60" height="35" rx="8" fill="#ffb6c1"/>
+  <text class="letter" x="70" y="235">O</text>
+
+  <rect class="heart" x="40" y="170" width="60" height="35" rx="8" fill="#fffacd"/>
+  <text class="letter" x="70" y="195">Y</text>
+
+  <rect class="heart" x="40" y="130" width="60" height="35" rx="8" fill="#e6e6fa"/>
+  <text class="letter" x="70" y="155">M</text>
+
+  <rect class="heart" x="40" y="90" width="60" height="35" rx="8" fill="#dda0dd"/>
+  <text class="letter" x="70" y="115">U</text>
+
+  <!-- Stack 2: E, M, O, V, O (bottom to top) -->
+  <rect class="heart" x="170" y="210" width="60" height="35" rx="8" fill="#98fb98"/>
+  <text class="letter" x="200" y="235">E</text>
+
+  <rect class="heart" x="170" y="170" width="60" height="35" rx="8" fill="#e6e6fa"/>
+  <text class="letter" x="200" y="195">M</text>
+
+  <rect class="heart" x="170" y="130" width="60" height="35" rx="8" fill="#ffb6c1"/>
+  <text class="letter" x="200" y="155">O</text>
+
+  <rect class="heart" x="170" y="90" width="60" height="35" rx="8" fill="#add8e6"/>
+  <text class="letter" x="200" y="115">V</text>
+
+  <rect class="heart" x="170" y="50" width="60" height="35" rx="8" fill="#ffb6c1"/>
+  <text class="letter" x="200" y="75">O</text>
+
+  <!-- Stack 3: Y (only) -->
+  <rect class="heart" x="300" y="210" width="60" height="35" rx="8" fill="#fffacd"/>
+  <text class="letter" x="330" y="235">Y</text>
+</svg>
