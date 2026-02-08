@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280">
+  <!-- Left side: Small keyspace (easy case) -->
+  <g transform="translate(0, 0)">
+    <text x="150" y="25" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold">Small Keyspace</text>
+
+    <!-- Keyspace circle -->
+    <ellipse cx="80" cy="130" rx="55" ry="70" fill="#e8f4f8" stroke="#2c3e50" stroke-width="2"/>
+    <text x="80" y="85" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#666">KeySpace</text>
+
+    <!-- Dots in keyspace -->
+    <circle cx="65" cy="110" r="4" fill="#333"/>
+    <circle cx="95" cy="105" r="4" fill="#333"/>
+    <circle cx="70" cy="140" r="4" fill="#333"/>
+    <circle cx="90" cy="145" r="4" fill="#333"/>
+    <circle cx="80" cy="170" r="4" fill="#333"/>
+
+    <!-- Arrow -->
+    <line x1="140" y1="130" x2="175" y2="130" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Hash table -->
+    <g transform="translate(185, 80)">
+      <rect x="0" y="0" width="70" height="20" fill="#d5f5e3" stroke="#2c3e50" stroke-width="1"/>
+      <text x="-12" y="14" font-family="monospace" font-size="10" fill="#666">0</text>
+      <rect x="0" y="20" width="70" height="20" fill="#d5f5e3" stroke="#2c3e50" stroke-width="1"/>
+      <text x="-12" y="34" font-family="monospace" font-size="10" fill="#666">1</text>
+      <rect x="0" y="40" width="70" height="20" fill="#d5f5e3" stroke="#2c3e50" stroke-width="1"/>
+      <text x="-12" y="54" font-family="monospace" font-size="10" fill="#666">...</text>
+      <rect x="0" y="60" width="70" height="20" fill="#d5f5e3" stroke="#2c3e50" stroke-width="1"/>
+      <text x="-12" y="74" font-family="monospace" font-size="10" fill="#666">m-1</text>
+    </g>
+
+    <text x="150" y="220" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#27ae60" font-weight="bold">Easy!</text>
+    <text x="150" y="240" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#666">|KeySpace| ~ m</text>
+  </g>
+
+  <!-- Right side: Large keyspace (adversary problem) -->
+  <g transform="translate(350, 0)">
+    <text x="150" y="25" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold">Large Keyspace</text>
+
+    <!-- Outer keyspace circle (large) -->
+    <ellipse cx="80" cy="130" rx="75" ry="90" fill="#fadbd8" stroke="#2c3e50" stroke-width="2"/>
+    <text x="80" y="55" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#666">KeySpace</text>
+
+    <!-- Inner subset circle -->
+    <ellipse cx="85" cy="140" rx="35" ry="40" fill="#aed6f1" stroke="#3498db" stroke-width="2"/>
+    <text x="85" y="115" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#2874a6">subset</text>
+
+    <!-- Dots scattered in large keyspace -->
+    <circle cx="30" cy="90" r="3" fill="#999"/>
+    <circle cx="130" cy="85" r="3" fill="#999"/>
+    <circle cx="25" cy="160" r="3" fill="#999"/>
+    <circle cx="140" cy="170" r="3" fill="#999"/>
+    <circle cx="50" cy="200" r="3" fill="#999"/>
+    <circle cx="120" cy="195" r="3" fill="#999"/>
+
+    <!-- Dots in subset (these are the ones being used) -->
+    <circle cx="70" cy="130" r="4" fill="#e74c3c"/>
+    <circle cx="95" cy="125" r="4" fill="#e74c3c"/>
+    <circle cx="80" cy="155" r="4" fill="#e74c3c"/>
+    <circle cx="100" cy="150" r="4" fill="#e74c3c"/>
+    <circle cx="75" cy="170" r="4" fill="#e74c3c"/>
+
+    <!-- Arrow -->
+    <line x1="160" y1="130" x2="195" y2="130" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Hash table with collision -->
+    <g transform="translate(205, 80)">
+      <rect x="0" y="0" width="70" height="20" fill="#ecf0f1" stroke="#2c3e50" stroke-width="1"/>
+      <text x="-12" y="14" font-family="monospace" font-size="10" fill="#666">0</text>
+      <rect x="0" y="20" width="70" height="20" fill="#ecf0f1" stroke="#2c3e50" stroke-width="1"/>
+      <text x="-12" y="34" font-family="monospace" font-size="10" fill="#666">1</text>
+      <rect x="0" y="40" width="70" height="20" fill="#e74c3c" stroke="#2c3e50" stroke-width="2"/>
+      <text x="-12" y="54" font-family="monospace" font-size="10" fill="#666">2</text>
+      <text x="35" y="54" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white" font-weight="bold">ALL HERE!</text>
+      <rect x="0" y="60" width="70" height="20" fill="#ecf0f1" stroke="#2c3e50" stroke-width="1"/>
+      <text x="-12" y="74" font-family="monospace" font-size="10" fill="#666">...</text>
+    </g>
+
+    <text x="150" y="220" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#e74c3c" font-weight="bold">Adversary!</text>
+    <text x="150" y="240" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#666">Can pick keys that all collide</text>
+  </g>
+
+  <!-- Arrowhead definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50"/>
+    </marker>
+  </defs>
+</svg>

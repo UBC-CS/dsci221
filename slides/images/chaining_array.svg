@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 220">
+  <!-- Slot 0 -->
+  <rect x="20" y="10" width="80" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="28" text-anchor="end" font-family="monospace" font-size="12" fill="#666">0</text>
+
+  <!-- Slot 1 -->
+  <rect x="20" y="38" width="80" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="56" text-anchor="end" font-family="monospace" font-size="12" fill="#666">1</text>
+
+  <!-- Slot 2 -->
+  <rect x="20" y="66" width="80" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="84" text-anchor="end" font-family="monospace" font-size="12" fill="#666">2</text>
+
+  <!-- Slot 3 -->
+  <rect x="20" y="94" width="80" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="112" text-anchor="end" font-family="monospace" font-size="12" fill="#666">3</text>
+
+  <!-- Slot 4 -->
+  <rect x="20" y="122" width="80" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="140" text-anchor="end" font-family="monospace" font-size="12" fill="#666">4</text>
+
+  <!-- Slot 5 -->
+  <rect x="20" y="150" width="80" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="168" text-anchor="end" font-family="monospace" font-size="12" fill="#666">5</text>
+
+  <!-- Slot 6 -->
+  <rect x="20" y="178" width="80" height="28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="10" y="196" text-anchor="end" font-family="monospace" font-size="12" fill="#666">6</text>
+</svg>
