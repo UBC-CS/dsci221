@@ -100,7 +100,8 @@
   <script>
     // State
     let maze = null;
-    let visited = new Set();
+    let visited = new Set();  // "processed" - popped from container and expanded
+    let seen = new Set();     // "seen" - added to container (for stack/bag only)
     let container = [];  // Items: {key, dist, pred, x, y}
     let distances = new Map();  // Track distance from start for each cell
     let nextBagSlot = 0;  // Counter for assigning bag positions
@@ -339,7 +340,8 @@
 
     function initState() {
       maze = generateMaze();
-      visited = new Set();
+      visited = new Set();  // "processed" - has been current (red -> green)
+      seen = new Set();     // "seen" - added to container (yellow)
       distances = new Map();
       distances.set("0,0", 0);
       nextBagSlot = 0;
@@ -349,10 +351,8 @@
       path = [];
       done = false;
 
-      // For queue: mark start as visited when enqueued
-      if (structureType === 'queue') {
-        visited.add("0,0");
-      }
+      // Mark start as seen (yellow) for all structure types
+      seen.add("0,0");
     }
 
     function step() {
@@ -374,41 +374,42 @@
       const nextKey = next.key;
       const nextDist = next.dist;
 
-      // For stack/bag: mark visited when POPPING (allows duplicates in container)
-      // For queue: already marked when enqueued
-      if (structureType === 'stack' || structureType === 'bag') {
-        // Skip if already visited (can happen with cycles when using stack)
-        if (visited.has(nextKey)) {
-          // Try again with next item
-          if (container.length > 0) {
-            step();
-          } else {
-            done = true;
-          }
-          return;
+      // Skip if already processed (can happen with duplicates in stack/bag)
+      if (visited.has(nextKey)) {
+        // Try again with next item
+        if (container.length > 0) {
+          step();
+        } else {
+          done = true;
         }
-        visited.add(nextKey);
+        return;
       }
+
+      // Mark as processed (green) - this node is now current
+      visited.add(nextKey);
 
       current = nextKey;
       path.push(nextKey);
 
       const neighbors = getPassableNeighbors(nextKey);
       for (const nKey of neighbors) {
-        if (structureType === 'queue') {
-          // Queue: mark visited when ENQUEUEING (prevents duplicates)
-          if (!visited.has(nKey)) {
-            visited.add(nKey);
-            const nDist = nextDist + 1;
-            distances.set(nKey, nDist);
-            const pos = getBagPosition();
-            container.push({key: nKey, dist: nDist, pred: nextKey, x: pos.x, y: pos.y});
-          }
-        } else {
-          // Stack/Bag: don't check visited when adding, only when popping
-          // But avoid adding if already in container (optimization)
-          const alreadyInContainer = container.some(item => item.key === nKey);
-          if (!visited.has(nKey) && !alreadyInContainer) {
+        // Only add if not yet processed
+        if (!visited.has(nKey)) {
+          // For queue: only add if not already seen (prevents duplicates)
+          // For stack/bag: can add duplicates (will be skipped when popped)
+          if (structureType === 'queue') {
+            if (!seen.has(nKey)) {
+              seen.add(nKey);  // Mark as seen (yellow)
+              const nDist = nextDist + 1;
+              distances.set(nKey, nDist);
+              const pos = getBagPosition();
+              container.push({key: nKey, dist: nDist, pred: nextKey, x: pos.x, y: pos.y});
+            }
+          } else {
+            // Stack/Bag: add even if already seen (duplicates allowed)
+            if (!seen.has(nKey)) {
+              seen.add(nKey);  // Mark as seen (yellow)
+            }
             const nDist = nextDist + 1;
             distances.set(nKey, nDist);
             const pos = getBagPosition();
@@ -435,11 +436,20 @@
         for (const [key, cell] of maze) {
           const cp = getCellParams(cell.q, cell.r);
 
-          const inContainer = container.some(item => item.key === key);
-          if (key === current) p.fill(255, 100, 100);
-          else if (visited.has(key)) p.fill(180, 230, 180);
-          else if (inContainer) p.fill(255, 240, 150);
-          else p.fill(245, 245, 245);
+          // Color logic (same for all structure types):
+          // - Red: currently being processed
+          // - Green: processed (has been current)
+          // - Yellow: seen but not yet processed (in container)
+          // - Gray: not yet seen
+          if (key === current) {
+            p.fill(255, 100, 100);  // Red - current
+          } else if (visited.has(key)) {
+            p.fill(180, 230, 180);  // Green - processed
+          } else if (seen.has(key)) {
+            p.fill(255, 240, 150);  // Yellow - seen but not processed
+          } else {
+            p.fill(245, 245, 245);  // Gray - unseen
+          }
 
           p.noStroke();
           p.beginShape();
