@@ -467,12 +467,12 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-secret-to-o1-keep-alpha-constant" class="slide level2 smaller">
-<h2>The Secret to O(1): Keep <span class="math inline">\(\alpha\)</span> Constant!</h2>
+<section id="the-secret-to-o1" class="slide level2 smaller">
+<h2>The Secret to O(1)</h2>
 <p>Remember: <span class="math inline">\(\alpha = n/m\)</span></p>
 <ul>
-<li><strong><span class="math inline">\(n\)</span></strong> = number of items (we can’t control this — users insert what they want!)</li>
-<li><strong><span class="math inline">\(m\)</span></strong> = table size (we <em>can</em> control this)</li>
+<li><strong><span class="math inline">\(n\)</span></strong> = number of items</li>
+<li><strong><span class="math inline">\(m\)</span></strong> = table size</li>
 </ul>
 <p>If we keep <span class="math inline">\(\alpha\)</span> constant (say, <span class="math inline">\(\alpha \le 2/3\)</span>), then:</p>
 <ul>
@@ -480,7 +480,6 @@
 <li>Expected find time = <span class="math inline">\(O(1)\)</span></li>
 <li>Expected insert time = <span class="math inline">\(O(1)\)</span></li>
 </ul>
-<p><strong>But wait…</strong> as <span class="math inline">\(n\)</span> grows, <span class="math inline">\(\alpha\)</span> grows! Unless we grow <span class="math inline">\(m\)</span> too…</p>
 </section>
 <section id="performance-vs-load-factor" class="slide level2">
 <h2>Performance vs Load Factor</h2>
