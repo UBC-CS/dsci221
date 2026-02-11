@@ -214,12 +214,12 @@ This visualization inserts 1000 items into a table of size 1000. Listen for when
 Now let's try double hashing. Notice it doesn't slow down as dramatically — the probes stay short even at higher load factors because we avoid clustering.
 :::
 
-## The Secret to O(1): Keep $\alpha$ Constant! {.smaller}
+## The Secret to O(1) {.smaller}
 
 Remember: $\alpha = n/m$
 
-- **$n$** = number of items (we can't control this — users insert what they want!)
-- **$m$** = table size (we *can* control this)
+- **$n$** = number of items 
+- **$m$** = table size 
 
 If we keep $\alpha$ constant (say, $\alpha \le 2/3$), then:
 
@@ -227,7 +227,6 @@ If we keep $\alpha$ constant (say, $\alpha \le 2/3$), then:
 - Expected find time = $O(1)$
 - Expected insert time = $O(1)$
 
-**But wait...** as $n$ grows, $\alpha$ grows! Unless we grow $m$ too...
 
 ## Performance vs Load Factor
 
