@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.27">
 
-  <meta name="dcterms.date" content="2026-01-12">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Hierarchy of Speed</title>
+  <meta name="dcterms.date" content="2026-03-02">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Trees as Recursive Structures</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -129,11 +129,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 2, Monday">
+<meta property="og:title" content="Trees as Recursive Structures – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 8, Monday">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 2, Monday">
+<meta name="twitter:title" content="Trees as Recursive Structures – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 8, Monday">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -141,39 +141,70 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The Hierarchy of Speed</h1>
-  <p class="subtitle">Week 2, Monday</p>
+  <h1 class="title">Trees as Recursive Structures</h1>
+  <p class="subtitle">Week 8, Monday</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 12, 2026</p>
+  <p class="date">March 2, 2026</p>
 </section>
-<section id="announcements" class="slide level2">
-<h2>Announcements</h2>
+<section id="pacing-overview-80-min-total" class="slide level2 notes">
+<h2>PACING OVERVIEW (80 min total)</h2>
+<p><strong>Part 1: Wordle Hook (10 min)</strong></p>
 <ul>
-<li>Labs begin this week!
+<li>Play 1-2 rounds of Wordle as a class</li>
+<li>Brief discussion: what makes a good guess?</li>
+<li>Introduce the idea that strategy = decision tree</li>
+</ul>
+<p><strong>Part 2: Jotto Activity (25 min)</strong></p>
 <ul>
-<li>Monday 1-3pm or Tuesday 4-6pm</li>
-</ul></li>
+<li>Explain rules and scoring (5 min)</li>
+<li>Hand out card decks, groups design strategies (15 min)</li>
+<li>Debrief: what first guess did you choose? why? (5 min)</li>
+</ul>
+<p><strong>Part 3: Tree Definitions (15 min)</strong></p>
+<ul>
+<li>“Why Trees?” slide - quick tour of applications</li>
+<li>Knuth quote + “what’s special?” (connected, acyclic)</li>
+<li>Tree Terminology discovery questions (students answer)</li>
+<li>Vocabulary reference slide (skim - definitions are intuitive)</li>
+</ul>
+<p><strong>Part 4: Binary Trees &amp; Recursion (20 min)</strong></p>
+<ul>
+<li>Binary tree definition and recursive structure</li>
+<li>Height/node count relationship</li>
+<li>Why height matters for efficiency</li>
+<li>Connect back to Wordle/Jotto: height = worst-case guesses</li>
+</ul>
+<p><strong>Part 5: Wrap-up (10 min)</strong></p>
+<ul>
+<li>Back to Wordle: decision tree perspective</li>
+<li>Summary slide</li>
+<li>Preview BSTs (Wednesday)</li>
 </ul>
 </section>
-<section>
-<section id="warm-up-code-analysis" class="title-slide slide level1 center">
-<h1>Warm-up: Code Analysis</h1>
-
+<section id="section" class="slide level2">
+<h2></h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../images/TreeAdvice.jpeg" class="quarto-figure quarto-figure-center" height="550"></p>
+</figure>
+</div>
 </section>
-<section id="rules" class="slide level2">
-<h2>Rules</h2>
-<p>For <span class="math inline">\(T(n)\)</span>, the running time of an algorithm on input of size <span class="math inline">\(n\)</span>…</p>
-<ol type="1">
-<li>Constants don’t matter: <span class="math inline">\(5n = O(n)\)</span></li>
-<li>Lower terms don’t matter: <span class="math inline">\(n^2 + n = O(n^2)\)</span></li>
-<li>Log base doesn’t matter: <span class="math inline">\(log_2 n = O(log_{10}n)\)</span></li>
-</ol>
+<section id="lets-play-wordle" class="slide level2 activity">
+<h2>Let’s Play Wordle!</h2>
+<p>I’m thinking of a 5-letter word.</p>
+<p>You have <strong>6 guesses</strong>.</p>
+<p>After each guess, I’ll tell you:</p>
+<ul>
+<li>🟩 Green: Right letter, right position</li>
+<li>🟨 Yellow: Right letter, wrong position</li>
+<li>⬜ Gray: Letter not in word</li>
+</ul>
+<p><strong>Let’s play as a class!</strong></p>
 <aside class="notes">
-<p>“What’s the intuition for #3?”</p>
-<p>All logs differ by a constant factor. log₂n = log₁₀n / log₁₀2</p>
+<p>Actually play 2-3 rounds with the class. Pick words ahead of time. Have students suggest guesses, vote on which to try. Track remaining possibilities on the board. Good words to use: CRANE, SLATE, MOIST, CHARM, PLUMB (words with common letters for game 1, then trickier ones).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -186,57 +217,199 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="example-1" class="slide level2">
-<h2>Example 1</h2>
-<div>
-<div id="pyodide-1" class="exercise-cell">
-
-</div>
-<script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGNvbXB1dGVNZWFuKGFycik6XG4gICAgdG90YWwgPSAwXG4gICAgZm9yIHggaW4gYXJyOlxuICAgICAgICB0b3RhbCArPSB4XG4gICAgcmV0dXJuIHRvdGFsIC8gbGVuKGFycikifQ==
-</script>
-</div>
+<section id="section-1" class="slide level2" data-background-iframe="https://www.nytimes.com/games/wordle/index.html" data-background-interactive="true">
+<h2></h2>
+<aside class="notes">
+<p>If you have internet, you can play the actual game. Otherwise, run it manually on the board.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-strategy-did-we-use" class="slide level2">
+<h2>What Strategy Did We Use?</h2>
+<p>Think about how we played:</p>
+<ul>
+<li>What made a guess “good”?</li>
+<li>How did we narrow down possibilities?</li>
+<li>Did we have a system, or was it intuition?</li>
+</ul>
+</section>
+<section id="the-strategy-question" class="slide level2">
+<h2>The Strategy Question</h2>
+<p>Every guess <strong>splits</strong> the remaining possibilities.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">8</th>
-<th style="text-align: center;">9</th>
-<th style="text-align: center;">10</th>
-<th style="text-align: center;">11</th>
+<th>Guess</th>
+<th>Feedback</th>
+<th>Words eliminated</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
+<td>CRANE</td>
+<td>⬜🟨⬜⬜🟩</td>
+<td>Most words without R and E in those spots</td>
+</tr>
+<tr class="even">
+<td>STORE</td>
+<td>🟩⬜🟩🟨🟩</td>
+<td>Now we know S, O, E positions + R somewhere</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td>…</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Good guesses split possibilities evenly.</strong></p>
+</section>
+<section id="visualizing-the-strategy" class="slide level2">
+<h2>Visualizing the Strategy</h2>
+<p>What if we drew every possible game?</p>
+<pre><code>                         SALET (first guess)
+                        /       |        \        ...
+                 🟩⬜⬜⬜⬜    🟨⬜⬜⬜⬜    🟩🟩⬜⬜⬜     ...
+                    /           |            \
+      SHIRK, SHOWY, SPICY   CRISP, MUSIC   SAPPY, SANDY
+      SWORN, SNOWY, ...     PRISM, ...     SAUCY, ...</code></pre>
+<p>Each follow-up guess is <strong>consistent</strong> with prior feedback.</p>
+<p>Each path from top to bottom is one game. This is a <strong>tree</strong>!</p>
+</section>
+<section id="the-wordle-decision-tree" class="slide level2">
+<h2>The Wordle Decision Tree</h2>
+<p>This structure has a name: a <strong>decision tree</strong>.</p>
 <ul>
-<li>Python questions?</li>
-<li>What’s the worst-case running time?</li>
+<li><strong>Root</strong>: First guess</li>
+<li><strong>Branches</strong>: Possible feedback patterns (there are _______)</li>
+<li><strong>Internal nodes</strong>: Follow-up guesses</li>
+<li><strong>Leaves</strong>: The answer (game over!)</li>
 </ul>
+<p>The <strong>height</strong> of this tree = worst-case guesses needed.</p>
+</section>
+<section id="the-optimal-strategy-question" class="slide level2">
+<h2>The Optimal Strategy Question</h2>
+<p><strong>Question</strong>: What first guess gives the <em>best</em> tree?</p>
+<p>What does best mean?</p>
+<p>Research answer: <strong>SALET</strong>, <strong>REAST</strong>, <strong>CRATE</strong>, <strong>TRACE</strong></p>
+</section>
+<section id="letter-jotto-lets-build-a-strategy" class="slide level2 activity smaller">
+<h2>3-Letter Jotto: Let’s Build a Strategy</h2>
+<p><strong>The setup:</strong></p>
+<ul>
+<li>There are 16 possible secret words</li>
+<li>You guess a word; the response is the count of letters in common (0, 1, 2, or 3)</li>
+<li>You can only guess words that are still consistent with previous responses</li>
+</ul>
+<p><strong>Your task:</strong> Design a strategy — an algorithm that tells you what to guess in every situation, for any secret word.</p>
+<p><strong>Specify your strategy:</strong></p>
+<ol type="1">
+<li>What’s your <strong>first guess</strong>?</li>
+<li>For each possible response (0, 1, 2, or 3), what do you guess <strong>next</strong>?</li>
+<li>And so on, until you’ve identified the secret word.</li>
+</ol>
+</section>
+<section id="jotto-scoring-examples" class="slide level2">
+<h2>Jotto Scoring Examples</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Secret</th>
+<th>Guess</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>FOX</td>
+<td>JOG</td>
+<td>1</td>
+<td>O matches</td>
+</tr>
+<tr class="even">
+<td>DEW</td>
+<td>YAK</td>
+<td>0</td>
+<td>No letters in common</td>
+</tr>
+<tr class="odd">
+<td>NIP</td>
+<td>INK</td>
+<td>2</td>
+<td>I and N match</td>
+</tr>
+<tr class="even">
+<td>WOO</td>
+<td>MOB</td>
+<td>1</td>
+<td>O matches (counted once)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-16-words" class="slide level2">
+<h2>The 16 Words</h2>
+<pre><code>DEW  FOX  GEL  INK
+JOG  MOB  NAP  NIP
+NOR  NUT  OAT  OIL
+PUG  SOY  WOO  YAK</code></pre>
+</section>
+<section id="example-first-guess-nip" class="slide level2">
+<h2>Example: First Guess NIP</h2>
+<svg viewbox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 500px; display: block; margin: 0 auto;">
+  <!-- Edges -->
+  <line x1="250" y1="40" x2="70" y2="120" stroke="#333" stroke-width="2"></line>
+  <line x1="250" y1="40" x2="190" y2="120" stroke="#333" stroke-width="2"></line>
+  <line x1="250" y1="40" x2="320" y2="120" stroke="#333" stroke-width="2"></line>
+  <line x1="250" y1="40" x2="430" y2="120" stroke="#333" stroke-width="2"></line>
+
+  <!-- Edge labels -->
+  <text x="145" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">0</text>
+  <text x="210" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">1</text>
+  <text x="295" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">2</text>
+  <text x="355" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">3</text>
+
+  <!-- Root node -->
+  <rect x="210" y="20" width="80" height="30" rx="5" fill="#3498db"></rect>
+  <text x="250" y="40" text-anchor="middle" fill="white" font-weight="bold" font-size="14">NIP</text>
+
+  <!-- Score 0 box -->
+  <rect x="10" y="110" width="120" height="150" rx="5" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"></rect>
+  <text x="70" y="130" text-anchor="middle" font-size="11" fill="#333">DEW  FOX  GEL</text>
+  <text x="70" y="148" text-anchor="middle" font-size="11" fill="#333">JOG  MOB  OAT</text>
+  <text x="70" y="166" text-anchor="middle" font-size="11" fill="#333">SOY  WOO  YAK</text>
+  <text x="70" y="195" text-anchor="middle" font-size="12" fill="#666" font-style="italic">(9 words)</text>
+
+  <!-- Score 1 box -->
+  <rect x="145" y="110" width="90" height="150" rx="5" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"></rect>
+  <text x="190" y="135" text-anchor="middle" font-size="11" fill="#333">NOR  NUT</text>
+  <text x="190" y="155" text-anchor="middle" font-size="11" fill="#333">OIL  PUG</text>
+  <text x="190" y="195" text-anchor="middle" font-size="12" fill="#666" font-style="italic">(4 words)</text>
+
+  <!-- Score 2 box -->
+  <rect x="255" y="110" width="90" height="150" rx="5" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"></rect>
+  <text x="300" y="145" text-anchor="middle" font-size="11" fill="#333">INK  NAP</text>
+  <text x="300" y="195" text-anchor="middle" font-size="12" fill="#666" font-style="italic">(2 words)</text>
+
+  <!-- Score 3 box (leaf) -->
+  <rect x="380" y="110" width="100" height="150" rx="5" fill="#2ecc71" stroke="#27ae60" stroke-width="1"></rect>
+  <text x="430" y="145" text-anchor="middle" font-size="12" fill="white" font-weight="bold">NIP</text>
+  <text x="430" y="170" text-anchor="middle" font-size="11" fill="white">(done!)</text>
+</svg>
+<p>Each pile contains words <strong>consistent</strong> with that score.</p>
 <aside class="notes">
-<p>One pass through the array. <span class="math inline">\(\Theta(n)\)</span>, tight.</p>
-<p>“We’ll see this again later with pandas.”</p>
+<p>Hand out card decks. Give students 5-7 minutes to play a few rounds, then regroup to discuss strategy.</p>
+<p>Key questions to seed: - What’s a good first guess? Why? - Did anyone try guessing similar words in a row (CAT, BAT, HAT)? How did that go? - What’s the worst case — how many guesses could it take?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -249,220 +422,276 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGNvbXB1dGVNZWFuKGFy
           display:block!important;
       }</style></aside>
 </section>
-<section id="example-2" class="slide level2 smaller">
-<h2>Example 2</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div>
-<div id="pyodide-2" class="exercise-cell">
-
-</div>
-<script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxuZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgZm9yIGogaW4gcmFuZ2Uobik6XG4gICAgICAgIGNvdW50ICs9IDEifQ==
-</script>
-</div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
+<section id="what-strategy-did-you-discover" class="slide level2">
+<h2>What Strategy Did You Discover?</h2>
+<p>Discussion questions:</p>
 <ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 17th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 32nd element counted?</p></li>
-<li><p>What’s the worst-case running time?</p></li>
+<li>What makes a “good” first guess?</li>
+<li>What happens if you guess CAT, then BAT, then HAT?</li>
+<li>Can you <strong>always</strong> win in 2 guesses? Why or why not?</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<div id="9626718f" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02_mon_hierarchy_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
+<aside class="notes">
+<p>Lead into: the strategy IS a tree! Each guess partitions the remaining words by their Jotto score (0, 1, 2, or 3). Good guesses split evenly. Bad guesses leave big partitions.</p>
+<p>Lower bound discussion: With 4 outcomes per guess and 16 words, theoretically log₄(16) = 2 guesses should suffice. But no word achieves a perfect 4-way split!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-trees" class="slide level2">
+<h2>Why Trees?</h2>
+<p>Trees appear everywhere in computer science:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Domain</th>
+<th>Tree Structure</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>File systems</td>
+<td>Directories contain subdirectories</td>
+</tr>
+<tr class="even">
+<td>HTML/DOM</td>
+<td>Elements contain child elements</td>
+</tr>
+<tr class="odd">
+<td>Decision making</td>
+<td>Each choice leads to sub-choices</td>
+</tr>
+<tr class="even">
+<td>Classification</td>
+<td>“Is it X? If yes, go left…”</td>
+</tr>
+<tr class="odd">
+<td>Game AI</td>
+<td>Possible moves branch into more moves</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="trees-the-most-important-nonlinear-structure" class="slide level2 smaller">
+<h2>Trees: The Most Important Nonlinear Structure</h2>
+<blockquote>
+<p>“Trees are the most important nonlinear structure in computer science.”</p>
+<p>— Donald Knuth, <em>The Art of Computer Programming</em></p>
+</blockquote>
+<p>What’s special about this structure? ________________________</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<svg viewbox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" style="max-width: 180px;">
+  <!-- Edges -->
+  <line x1="60" y1="40" x2="100" y2="100" stroke="#333" stroke-width="2"></line>
+  <line x1="140" y1="40" x2="100" y2="100" stroke="#333" stroke-width="2"></line>
+  <line x1="160" y1="100" x2="100" y2="100" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="100" x2="60" y2="160" stroke="#333" stroke-width="2"></line>
+  <line x1="60" y1="160" x2="60" y2="220" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes -->
+  <circle cx="60" cy="40" r="18" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="60" y="45" text-anchor="middle" font-size="14">1</text>
+
+  <circle cx="140" cy="40" r="18" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="140" y="45" text-anchor="middle" font-size="14">2</text>
+
+  <circle cx="160" cy="100" r="18" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="160" y="105" text-anchor="middle" font-size="14">3</text>
+
+  <circle cx="100" cy="100" r="18" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="100" y="105" text-anchor="middle" font-size="14">4</text>
+
+  <circle cx="60" cy="160" r="18" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="60" y="165" text-anchor="middle" font-size="14">5</text>
+
+  <circle cx="60" cy="220" r="18" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="60" y="225" text-anchor="middle" font-size="14">6</text>
+</svg>
+</div><div class="column" style="width:60%;">
+
+</div></div>
+</section>
+<section id="tree-terminology" class="slide level2 smaller">
+<h2>Tree Terminology</h2>
+<div class="columns">
+<div class="column" style="width:35%;">
+<svg viewbox="0 0 320 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 280px;">
+  <!-- Tree: a(root) -> b -> (c,d), c -> (e,f), d -> g -> h -> (i,j) -->
+  <!-- Structure gives: b, g, h have parent but no sibling = "bgh" -->
+  <!-- Edges -->
+  <line x1="160" y1="20" x2="160" y2="45" stroke="#333" stroke-width="2"></line>
+  <line x1="160" y1="65" x2="80" y2="100" stroke="#333" stroke-width="2"></line>
+  <line x1="160" y1="65" x2="240" y2="100" stroke="#333" stroke-width="2"></line>
+  <line x1="80" y1="120" x2="40" y2="155" stroke="#333" stroke-width="2"></line>
+  <line x1="80" y1="120" x2="120" y2="155" stroke="#333" stroke-width="2"></line>
+  <line x1="240" y1="120" x2="240" y2="155" stroke="#333" stroke-width="2"></line>
+  <line x1="240" y1="175" x2="240" y2="210" stroke="#333" stroke-width="2"></line>
+  <line x1="240" y1="230" x2="200" y2="265" stroke="#333" stroke-width="2"></line>
+  <line x1="240" y1="230" x2="280" y2="265" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes -->
+  <circle cx="160" cy="20" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="160" y="25" text-anchor="middle" font-size="13">a</text>
+
+  <circle cx="160" cy="65" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="160" y="70" text-anchor="middle" font-size="13">b</text>
+
+  <circle cx="80" cy="120" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="80" y="125" text-anchor="middle" font-size="13">c</text>
+
+  <circle cx="240" cy="120" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="240" y="125" text-anchor="middle" font-size="13">d</text>
+
+  <circle cx="40" cy="175" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="40" y="180" text-anchor="middle" font-size="13">e</text>
+
+  <circle cx="120" cy="175" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="120" y="180" text-anchor="middle" font-size="13">f</text>
+
+  <circle cx="240" cy="175" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="240" y="180" text-anchor="middle" font-size="13">g</text>
+
+  <circle cx="240" cy="230" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="240" y="235" text-anchor="middle" font-size="13">h</text>
+
+  <circle cx="200" cy="280" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="200" y="285" text-anchor="middle" font-size="13">i</text>
+
+  <circle cx="280" cy="280" r="16" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="280" y="285" text-anchor="middle" font-size="13">j</text>
+</svg>
+</div><div class="column" style="width:65%;">
+<ul>
+<li>One of the vertices is called the <span class="red">root</span> of the tree. Guess which one it is.</li>
+<li>Make an English word containing the names of the vertices that have a <span class="red">parent</span> but no <span class="red">sibling</span>.</li>
+<li>How many <span class="red">parents</span> does each vertex have?</li>
+<li>Which vertex has the fewest <span class="red">children</span>?</li>
+<li>Which vertex has the most <span class="red">ancestors</span>? <span class="red">descendants</span>?</li>
+<li>What is d’s <span class="red">depth</span>? What is d’s <span class="red">height</span>?</li>
+<li>List all the vertices in b’s left <span class="red">subtree</span>.</li>
+<li>List all the <span class="red">leaves</span> in the tree.</li>
+</ul>
+</div></div>
+</section>
+<section id="tree-vocabulary-reference" class="slide level2 smaller">
+<h2>Tree Vocabulary (reference)</h2>
+<div class="columns">
+<div class="column" style="width:35%;">
+<svg viewbox="0 0 320 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 240px;">
+  <!-- Same tree as previous slide -->
+  <line x1="160" y1="20" x2="160" y2="45" stroke="#333" stroke-width="2"></line>
+  <line x1="160" y1="65" x2="80" y2="100" stroke="#333" stroke-width="2"></line>
+  <line x1="160" y1="65" x2="240" y2="100" stroke="#333" stroke-width="2"></line>
+  <line x1="80" y1="120" x2="40" y2="155" stroke="#333" stroke-width="2"></line>
+  <line x1="80" y1="120" x2="120" y2="155" stroke="#333" stroke-width="2"></line>
+  <line x1="240" y1="120" x2="240" y2="155" stroke="#333" stroke-width="2"></line>
+  <line x1="240" y1="175" x2="240" y2="210" stroke="#333" stroke-width="2"></line>
+  <line x1="240" y1="230" x2="200" y2="265" stroke="#333" stroke-width="2"></line>
+  <line x1="240" y1="230" x2="280" y2="265" stroke="#333" stroke-width="2"></line>
+  <circle cx="160" cy="20" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="160" y="24" text-anchor="middle" font-size="12">a</text>
+  <circle cx="160" cy="65" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="160" y="69" text-anchor="middle" font-size="12">b</text>
+  <circle cx="80" cy="120" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="80" y="124" text-anchor="middle" font-size="12">c</text>
+  <circle cx="240" cy="120" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="240" y="124" text-anchor="middle" font-size="12">d</text>
+  <circle cx="40" cy="175" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="40" y="179" text-anchor="middle" font-size="12">e</text>
+  <circle cx="120" cy="175" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="120" y="179" text-anchor="middle" font-size="12">f</text>
+  <circle cx="240" cy="175" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="240" y="179" text-anchor="middle" font-size="12">g</text>
+  <circle cx="240" cy="230" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="240" y="234" text-anchor="middle" font-size="12">h</text>
+  <circle cx="200" cy="280" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="200" y="284" text-anchor="middle" font-size="12">i</text>
+  <circle cx="280" cy="280" r="14" fill="white" stroke="#333" stroke-width="2"></circle>
+  <text x="280" y="284" text-anchor="middle" font-size="12">j</text>
+</svg>
+</div><div class="column" style="width:65%;">
+<ul>
+<li><span class="red">root</span>: the single node with no parent</li>
+<li><span class="red">leaf</span>: a node with no children</li>
+<li><span class="red">child</span>: a node pointed to by me</li>
+<li><span class="red">parent</span>: the node that points to me</li>
+<li><span class="red">sibling</span>: another child of my parent</li>
+<li><span class="red">ancestor</span>: my parent or my parent’s ancestor</li>
+<li><span class="red">descendant</span>: my child or my child’s descendant</li>
+<li><span class="red">subtree</span>: a node and its descendants</li>
+<li><span class="red">depth</span> of node x: number of edges on path from root to x</li>
+<li><span class="red">height</span> of node x: number of edges on longest path from x to a leaf</li>
+</ul>
+</div></div>
+</section>
+<section id="d-ary-tree-definition" class="slide level2">
+<h2><em>d-ary</em> Tree Definition</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>A <strong>d-ary tree</strong> T is either:</p>
+<ul>
+<li>_______________________________________</li>
+</ul>
+<p>OR</p>
+<ul>
+<li>_______________________________________</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<svg viewbox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 240px;">
+  <!-- A 3-ary tree with ~10 nodes, each subtree of root a different color -->
+  <!-- Root (black) -->
+  <!-- Left subtree (red/pink) -->
+  <!-- Middle subtree (green) -->
+  <!-- Right subtree (blue) -->
+
+  <!-- Edges from root -->
+  <line x1="130" y1="25" x2="50" y2="75" stroke="#d62828" stroke-width="2"></line>
+  <line x1="130" y1="25" x2="130" y2="75" stroke="#2a9d2a" stroke-width="2"></line>
+  <line x1="130" y1="25" x2="210" y2="75" stroke="#0077b6" stroke-width="2"></line>
+
+  <!-- Left subtree edges (red) -->
+  <line x1="50" y1="95" x2="25" y2="145" stroke="#d62828" stroke-width="2"></line>
+  <line x1="50" y1="95" x2="75" y2="145" stroke="#d62828" stroke-width="2"></line>
+
+  <!-- Middle subtree edges (green) -->
+  <line x1="130" y1="95" x2="105" y2="145" stroke="#2a9d2a" stroke-width="2"></line>
+  <line x1="130" y1="95" x2="130" y2="145" stroke="#2a9d2a" stroke-width="2"></line>
+  <line x1="130" y1="95" x2="155" y2="145" stroke="#2a9d2a" stroke-width="2"></line>
+
+  <!-- Right subtree edges (blue) -->
+  <line x1="210" y1="95" x2="235" y2="145" stroke="#0077b6" stroke-width="2"></line>
+
+  <!-- Root node -->
+  <circle cx="130" cy="25" r="16" fill="#333"></circle>
+
+  <!-- Left subtree nodes (red) -->
+  <circle cx="50" cy="85" r="14" fill="#d62828"></circle>
+  <circle cx="25" cy="155" r="14" fill="#d62828"></circle>
+  <circle cx="75" cy="155" r="14" fill="#d62828"></circle>
+
+  <!-- Middle subtree nodes (green) -->
+  <circle cx="130" cy="85" r="14" fill="#2a9d2a"></circle>
+  <circle cx="105" cy="155" r="14" fill="#2a9d2a"></circle>
+  <circle cx="130" cy="155" r="14" fill="#2a9d2a"></circle>
+  <circle cx="155" cy="155" r="14" fill="#2a9d2a"></circle>
+
+  <!-- Right subtree nodes (blue) -->
+  <circle cx="210" cy="85" r="14" fill="#0077b6"></circle>
+  <circle cx="235" cy="155" r="14" fill="#0077b6"></circle>
+</svg>
 </div></div>
 <aside class="notes">
-<p>Let them trace: i=2, j=4 for 17th. i=5, j=1 for 32nd.</p>
-<p>“Predict for n = 8?” (64)</p>
-<p>Double n → QUADRUPLE the work. <span class="math inline">\(\Theta(n^2)\)</span>, tight.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="example-3" class="slide level2 smaller">
-<h2>Example 3</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div>
-<div id="pyodide-3" class="exercise-cell">
-
-</div>
-<script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxuZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgZm9yIGogaW4gcmFuZ2UoaSk6XG4gICAgICAgIGNvdW50ICs9IDEifQ==
-</script>
-</div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
-<ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 4th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 12th element counted?</p></li>
-<li><p>What’s the worst-case running time?</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div id="e767cebe" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02_mon_hierarchy_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-<aside class="notes">
-<p>i=2: j=0,1 (2 elements). i=3: j=0,1,2 (3 elements). So 4th is i=3, j=0.</p>
-<p><span class="math inline">\(0 + 1 + 2 + \ldots + (n-1) = n(n-1)/2\)</span></p>
-<p>Still <span class="math inline">\(\Theta(n^2)\)</span>, tight! The triangle is half the square.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="from-last-week" class="title-slide slide level1 center">
-<h1>From Last Week</h1>
-
-</section>
-<section id="the-two-pillars" class="slide level2">
-<h2>The Two Pillars</h2>
-<ol type="1">
-<li><strong>Correctness</strong> — Does it work?</li>
-<li><strong>Efficiency</strong> — How fast?</li>
-</ol>
-<aside class="notes">
-<p>“Last week: efficiency. This week: we add correctness.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-analysis-recipe" class="slide level2">
-<h2>The Analysis Recipe</h2>
-<ol type="1">
-<li><strong>Establish the case</strong> — usually worst case</li>
-<li><strong>Analyze the function</strong> — count operations for that case</li>
-<li><strong>State the bound:</strong>
-<ul>
-<li><span class="math inline">\(\Theta\)</span> (or “tight <span class="math inline">\(O\)</span>”) if you know it’s exact</li>
-<li><span class="math inline">\(O\)</span> if you’re only claiming an upper bound</li>
-<li><span class="math inline">\(\Omega\)</span> if you’re only claiming a lower bound</li>
-</ul></li>
-</ol>
-<aside class="notes">
-<p>“When we say ‘binary search is <span class="math inline">\(O(\log n)\)</span>’ we mean it’s <em>tight</em> — <span class="math inline">\(\Theta(\log n)\)</span>. We’re not hedging.”</p>
-<p>“First: which case? Then: what’s the function? Then: is it tight or just a bound?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="the-hierarchy" class="title-slide slide level1 center">
-<h1>The Hierarchy</h1>
-
-</section>
-<section id="big-o-is-a-set" class="slide level2">
-<h2>Big-<span class="math inline">\(O\)</span> is a Set</h2>
-<p><span class="math inline">\(O(g(n))\)</span> is the <strong>set</strong> of all functions <span class="math inline">\(f(n)\)</span> satisfying the definition.</p>
-<p><span class="math display">\[O(n) = \{f(n) : \exists c &gt; 0, n_0 \geq 0 \text{ such that } f(n) \leq c \cdot n \text{ for all } n \geq n_0\}\]</span></p>
-<aside class="notes">
-<p>“From discrete math: Big-O defines a SET of functions.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-ladder" class="slide level2">
-<h2>The Ladder</h2>
-<p><span class="math display">\[O(1) \subset O(\log n) \subset O(n) \subset O(n \log n) \subset O(n^2) \subset O(2^n)\]</span></p>
-<p>Each class contains all the ones to its left.</p>
-<aside class="notes">
-<p>“Every <span class="math inline">\(O(1)\)</span> function is also <span class="math inline">\(O(n)\)</span>, also <span class="math inline">\(O(n^2)\)</span>, etc.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="a-common-abuse-of-notation" class="slide level2">
-<h2>A Common Abuse of Notation</h2>
-<p>We write: <span class="math inline">\(\quad 4n + 2 = O(n)\)</span></p>
-<p>We mean: <span class="math inline">\(\quad 4n + 2 \in O(n)\)</span></p>
-<aside class="notes">
-<p>“You’ll see this everywhere. Just remember: we’re really talking about set membership.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="true-or-false" class="slide level2 activity">
-<h2>True or False?</h2>
-<ul>
-<li><span class="math inline">\(3n + 2 \in O(n)\)</span></li>
-<li><span class="math inline">\(3n + 2 \in O(n^2)\)</span></li>
-<li><span class="math inline">\(n^2 \in O(n)\)</span></li>
-<li><span class="math inline">\(5 \in O(1)\)</span></li>
-<li><span class="math inline">\(5 \in O(n)\)</span></li>
-</ul>
-<aside class="notes">
-<p>T, T, F, T, T</p>
-<p>“If <span class="math inline">\(f \in O(g)\)</span> and <span class="math inline">\(O(g) \subset O(h)\)</span>, then <span class="math inline">\(f \in O(h)\)</span>.”</p>
-<p>“Let’s see what these mean at scale.”</p>
+<p>Fill in via annotation: - Empty (no nodes) - A root node with up to d subtrees (each a d-ary tree)</p>
+<p>Binary tree = d-ary tree with d=2</p>
+<p>The tree shown has d=3 (ternary). Each subtree of the root is colored differently to emphasize the recursive structure.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -476,11 +705,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxu
       }</style></aside>
 
 
-<script type="pyodide-data">
-eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
-</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -493,7 +719,7 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2RO
 <script type="vfs-file">
 W10=
 </script>
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

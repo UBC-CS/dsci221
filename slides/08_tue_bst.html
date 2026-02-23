@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.27">
 
-  <meta name="dcterms.date" content="2026-01-19">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Invariant Detective</title>
+  <meta name="dcterms.date" content="2026-03-03">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Binary Search Trees</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -195,11 +195,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="The Invariant Detective – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 3, Monday">
+<meta property="og:title" content="Binary Search Trees – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 8, Tuesday (Video)">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="The Invariant Detective – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 3, Monday">
+<meta name="twitter:title" content="Binary Search Trees – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 8, Tuesday (Video)">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -207,551 +207,529 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The Invariant Detective</h1>
-  <p class="subtitle">Week 3, Monday</p>
+  <h1 class="title">Binary Search Trees</h1>
+  <p class="subtitle">Week 8, Tuesday (Video)</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 19, 2026</p>
+  <p class="date">March 3, 2026</p>
 </section>
-<section>
-<section id="warm-up-a-frozen-algorithm" class="title-slide slide level1 center">
-<h1>Warm-up: A Frozen Algorithm</h1>
-
+<section id="slides-moved-from-monday-lecture" class="slide level2 notes">
+<h2>Slides moved from Monday lecture</h2>
+<p>The following slides were moved from the Monday lecture on Trees. You’ll likely want to reorganize/edit these significantly.</p>
 </section>
-<section id="the-scene" class="slide level2">
-<h2>The Scene</h2>
-<p>An algorithm was running, but we paused it mid-execution.</p>
-<p>Your job: <strong>figure out what it was doing</strong> and <strong>where it stopped</strong>.</p>
-<aside class="notes">
-<p>“Think of this like a crime scene investigation. The clues are in the state.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="puzzle-1-find-maximum" class="title-slide slide level1 center">
-<h1>Puzzle 1: Find Maximum</h1>
-
-</section>
-<section id="puzzle-1-find-maximum-1" class="slide level2 smaller">
-<h2>Puzzle 1: Find Maximum</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> mystery1(arr):</span>
-<span id="cb1-2"><a></a>    result <span class="op">=</span> arr[<span class="dv">0</span>]</span>
-<span id="cb1-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb1-4"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&gt;</span> result:</span>
-<span id="cb1-5"><a></a>            result <span class="op">=</span> arr[i]</span>
-<span id="cb1-6"><a></a>    <span class="cf">return</span> result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
+<section id="height-and-node-count" class="slide level2">
+<h2>Height and Node Count</h2>
+<p><strong>Question</strong>: For a binary tree of height h, what’s the maximum number of nodes?</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
+<th>Height</th>
+<th>Max Nodes</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">8</td>
-</tr>
-</tbody>
-</table>
-<p>Variables: <code>result = 9</code></p>
-</div></div>
-<p><strong>Q1</strong>: What iteration is <code>i</code> about to start?</p>
-<p><strong>Q2</strong>: What does <code>result</code> represent?</p>
-<aside class="notes">
-<p>“Pause and think. What value of i would give us result = 9?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-solution" class="slide level2">
-<h2>The Solution</h2>
-<div id="604011c1" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_mon_invariants_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="756" height="230"></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li><code>i = 3</code> (about to examine index 3)</li>
-<li><code>result = 9</code> = maximum of <code>arr[0:3]</code> = maximum of <code>[7, 3, 9]</code></li>
-</ul>
-<p><strong>The Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, <code>result</code> holds the maximum of <code>arr[0:i]</code>.</p>
-</section>
-<section id="why-this-works" class="slide level2">
-<h2>Why This Works</h2>
-<p>The invariant tells us:</p>
-<ul>
-<li><strong>At i = 1</strong>: <code>result</code> = max of <code>arr[0:1]</code> = max of <code>[7]</code> = 7 ✓</li>
-<li><strong>At i = 2</strong>: <code>result</code> = max of <code>arr[0:2]</code> = max of <code>[7, 3]</code> = 7 ✓</li>
-<li><strong>At i = 3</strong>: <code>result</code> = max of <code>arr[0:3]</code> = max of <code>[7, 3, 9]</code> = 9 ✓</li>
-</ul>
-<p>The frozen state is <strong>consistent</strong> with the invariant at <code>i = 3</code>.</p>
-</section></section>
-<section>
-<section id="puzzle-2-counting" class="title-slide slide level1 center">
-<h1>Puzzle 2: Counting</h1>
-
-</section>
-<section id="puzzle-2-counting-1" class="slide level2 smaller">
-<h2>Puzzle 2: Counting</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> mystery2(arr):</span>
-<span id="cb2-2"><a></a>    count <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb2-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
-<span id="cb2-4"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&gt;</span> <span class="dv">5</span>:</span>
-<span id="cb2-5"><a></a>            count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb2-6"><a></a>    <span class="cf">return</span> count</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">3</td>
-</tr>
-</tbody>
-</table>
-<p>Variables: <code>count = 2</code></p>
-</div></div>
-<p><strong>Q1</strong>: What iteration is <code>i</code> about to start?</p>
-<p><strong>Q2</strong>: State the invariant.</p>
-<aside class="notes">
-<p>“Which elements &gt; 5 have we seen? 8 at index 1, 7 at index 3. That’s 2 elements. So i = 4.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-solution-1" class="slide level2">
-<h2>The Solution</h2>
-<div id="dbf12943" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_mon_invariants_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="754" height="230"></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li>Elements &gt; 5 in <code>arr[0:4]</code> = <code>[4, 8, 2, 7]</code>: <strong>8</strong> and <strong>7</strong> → count = 2</li>
-<li><code>i = 4</code></li>
-</ul>
-<p><strong>The Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, <code>count</code> equals the number of elements &gt; 5 in <code>arr[0:i]</code>.</p>
-</section></section>
-<section>
-<section id="puzzle-3-partitioning" class="title-slide slide level1 center">
-<h1>Puzzle 3: Partitioning</h1>
-
-</section>
-<section id="puzzle-3-partitioning-1" class="slide level2 smaller">
-<h2>Puzzle 3: Partitioning</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> mystery3(arr):</span>
-<span id="cb3-2"><a></a>    pivot <span class="op">=</span> arr[<span class="dv">0</span>]</span>
-<span id="cb3-3"><a></a>    left <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb3-4"><a></a>    <span class="cf">for</span> right <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb3-5"><a></a>        <span class="cf">if</span> arr[right] <span class="op">&lt;</span> pivot:</span>
-<span id="cb3-6"><a></a>            arr[left], arr[right] <span class="op">=</span> arr[right], arr[left]</span>
-<span id="cb3-7"><a></a>            left <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb3-8"><a></a>    arr[<span class="dv">0</span>], arr[left <span class="op">-</span> <span class="dv">1</span>] <span class="op">=</span> arr[left <span class="op">-</span> <span class="dv">1</span>], arr[<span class="dv">0</span>]</span>
-<span id="cb3-9"><a></a>    <span class="cf">return</span> left <span class="op">-</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:45%;">
-<p>Original: <code>[5, 8, 2, 9, 1, 7, 3]</code></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
-</tr>
-</tbody>
-</table>
-<p><code>pivot = 5</code>, <code>left = 3</code></p>
-</div></div>
-<p><strong>Q1</strong>: What iteration is <code>right</code> about to start?</p>
-<p><strong>Q2</strong>: Describe what’s in <code>arr[1:left]</code> and <code>arr[left:right]</code>.</p>
-<aside class="notes">
-<p>“This is trickier. Notice: arr[1:3] = [2, 1] — both &lt; 5. arr[3:?] = ?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-visualization" class="slide level2">
-<h2>The Visualization</h2>
-<div id="1453d1f5" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_mon_invariants_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="688" height="278"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="the-solution-2" class="slide level2">
-<h2>The Solution</h2>
-<ul>
-<li><code>right = 5</code> (about to examine index 5, which has value 7)</li>
-<li><code>arr[1:left]</code> = <code>arr[1:3]</code> = <code>[2, 1]</code> — all &lt; pivot (5)</li>
-<li><code>arr[left:right]</code> = <code>arr[3:5]</code> = <code>[9, 8]</code> — all &gt;= pivot (5)</li>
-</ul>
-<p><strong>The Invariant</strong> (at iteration <code>right</code>):</p>
-<ul>
-<li><code>arr[1:left]</code> contains elements &lt; pivot</li>
-<li><code>arr[left:right]</code> contains elements &gt;= pivot</li>
-<li><code>arr[right:]</code> is unexamined</li>
-</ul>
-<aside class="notes">
-<p>“This is the partition step from quicksort! The invariant maintains two regions.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="the-detective-method" class="title-slide slide level1 center">
-<h1>The Detective Method</h1>
-
-</section>
-<section id="how-to-find-invariants" class="slide level2">
-<h2>How to Find Invariants</h2>
-<ol type="1">
-<li><p><strong>Look at the loop variable</strong>: What does <code>i</code> (or <code>right</code>, etc.) represent?</p></li>
-<li><p><strong>Look at the accumulated state</strong>: What has <code>result</code>, <code>count</code>, <code>left</code> captured so far?</p></li>
-<li><p><strong>State the relationship</strong>: “At iteration <span class="math inline">\(i\)</span>, [variable] holds [property of arr[0:i]]”</p></li>
-<li><p><strong>Verify</strong>: Does the frozen state match your invariant?</p></li>
-</ol>
-</section>
-<section id="common-invariant-patterns" class="slide level2">
-<h2>Common Invariant Patterns</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Pattern</th>
-<th>Example Invariant</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Accumulation</strong></td>
-<td>“<code>total</code> = sum of <code>arr[0:i]</code>”</td>
+<td>0</td>
+<td>1</td>
 </tr>
 <tr class="even">
-<td><strong>Extremum</strong></td>
-<td>“<code>max_val</code> = maximum of <code>arr[0:i]</code>”</td>
+<td>1</td>
+<td>3</td>
 </tr>
 <tr class="odd">
-<td><strong>Counting</strong></td>
-<td>“<code>count</code> = number of X in <code>arr[0:i]</code>”</td>
+<td>2</td>
+<td>7</td>
 </tr>
 <tr class="even">
-<td><strong>Search</strong></td>
-<td>“If target exists, it’s in <code>arr[lo:hi+1]</code>”</td>
+<td>3</td>
+<td>15</td>
 </tr>
 <tr class="odd">
-<td><strong>Partition</strong></td>
-<td>“<code>arr[0:left]</code> satisfies P, <code>arr[left:i]</code> doesn’t”</td>
+<td>h</td>
+<td>?</td>
 </tr>
 </tbody>
 </table>
-</section></section>
-<section>
-<section id="practice-you-try" class="title-slide slide level1 center">
-<h1>Practice: You Try</h1>
-
 </section>
-<section id="puzzle-4" class="slide level2 smaller">
-<h2>Puzzle 4</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> mystery4(arr):</span>
-<span id="cb4-2"><a></a>    total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
-<span id="cb4-4"><a></a>        total <span class="op">+=</span> arr[i] <span class="op">*</span> arr[i]</span>
-<span id="cb4-5"><a></a>    <span class="cf">return</span> total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
+<section id="perfect-binary-trees" class="slide level2">
+<h2>Perfect Binary Trees</h2>
+<p>A <strong>perfect</strong> binary tree has all levels completely filled.</p>
+<p>Nodes at height h: <span class="math inline">\(2^{h+1} - 1\)</span></p>
+<p><strong>Flip it around</strong>: A tree with n nodes has height at least <span class="math inline">\(\log_2(n+1) - 1\)</span>.</p>
+<p>This is <span class="math inline">\(\Omega(\log n)\)</span> — height grows <strong>logarithmically</strong> with nodes.</p>
+</section>
+<section id="why-height-matters" class="slide level2">
+<h2>Why Height Matters</h2>
+<p>Many tree operations take time proportional to height:</p>
+<ul>
+<li>Finding a node</li>
+<li>Inserting a node</li>
+<li>Deleting a node</li>
+</ul>
+<p>If height is <span class="math inline">\(O(\log n)\)</span>: these are <strong>fast</strong> (<span class="math inline">\(O(\log n)\)</span>)</p>
+<p>If height is <span class="math inline">\(O(n)\)</span>: these are <strong>slow</strong> (<span class="math inline">\(O(n)\)</span>)</p>
+<p><strong>Goal</strong>: Keep trees balanced so height stays logarithmic!</p>
+</section>
+<section id="back-to-wordle" class="slide level2">
+<h2>Back to Wordle</h2>
+<p>Remember our decision tree?</p>
+<ul>
+<li>Height = worst-case guesses</li>
+<li>Good first guess = tree with minimum height</li>
+<li>Best guesses split possibilities evenly</li>
+</ul>
+<p>This is a general pattern: <strong>decision trees</strong> model any sequence of choices where each choice narrows down possibilities.</p>
+</section>
+<section id="monday-summary" class="slide level2">
+<h2>Monday Summary</h2>
+<ul>
+<li>Trees are <strong>hierarchical</strong> structures with a root, children, and leaves</li>
+<li><strong>Binary trees</strong> have at most 2 children per node</li>
+<li>Trees are <strong>recursively defined</strong></li>
+<li><strong>Height</strong> determines efficiency of operations</li>
+<li><strong>Decision trees</strong> model choices (like Wordle strategy)</li>
+</ul>
+</section>
+<section id="the-dictionary-problem" class="slide level2">
+<h2>The Dictionary Problem</h2>
+<p>We want to store key-value pairs with fast operations:</p>
+<ul>
+<li><code>insert(key, value)</code>: Add a new entry</li>
+<li><code>find(key)</code>: Look up a value by key</li>
+<li><code>remove(key)</code>: Delete an entry</li>
+</ul>
+<p>Python’s <code>dict</code> does this in O(1) expected time using hashing.</p>
+<p>Can we do it with a <strong>tree</strong>?</p>
+</section>
+<section id="why-trees-instead-of-hash-tables" class="slide level2">
+<h2>Why Trees Instead of Hash Tables?</h2>
+<p>Hash tables give O(1) expected time. Why use trees?</p>
+<p>Trees can do things hash tables can’t:</p>
+<ul>
+<li><strong>Sorted iteration</strong>: Traverse keys in order</li>
+<li><strong>Range queries</strong>: Find all keys between A and B</li>
+<li><strong>Predecessor/successor</strong>: Find the next-smallest key</li>
+<li><strong>No hash function needed</strong>: Works with any comparable type</li>
+</ul>
+</section>
+<section id="the-binary-search-tree-property" class="slide level2">
+<h2>The Binary Search Tree Property</h2>
+<p>A <strong>Binary Search Tree (BST)</strong> is a binary tree where:</p>
+<p>For every node with key k:</p>
+<ul>
+<li>All keys in the <strong>left subtree</strong> are <strong>&lt; k</strong></li>
+<li>All keys in the <strong>right subtree</strong> are <strong>&gt; k</strong></li>
+</ul>
+<p>This property holds for <strong>every</strong> node, not just the root!</p>
+</section>
+<section id="bst-example" class="slide level2">
+<h2>BST Example</h2>
+<svg viewbox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" style="max-width: 400px;">
+  <!-- Edges -->
+  <line x1="200" y1="40" x2="100" y2="100" stroke="#333" stroke-width="2"></line>
+  <line x1="200" y1="40" x2="300" y2="100" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="100" x2="50" y2="160" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="100" x2="150" y2="160" stroke="#333" stroke-width="2"></line>
+  <line x1="300" y1="100" x2="250" y2="160" stroke="#333" stroke-width="2"></line>
+  <line x1="300" y1="100" x2="350" y2="160" stroke="#333" stroke-width="2"></line>
+  <line x1="150" y1="160" x2="130" y2="220" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes -->
+  <circle cx="200" cy="40" r="22" fill="#3498db"></circle>
+  <text x="200" y="47" text-anchor="middle" fill="white" font-weight="bold">38</text>
+
+  <circle cx="100" cy="100" r="22" fill="#3498db"></circle>
+  <text x="100" y="107" text-anchor="middle" fill="white" font-weight="bold">13</text>
+
+  <circle cx="300" cy="100" r="22" fill="#3498db"></circle>
+  <text x="300" y="107" text-anchor="middle" fill="white" font-weight="bold">51</text>
+
+  <circle cx="50" cy="160" r="22" fill="#3498db"></circle>
+  <text x="50" y="167" text-anchor="middle" fill="white" font-weight="bold">10</text>
+
+  <circle cx="150" cy="160" r="22" fill="#3498db"></circle>
+  <text x="150" y="167" text-anchor="middle" fill="white" font-weight="bold">25</text>
+
+  <circle cx="250" cy="160" r="22" fill="#3498db"></circle>
+  <text x="250" y="167" text-anchor="middle" fill="white" font-weight="bold">40</text>
+
+  <circle cx="350" cy="160" r="22" fill="#3498db"></circle>
+  <text x="350" y="167" text-anchor="middle" fill="white" font-weight="bold">84</text>
+
+  <circle cx="130" cy="220" r="22" fill="#3498db"></circle>
+  <text x="130" y="227" text-anchor="middle" fill="white" font-weight="bold">12</text>
+</svg>
+<p>Check: Is every node’s left subtree smaller? Right subtree larger?</p>
+</section>
+<section id="bst-in-python" class="slide level2">
+<h2>BST in Python</h2>
+<p>We can use nested tuples or dictionaries:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="co"># (key, left, right)</span></span>
+<span id="cb1-2"><a></a>bst <span class="op">=</span> (<span class="dv">38</span>,</span>
+<span id="cb1-3"><a></a>       (<span class="dv">13</span>,</span>
+<span id="cb1-4"><a></a>        (<span class="dv">10</span>, <span class="va">None</span>, <span class="va">None</span>),</span>
+<span id="cb1-5"><a></a>        (<span class="dv">25</span>, (<span class="dv">12</span>, <span class="va">None</span>, <span class="va">None</span>), <span class="va">None</span>)),</span>
+<span id="cb1-6"><a></a>       (<span class="dv">51</span>,</span>
+<span id="cb1-7"><a></a>        (<span class="dv">40</span>, <span class="va">None</span>, <span class="va">None</span>),</span>
+<span id="cb1-8"><a></a>        (<span class="dv">84</span>, <span class="va">None</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or define a simple node class for clarity.</p>
+</section>
+<section id="a-simple-node-representation" class="slide level2">
+<h2>A Simple Node Representation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> node(key, left<span class="op">=</span><span class="va">None</span>, right<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb2-2"><a></a>    <span class="co">"""Create a BST node as a dictionary."""</span></span>
+<span id="cb2-3"><a></a>    <span class="cf">return</span> {<span class="st">'key'</span>: key, <span class="st">'left'</span>: left, <span class="st">'right'</span>: right}</span>
+<span id="cb2-4"><a></a></span>
+<span id="cb2-5"><a></a><span class="co"># Build the tree</span></span>
+<span id="cb2-6"><a></a>tree <span class="op">=</span> node(<span class="dv">38</span>,</span>
+<span id="cb2-7"><a></a>    left<span class="op">=</span>node(<span class="dv">13</span>,</span>
+<span id="cb2-8"><a></a>        left<span class="op">=</span>node(<span class="dv">10</span>),</span>
+<span id="cb2-9"><a></a>        right<span class="op">=</span>node(<span class="dv">25</span>, left<span class="op">=</span>node(<span class="dv">12</span>))),</span>
+<span id="cb2-10"><a></a>    right<span class="op">=</span>node(<span class="dv">51</span>,</span>
+<span id="cb2-11"><a></a>        left<span class="op">=</span>node(<span class="dv">40</span>),</span>
+<span id="cb2-12"><a></a>        right<span class="op">=</span>node(<span class="dv">84</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="finding-a-key" class="slide level2">
+<h2>Finding a Key</h2>
+<p>To find a key in a BST:</p>
+<ol type="1">
+<li>Start at the root</li>
+<li>If key == current node’s key: <strong>found it!</strong></li>
+<li>If key &lt; current node’s key: <strong>go left</strong></li>
+<li>If key &gt; current node’s key: <strong>go right</strong></li>
+<li>If we reach None: <strong>not found</strong></li>
+</ol>
+<p>This is <strong>binary search</strong> on a tree structure!</p>
+</section>
+<section id="bst-find-implementation" class="slide level2">
+<h2>BST Find Implementation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> bst_find(tree, key):</span>
+<span id="cb3-2"><a></a>    <span class="co">"""Find a key in a BST. Returns the node or None."""</span></span>
+<span id="cb3-3"><a></a>    <span class="cf">if</span> tree <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb3-4"><a></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb3-5"><a></a></span>
+<span id="cb3-6"><a></a>    <span class="cf">if</span> key <span class="op">==</span> tree[<span class="st">'key'</span>]:</span>
+<span id="cb3-7"><a></a>        <span class="cf">return</span> tree</span>
+<span id="cb3-8"><a></a>    <span class="cf">elif</span> key <span class="op">&lt;</span> tree[<span class="st">'key'</span>]:</span>
+<span id="cb3-9"><a></a>        <span class="cf">return</span> bst_find(tree[<span class="st">'left'</span>], key)</span>
+<span id="cb3-10"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb3-11"><a></a>        <span class="cf">return</span> bst_find(tree[<span class="st">'right'</span>], key)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Running time</strong>: O(height of tree)</p>
+</section>
+<section id="tracing-a-find" class="slide level2">
+<h2>Tracing a Find</h2>
+<p>Find 25 in the tree:</p>
+<pre><code>38 → 25 &lt; 38, go left
+13 → 25 &gt; 13, go right
+25 → Found!</code></pre>
+<p>Only 3 comparisons for a tree of 8 nodes!</p>
+</section>
+<section id="finding-the-minimum" class="slide level2">
+<h2>Finding the Minimum</h2>
+<p>The <strong>smallest</strong> key is always in the <strong>leftmost</strong> node:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> bst_min(tree):</span>
+<span id="cb5-2"><a></a>    <span class="co">"""Find the minimum key in a BST."""</span></span>
+<span id="cb5-3"><a></a>    <span class="cf">if</span> tree <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb5-4"><a></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb5-5"><a></a></span>
+<span id="cb5-6"><a></a>    <span class="cf">if</span> tree[<span class="st">'left'</span>] <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb5-7"><a></a>        <span class="cf">return</span> tree[<span class="st">'key'</span>]</span>
+<span id="cb5-8"><a></a></span>
+<span id="cb5-9"><a></a>    <span class="cf">return</span> bst_min(tree[<span class="st">'left'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>(Similarly, maximum is the rightmost node.)</p>
+</section>
+<section id="inserting-a-key" class="slide level2">
+<h2>Inserting a Key</h2>
+<p>To insert a new key:</p>
+<ol type="1">
+<li>Search for where it would go</li>
+<li>When you reach None, create a new node there</li>
+</ol>
+<p>The new node is always inserted as a <strong>leaf</strong>.</p>
+</section>
+<section id="bst-insert-implementation" class="slide level2">
+<h2>BST Insert Implementation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> bst_insert(tree, key):</span>
+<span id="cb6-2"><a></a>    <span class="co">"""Insert a key into a BST. Returns the new tree."""</span></span>
+<span id="cb6-3"><a></a>    <span class="cf">if</span> tree <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb6-4"><a></a>        <span class="cf">return</span> node(key)</span>
+<span id="cb6-5"><a></a></span>
+<span id="cb6-6"><a></a>    <span class="cf">if</span> key <span class="op">&lt;</span> tree[<span class="st">'key'</span>]:</span>
+<span id="cb6-7"><a></a>        tree[<span class="st">'left'</span>] <span class="op">=</span> bst_insert(tree[<span class="st">'left'</span>], key)</span>
+<span id="cb6-8"><a></a>    <span class="cf">elif</span> key <span class="op">&gt;</span> tree[<span class="st">'key'</span>]:</span>
+<span id="cb6-9"><a></a>        tree[<span class="st">'right'</span>] <span class="op">=</span> bst_insert(tree[<span class="st">'right'</span>], key)</span>
+<span id="cb6-10"><a></a>    <span class="co"># If key == tree['key'], it's a duplicate; do nothing</span></span>
+<span id="cb6-11"><a></a></span>
+<span id="cb6-12"><a></a>    <span class="cf">return</span> tree</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Running time</strong>: O(height)</p>
+</section>
+<section id="building-a-bst" class="slide level2">
+<h2>Building a BST</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">def</span> build_bst(keys):</span>
+<span id="cb7-2"><a></a>    <span class="co">"""Build a BST from a list of keys."""</span></span>
+<span id="cb7-3"><a></a>    tree <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb7-4"><a></a>    <span class="cf">for</span> key <span class="kw">in</span> keys:</span>
+<span id="cb7-5"><a></a>        tree <span class="op">=</span> bst_insert(tree, key)</span>
+<span id="cb7-6"><a></a>    <span class="cf">return</span> tree</span>
+<span id="cb7-7"><a></a></span>
+<span id="cb7-8"><a></a><span class="co"># Build from keys</span></span>
+<span id="cb7-9"><a></a>tree <span class="op">=</span> build_bst([<span class="dv">38</span>, <span class="dv">13</span>, <span class="dv">51</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">84</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <strong>order of insertion</strong> determines the tree shape!</p>
+</section>
+<section id="insertion-order-matters" class="slide level2">
+<h2>Insertion Order Matters</h2>
+<p>Insert: 38, 13, 51, 10, 25, 40, 84</p>
+<pre><code>        38
+       /  \
+     13    51
+    /  \   / \
+   10  25 40  84</code></pre>
+<p>Height: 2 ✓</p>
+</section>
+<section id="insertion-order-matters-1" class="slide level2">
+<h2>Insertion Order Matters</h2>
+<p>Insert: 10, 13, 25, 38, 40, 51, 84 (sorted order!)</p>
+<pre><code>10
+  \
+   13
+     \
+      25
+        \
+         38
+           \
+            ...</code></pre>
+<p>Height: 6 ✗ (This is just a linked list!)</p>
+</section>
+<section id="the-height-problem" class="slide level2">
+<h2>The Height Problem</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
+<th>Tree Shape</th>
+<th>Height</th>
+<th>Find/Insert Time</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">1</td>
+<td>Balanced</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+</tr>
+<tr class="even">
+<td>Degenerate (list)</td>
+<td>O(n)</td>
+<td>O(n)</td>
 </tr>
 </tbody>
 </table>
-<p>Variables: <code>total = 14</code></p>
-</div></div>
-<p><strong>Q1</strong>: What is <code>i</code>? <strong>Q2</strong>: State the invariant.</p>
-<aside class="notes">
-<p>“Think: 2² + 3² + 1² = 4 + 9 + 1 = 14. So i = 3.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p><strong>Worst case</strong>: If we insert sorted data, BST degenerates to a list.</p>
+<p><strong>Solution</strong>: Keep the tree <strong>balanced</strong> (Wednesday’s topic!)</p>
 </section>
-<section id="solution-4" class="slide level2">
-<h2>Solution 4</h2>
-<p><span class="math inline">\(2^2 + 3^2 + 1^2 = 4 + 9 + 1 = 14\)</span></p>
-<p>So <code>i = 3</code> (about to process index 3).</p>
-<p><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, <code>total</code> = sum of squares of <code>arr[0:i]</code>.</p>
+<section id="inorder-traversal-sorted-output" class="slide level2">
+<h2>Inorder Traversal: Sorted Output!</h2>
+<p>Remember inorder traversal? Left, root, right.</p>
+<p>For a BST, this visits keys in <strong>sorted order</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="kw">def</span> inorder(tree):</span>
+<span id="cb10-2"><a></a>    <span class="cf">if</span> tree <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb10-3"><a></a>        <span class="cf">return</span> []</span>
+<span id="cb10-4"><a></a>    <span class="cf">return</span> (inorder(tree[<span class="st">'left'</span>]) <span class="op">+</span></span>
+<span id="cb10-5"><a></a>            [tree[<span class="st">'key'</span>]] <span class="op">+</span></span>
+<span id="cb10-6"><a></a>            inorder(tree[<span class="st">'right'</span>]))</span>
+<span id="cb10-7"><a></a></span>
+<span id="cb10-8"><a></a><span class="co"># Returns: [10, 12, 13, 25, 38, 40, 51, 84]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is why BSTs support sorted iteration!</p>
 </section>
-<section id="puzzle-5" class="slide level2 smaller">
-<h2>Puzzle 5</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> mystery5(arr, target):</span>
-<span id="cb5-2"><a></a>    lo, hi <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(arr) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb5-3"><a></a>    <span class="cf">while</span> lo <span class="op">&lt;=</span> hi:</span>
-<span id="cb5-4"><a></a>        mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">//</span> <span class="dv">2</span></span>
-<span id="cb5-5"><a></a>        <span class="cf">if</span> arr[mid] <span class="op">==</span> target:</span>
-<span id="cb5-6"><a></a>            <span class="cf">return</span> mid</span>
-<span id="cb5-7"><a></a>        <span class="cf">elif</span> arr[mid] <span class="op">&lt;</span> target:</span>
-<span id="cb5-8"><a></a>            lo <span class="op">=</span> mid <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb5-9"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb5-10"><a></a>            hi <span class="op">=</span> mid <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb5-11"><a></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Frozen state: <code>lo = 5</code>, <code>hi = 9</code>, <code>target = 72</code></p>
+<section id="why-inorder-gives-sorted-order" class="slide level2">
+<h2>Why Inorder Gives Sorted Order</h2>
+<p>The BST property guarantees:</p>
+<ul>
+<li>Everything in left subtree &lt; root &lt; everything in right subtree</li>
+</ul>
+<p>Inorder visits left (smaller keys), then root, then right (larger keys).</p>
+<p>So we get keys in ascending order!</p>
+</section>
+<section id="bst-delete-a-key" class="slide level2">
+<h2>BST: Delete a Key</h2>
+<p>Deletion is trickier. Three cases:</p>
+<ol type="1">
+<li><strong>Leaf node</strong>: Just remove it</li>
+<li><strong>One child</strong>: Replace node with its child</li>
+<li><strong>Two children</strong>: Find successor, swap, delete successor</li>
+</ol>
+<p>We won’t implement this in detail, but the idea is straightforward.</p>
+</section>
+<section id="case-1-delete-a-leaf" class="slide level2">
+<h2>Case 1: Delete a Leaf</h2>
+<p>Delete 12:</p>
+<pre><code>Before:           After:
+    25               25
+   /                (nothing)
+  12</code></pre>
+<p>Just remove the node.</p>
+</section>
+<section id="case-2-delete-node-with-one-child" class="slide level2">
+<h2>Case 2: Delete Node with One Child</h2>
+<p>Delete 25 (has left child 12):</p>
+<pre><code>Before:           After:
+    25               12
+   /
+  12</code></pre>
+<p>Replace 25 with its child 12.</p>
+</section>
+<section id="case-3-delete-node-with-two-children" class="slide level2">
+<h2>Case 3: Delete Node with Two Children</h2>
+<p>Delete 13 (has children 10 and 25):</p>
+<ol type="1">
+<li>Find <strong>inorder successor</strong> (smallest in right subtree): 25</li>
+<li>Replace 13’s key with 25</li>
+<li>Delete 25 from right subtree (it’s a leaf or has one child)</li>
+</ol>
+<pre><code>Before:           After:
+    13               25
+   /  \             /  \
+  10   25          10   (25's right)
+       /
+      12</code></pre>
+<p>Wait—this changes the example. Let me fix…</p>
+</section>
+<section id="bst-operations-summary" class="slide level2">
+<h2>BST Operations Summary</h2>
 <table class="caption-top">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">8</th>
-<th style="text-align: center;">9</th>
-<th style="text-align: center;">10</th>
-<th style="text-align: center;">11</th>
-<th style="text-align: center;">12</th>
-<th style="text-align: center;">13</th>
-<th style="text-align: center;">14</th>
-<th style="text-align: center;">15</th>
+<th>Operation</th>
+<th>Time (balanced)</th>
+<th>Time (worst)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">12</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">23</td>
-<td style="text-align: center;">38</td>
-<td style="text-align: center;">56</td>
-<td style="text-align: center;">72</td>
-<td style="text-align: center;">91</td>
-<td style="text-align: center;">95</td>
-<td style="text-align: center;">99</td>
-<td style="text-align: center;">103</td>
-<td style="text-align: center;">110</td>
-<td style="text-align: center;">125</td>
-<td style="text-align: center;">142</td>
+<td>find</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+</tr>
+<tr class="even">
+<td>insert</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+</tr>
+<tr class="odd">
+<td>delete</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+</tr>
+<tr class="even">
+<td>min/max</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+</tr>
+<tr class="odd">
+<td>inorder</td>
+<td>O(n)</td>
+<td>O(n)</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Q1</strong>: What just happened? <strong>Q2</strong>: State the invariant.</p>
+<p>The key insight: <strong>everything depends on height</strong>.</p>
 </section>
-<section id="solution-5" class="slide level2">
-<h2>Solution 5</h2>
+<section id="comparing-dictionary-implementations" class="slide level2">
+<h2>Comparing Dictionary Implementations</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Structure</th>
+<th>Insert</th>
+<th>Find</th>
+<th>Delete</th>
+<th>Sorted Iterate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Unsorted list</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n log n)</td>
+</tr>
+<tr class="even">
+<td>Sorted list</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr class="odd">
+<td>Hash table</td>
+<td>O(1) avg</td>
+<td>O(1) avg</td>
+<td>O(1) avg</td>
+<td>Not possible</td>
+</tr>
+<tr class="even">
+<td>BST (balanced)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<p>BST is a good <strong>all-rounder</strong> when you need sorted access.</p>
+</section>
+<section id="pythons-relationship-to-bsts" class="slide level2">
+<h2>Python’s Relationship to BSTs</h2>
+<p>Python’s <code>dict</code> uses hash tables, not BSTs.</p>
+<p>But BST concepts appear in:</p>
 <ul>
-<li>We’re searching for 72</li>
-<li><code>lo = 5, hi = 9</code> means we’re looking in <code>arr[5:10]</code> = <code>[23, 38, 56, 72, 91]</code></li>
-<li>Previous mid was 4 (value 16 &lt; 72), so we set <code>lo = 5</code></li>
+<li><code>bisect</code> module (binary search on sorted lists)</li>
+<li>Database indexes (B-trees, a generalization)</li>
+<li><code>sortedcontainers</code> library (3rd party)</li>
+<li>Red-black trees in many languages’ standard libraries</li>
 </ul>
-<p><strong>Invariant</strong>: If <code>target</code> is in <code>arr</code>, then <code>target</code> is in <code>arr[lo:hi+1]</code>.</p>
-<aside class="notes">
-<p>“We narrowed from the full array to indices 5-9. The invariant says: if 72 exists, it’s in this range. (And it is — at index 8.)”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="why-this-matters" class="title-slide slide level1 center">
-<h1>Why This Matters</h1>
-
 </section>
-<section id="debugging-with-invariants" class="slide level2">
-<h2>Debugging with Invariants</h2>
-<p>When your code doesn’t work:</p>
-<ol type="1">
-<li><strong>State your invariant</strong> (what <em>should</em> be true?)</li>
-<li><strong>Print the state</strong> at each iteration</li>
-<li><strong>Find where the invariant breaks</strong></li>
-</ol>
-<p>The bug is where reality diverges from the invariant.</p>
-</section>
-<section id="the-invariant-as-compass" class="slide level2">
-<h2>The Invariant as Compass</h2>
-<blockquote>
-<p>“When lost, check the invariant.”</p>
-</blockquote>
+<section id="interactive-visualization" class="slide level2">
+<h2>Interactive Visualization</h2>
+<p>Try building BSTs interactively:</p>
+<p><a href="https://www.cs.usfca.edu/~galles/visualization/BST.html">BST Visualization</a></p>
 <ul>
-<li>Unsure about an edge case? → Does it maintain the invariant?</li>
-<li>Code gives wrong answer? → Where does the invariant fail?</li>
-<li>Writing new code? → What invariant do I want to maintain?</li>
+<li>Insert keys in different orders</li>
+<li>Watch the shape change</li>
+<li>Notice when the tree becomes unbalanced</li>
 </ul>
-</section></section>
-<section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
-
 </section>
-<section id="what-we-learned" class="slide level2">
-<h2>What We Learned</h2>
+<section id="summary-binary-search-trees" class="slide level2">
+<h2>Summary: Binary Search Trees</h2>
+<ul>
+<li><strong>BST property</strong>: left &lt; root &lt; right (recursively)</li>
+<li><strong>Find</strong>: Binary search down the tree</li>
+<li><strong>Insert</strong>: Find where it belongs, add as leaf</li>
+<li><strong>Inorder traversal</strong>: Gives sorted order</li>
+<li><strong>Running time</strong>: O(height)</li>
+<li><strong>Problem</strong>: Height can be O(n) in worst case</li>
+</ul>
+</section>
+<section id="whats-next" class="slide level2">
+<h2>What’s Next</h2>
+<p>Wednesday: <strong>Balanced Trees</strong></p>
+<p>How do we keep a BST balanced after insertions and deletions?</p>
+<ul>
+<li>AVL trees: Maintain height balance</li>
+<li>The guarantee: O(log n) height always</li>
+<li>We’ll see the <strong>idea</strong>, not the implementation details</li>
+</ul>
+</section>
+<section id="practice-problems" class="slide level2">
+<h2>Practice Problems</h2>
 <ol type="1">
-<li><p><strong>Invariants are discoverable</strong> from frozen states</p></li>
-<li><p><strong>The pattern</strong>: “At iteration <span class="math inline">\(i\)</span>, [variable] holds [property of data seen so far]”</p></li>
-<li><p><strong>Common types</strong>: accumulation, extremum, counting, search range, partition</p></li>
-<li><p><strong>The detective method</strong>: Look at loop variable, look at accumulated state, state the relationship</p></li>
+<li>Draw the BST that results from inserting: 5, 3, 7, 2, 4, 6, 8</li>
+<li>Draw the BST that results from inserting: 2, 3, 4, 5, 6, 7, 8</li>
+<li>What is the inorder traversal of each tree?</li>
+<li>Which tree is more efficient for searches? Why?</li>
 </ol>
-</section>
-<section id="next-time" class="slide level2">
-<h2>Next Time</h2>
-<p>Recursion: When the function calls itself.</p>
-<p>Spoiler: Recursion has invariants too — we call them <strong>recursive properties</strong>.</p>
 
 
 <script type="ojs-module-contents">
@@ -768,7 +746,7 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
