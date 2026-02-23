@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>Jotto Decision Trees - Strategy Comparison</title>
+<style>
+  body { font-family: sans-serif; max-width: 1800px; margin: 0 auto; padding: 20px; }
+  h1, h2 { text-align: center; }
+  .container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
+  .tree { border: 2px solid #ddd; border-radius: 8px; padding: 15px; background: #fafafa; }
+  .tree h3 { text-align: center; margin: 0 0 10px 0; }
+  .legend { text-align: center; margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px; }
+  .legend span { margin: 0 15px; }
+  .blue { color: #2196F3; font-weight: bold; }
+  .green { color: #4CAF50; font-weight: bold; }
+  .comparison { max-width: 900px; margin: 30px auto; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+  th { background: #f5f5f5; }
+  .best-val { background: #c8e6c9; font-weight: bold; }
+  .worst-val { background: #ffcdd2; }
+  @media print {
+    .tree { page-break-inside: avoid; }
+  }
+</style>
+</head><body>
+<h1>Jotto Decision Trees: Strategy Comparison</h1>
+
+<div class="legend">
+  <span class="blue">■ Blue boxes</span> = Guess this word |
+  <span class="green">■ Green rounded</span> = Answer (leaf) |
+  <span>Edge labels</span> = Jotto score (0-3)
+</div>
+
+<div class="comparison">
+<h2>Strategy Comparison</h2>
+<table>
+  <tr>
+    <th>Strategy</th>
+    <th>Max Depth (worst case)</th>
+    <th>Avg Depth (expected)</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Greedy Minimax</td>
+    <td class="">8</td>
+    <td class="">4.56</td>
+    <td>At each step, pick guess minimizing max partition size</td>
+  </tr>
+  <tr>
+    <td>True Minimax</td>
+    <td class="best-val">6</td>
+    <td class="">4.12</td>
+    <td>Exhaustive search for minimum worst-case depth</td>
+  </tr>
+  <tr>
+    <td>Min Average</td>
+    <td class="best-val">6</td>
+    <td class="best-val">3.94</td>
+    <td>Minimize expected remaining candidates</td>
+  </tr>
+  <tr>
+    <td>Information Gain (ID3)</td>
+    <td class="">7</td>
+    <td class="">4.12</td>
+    <td>Maximize entropy reduction (ML decision trees)</td>
+  </tr>
+  <tr>
+    <td>Worst Strategy</td>
+    <td class="worst-val">8</td>
+    <td class="worst-val">4.67</td>
+    <td>Deliberately bad: prefer trap clusters, max partitions</td>
+  </tr>
+</table>
+</div>
+
+<h2>Decision Trees</h2>
+
+<div class="container">
+  <div class="tree">
+    <h3>Greedy Minimax</h3>
+    <svg xmlns="http://www.w3.org/2000/svg" width="920" height="670" viewBox="0 0 920 670">
+<style>
+  .node-text { font-family: monospace; font-size: 11px; font-weight: bold; }
+  .edge-label { font-family: sans-serif; font-size: 9px; fill: #333; }
+  .title { font-family: sans-serif; font-size: 14px; font-weight: bold; }
+  .stats { font-family: sans-serif; font-size: 11px; fill: #666; }
+</style>
+<rect width="920" height="670" fill="white"/>
+<line x1="112.5" y1="232" x2="57.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="93.0" y="260.0" class="edge-label">0</text>
+<line x1="112.5" y1="232" x2="112.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="120.5" y="260.0" class="edge-label">1</text>
+<line x1="112.5" y1="232" x2="167.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="148.0" y="260.0" class="edge-label">3</text>
+<line x1="305.0" y1="152" x2="112.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="216.75" y="180.0" class="edge-label">0</text>
+<line x1="277.5" y1="232" x2="222.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="258.0" y="260.0" class="edge-label">0</text>
+<line x1="277.5" y1="232" x2="277.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="285.5" y="260.0" class="edge-label">1</text>
+<line x1="277.5" y1="232" x2="332.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="313.0" y="260.0" class="edge-label">3</text>
+<line x1="305.0" y1="152" x2="277.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="299.25" y="180.0" class="edge-label">1</text>
+<line x1="305.0" y1="152" x2="387.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="354.25" y="180.0" class="edge-label">2</text>
+<line x1="305.0" y1="152" x2="442.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="381.75" y="180.0" class="edge-label">3</text>
+<line x1="653.6197916666666" y1="72" x2="305.0" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="487.3098958333333" y="100.0" class="edge-label">0</text>
+<line x1="525.0" y1="552" x2="497.5" y2="608" stroke="#aaa" stroke-width="1.5"/>
+<text x="519.25" y="580.0" class="edge-label">1</text>
+<line x1="525.0" y1="552" x2="552.5" y2="608" stroke="#aaa" stroke-width="1.5"/>
+<text x="546.75" y="580.0" class="edge-label">3</text>
+<line x1="566.25" y1="472" x2="525.0" y2="528" stroke="#aaa" stroke-width="1.5"/>
+<text x="553.625" y="500.0" class="edge-label">1</text>
+<line x1="566.25" y1="472" x2="607.5" y2="528" stroke="#aaa" stroke-width="1.5"/>
+<text x="594.875" y="500.0" class="edge-label">3</text>
+<line x1="614.375" y1="392" x2="566.25" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="598.3125" y="420.0" class="edge-label">1</text>
+<line x1="614.375" y1="392" x2="662.5" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="646.4375" y="420.0" class="edge-label">3</text>
+<line x1="665.9375" y1="312" x2="614.375" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="648.15625" y="340.0" class="edge-label">1</text>
+<line x1="665.9375" y1="312" x2="717.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="699.71875" y="340.0" class="edge-label">3</text>
+<line x1="719.21875" y1="232" x2="665.9375" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="700.578125" y="260.0" class="edge-label">1</text>
+<line x1="719.21875" y1="232" x2="772.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="753.859375" y="260.0" class="edge-label">3</text>
+<line x1="773.359375" y1="152" x2="719.21875" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="754.2890625" y="180.0" class="edge-label">1</text>
+<line x1="773.359375" y1="152" x2="827.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="808.4296875" y="180.0" class="edge-label">3</text>
+<line x1="653.6197916666666" y1="72" x2="773.359375" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="721.4895833333333" y="100.0" class="edge-label">1</text>
+<line x1="653.6197916666666" y1="72" x2="882.5" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="776.0598958333333" y="100.0" class="edge-label">3</text>
+<rect x="37.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="57.5" y="304" text-anchor="middle" class="node-text" fill="white">DEW</text>
+<rect x="92.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="112.5" y="304" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="147.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="167.5" y="304" text-anchor="middle" class="node-text" fill="white">PUG</text>
+<rect x="92.5" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="112.5" y="224" text-anchor="middle" class="node-text" fill="white">PUG</text>
+<rect x="202.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="222.5" y="304" text-anchor="middle" class="node-text" fill="white">YAK</text>
+<rect x="257.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="277.5" y="304" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<rect x="312.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="332.5" y="304" text-anchor="middle" class="node-text" fill="white">NUT</text>
+<rect x="257.5" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="277.5" y="224" text-anchor="middle" class="node-text" fill="white">NUT</text>
+<rect x="367.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="387.5" y="224" text-anchor="middle" class="node-text" fill="white">NIP</text>
+<rect x="422.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="442.5" y="224" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="285.0" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="305.0" y="144" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="477.5" y="610" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="497.5" y="624" text-anchor="middle" class="node-text" fill="white">WOO</text>
+<rect x="532.5" y="610" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="552.5" y="624" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="505.0" y="530" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="525.0" y="544" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="587.5" y="530" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="607.5" y="544" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="546.25" y="450" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="566.25" y="464" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="642.5" y="450" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="662.5" y="464" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="594.375" y="370" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="614.375" y="384" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="697.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="717.5" y="384" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="645.9375" y="290" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="665.9375" y="304" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="752.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="772.5" y="304" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="699.21875" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="719.21875" y="224" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="807.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="827.5" y="224" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="753.359375" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="773.359375" y="144" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="862.5" y="130" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="882.5" y="144" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<rect x="633.6197916666666" y="50" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="653.6197916666666" y="64" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<text x="460.0" y="25" text-anchor="middle" class="title" fill="#4CAF50">Greedy Minimax (min max partition)</text>
+<text x="460.0" y="660" text-anchor="middle" class="stats">Max depth: 8 | Avg depth: 4.56 | Leaves: 16</text>
+</svg>
+  </div>
+  <div class="tree">
+    <h3>True Minimax</h3>
+    <svg xmlns="http://www.w3.org/2000/svg" width="920" height="600" viewBox="0 0 920 600">
+<style>
+  .node-text { font-family: monospace; font-size: 11px; font-weight: bold; }
+  .edge-label { font-family: sans-serif; font-size: 9px; fill: #333; }
+  .title { font-family: sans-serif; font-size: 14px; font-weight: bold; }
+  .stats { font-family: sans-serif; font-size: 11px; fill: #666; }
+</style>
+<rect width="920" height="600" fill="white"/>
+<line x1="85.0" y1="392" x2="57.5" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="79.25" y="420.0" class="edge-label">1</text>
+<line x1="85.0" y1="392" x2="112.5" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="106.75" y="420.0" class="edge-label">3</text>
+<line x1="126.25" y1="312" x2="85.0" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="113.625" y="340.0" class="edge-label">1</text>
+<line x1="126.25" y1="312" x2="167.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="154.875" y="340.0" class="edge-label">3</text>
+<line x1="174.375" y1="232" x2="126.25" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="158.3125" y="260.0" class="edge-label">1</text>
+<line x1="174.375" y1="232" x2="222.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="206.4375" y="260.0" class="edge-label">3</text>
+<line x1="430.46875" y1="152" x2="174.375" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="310.421875" y="180.0" class="edge-label">0</text>
+<line x1="387.5" y1="232" x2="277.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="340.5" y="260.0" class="edge-label">0</text>
+<line x1="387.5" y1="312" x2="332.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="368.0" y="340.0" class="edge-label">0</text>
+<line x1="387.5" y1="312" x2="387.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="395.5" y="340.0" class="edge-label">1</text>
+<line x1="387.5" y1="312" x2="442.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="423.0" y="340.0" class="edge-label">3</text>
+<line x1="387.5" y1="232" x2="387.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="395.5" y="260.0" class="edge-label">1</text>
+<line x1="387.5" y1="232" x2="497.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="450.5" y="260.0" class="edge-label">3</text>
+<line x1="430.46875" y1="152" x2="387.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="416.984375" y="180.0" class="edge-label">1</text>
+<line x1="430.46875" y1="152" x2="552.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="499.484375" y="180.0" class="edge-label">2</text>
+<line x1="430.46875" y1="152" x2="607.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="526.984375" y="180.0" class="edge-label">3</text>
+<line x1="685.9895833333334" y1="72" x2="430.46875" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="566.2291666666667" y="100.0" class="edge-label">0</text>
+<line x1="745.0" y1="152" x2="662.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="711.75" y="180.0" class="edge-label">0</text>
+<line x1="745.0" y1="232" x2="717.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="739.25" y="260.0" class="edge-label">0</text>
+<line x1="745.0" y1="232" x2="772.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="766.75" y="260.0" class="edge-label">3</text>
+<line x1="745.0" y1="152" x2="745.0" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="753.0" y="180.0" class="edge-label">1</text>
+<line x1="745.0" y1="152" x2="827.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="794.25" y="180.0" class="edge-label">3</text>
+<line x1="685.9895833333334" y1="72" x2="745.0" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="723.4947916666667" y="100.0" class="edge-label">1</text>
+<line x1="685.9895833333334" y1="72" x2="882.5" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="792.2447916666667" y="100.0" class="edge-label">3</text>
+<rect x="37.5" y="450" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="57.5" y="464" text-anchor="middle" class="node-text" fill="white">WOO</text>
+<rect x="92.5" y="450" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="112.5" y="464" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="65.0" y="370" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="85.0" y="384" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="147.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="167.5" y="384" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="106.25" y="290" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="126.25" y="304" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="202.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="222.5" y="304" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<rect x="154.375" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="174.375" y="224" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<rect x="257.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="277.5" y="304" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="312.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="332.5" y="384" text-anchor="middle" class="node-text" fill="white">YAK</text>
+<rect x="367.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="387.5" y="384" text-anchor="middle" class="node-text" fill="white">NUT</text>
+<rect x="422.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="442.5" y="384" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="367.5" y="290" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="387.5" y="304" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="477.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="497.5" y="304" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="367.5" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="387.5" y="224" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="532.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="552.5" y="224" text-anchor="middle" class="node-text" fill="white">NIP</text>
+<rect x="587.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="607.5" y="224" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<rect x="410.46875" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="430.46875" y="144" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<rect x="642.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="662.5" y="224" text-anchor="middle" class="node-text" fill="white">DEW</text>
+<rect x="697.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="717.5" y="304" text-anchor="middle" class="node-text" fill="white">PUG</text>
+<rect x="752.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="772.5" y="304" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="725.0" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="745.0" y="224" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="807.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="827.5" y="224" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="725.0" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="745.0" y="144" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="862.5" y="130" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="882.5" y="144" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="665.9895833333334" y="50" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="685.9895833333334" y="64" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<text x="460.0" y="25" text-anchor="middle" class="title" fill="#4CAF50">True Minimax (exhaustive)</text>
+<text x="460.0" y="590" text-anchor="middle" class="stats">Max depth: 6 | Avg depth: 4.12 | Leaves: 16</text>
+</svg>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tree">
+    <h3>Min Average Depth</h3>
+    <svg xmlns="http://www.w3.org/2000/svg" width="920" height="600" viewBox="0 0 920 600">
+<style>
+  .node-text { font-family: monospace; font-size: 11px; font-weight: bold; }
+  .edge-label { font-family: sans-serif; font-size: 9px; fill: #333; }
+  .title { font-family: sans-serif; font-size: 14px; font-weight: bold; }
+  .stats { font-family: sans-serif; font-size: 11px; fill: #666; }
+</style>
+<rect width="920" height="600" fill="white"/>
+<line x1="85.0" y1="392" x2="57.5" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="79.25" y="420.0" class="edge-label">1</text>
+<line x1="85.0" y1="392" x2="112.5" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="106.75" y="420.0" class="edge-label">3</text>
+<line x1="126.25" y1="312" x2="85.0" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="113.625" y="340.0" class="edge-label">1</text>
+<line x1="126.25" y1="312" x2="167.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="154.875" y="340.0" class="edge-label">3</text>
+<line x1="174.375" y1="232" x2="126.25" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="158.3125" y="260.0" class="edge-label">1</text>
+<line x1="174.375" y1="232" x2="222.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="206.4375" y="260.0" class="edge-label">3</text>
+<line x1="316.4583333333333" y1="152" x2="174.375" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="253.41666666666666" y="180.0" class="edge-label">0</text>
+<line x1="332.5" y1="232" x2="277.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="313.0" y="260.0" class="edge-label">0</text>
+<line x1="332.5" y1="232" x2="332.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="340.5" y="260.0" class="edge-label">1</text>
+<line x1="332.5" y1="232" x2="387.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="368.0" y="260.0" class="edge-label">3</text>
+<line x1="316.4583333333333" y1="152" x2="332.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="332.47916666666663" y="180.0" class="edge-label">1</text>
+<line x1="316.4583333333333" y1="152" x2="442.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="387.47916666666663" y="180.0" class="edge-label">3</text>
+<line x1="669.9479166666667" y1="72" x2="316.4583333333333" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="501.203125" y="100.0" class="edge-label">0</text>
+<line x1="525.0" y1="232" x2="497.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="519.25" y="260.0" class="edge-label">0</text>
+<line x1="525.0" y1="232" x2="552.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="546.75" y="260.0" class="edge-label">3</text>
+<line x1="653.3333333333334" y1="152" x2="525.0" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="597.1666666666667" y="180.0" class="edge-label">0</text>
+<line x1="662.5" y1="232" x2="607.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="643.0" y="260.0" class="edge-label">0</text>
+<line x1="662.5" y1="232" x2="662.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="670.5" y="260.0" class="edge-label">1</text>
+<line x1="662.5" y1="232" x2="717.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="698.0" y="260.0" class="edge-label">3</text>
+<line x1="653.3333333333334" y1="152" x2="662.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="665.9166666666667" y="180.0" class="edge-label">1</text>
+<line x1="653.3333333333334" y1="152" x2="772.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="720.9166666666667" y="180.0" class="edge-label">3</text>
+<line x1="669.9479166666667" y1="72" x2="653.3333333333334" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="669.640625" y="100.0" class="edge-label">1</text>
+<line x1="669.9479166666667" y1="72" x2="827.5" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="756.7239583333334" y="100.0" class="edge-label">2</text>
+<line x1="669.9479166666667" y1="72" x2="882.5" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="784.2239583333334" y="100.0" class="edge-label">3</text>
+<rect x="37.5" y="450" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="57.5" y="464" text-anchor="middle" class="node-text" fill="white">WOO</text>
+<rect x="92.5" y="450" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="112.5" y="464" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="65.0" y="370" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="85.0" y="384" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="147.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="167.5" y="384" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="106.25" y="290" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="126.25" y="304" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="202.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="222.5" y="304" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<rect x="154.375" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="174.375" y="224" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<rect x="257.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="277.5" y="304" text-anchor="middle" class="node-text" fill="white">DEW</text>
+<rect x="312.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="332.5" y="304" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="367.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="387.5" y="304" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="312.5" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="332.5" y="224" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="422.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="442.5" y="224" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="296.4583333333333" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="316.4583333333333" y="144" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="477.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="497.5" y="304" text-anchor="middle" class="node-text" fill="white">PUG</text>
+<rect x="532.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="552.5" y="304" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="505.0" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="525.0" y="224" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="587.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="607.5" y="304" text-anchor="middle" class="node-text" fill="white">YAK</text>
+<rect x="642.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="662.5" y="304" text-anchor="middle" class="node-text" fill="white">NUT</text>
+<rect x="697.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="717.5" y="304" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="642.5" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="662.5" y="224" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="752.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="772.5" y="224" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="633.3333333333334" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="653.3333333333334" y="144" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="807.5" y="130" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="827.5" y="144" text-anchor="middle" class="node-text" fill="white">NIP</text>
+<rect x="862.5" y="130" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="882.5" y="144" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<rect x="649.9479166666667" y="50" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="669.9479166666667" y="64" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<text x="460.0" y="25" text-anchor="middle" class="title" fill="#4CAF50">Min Average Depth</text>
+<text x="460.0" y="590" text-anchor="middle" class="stats">Max depth: 6 | Avg depth: 3.94 | Leaves: 16</text>
+</svg>
+  </div>
+  <div class="tree">
+    <h3>Information Gain (ID3)</h3>
+    <svg xmlns="http://www.w3.org/2000/svg" width="920" height="600" viewBox="0 0 920 600">
+<style>
+  .node-text { font-family: monospace; font-size: 11px; font-weight: bold; }
+  .edge-label { font-family: sans-serif; font-size: 9px; fill: #333; }
+  .title { font-family: sans-serif; font-size: 14px; font-weight: bold; }
+  .stats { font-family: sans-serif; font-size: 11px; fill: #666; }
+</style>
+<rect width="920" height="600" fill="white"/>
+<line x1="112.5" y1="232" x2="57.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="93.0" y="260.0" class="edge-label">0</text>
+<line x1="112.5" y1="232" x2="112.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="120.5" y="260.0" class="edge-label">1</text>
+<line x1="112.5" y1="232" x2="167.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="148.0" y="260.0" class="edge-label">3</text>
+<line x1="333.6458333333333" y1="152" x2="112.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="231.07291666666666" y="180.0" class="edge-label">0</text>
+<line x1="250.0" y1="472" x2="222.5" y2="528" stroke="#aaa" stroke-width="1.5"/>
+<text x="244.25" y="500.0" class="edge-label">1</text>
+<line x1="250.0" y1="472" x2="277.5" y2="528" stroke="#aaa" stroke-width="1.5"/>
+<text x="271.75" y="500.0" class="edge-label">3</text>
+<line x1="291.25" y1="392" x2="250.0" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="278.625" y="420.0" class="edge-label">1</text>
+<line x1="291.25" y1="392" x2="332.5" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="319.875" y="420.0" class="edge-label">3</text>
+<line x1="339.375" y1="312" x2="291.25" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="323.3125" y="340.0" class="edge-label">1</text>
+<line x1="339.375" y1="312" x2="387.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="371.4375" y="340.0" class="edge-label">3</text>
+<line x1="390.9375" y1="232" x2="339.375" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="373.15625" y="260.0" class="edge-label">1</text>
+<line x1="390.9375" y1="232" x2="442.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="424.71875" y="260.0" class="edge-label">3</text>
+<line x1="333.6458333333333" y1="152" x2="390.9375" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="370.29166666666663" y="180.0" class="edge-label">1</text>
+<line x1="333.6458333333333" y1="152" x2="497.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="423.57291666666663" y="180.0" class="edge-label">3</text>
+<line x1="662.7864583333333" y1="72" x2="333.6458333333333" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="506.21614583333326" y="100.0" class="edge-label">0</text>
+<line x1="635.0" y1="152" x2="552.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="601.75" y="180.0" class="edge-label">0</text>
+<line x1="635.0" y1="232" x2="607.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="629.25" y="260.0" class="edge-label">0</text>
+<line x1="635.0" y1="232" x2="662.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="656.75" y="260.0" class="edge-label">3</text>
+<line x1="635.0" y1="152" x2="635.0" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="643.0" y="180.0" class="edge-label">1</text>
+<line x1="635.0" y1="152" x2="717.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="684.25" y="180.0" class="edge-label">3</text>
+<line x1="662.7864583333333" y1="72" x2="635.0" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="656.8932291666666" y="100.0" class="edge-label">1</text>
+<line x1="800.0" y1="152" x2="772.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="794.25" y="180.0" class="edge-label">1</text>
+<line x1="800.0" y1="152" x2="827.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="821.75" y="180.0" class="edge-label">3</text>
+<line x1="662.7864583333333" y1="72" x2="800.0" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="739.3932291666666" y="100.0" class="edge-label">2</text>
+<line x1="662.7864583333333" y1="72" x2="882.5" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="780.6432291666666" y="100.0" class="edge-label">3</text>
+<rect x="37.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="57.5" y="304" text-anchor="middle" class="node-text" fill="white">YAK</text>
+<rect x="92.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="112.5" y="304" text-anchor="middle" class="node-text" fill="white">DEW</text>
+<rect x="147.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="167.5" y="304" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="92.5" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="112.5" y="224" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="202.5" y="530" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="222.5" y="544" text-anchor="middle" class="node-text" fill="white">WOO</text>
+<rect x="257.5" y="530" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="277.5" y="544" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="230.0" y="450" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="250.0" y="464" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="312.5" y="450" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="332.5" y="464" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="271.25" y="370" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="291.25" y="384" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="367.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="387.5" y="384" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="319.375" y="290" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="339.375" y="304" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="422.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="442.5" y="304" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="370.9375" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="390.9375" y="224" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="477.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="497.5" y="224" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<rect x="313.6458333333333" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="333.6458333333333" y="144" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<rect x="532.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="552.5" y="224" text-anchor="middle" class="node-text" fill="white">PUG</text>
+<rect x="587.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="607.5" y="304" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="642.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="662.5" y="304" text-anchor="middle" class="node-text" fill="white">NUT</text>
+<rect x="615.0" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="635.0" y="224" text-anchor="middle" class="node-text" fill="white">NUT</text>
+<rect x="697.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="717.5" y="224" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="615.0" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="635.0" y="144" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="752.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="772.5" y="224" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<rect x="807.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="827.5" y="224" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="780.0" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="800.0" y="144" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="862.5" y="130" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="882.5" y="144" text-anchor="middle" class="node-text" fill="white">NIP</text>
+<rect x="642.7864583333333" y="50" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="662.7864583333333" y="64" text-anchor="middle" class="node-text" fill="white">NIP</text>
+<text x="460.0" y="25" text-anchor="middle" class="title" fill="#4CAF50">Information Gain (ID3-style)</text>
+<text x="460.0" y="590" text-anchor="middle" class="stats">Max depth: 7 | Avg depth: 4.12 | Leaves: 16</text>
+</svg>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tree">
+    <h3>Worst Strategy</h3>
+    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700">
+<style>
+  .node-text { font-family: monospace; font-size: 11px; font-weight: bold; }
+  .edge-label { font-family: sans-serif; font-size: 9px; fill: #333; }
+  .title { font-family: sans-serif; font-size: 14px; font-weight: bold; }
+  .stats { font-family: sans-serif; font-size: 11px; fill: #666; }
+</style>
+<rect width="900" height="700" fill="white"/>
+<line x1="85.0" y1="312" x2="57.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="79.25" y="340.0" class="edge-label">0</text>
+<line x1="85.0" y1="312" x2="112.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="106.75" y="340.0" class="edge-label">3</text>
+<line x1="126.25" y1="232" x2="85.0" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="113.625" y="260.0" class="edge-label">1</text>
+<line x1="126.25" y1="232" x2="167.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="154.875" y="260.0" class="edge-label">3</text>
+<line x1="174.375" y1="152" x2="126.25" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="158.3125" y="180.0" class="edge-label">0</text>
+<line x1="174.375" y1="152" x2="222.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="206.4375" y="180.0" class="edge-label">3</text>
+<line x1="518.3796296296296" y1="72" x2="174.375" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="354.3773148148148" y="100.0" class="edge-label">0</text>
+<line x1="305.0" y1="232" x2="277.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="299.25" y="260.0" class="edge-label">2</text>
+<line x1="305.0" y1="232" x2="332.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="326.75" y="260.0" class="edge-label">3</text>
+<line x1="553.2638888888888" y1="152" x2="305.0" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="437.1319444444444" y="180.0" class="edge-label">0</text>
+<line x1="415.0" y1="312" x2="387.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="409.25" y="340.0" class="edge-label">1</text>
+<line x1="415.0" y1="312" x2="442.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="436.75" y="340.0" class="edge-label">3</text>
+<line x1="582.2916666666666" y1="232" x2="415.0" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="506.6458333333333" y="260.0" class="edge-label">0</text>
+<line x1="497.5" y1="552" x2="497.5" y2="608" stroke="#aaa" stroke-width="1.5"/>
+<text x="505.5" y="580.0" class="edge-label">1</text>
+<line x1="525.0" y1="472" x2="497.5" y2="528" stroke="#aaa" stroke-width="1.5"/>
+<text x="519.25" y="500.0" class="edge-label">1</text>
+<line x1="525.0" y1="472" x2="552.5" y2="528" stroke="#aaa" stroke-width="1.5"/>
+<text x="546.75" y="500.0" class="edge-label">3</text>
+<line x1="566.25" y1="392" x2="525.0" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="553.625" y="420.0" class="edge-label">1</text>
+<line x1="566.25" y1="392" x2="607.5" y2="448" stroke="#aaa" stroke-width="1.5"/>
+<text x="594.875" y="420.0" class="edge-label">3</text>
+<line x1="614.375" y1="312" x2="566.25" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="598.3125" y="340.0" class="edge-label">1</text>
+<line x1="614.375" y1="312" x2="662.5" y2="368" stroke="#aaa" stroke-width="1.5"/>
+<text x="646.4375" y="340.0" class="edge-label">3</text>
+<line x1="582.2916666666666" y1="232" x2="614.375" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="606.3333333333333" y="260.0" class="edge-label">1</text>
+<line x1="582.2916666666666" y1="232" x2="717.5" y2="288" stroke="#aaa" stroke-width="1.5"/>
+<text x="657.8958333333333" y="260.0" class="edge-label">3</text>
+<line x1="553.2638888888888" y1="152" x2="582.2916666666666" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="575.7777777777777" y="180.0" class="edge-label">1</text>
+<line x1="553.2638888888888" y1="152" x2="772.5" y2="208" stroke="#aaa" stroke-width="1.5"/>
+<text x="670.8819444444443" y="180.0" class="edge-label">3</text>
+<line x1="518.3796296296296" y1="72" x2="553.2638888888888" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="543.8217592592591" y="100.0" class="edge-label">1</text>
+<line x1="518.3796296296296" y1="72" x2="827.5" y2="128" stroke="#aaa" stroke-width="1.5"/>
+<text x="680.9398148148148" y="100.0" class="edge-label">3</text>
+<rect x="37.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="57.5" y="384" text-anchor="middle" class="node-text" fill="white">DEW</text>
+<rect x="92.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="112.5" y="384" text-anchor="middle" class="node-text" fill="white">PUG</text>
+<rect x="65.0" y="290" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="85.0" y="304" text-anchor="middle" class="node-text" fill="white">PUG</text>
+<rect x="147.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="167.5" y="304" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="106.25" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="126.25" y="224" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="202.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="222.5" y="224" text-anchor="middle" class="node-text" fill="white">YAK</text>
+<rect x="154.375" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="174.375" y="144" text-anchor="middle" class="node-text" fill="white">YAK</text>
+<rect x="257.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="277.5" y="304" text-anchor="middle" class="node-text" fill="white">NIP</text>
+<rect x="312.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="332.5" y="304" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="285.0" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="305.0" y="224" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="367.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="387.5" y="384" text-anchor="middle" class="node-text" fill="white">NUT</text>
+<rect x="422.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="442.5" y="384" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<rect x="395.0" y="290" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="415.0" y="304" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<rect x="477.5" y="610" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="497.5" y="624" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<rect x="477.5" y="530" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="497.5" y="544" text-anchor="middle" class="node-text" fill="white">WOO</text>
+<rect x="532.5" y="530" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="552.5" y="544" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="505.0" y="450" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="525.0" y="464" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="587.5" y="450" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="607.5" y="464" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="546.25" y="370" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="566.25" y="384" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="642.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="662.5" y="384" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="594.375" y="290" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="614.375" y="304" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="697.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="717.5" y="304" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="562.2916666666666" y="210" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="582.2916666666666" y="224" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="752.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="772.5" y="224" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="533.2638888888888" y="130" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="553.2638888888888" y="144" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="807.5" y="130" width="40" height="20" rx="12" fill="#4CAF50"/>
+<text x="827.5" y="144" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="498.37962962962956" y="50" width="40" height="20" rx="3" fill="#2196F3"/>
+<text x="518.3796296296296" y="64" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<text x="450.0" y="25" text-anchor="middle" class="title" fill="#f44336">Worst Strategy (bad splits)</text>
+<text x="450.0" y="690" text-anchor="middle" class="stats">Max depth: 8 | Avg depth: 4.67 | Leaves: 15</text>
+</svg>
+  </div>
+</div>
+
+<h2>The 16 Words</h2>
+<p style="text-align:center; font-family: monospace; font-size: 18px;">
+  FOX &nbsp; GEL &nbsp; INK &nbsp; JOG &nbsp; MOB &nbsp; NAP &nbsp; NIP &nbsp; NOR &nbsp; NUT &nbsp; OAT &nbsp; OIL &nbsp; PUG &nbsp; SOY &nbsp; DEW &nbsp; WOO &nbsp; YAK
+</p>
+
+<div class="comparison">
+<h2>What's the difference?</h2>
+<ul style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+  <li><strong>Greedy Minimax</strong>: At each node, pick the guess that minimizes the <em>largest</em> remaining partition. Fast to compute, but only looks one level ahead.</li>
+  <li><strong>True Minimax</strong>: Exhaustively try all possible guesses and recursively find the tree with minimum worst-case depth. Guarantees optimal worst case.</li>
+  <li><strong>Min Average</strong>: Pick the guess that minimizes <em>expected</em> remaining candidates (weighted by probability). Optimizes for the average case, not worst case.</li>
+  <li><strong>Information Gain (ID3)</strong>: Pick the guess that maximizes <em>information gain</em> — the reduction in entropy. This is what classic ML decision tree algorithms (ID3, C4.5) use. Entropy H = -Σ pᵢ log₂(pᵢ).</li>
+  <li><strong>Worst Strategy</strong>: Deliberately picks guesses that don't discriminate well (words with common letter O). Shows what happens with bad strategy.</li>
+</ul>
+</div>
+
+<div class="comparison">
+<h2>Lower Bound: How good can we possibly be?</h2>
+<p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+  Each guess produces one of <strong>4 possible outcomes</strong> (Jotto scores 0, 1, 2, or 3).
+  A decision tree with 16 leaves needs enough internal nodes to distinguish all 16 words.
+</p>
+<p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+  <strong>Information-theoretic lower bound:</strong> A perfect 4-way split at each level gives us
+  4<sup>d</sup> leaves at depth d. To identify 16 words, we need at least:
+</p>
+<p style="text-align: center; font-size: 1.3em; margin: 20px 0;">
+  4<sup>d</sup> ≥ 16 &nbsp;⟹&nbsp; d ≥ log<sub>4</sub>(16) = <strong>2</strong>
+</p>
+<p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+  But wait — can we actually achieve depth 2? That would require our first guess to split
+  the 16 words into 4 groups of exactly 4, and then each follow-up to split those 4 into
+  singletons. Looking at the score matrix... <strong>no guess achieves a perfect 4-way split!</strong>
+</p>
+<p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+  The best we can do is <strong>depth 4</strong> — twice the theoretical minimum. This gap shows
+  that our word set has "entanglement" — words share letters in ways that prevent perfect discrimination.
+</p>
+<p style="max-width: 800px; margin: 0 auto; line-height: 1.8; background: #fff3e0; padding: 15px; border-radius: 8px;">
+  <strong>Student question:</strong> With 4 possible outcomes per guess and 16 words, why can't we
+  always identify the word in 2 guesses? What property of the words prevents this?
+</p>
+</div>
+
+<div class="comparison">
+<h2>Connection to Machine Learning</h2>
+<p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+  This Jotto game is exactly a <strong>classification problem</strong>! The connection:
+</p>
+<table style="max-width: 700px; margin: 20px auto;">
+  <tr><th>ML Decision Tree</th><th>Jotto</th></tr>
+  <tr><td>Classes to predict</td><td>The 16 possible secret words</td></tr>
+  <tr><td>Features</td><td>Jotto scores against candidate words</td></tr>
+  <tr><td>Split criterion</td><td>Which word to guess next</td></tr>
+  <tr><td>Information gain</td><td>How much a guess tells us about the secret</td></tr>
+  <tr><td>Leaf nodes</td><td>Final answer: "the secret is X"</td></tr>
+</table>
+
+<h3 style="text-align: center;">Computational Complexity</h3>
+<p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+  Finding the <strong>optimal decision tree</strong> (minimum depth or size) is <strong>NP-hard</strong>!
+  This was proven by Hyafil &amp; Rivest in 1976. Even approximating the minimum depth within a constant
+  factor is hard.
+</p>
+<p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+  That's why real-world ML systems (ID3, C4.5, CART, random forests) use <strong>greedy heuristics</strong>
+  like information gain or Gini impurity — they're fast and usually produce good (if not optimal) trees.
+</p>
+<p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+  For our 16-word Jotto, exhaustive search is feasible. But for Wordle's 2,309 words?
+  The search space explodes, and greedy methods become essential.
+</p>
+</div>
+
+</body></html>
