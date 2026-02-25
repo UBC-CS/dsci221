@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.27">
 
-  <meta name="dcterms.date" content="2026-02-23">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – Trees as Recursive Structures</title>
+  <meta name="dcterms.date" content="2026-02-25">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Trees Continued</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -129,11 +129,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="Trees as Recursive Structures – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 8, Monday">
+<meta property="og:title" content="Trees Continued – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 8, Wednesday">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="Trees as Recursive Structures – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 8, Monday">
+<meta name="twitter:title" content="Trees Continued – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 8, Wednesday">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -141,298 +141,164 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Trees as Recursive Structures</h1>
-  <p class="subtitle">Week 8, Monday</p>
+  <h1 class="title">Trees Continued</h1>
+  <p class="subtitle">Week 8, Wednesday</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">February 23, 2026</p>
+  <p class="date">February 25, 2026</p>
 </section>
-<section id="pacing-overview-80-min-total" class="slide level2 notes">
-<h2>PACING OVERVIEW (80 min total)</h2>
-<p><strong>Part 1: Wordle Hook (10 min)</strong></p>
-<ul>
-<li>Play 1-2 rounds of Wordle as a class</li>
-<li>Brief discussion: what makes a good guess?</li>
-<li>Introduce the idea that strategy = decision tree</li>
-</ul>
-<p><strong>Part 2: Jotto Activity (25 min)</strong></p>
-<ul>
-<li>Explain rules and scoring (5 min)</li>
-<li>Hand out card decks, groups design strategies (15 min)</li>
-<li>Debrief: what first guess did you choose? why? (5 min)</li>
-</ul>
-<p><strong>Part 3: Tree Definitions (15 min)</strong></p>
-<ul>
-<li>“Why Trees?” slide - quick tour of applications</li>
-<li>Knuth quote + “what’s special?” (connected, acyclic)</li>
-<li>Tree Terminology discovery questions (students answer)</li>
-<li>Vocabulary reference slide (skim - definitions are intuitive)</li>
-</ul>
-<p><strong>Part 4: Binary Trees &amp; Recursion (20 min)</strong></p>
-<ul>
-<li>Binary tree definition and recursive structure</li>
-<li>Height/node count relationship</li>
-<li>Why height matters for efficiency</li>
-<li>Connect back to Wordle/Jotto: height = worst-case guesses</li>
-</ul>
-<p><strong>Part 5: Wrap-up (10 min)</strong></p>
-<ul>
-<li>Back to Wordle: decision tree perspective</li>
-<li>Summary slide</li>
-<li>Preview BSTs (Wednesday)</li>
-</ul>
-</section>
-<section id="section" class="slide level2">
-<h2></h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="../images/TreeAdvice.jpeg" class="quarto-figure quarto-figure-center" height="550"></p>
-</figure>
-</div>
-</section>
-<section id="lets-play-wordle" class="slide level2 activity">
-<h2>Let’s Play Wordle!</h2>
-<p>I’m thinking of a 5-letter word.</p>
-<p>You have <strong>6 guesses</strong>.</p>
-<p>After each guess, I’ll tell you:</p>
-<ul>
-<li>🟩 Green: Right letter, right position</li>
-<li>🟨 Yellow: Right letter, wrong position</li>
-<li>⬜ Gray: Letter not in word</li>
-</ul>
-<p><strong>Let’s play as a class!</strong></p>
-<aside class="notes">
-<p>Actually play 2-3 rounds with the class. Pick words ahead of time. Have students suggest guesses, vote on which to try. Track remaining possibilities on the board. Good words to use: CRANE, SLATE, MOIST, CHARM, PLUMB (words with common letters for game 1, then trickier ones).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="section-1" class="slide level2" data-background-iframe="https://www.nytimes.com/games/wordle/index.html" data-background-interactive="true">
-<h2></h2>
-<aside class="notes">
-<p>If you have internet, you can play the actual game. Otherwise, run it manually on the board.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-strategy-did-we-use" class="slide level2">
-<h2>What Strategy Did We Use?</h2>
-<p>Think about how we played:</p>
-<ul>
-<li>What made a guess “good”?</li>
-<li>How did we narrow down possibilities?</li>
-<li>Did we have a system, or was it intuition?</li>
-</ul>
-</section>
-<section id="the-strategy-question" class="slide level2">
-<h2>The Strategy Question</h2>
-<p>Every guess <strong>splits</strong> the remaining possibilities.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Guess</th>
-<th>Feedback</th>
-<th>Words eliminated</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>CRANE</td>
-<td>⬜🟨⬜⬜🟩</td>
-<td>Most words without R and E in those spots</td>
-</tr>
-<tr class="even">
-<td>STORE</td>
-<td>🟩⬜🟩🟨🟩</td>
-<td>Now we know S, O, E positions + R somewhere</td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Good guesses split possibilities evenly.</strong></p>
-</section>
-<section id="visualizing-the-strategy" class="slide level2">
-<h2>Visualizing the Strategy</h2>
-<p>What if we drew every possible game?</p>
-<pre><code>                         SALET (first guess)
-                        /       |        \        ...
-                 🟩⬜⬜⬜⬜    🟨⬜⬜⬜⬜    🟩🟩⬜⬜⬜     ...
-                    /           |            \
-      SHIRK, SHOWY, SPICY   CRISP, MUSIC   SAPPY, SANDY
-      SWORN, SNOWY, ...     PRISM, ...     SAUCY, ...</code></pre>
-<p>Each follow-up guess is <strong>consistent</strong> with prior feedback.</p>
-<p>Each path from top to bottom is one game. This is a <strong>tree</strong>!</p>
-</section>
-<section id="the-wordle-decision-tree" class="slide level2">
-<h2>The Wordle Decision Tree</h2>
-<p>This structure has a name: a <strong>decision tree</strong>.</p>
-<ul>
-<li><strong>Root</strong>: First guess</li>
-<li><strong>Branches</strong>: Possible feedback patterns (there are _______)</li>
-<li><strong>Internal nodes</strong>: Follow-up guesses</li>
-<li><strong>Leaves</strong>: The answer (game over!)</li>
-</ul>
-<p>The <strong>height</strong> of this tree = worst-case guesses needed.</p>
-</section>
-<section id="the-optimal-strategy-question" class="slide level2">
-<h2>The Optimal Strategy Question</h2>
-<p><strong>Question</strong>: What first guess gives the <em>best</em> tree?</p>
-<p>What does best mean?</p>
-<p>Research answer: <strong>SALET</strong>, <strong>REAST</strong>, <strong>CRATE</strong>, <strong>TRACE</strong></p>
-</section>
-<section id="letter-jotto-lets-build-a-strategy" class="slide level2 activity smaller">
-<h2>3-Letter Jotto: Let’s Build a Strategy</h2>
+<section id="letter-jotto-lets-play" class="slide level2 activity smaller">
+<h2>3-Letter Jotto: Let’s Play</h2>
 <p><strong>The setup:</strong></p>
-<ul>
-<li>There are 16 possible secret words</li>
-<li>You guess a word; the response is the count of letters in common (0, 1, 2, or 3)</li>
-<li>You can only guess words that are still consistent with previous responses</li>
-</ul>
-<p><strong>Your task:</strong> Design a strategy — an algorithm that tells you what to guess in every situation, for any secret word.</p>
-<p><strong>Specify your strategy:</strong></p>
-<ol type="1">
-<li>What’s your <strong>first guess</strong>?</li>
-<li>For each possible response (0, 1, 2, or 3), what do you guess <strong>next</strong>?</li>
-<li>And so on, until you’ve identified the secret word.</li>
-</ol>
-</section>
-<section id="jotto-scoring-examples" class="slide level2">
-<h2>Jotto Scoring Examples</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Secret</th>
-<th>Guess</th>
-<th>Score</th>
-<th>Why</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>FOX</td>
-<td>JOG</td>
-<td>1</td>
-<td>O matches</td>
-</tr>
-<tr class="even">
-<td>DEW</td>
-<td>YAK</td>
-<td>0</td>
-<td>No letters in common</td>
-</tr>
-<tr class="odd">
-<td>NIP</td>
-<td>INK</td>
-<td>2</td>
-<td>I and N match</td>
-</tr>
-<tr class="even">
-<td>WOO</td>
-<td>MOB</td>
-<td>1</td>
-<td>O matches (counted once)</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="the-16-words" class="slide level2">
-<h2>The 16 Words</h2>
+<div class="columns">
+<div class="column" style="width:15%;">
 <pre><code>DEW  FOX  GEL  INK
 JOG  MOB  NAP  NIP
 NOR  NUT  OAT  OIL
 PUG  SOY  WOO  YAK</code></pre>
+</div></div>
+<ul>
+<li>There are 16 possible secret words – you choose one.</li>
+<li>I guess a word; You respond with the count of letters in common (0, 1, or 2). If I get 3, the game is over!</li>
+<li>I will continue to guess until I guess your word.</li>
+</ul>
+<p><strong>The Play:</strong> Turn and face the back of the room.</p>
 </section>
-<section id="example-first-guess-nip" class="slide level2">
-<h2>Example: First Guess NIP</h2>
-<svg viewbox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 500px; display: block; margin: 0 auto;">
-  <!-- Edges -->
-  <line x1="250" y1="40" x2="70" y2="120" stroke="#333" stroke-width="2"></line>
-  <line x1="250" y1="40" x2="190" y2="120" stroke="#333" stroke-width="2"></line>
-  <line x1="250" y1="40" x2="320" y2="120" stroke="#333" stroke-width="2"></line>
-  <line x1="250" y1="40" x2="430" y2="120" stroke="#333" stroke-width="2"></line>
-
-  <!-- Edge labels -->
-  <text x="145" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">0</text>
-  <text x="210" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">1</text>
-  <text x="295" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">2</text>
-  <text x="355" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#666">3</text>
-
-  <!-- Root node -->
-  <rect x="210" y="20" width="80" height="30" rx="5" fill="#3498db"></rect>
-  <text x="250" y="40" text-anchor="middle" fill="white" font-weight="bold" font-size="14">NIP</text>
-
-  <!-- Score 0 box -->
-  <rect x="10" y="110" width="120" height="150" rx="5" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"></rect>
-  <text x="70" y="130" text-anchor="middle" font-size="11" fill="#333">DEW  FOX  GEL</text>
-  <text x="70" y="148" text-anchor="middle" font-size="11" fill="#333">JOG  MOB  OAT</text>
-  <text x="70" y="166" text-anchor="middle" font-size="11" fill="#333">SOY  WOO  YAK</text>
-  <text x="70" y="195" text-anchor="middle" font-size="12" fill="#666" font-style="italic">(9 words)</text>
-
-  <!-- Score 1 box -->
-  <rect x="145" y="110" width="90" height="150" rx="5" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"></rect>
-  <text x="190" y="135" text-anchor="middle" font-size="11" fill="#333">NOR  NUT</text>
-  <text x="190" y="155" text-anchor="middle" font-size="11" fill="#333">OIL  PUG</text>
-  <text x="190" y="195" text-anchor="middle" font-size="12" fill="#666" font-style="italic">(4 words)</text>
-
-  <!-- Score 2 box -->
-  <rect x="255" y="110" width="90" height="150" rx="5" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"></rect>
-  <text x="300" y="145" text-anchor="middle" font-size="11" fill="#333">INK  NAP</text>
-  <text x="300" y="195" text-anchor="middle" font-size="12" fill="#666" font-style="italic">(2 words)</text>
-
-  <!-- Score 3 box (leaf) -->
-  <rect x="380" y="110" width="100" height="150" rx="5" fill="#2ecc71" stroke="#27ae60" stroke-width="1"></rect>
-  <text x="430" y="145" text-anchor="middle" font-size="12" fill="white" font-weight="bold">NIP</text>
-  <text x="430" y="170" text-anchor="middle" font-size="11" fill="white">(done!)</text>
+<section id="my-strategy" class="slide level2">
+<h2>My Strategy</h2>
+<div class="container">
+  <div class="tree">
+    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewbox="0 0 900 700">
+<style>
+  .node-text { font-family: monospace; font-size: 11px; font-weight: bold; }
+  .edge-label { font-family: sans-serif; font-size: 9px; fill: #333; }
+  .title { font-family: sans-serif; font-size: 14px; font-weight: bold; }
+  .stats { font-family: sans-serif; font-size: 11px; fill: #666; }
+</style>
+<rect width="900" height="700" fill="white"></rect>
+<line x1="85.0" y1="312" x2="57.5" y2="368" stroke="#aaa" stroke-width="1.5"></line>
+<text x="79.25" y="340.0" class="edge-label">0</text>
+<line x1="85.0" y1="312" x2="112.5" y2="368" stroke="#aaa" stroke-width="1.5"></line>
+<text x="106.75" y="340.0" class="edge-label">3</text>
+<line x1="126.25" y1="232" x2="85.0" y2="288" stroke="#aaa" stroke-width="1.5"></line>
+<text x="113.625" y="260.0" class="edge-label">1</text>
+<line x1="126.25" y1="232" x2="167.5" y2="288" stroke="#aaa" stroke-width="1.5"></line>
+<text x="154.875" y="260.0" class="edge-label">3</text>
+<line x1="174.375" y1="152" x2="126.25" y2="208" stroke="#aaa" stroke-width="1.5"></line>
+<text x="158.3125" y="180.0" class="edge-label">0</text>
+<line x1="174.375" y1="152" x2="222.5" y2="208" stroke="#aaa" stroke-width="1.5"></line>
+<text x="206.4375" y="180.0" class="edge-label">3</text>
+<line x1="518.3796296296296" y1="72" x2="174.375" y2="128" stroke="#aaa" stroke-width="1.5"></line>
+<text x="354.3773148148148" y="100.0" class="edge-label">0</text>
+<line x1="305.0" y1="232" x2="277.5" y2="288" stroke="#aaa" stroke-width="1.5"></line>
+<text x="299.25" y="260.0" class="edge-label">2</text>
+<line x1="305.0" y1="232" x2="332.5" y2="288" stroke="#aaa" stroke-width="1.5"></line>
+<text x="326.75" y="260.0" class="edge-label">3</text>
+<line x1="553.2638888888888" y1="152" x2="305.0" y2="208" stroke="#aaa" stroke-width="1.5"></line>
+<text x="437.1319444444444" y="180.0" class="edge-label">0</text>
+<line x1="415.0" y1="312" x2="387.5" y2="368" stroke="#aaa" stroke-width="1.5"></line>
+<text x="409.25" y="340.0" class="edge-label">1</text>
+<line x1="415.0" y1="312" x2="442.5" y2="368" stroke="#aaa" stroke-width="1.5"></line>
+<text x="436.75" y="340.0" class="edge-label">3</text>
+<line x1="582.2916666666666" y1="232" x2="415.0" y2="288" stroke="#aaa" stroke-width="1.5"></line>
+<text x="506.6458333333333" y="260.0" class="edge-label">0</text>
+<line x1="497.5" y1="552" x2="497.5" y2="608" stroke="#aaa" stroke-width="1.5"></line>
+<text x="505.5" y="580.0" class="edge-label">1</text>
+<line x1="525.0" y1="472" x2="497.5" y2="528" stroke="#aaa" stroke-width="1.5"></line>
+<text x="519.25" y="500.0" class="edge-label">1</text>
+<line x1="525.0" y1="472" x2="552.5" y2="528" stroke="#aaa" stroke-width="1.5"></line>
+<text x="546.75" y="500.0" class="edge-label">3</text>
+<line x1="566.25" y1="392" x2="525.0" y2="448" stroke="#aaa" stroke-width="1.5"></line>
+<text x="553.625" y="420.0" class="edge-label">1</text>
+<line x1="566.25" y1="392" x2="607.5" y2="448" stroke="#aaa" stroke-width="1.5"></line>
+<text x="594.875" y="420.0" class="edge-label">3</text>
+<line x1="614.375" y1="312" x2="566.25" y2="368" stroke="#aaa" stroke-width="1.5"></line>
+<text x="598.3125" y="340.0" class="edge-label">1</text>
+<line x1="614.375" y1="312" x2="662.5" y2="368" stroke="#aaa" stroke-width="1.5"></line>
+<text x="646.4375" y="340.0" class="edge-label">3</text>
+<line x1="582.2916666666666" y1="232" x2="614.375" y2="288" stroke="#aaa" stroke-width="1.5"></line>
+<text x="606.3333333333333" y="260.0" class="edge-label">1</text>
+<line x1="582.2916666666666" y1="232" x2="717.5" y2="288" stroke="#aaa" stroke-width="1.5"></line>
+<text x="657.8958333333333" y="260.0" class="edge-label">3</text>
+<line x1="553.2638888888888" y1="152" x2="582.2916666666666" y2="208" stroke="#aaa" stroke-width="1.5"></line>
+<text x="575.7777777777777" y="180.0" class="edge-label">1</text>
+<line x1="553.2638888888888" y1="152" x2="772.5" y2="208" stroke="#aaa" stroke-width="1.5"></line>
+<text x="670.8819444444443" y="180.0" class="edge-label">3</text>
+<line x1="518.3796296296296" y1="72" x2="553.2638888888888" y2="128" stroke="#aaa" stroke-width="1.5"></line>
+<text x="543.8217592592591" y="100.0" class="edge-label">1</text>
+<line x1="518.3796296296296" y1="72" x2="827.5" y2="128" stroke="#aaa" stroke-width="1.5"></line>
+<text x="680.9398148148148" y="100.0" class="edge-label">3</text>
+<rect x="37.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="57.5" y="384" text-anchor="middle" class="node-text" fill="white">DEW</text>
+<rect x="92.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="112.5" y="384" text-anchor="middle" class="node-text" fill="white">PUG</text>
+<rect x="65.0" y="290" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="85.0" y="304" text-anchor="middle" class="node-text" fill="white">PUG</text>
+<rect x="147.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="167.5" y="304" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="106.25" y="210" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="126.25" y="224" text-anchor="middle" class="node-text" fill="white">GEL</text>
+<rect x="202.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="222.5" y="224" text-anchor="middle" class="node-text" fill="white">YAK</text>
+<rect x="154.375" y="130" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="174.375" y="144" text-anchor="middle" class="node-text" fill="white">YAK</text>
+<rect x="257.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="277.5" y="304" text-anchor="middle" class="node-text" fill="white">NIP</text>
+<rect x="312.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="332.5" y="304" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="285.0" y="210" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="305.0" y="224" text-anchor="middle" class="node-text" fill="white">INK</text>
+<rect x="367.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="387.5" y="384" text-anchor="middle" class="node-text" fill="white">NUT</text>
+<rect x="422.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="442.5" y="384" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<rect x="395.0" y="290" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="415.0" y="304" text-anchor="middle" class="node-text" fill="white">NAP</text>
+<rect x="477.5" y="610" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="497.5" y="624" text-anchor="middle" class="node-text" fill="white">FOX</text>
+<rect x="477.5" y="530" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="497.5" y="544" text-anchor="middle" class="node-text" fill="white">WOO</text>
+<rect x="532.5" y="530" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="552.5" y="544" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="505.0" y="450" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="525.0" y="464" text-anchor="middle" class="node-text" fill="white">SOY</text>
+<rect x="587.5" y="450" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="607.5" y="464" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="546.25" y="370" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="566.25" y="384" text-anchor="middle" class="node-text" fill="white">OIL</text>
+<rect x="642.5" y="370" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="662.5" y="384" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="594.375" y="290" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="614.375" y="304" text-anchor="middle" class="node-text" fill="white">MOB</text>
+<rect x="697.5" y="290" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="717.5" y="304" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="562.2916666666666" y="210" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="582.2916666666666" y="224" text-anchor="middle" class="node-text" fill="white">JOG</text>
+<rect x="752.5" y="210" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="772.5" y="224" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="533.2638888888888" y="130" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="553.2638888888888" y="144" text-anchor="middle" class="node-text" fill="white">OAT</text>
+<rect x="807.5" y="130" width="40" height="20" rx="12" fill="#4CAF50"></rect>
+<text x="827.5" y="144" text-anchor="middle" class="node-text" fill="white">NOR</text>
+<rect x="498.37962962962956" y="50" width="40" height="20" rx="3" fill="#2196F3"></rect>
+<text x="518.3796296296296" y="64" text-anchor="middle" class="node-text" fill="white">NOR</text>
 </svg>
-<p>Each pile contains words <strong>consistent</strong> with that score.</p>
-<aside class="notes">
-<p>Hand out card decks. Give students 5-7 minutes to play a few rounds, then regroup to discuss strategy.</p>
-<p>Key questions to seed: - What’s a good first guess? Why? - Did anyone try guessing similar words in a row (CAT, BAT, HAT)? How did that go? - What’s the worst case — how many guesses could it take?</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+  </div>
+</div>
 </section>
 <section id="what-strategy-did-you-discover" class="slide level2">
 <h2>What Strategy Did You Discover?</h2>
 <p>Discussion questions:</p>
 <ul>
 <li>What makes a “good” first guess?</li>
-<li>What happens if you guess CAT, then BAT, then HAT?</li>
+<li>What happens if you guess NAP, then NIP, then NUT?</li>
 <li>Can you <strong>always</strong> win in 2 guesses? Why or why not?</li>
 </ul>
 <aside class="notes">
-<p>Lead into: the strategy IS a tree! Each guess partitions the remaining words by their Jotto score (0, 1, 2, or 3). Good guesses split evenly. Bad guesses leave big partitions.</p>
-<p>Lower bound discussion: With 4 outcomes per guess and 16 words, theoretically log₄(16) = 2 guesses should suffice. But no word achieves a perfect 4-way split!</p>
+<p>Lead into: the strategy IS a tree! Each guess partitions the remaining words by their Jotto score. Good guesses split evenly. Bad guesses leave big partitions.</p>
+<p>Lower bound discussion: Each guess has 3 branching outcomes (0, 1, or 2 matches). Getting 3 matches means you guessed correctly—game over, no more branches needed! So with 3 outcomes per guess and 16 words, theoretically log₃(16) ≈ 2.5 guesses should suffice. Since we can’t make half a guess, the lower bound is 3 guesses. But even that’s hard to achieve in practice!</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -703,6 +569,259 @@ PUG  SOY  WOO  YAK</code></pre>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
+<section id="special-trees" class="slide level2">
+<h2>Special Trees</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p>Complete Tree</p>
+<p><br></p>
+<p>Full Tree</p>
+<p><br></p>
+<p>Perfect Tree</p>
+</div><div class="column" style="width:60%;">
+<svg viewbox="0 0 260 420" xmlns="http://www.w3.org/2000/svg" style="max-width: 260px;">
+  <!-- Three trees stacked vertically, each height 3 -->
+
+  <!-- TREE 1: Perfect tree (all levels completely filled) - height 3 -->
+  <g transform="translate(0, 0)">
+    <!-- Level 0-1 edges -->
+    <line x1="130" y1="18" x2="70" y2="43" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="130" y1="18" x2="190" y2="43" stroke="#e76f51" stroke-width="2"></line>
+    <!-- Level 1-2 edges -->
+    <line x1="70" y1="55" x2="40" y2="80" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="70" y1="55" x2="100" y2="80" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="190" y1="55" x2="160" y2="80" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="190" y1="55" x2="220" y2="80" stroke="#e76f51" stroke-width="2"></line>
+    <!-- Level 2-3 edges -->
+    <line x1="40" y1="92" x2="25" y2="117" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="40" y1="92" x2="55" y2="117" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="100" y1="92" x2="85" y2="117" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="100" y1="92" x2="115" y2="117" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="160" y1="92" x2="145" y2="117" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="160" y1="92" x2="175" y2="117" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="220" y1="92" x2="205" y2="117" stroke="#e76f51" stroke-width="2"></line>
+    <line x1="220" y1="92" x2="235" y2="117" stroke="#e76f51" stroke-width="2"></line>
+    <!-- Nodes -->
+    <circle cx="130" cy="12" r="10" fill="#e76f51"></circle>
+    <circle cx="70" cy="47" r="9" fill="#e76f51"></circle>
+    <circle cx="190" cy="47" r="9" fill="#e76f51"></circle>
+    <circle cx="40" cy="85" r="8" fill="#e76f51"></circle>
+    <circle cx="100" cy="85" r="8" fill="#e76f51"></circle>
+    <circle cx="160" cy="85" r="8" fill="#e76f51"></circle>
+    <circle cx="220" cy="85" r="8" fill="#e76f51"></circle>
+    <circle cx="25" cy="122" r="7" fill="#e76f51"></circle>
+    <circle cx="55" cy="122" r="7" fill="#e76f51"></circle>
+    <circle cx="85" cy="122" r="7" fill="#e76f51"></circle>
+    <circle cx="115" cy="122" r="7" fill="#e76f51"></circle>
+    <circle cx="145" cy="122" r="7" fill="#e76f51"></circle>
+    <circle cx="175" cy="122" r="7" fill="#e76f51"></circle>
+    <circle cx="205" cy="122" r="7" fill="#e76f51"></circle>
+    <circle cx="235" cy="122" r="7" fill="#e76f51"></circle>
+  </g>
+
+  <!-- TREE 2: Complete tree - height 3, partial last level filled left-to-right -->
+  <g transform="translate(0, 140)">
+    <!-- Level 0-1 edges -->
+    <line x1="130" y1="18" x2="70" y2="43" stroke="#2a9d8f" stroke-width="2"></line>
+    <line x1="130" y1="18" x2="190" y2="43" stroke="#2a9d8f" stroke-width="2"></line>
+    <!-- Level 1-2 edges -->
+    <line x1="70" y1="55" x2="40" y2="80" stroke="#2a9d8f" stroke-width="2"></line>
+    <line x1="70" y1="55" x2="100" y2="80" stroke="#2a9d8f" stroke-width="2"></line>
+    <line x1="190" y1="55" x2="160" y2="80" stroke="#2a9d8f" stroke-width="2"></line>
+    <line x1="190" y1="55" x2="220" y2="80" stroke="#2a9d8f" stroke-width="2"></line>
+    <!-- Level 2-3 edges (partial - only leftmost filled) -->
+    <line x1="40" y1="92" x2="25" y2="117" stroke="#2a9d8f" stroke-width="2"></line>
+    <line x1="40" y1="92" x2="55" y2="117" stroke="#2a9d8f" stroke-width="2"></line>
+    <line x1="100" y1="92" x2="85" y2="117" stroke="#2a9d8f" stroke-width="2"></line>
+    <!-- Nodes -->
+    <circle cx="130" cy="12" r="10" fill="#2a9d8f"></circle>
+    <circle cx="70" cy="47" r="9" fill="#2a9d8f"></circle>
+    <circle cx="190" cy="47" r="9" fill="#2a9d8f"></circle>
+    <circle cx="40" cy="85" r="8" fill="#2a9d8f"></circle>
+    <circle cx="100" cy="85" r="8" fill="#2a9d8f"></circle>
+    <circle cx="160" cy="85" r="8" fill="#2a9d8f"></circle>
+    <circle cx="220" cy="85" r="8" fill="#2a9d8f"></circle>
+    <circle cx="25" cy="122" r="7" fill="#2a9d8f"></circle>
+    <circle cx="55" cy="122" r="7" fill="#2a9d8f"></circle>
+    <circle cx="85" cy="122" r="7" fill="#2a9d8f"></circle>
+  </g>
+
+  <!-- TREE 3: Full tree - height 3, every node has 0 or 2 children, unbalanced -->
+  <g transform="translate(0, 280)">
+    <!-- Level 0-1 edges -->
+    <line x1="130" y1="18" x2="70" y2="43" stroke="#e9c46a" stroke-width="2"></line>
+    <line x1="130" y1="18" x2="190" y2="43" stroke="#e9c46a" stroke-width="2"></line>
+    <!-- Level 1-2 edges (only right child has children) -->
+    <line x1="190" y1="55" x2="160" y2="80" stroke="#e9c46a" stroke-width="2"></line>
+    <line x1="190" y1="55" x2="220" y2="80" stroke="#e9c46a" stroke-width="2"></line>
+    <!-- Level 2-3 edges (left child of right subtree has children) -->
+    <line x1="160" y1="92" x2="145" y2="117" stroke="#e9c46a" stroke-width="2"></line>
+    <line x1="160" y1="92" x2="175" y2="117" stroke="#e9c46a" stroke-width="2"></line>
+    <!-- Nodes -->
+    <circle cx="130" cy="12" r="10" fill="#e9c46a"></circle>
+    <circle cx="70" cy="47" r="9" fill="#e9c46a"></circle>
+    <circle cx="190" cy="47" r="9" fill="#e9c46a"></circle>
+    <circle cx="160" cy="85" r="8" fill="#e9c46a"></circle>
+    <circle cx="220" cy="85" r="8" fill="#e9c46a"></circle>
+    <circle cx="145" cy="122" r="7" fill="#e9c46a"></circle>
+    <circle cx="175" cy="122" r="7" fill="#e9c46a"></circle>
+  </g>
+</svg>
+</div></div>
+<aside class="notes">
+<p>This is a matching activity. Students should draw lines connecting: - Perfect Tree: All levels completely filled (coral tree, top) - this is both full AND complete - Complete Tree: All levels filled except possibly the last, which is filled left-to-right (teal tree, middle) - Full Tree: Every node has 0 or 2 children (yellow tree, bottom) - note it can be unbalanced!</p>
+<p>Key insight: Perfect ⊂ Complete, and Perfect ⊂ Full, but Complete and Full are independent properties.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="binary-tree-height" class="slide level2 smaller">
+<h2>Binary Tree Height</h2>
+<p><strong>height(r)</strong> – length of longest path from node r to a leaf</p>
+<div class="columns">
+<div class="column" style="width:25%;">
+<svg viewbox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" style="max-width: 200px; display: block; margin: 0 auto;">
+  <!-- Expression tree like the original slide: +, *, 4, 2, -, 3, 5 -->
+
+  <!-- Edges -->
+  <line x1="110" y1="35" x2="55" y2="85" stroke="#333" stroke-width="2"></line>
+  <line x1="110" y1="35" x2="165" y2="85" stroke="#333" stroke-width="2"></line>
+  <line x1="55" y1="105" x2="25" y2="155" stroke="#333" stroke-width="2"></line>
+  <line x1="55" y1="105" x2="85" y2="155" stroke="#333" stroke-width="2"></line>
+  <line x1="85" y1="175" x2="55" y2="225" stroke="#333" stroke-width="2"></line>
+  <line x1="85" y1="175" x2="115" y2="225" stroke="#333" stroke-width="2"></line>
+
+  <!-- Root: + (green) -->
+  <circle cx="110" cy="30" r="22" fill="#7cb518" stroke="#333" stroke-width="2"></circle>
+  <text x="110" y="37" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">+</text>
+
+  <!-- Left child: * (green) -->
+  <circle cx="55" cy="95" r="20" fill="#7cb518" stroke="#333" stroke-width="2"></circle>
+  <text x="55" y="102" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">*</text>
+
+  <!-- Right child: 4 (yellow) -->
+  <circle cx="165" cy="95" r="20" fill="#ffc107" stroke="#333" stroke-width="2"></circle>
+  <text x="165" y="102" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">4</text>
+
+  <!-- Left-left child: 2 (yellow) -->
+  <circle cx="25" cy="165" r="18" fill="#ffc107" stroke="#333" stroke-width="2"></circle>
+  <text x="25" y="172" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">2</text>
+
+  <!-- Left-right child: - (green) -->
+  <circle cx="85" cy="165" r="18" fill="#7cb518" stroke="#333" stroke-width="2"></circle>
+  <text x="85" y="172" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">−</text>
+
+  <!-- Left-right-left child: 3 (yellow) -->
+  <circle cx="55" cy="235" r="16" fill="#ffc107" stroke="#333" stroke-width="2"></circle>
+  <text x="55" y="242" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">3</text>
+
+  <!-- Left-right-right child: 5 (yellow) -->
+  <circle cx="115" cy="235" r="16" fill="#ffc107" stroke="#333" stroke-width="2"></circle>
+  <text x="115" y="242" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">5</text>
+</svg>
+</div><div class="column" style="width:60%;">
+<p>Given a binary tree T, <strong>height(T)</strong> is</p>
+<p><br></p>
+<p>_______________________________________</p>
+<p><br></p>
+<p>_______________________________________</p>
+<p><br></p>
+</div></div>
+<aside class="notes">
+<p>Fill in via annotation: - If T is empty: height(T) = -1 - Otherwise: height(T) = 1 + max(height(T.left), height(T.right))</p>
+<p>For N(h): N(h) = 2^(h+1) - 1</p>
+<p>This tree has height 3 (path from + to 3 or 5). The expression it represents is (2 * (3 - 5)) + 4.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="height-and-node-count" class="slide level2 smaller">
+<h2>Height and Node Count</h2>
+<p><strong>Question</strong>: What’s the maximum number of nodes, <span class="math inline">\(N(h)\)</span>, for a binary tree of height <span class="math inline">\(h\)</span>?</p>
+<div class="columns">
+<div class="column" style="width:20%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Height</th>
+<th>Max Nodes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td>h</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<p><strong>Question</strong>: What’s the least height for a tree of <span class="math inline">\(n\)</span> nodes?</p>
+</section>
+<section id="why-height-matters" class="slide level2">
+<h2>Why Height Matters</h2>
+<p>Many tree operations take time proportional to height:</p>
+<ul>
+<li>Finding a node</li>
+<li>Inserting a node</li>
+<li>Deleting a node</li>
+</ul>
+<p>If height is <span class="math inline">\(O(\log n)\)</span>: these are <strong>fast</strong> (<span class="math inline">\(O(\log n)\)</span>)</p>
+<p>If height is <span class="math inline">\(O(n)\)</span>: these are <strong>slow</strong> (<span class="math inline">\(O(n)\)</span>)</p>
+<p><strong>Goal</strong>: Keep trees short!!</p>
+</section>
+<section id="back-to-wordle" class="slide level2">
+<h2>Back to Wordle</h2>
+<p>Remember our decision tree?</p>
+<ul>
+<li>Height: worst-case guesses</li>
+<li>Good guesses: tree with minimum height</li>
+<li>Goal: split possibilities evenly</li>
+</ul>
+<p><strong>decision trees</strong> model any sequence of choices where each choice narrows down possibilities.</p>
+<p>BUT…</p>
+</section>
+<section id="week-8-summary" class="slide level2">
+<h2>Week 8 Summary</h2>
+<ul>
+<li>Trees are <strong>hierarchical</strong> structures with a root, children, and leaves</li>
+<li><strong>Binary trees</strong> have at most 2 children per node</li>
+<li>Trees are <strong>recursively defined</strong></li>
+<li><strong>Height</strong> determines efficiency of operations</li>
+<li><strong>Decision trees</strong> model choices</li>
+</ul>
 
 
 <script type="ojs-module-contents">
