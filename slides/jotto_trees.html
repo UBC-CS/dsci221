@@ -28,16 +28,21 @@
 <div class="legend">
   <span class="blue">■ Blue boxes</span> = Guess this word |
   <span class="green">■ Green rounded</span> = Answer (leaf) |
-  <span>Edge labels</span> = Jotto score (0-3)
+  <span>Edge labels</span> = Jotto score (0, 1, 2, or 3=win!)
 </div>
 
 <div class="comparison">
 <h2>Strategy Comparison</h2>
+<p style="max-width: 800px; margin: 0 auto 15px auto; line-height: 1.6; font-size: 0.95em; color: #555;">
+  <strong>Note:</strong> Depth = number of guesses to identify the word. If you guess correctly on your
+  first try (score = 3), that's depth 1. The trees below show "3" edges leading to answer nodes, but
+  remember: getting a 3 ends the game immediately — you don't branch further.
+</p>
 <table>
   <tr>
     <th>Strategy</th>
-    <th>Max Depth (worst case)</th>
-    <th>Avg Depth (expected)</th>
+    <th>Max Guesses (worst case)</th>
+    <th>Avg Guesses (expected)</th>
     <th>Description</th>
   </tr>
   <tr>
@@ -50,13 +55,13 @@
     <td>True Minimax</td>
     <td class="best-val">6</td>
     <td class="">4.12</td>
-    <td>Exhaustive search for minimum worst-case depth</td>
+    <td>Exhaustive search for minimum worst-case guesses</td>
   </tr>
   <tr>
     <td>Min Average</td>
     <td class="best-val">6</td>
     <td class="best-val">3.94</td>
-    <td>Minimize expected remaining candidates</td>
+    <td>Minimize expected number of guesses</td>
   </tr>
   <tr>
     <td>Information Gain (ID3)</td>
@@ -679,28 +684,29 @@
 <div class="comparison">
 <h2>Lower Bound: How good can we possibly be?</h2>
 <p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
-  Each guess produces one of <strong>4 possible outcomes</strong> (Jotto scores 0, 1, 2, or 3).
-  A decision tree with 16 leaves needs enough internal nodes to distinguish all 16 words.
+  Each guess produces one of <strong>3 branching outcomes</strong> (Jotto scores 0, 1, or 2).
+  Getting a score of 3 means you guessed correctly — game over! That's not a branch, it's a win.
 </p>
 <p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
-  <strong>Information-theoretic lower bound:</strong> A perfect 4-way split at each level gives us
-  4<sup>d</sup> leaves at depth d. To identify 16 words, we need at least:
+  <strong>Information-theoretic lower bound:</strong> A perfect 3-way split at each level gives us
+  3<sup>d</sup> leaves at depth d. To identify 16 words, we need at least:
 </p>
 <p style="text-align: center; font-size: 1.3em; margin: 20px 0;">
-  4<sup>d</sup> ≥ 16 &nbsp;⟹&nbsp; d ≥ log<sub>4</sub>(16) = <strong>2</strong>
+  3<sup>d</sup> ≥ 16 &nbsp;⟹&nbsp; d ≥ log<sub>3</sub>(16) ≈ 2.52 &nbsp;⟹&nbsp; d ≥ <strong>3</strong>
 </p>
 <p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
-  But wait — can we actually achieve depth 2? That would require our first guess to split
-  the 16 words into 4 groups of exactly 4, and then each follow-up to split those 4 into
-  singletons. Looking at the score matrix... <strong>no guess achieves a perfect 4-way split!</strong>
+  So theoretically, we need at least 3 guesses in the worst case. Can we achieve this?
+  That would require our first guess to split the 16 words into 3 groups of roughly equal size,
+  and each follow-up to continue splitting evenly. Looking at the score matrix...
+  <strong>no sequence of guesses achieves this!</strong>
 </p>
 <p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
-  The best we can do is <strong>depth 4</strong> — twice the theoretical minimum. This gap shows
+  The best we can do is <strong>depth 6</strong> — twice the theoretical minimum. This gap shows
   that our word set has "entanglement" — words share letters in ways that prevent perfect discrimination.
 </p>
 <p style="max-width: 800px; margin: 0 auto; line-height: 1.8; background: #fff3e0; padding: 15px; border-radius: 8px;">
-  <strong>Student question:</strong> With 4 possible outcomes per guess and 16 words, why can't we
-  always identify the word in 2 guesses? What property of the words prevents this?
+  <strong>Student question:</strong> With 3 branching outcomes per guess and 16 words, why can't we
+  always identify the word in 3 guesses? What property of the words prevents this?
 </p>
 </div>
 
