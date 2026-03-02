@@ -1,12 +1,12 @@
 [
   {
-    "listing": "/announcements.html",
+    "listing": "/index.html",
     "items": [
       "/posts/00_welcome/index.html"
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/announcements.html",
     "items": [
       "/posts/00_welcome/index.html"
     ]

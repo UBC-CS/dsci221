@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BST Explorer</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+    h1 {
+      margin: 15px 0 10px 0;
+      font-size: 24px;
+      color: #333;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    input[type="number"] {
+      width: 80px;
+      padding: 8px 12px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      text-align: center;
+    }
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #4a90d9;
+    }
+    button {
+      padding: 10px 18px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .insert-btn { background: #5cb85c; color: white; }
+    .insert-btn:hover { background: #4cae4c; }
+    .find-btn { background: #4a90d9; color: white; }
+    .find-btn:hover { background: #3a7bc8; }
+    .delete-btn { background: #d9534f; color: white; }
+    .delete-btn:hover { background: #c9302c; }
+    .clear-btn { background: #f0ad4e; color: white; }
+    .clear-btn:hover { background: #ec971f; }
+    .random-btn { background: #9b59b6; color: white; }
+    .random-btn:hover { background: #8e44ad; }
+    #canvas-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+      min-height: 20px;
+    }
+    .info.success { color: #5cb85c; }
+    .info.error { color: #d9534f; }
+    .traversal-controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .traversal-btn {
+      background: #607d8b;
+      color: white;
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .traversal-btn:hover { background: #546e7a; }
+    .traversal-output {
+      margin-top: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #333;
+      min-height: 20px;
+    }
+    .sound-note {
+      font-size: 11px;
+      color: #999;
+      margin-top: 5px;
+    }
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #666;
+    }
+    .speed-control input[type="range"] {
+      width: 120px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Binary Search Tree Explorer</h1>
+  <div class="controls">
+    <input type="number" id="valueInput" placeholder="Value" min="0" max="999">
+    <button class="insert-btn" id="insertBtn">Insert</button>
+    <button class="find-btn" id="findBtn">Find</button>
+    <button class="delete-btn" id="deleteBtn">Delete</button>
+    <button class="random-btn" id="randomBtn">Random Tree</button>
+    <button class="clear-btn" id="clearBtn">Clear</button>
+  </div>
+  <div class="traversal-controls">
+    <button class="traversal-btn" id="inorderBtn">Inorder</button>
+    <button class="traversal-btn" id="preorderBtn">Preorder</button>
+    <button class="traversal-btn" id="postorderBtn">Postorder</button>
+  </div>
+  <div id="canvas-container"></div>
+  <div class="info" id="info"></div>
+  <div class="traversal-output" id="traversalOutput"></div>
+  <div class="speed-control">
+    <span>Speed:</span>
+    <input type="range" id="speedSlider" min="1" max="10" value="5">
+    <span id="speedLabel">5</span>
+  </div>
+  <div class="sound-note">🔊 Sound effects enabled</div>
+
+  <script>
+    // ============================================
+    // SOUND EFFECTS
+    // ============================================
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playBoop(frequency = 440, duration = 0.08) {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = frequency;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) { }
+    }
+
+    function playLanding() {
+      try {
+        initAudio();
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const osc3 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc1.connect(gain);
+        osc2.connect(gain);
+        osc3.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc1.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc1.type = 'sine';
+        osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
+        osc2.type = 'sine';
+        osc3.frequency.setValueAtTime(1800, audioCtx.currentTime);
+        osc3.type = 'sine';
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+        osc1.start(audioCtx.currentTime);
+        osc2.start(audioCtx.currentTime);
+        osc3.start(audioCtx.currentTime);
+        osc1.stop(audioCtx.currentTime + 0.1);
+        osc2.stop(audioCtx.currentTime + 0.1);
+        osc3.stop(audioCtx.currentTime + 0.1);
+      } catch (e) { }
+    }
+
+    function playSnip() {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.1);
+        osc.type = 'sawtooth';
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.12);
+      } catch (e) { }
+    }
+
+    function playSwap() {
+      try {
+        initAudio();
+        // Two quick notes for swap
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc1.frequency.setValueAtTime(500, audioCtx.currentTime);
+        osc2.frequency.setValueAtTime(700, audioCtx.currentTime + 0.08);
+        osc1.type = 'sine';
+        osc2.type = 'sine';
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.16);
+        osc1.start(audioCtx.currentTime);
+        osc1.stop(audioCtx.currentTime + 0.08);
+        osc2.start(audioCtx.currentTime + 0.08);
+        osc2.stop(audioCtx.currentTime + 0.16);
+      } catch (e) { }
+    }
+
+    // ============================================
+    // CONSTANTS
+    // ============================================
+    const CANVAS_WIDTH = 900;
+    const CANVAS_HEIGHT = 500;
+    const NODE_RADIUS = 24;
+    const VERTICAL_SPACING = 70;
+    const MIN_H_SPACING = 50;
+
+    let animSpeed = 0.05;
+
+    // ============================================
+    // BST DATA STRUCTURE
+    // ============================================
+    class BSTNode {
+      constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+      }
+    }
+
+    class BST {
+      constructor() {
+        this.root = null;
+      }
+
+      insert(value) {
+        const newNode = new BSTNode(value);
+        if (!this.root) {
+          this.root = newNode;
+          return { success: true, node: newNode, path: [newNode] };
+        }
+        let current = this.root;
+        const path = [current];
+        while (true) {
+          if (value === current.value) {
+            return { success: false, message: `${value} already exists`, path };
+          }
+          if (value < current.value) {
+            if (!current.left) {
+              current.left = newNode;
+              path.push(newNode);
+              return { success: true, node: newNode, path };
+            }
+            current = current.left;
+          } else {
+            if (!current.right) {
+              current.right = newNode;
+              path.push(newNode);
+              return { success: true, node: newNode, path };
+            }
+            current = current.right;
+          }
+          path.push(current);
+        }
+      }
+
+      find(value) {
+        let current = this.root;
+        const path = [];
+        while (current) {
+          path.push(current);
+          if (value === current.value) return { found: true, node: current, path };
+          current = value < current.value ? current.left : current.right;
+        }
+        return { found: false, path };
+      }
+
+      findWithParent(value) {
+        let parent = null;
+        let current = this.root;
+        let isLeft = false;
+        const path = [];
+
+        while (current) {
+          path.push(current);
+          if (value === current.value) {
+            return { found: true, node: current, parent, isLeft, path };
+          }
+          parent = current;
+          if (value < current.value) {
+            current = current.left;
+            isLeft = true;
+          } else {
+            current = current.right;
+            isLeft = false;
+          }
+        }
+        return { found: false, path };
+      }
+
+      findIOP(node) {
+        // Find inorder predecessor (rightmost in left subtree)
+        let current = node.left;
+        let parent = node;
+        const path = [current];
+        while (current.right) {
+          parent = current;
+          current = current.right;
+          path.push(current);
+        }
+        return { iop: current, iopParent: parent, path };
+      }
+
+      findInsertPath(value) {
+        if (!this.root) return { path: [], parent: null, side: null };
+        let current = this.root;
+        const path = [current];
+        while (true) {
+          if (value === current.value) return { path, duplicate: true };
+          if (value < current.value) {
+            if (!current.left) return { path, parent: current, side: 'left' };
+            current = current.left;
+          } else {
+            if (!current.right) return { path, parent: current, side: 'right' };
+            current = current.right;
+          }
+          path.push(current);
+        }
+      }
+
+      // Returns removal info without actually removing
+      getRemovalInfo(value) {
+        const findResult = this.findWithParent(value);
+        if (!findResult.found) return { found: false };
+
+        const node = findResult.node;
+        const parent = findResult.parent;
+        const isLeft = findResult.isLeft;
+
+        const hasLeft = node.left !== null;
+        const hasRight = node.right !== null;
+
+        if (!hasLeft && !hasRight) {
+          return { found: true, type: 'leaf', node, parent, isLeft, path: findResult.path };
+        } else if (hasLeft && hasRight) {
+          const iopInfo = this.findIOP(node);
+          return {
+            found: true,
+            type: 'two-child',
+            node,
+            parent,
+            isLeft,
+            path: findResult.path,
+            iop: iopInfo.iop,
+            iopParent: iopInfo.iopParent,
+            iopPath: iopInfo.path
+          };
+        } else {
+          const child = hasLeft ? node.left : node.right;
+          return { found: true, type: 'one-child', node, parent, isLeft, child, path: findResult.path };
+        }
+      }
+
+      // Actually perform the removal
+      performRemoval(info) {
+        const { node, parent, isLeft, type } = info;
+
+        if (type === 'leaf') {
+          if (!parent) this.root = null;
+          else if (isLeft) parent.left = null;
+          else parent.right = null;
+        } else if (type === 'one-child') {
+          const child = info.child;
+          if (!parent) this.root = child;
+          else if (isLeft) parent.left = child;
+          else parent.right = child;
+        } else if (type === 'two-child') {
+          const { iop, iopParent } = info;
+          // Swap values
+          node.value = iop.value;
+          // Remove IOP (it has at most one child - left)
+          if (iopParent === node) {
+            iopParent.left = iop.left;
+          } else {
+            iopParent.right = iop.left;
+          }
+        }
+      }
+
+      inorder(node = this.root, result = []) {
+        if (node) {
+          this.inorder(node.left, result);
+          result.push(node.value);
+          this.inorder(node.right, result);
+        }
+        return result;
+      }
+
+      preorder(node = this.root, result = []) {
+        if (node) {
+          result.push(node.value);
+          this.preorder(node.left, result);
+          this.preorder(node.right, result);
+        }
+        return result;
+      }
+
+      postorder(node = this.root, result = []) {
+        if (node) {
+          this.postorder(node.left, result);
+          this.postorder(node.right, result);
+          result.push(node.value);
+        }
+        return result;
+      }
+
+      clear() {
+        this.root = null;
+      }
+    }
+
+    // ============================================
+    // VISUAL STATE
+    // ============================================
+    let nodePositions = new Map();
+
+    function getNodeVisual(node) {
+      if (!nodePositions.has(node)) {
+        nodePositions.set(node, {
+          x: CANVAS_WIDTH / 2,
+          y: -50,
+          targetX: CANVAS_WIDTH / 2,
+          targetY: 50,
+          scale: 1,
+          color: { r: 100, g: 180, b: 255 },
+          highlighted: false,
+          hidden: false
+        });
+      }
+      return nodePositions.get(node);
+    }
+
+    function clearVisuals() {
+      nodePositions.clear();
+    }
+
+    // ============================================
+    // LAYOUT
+    // ============================================
+    function getTreeDepth(node) {
+      if (!node) return 0;
+      return 1 + Math.max(getTreeDepth(node.left), getTreeDepth(node.right));
+    }
+
+    function updateAllPositions() {
+      if (!bst.root) return;
+      const treeHeight = getTreeDepth(bst.root);
+      const minSpacingAtBottom = NODE_RADIUS * 2 + 10;
+      const idealWidth = minSpacingAtBottom * Math.pow(2, treeHeight);
+      const totalWidth = Math.min(idealWidth, CANVAS_WIDTH - 80);
+      layoutNode(bst.root, CANVAS_WIDTH / 2, 50, 0, treeHeight, totalWidth);
+    }
+
+    function layoutNode(node, x, y, depth, treeHeight, totalWidth) {
+      if (!node) return;
+      const visual = getNodeVisual(node);
+      visual.targetX = x;
+      visual.targetY = y;
+      const childOffset = totalWidth / Math.pow(2, depth + 2);
+      if (node.left) layoutNode(node.left, x - childOffset, y + VERTICAL_SPACING, depth + 1, treeHeight, totalWidth);
+      if (node.right) layoutNode(node.right, x + childOffset, y + VERTICAL_SPACING, depth + 1, treeHeight, totalWidth);
+    }
+
+    function snapAllPositions(node) {
+      if (!node) return;
+      const visual = getNodeVisual(node);
+      visual.x = visual.targetX;
+      visual.y = visual.targetY;
+      snapAllPositions(node.left);
+      snapAllPositions(node.right);
+    }
+
+    function animatePositions(node) {
+      if (!node) return;
+      const visual = getNodeVisual(node);
+      if (!visual.hidden) {
+        visual.x = lerp(visual.x, visual.targetX, animSpeed * 3);
+        visual.y = lerp(visual.y, visual.targetY, animSpeed * 3);
+        visual.scale = lerp(visual.scale, 1, animSpeed * 4);
+      }
+      animatePositions(node.left);
+      animatePositions(node.right);
+    }
+
+    // ============================================
+    // BOUNCING ANIMATION STATE (for insert)
+    // ============================================
+    let bounceState = null;
+
+    function startBounce(value) {
+      const pathInfo = bst.findInsertPath(value);
+      if (pathInfo.duplicate) {
+        showInfo(`${value} already exists`, 'error');
+        return false;
+      }
+
+      const waypoints = [];
+      if (!bst.root) {
+        waypoints.push({ x: CANVAS_WIDTH / 2, y: -50 });
+        waypoints.push({ x: CANVAS_WIDTH / 2, y: 50 });
+      } else {
+        const rootVis = getNodeVisual(bst.root);
+        waypoints.push({ x: rootVis.x, y: -50 });
+        for (const node of pathInfo.path) {
+          const vis = getNodeVisual(node);
+          waypoints.push({ x: vis.x, y: vis.y });
+        }
+
+        const parent = pathInfo.parent;
+        const tempNode = new BSTNode(value);
+        if (pathInfo.side === 'left') parent.left = tempNode;
+        else parent.right = tempNode;
+
+        updateAllPositions();
+        const newVis = getNodeVisual(tempNode);
+        waypoints.push({ x: newVis.targetX, y: newVis.targetY });
+
+        if (pathInfo.side === 'left') parent.left = null;
+        else parent.right = null;
+        nodePositions.delete(tempNode);
+      }
+
+      bounceState = {
+        value: value,
+        x: waypoints[0].x,
+        y: waypoints[0].y,
+        scale: 1,
+        pathIndex: 0,
+        progress: 0,
+        waypoints: waypoints,
+        phase: 'bounce',
+        color: { r: 120, g: 200, b: 120 }
+      };
+      return true;
+    }
+
+    function updateBounce() {
+      if (!bounceState) return;
+
+      if (bounceState.phase === 'bounce') {
+        bounceState.progress += animSpeed * 1.2;
+        if (bounceState.progress >= 1) {
+          bounceState.pathIndex++;
+          bounceState.progress = 0;
+          if (bounceState.pathIndex >= bounceState.waypoints.length - 1) {
+            bounceState.phase = 'land';
+            bounceState.x = bounceState.waypoints[bounceState.waypoints.length - 1].x;
+            bounceState.y = bounceState.waypoints[bounceState.waypoints.length - 1].y;
+            bounceState.scale = 1.3;
+            playLanding();
+            return;
+          }
+          playBoop(300 + bounceState.pathIndex * 80, 0.06);
+        }
+
+        const from = bounceState.waypoints[bounceState.pathIndex];
+        const to = bounceState.waypoints[bounceState.pathIndex + 1];
+        const t = bounceState.progress;
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        bounceState.x = lerp(from.x, to.x, ease);
+        bounceState.y = lerp(from.y, to.y, ease);
+        bounceState.y += Math.sin(t * Math.PI) * -20;
+
+      } else if (bounceState.phase === 'land') {
+        bounceState.scale = lerp(bounceState.scale, 1, animSpeed * 5);
+        if (Math.abs(bounceState.scale - 1) < 0.03) {
+          const result = bst.insert(bounceState.value);
+          if (result.success) {
+            const visual = getNodeVisual(result.node);
+            visual.x = bounceState.x;
+            visual.y = bounceState.y;
+            visual.targetX = bounceState.x;
+            visual.targetY = bounceState.y;
+            visual.scale = 1;
+            showInfo(`Inserted ${bounceState.value}`, 'success');
+          }
+          bounceState = null;
+          updateAllPositions();
+        }
+      }
+    }
+
+    // ============================================
+    // REMOVAL ANIMATION STATE
+    // ============================================
+    let removeState = null;
+    // Phases: 'find', 'find-iop', 'swap', 'fall', 'done'
+
+    function startRemoval(value) {
+      const info = bst.getRemovalInfo(value);
+      if (!info.found) {
+        showInfo(`${value} not found`, 'error');
+        return false;
+      }
+
+      // Build waypoints for finding the node
+      const waypoints = [];
+      const rootVis = getNodeVisual(bst.root);
+      waypoints.push({ x: rootVis.x, y: -50 });
+      for (const node of info.path) {
+        const vis = getNodeVisual(node);
+        waypoints.push({ x: vis.x, y: vis.y });
+      }
+
+      removeState = {
+        value: value,
+        info: info,
+        phase: 'find',
+        highlightX: waypoints[0].x,
+        highlightY: waypoints[0].y,
+        pathIndex: 0,
+        progress: 0,
+        waypoints: waypoints,
+        // For falling animation
+        fallingNode: null,
+        fallingX: 0,
+        fallingY: 0,
+        fallingVelocity: 0,
+        fallingValue: value
+      };
+
+      return true;
+    }
+
+    function updateRemoval() {
+      if (!removeState) return;
+
+      const info = removeState.info;
+
+      if (removeState.phase === 'find') {
+        // Animate highlight bouncing down to find the node
+        removeState.progress += animSpeed * 1.2;
+
+        if (removeState.progress >= 1) {
+          removeState.pathIndex++;
+          removeState.progress = 0;
+
+          if (removeState.pathIndex >= removeState.waypoints.length - 1) {
+            // Found the node!
+            const nodeVis = getNodeVisual(info.node);
+            nodeVis.color = { r: 220, g: 80, b: 80 }; // Red highlight
+
+            if (info.type === 'two-child') {
+              // Need to find IOP next
+              removeState.phase = 'find-iop';
+              removeState.pathIndex = 0;
+              removeState.progress = 0;
+              // Build waypoints for IOP search
+              const iopWaypoints = [{ x: nodeVis.x, y: nodeVis.y }];
+              for (const iopNode of info.iopPath) {
+                const vis = getNodeVisual(iopNode);
+                iopWaypoints.push({ x: vis.x, y: vis.y });
+              }
+              removeState.iopWaypoints = iopWaypoints;
+              showInfo(`Found ${removeState.value}. Finding IOP...`);
+            } else {
+              // Leaf or one-child: proceed to fall
+              removeState.phase = 'pre-fall';
+              removeState.fallDelay = 30; // Pause before falling
+              playSnip();
+              showInfo(`Removing ${removeState.value}...`);
+            }
+            return;
+          }
+          playBoop(500 - removeState.pathIndex * 40, 0.06);
+        }
+
+        const from = removeState.waypoints[removeState.pathIndex];
+        const to = removeState.waypoints[removeState.pathIndex + 1];
+        const t = removeState.progress;
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        removeState.highlightX = lerp(from.x, to.x, ease);
+        removeState.highlightY = lerp(from.y, to.y, ease);
+
+      } else if (removeState.phase === 'find-iop') {
+        // Animate finding the IOP (rightmost in left subtree)
+        removeState.progress += animSpeed * 1.2;
+
+        if (removeState.progress >= 1) {
+          removeState.pathIndex++;
+          removeState.progress = 0;
+
+          if (removeState.pathIndex >= removeState.iopWaypoints.length - 1) {
+            // Found IOP!
+            const iopVis = getNodeVisual(info.iop);
+            iopVis.color = { r: 80, g: 200, b: 80 }; // Green highlight
+            removeState.phase = 'swap-pause';
+            removeState.pauseFrames = 40; // Pause to show IOP found
+            showInfo(`IOP is ${info.iop.value}. Swapping...`);
+            return;
+          }
+          playBoop(400, 0.06);
+        }
+
+        const from = removeState.iopWaypoints[removeState.pathIndex];
+        const to = removeState.iopWaypoints[removeState.pathIndex + 1];
+        const t = removeState.progress;
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        removeState.highlightX = lerp(from.x, to.x, ease);
+        removeState.highlightY = lerp(from.y, to.y, ease);
+
+      } else if (removeState.phase === 'swap-pause') {
+        // Pause with both nodes highlighted before swapping
+        removeState.pauseFrames--;
+        if (removeState.pauseFrames <= 0) {
+          const nodeVis = getNodeVisual(info.node);
+          const iopVis = getNodeVisual(info.iop);
+
+          // Store positions for the flying values animation
+          removeState.phase = 'swap';
+          removeState.swapProgress = 0;
+          removeState.nodeX = nodeVis.x;
+          removeState.nodeY = nodeVis.y;
+          removeState.iopX = iopVis.x;
+          removeState.iopY = iopVis.y;
+          removeState.nodeValue = info.node.value;
+          removeState.iopValue = info.iop.value;
+          playSwap();
+        }
+
+      } else if (removeState.phase === 'swap') {
+        // Animate values flying between nodes
+        removeState.swapProgress += animSpeed * 1.5;
+
+        if (removeState.swapProgress >= 1) {
+          // Swap complete - copy IOP value to node (don't modify tree yet, performRemoval does that)
+          // Just update what we'll display
+          removeState.swappedNodeValue = removeState.iopValue;
+
+          // Flash yellow then settle
+          const nodeVis = getNodeVisual(info.node);
+          nodeVis.color = { r: 255, g: 230, b: 100 };
+
+          removeState.phase = 'swap-flash';
+          removeState.flashFrames = 25;
+        }
+
+      } else if (removeState.phase === 'swap-flash') {
+        // Flash the swapped node, then proceed to fall
+        removeState.flashFrames--;
+
+        if (removeState.flashFrames <= 0) {
+          const nodeVis = getNodeVisual(info.node);
+          const iopVis = getNodeVisual(info.iop);
+
+          // The IOP will fall, the node keeps the IOP's value
+          removeState.fallingValue = removeState.nodeValue; // Original value falls
+          removeState.fallingX = iopVis.x;
+          removeState.fallingY = iopVis.y;
+          removeState.fallingVelocity = 0;
+
+          // Reset node color to normal (it now has IOP's value)
+          nodeVis.color = { r: 100, g: 180, b: 255 };
+
+          // Hide IOP node (it will fall)
+          iopVis.hidden = true;
+
+          removeState.phase = 'fall';
+          playSnip();
+          showInfo(`Removing IOP position...`);
+        }
+
+      } else if (removeState.phase === 'pre-fall') {
+        removeState.fallDelay--;
+        if (removeState.fallDelay <= 0) {
+          const nodeVis = getNodeVisual(info.node);
+          removeState.fallingX = nodeVis.x;
+          removeState.fallingY = nodeVis.y;
+          removeState.fallingVelocity = 0;
+          removeState.fallingValue = info.node.value;
+
+          // Hide the node
+          nodeVis.hidden = true;
+
+          removeState.phase = 'fall';
+        }
+
+      } else if (removeState.phase === 'fall') {
+        // Node falls with gravity
+        removeState.fallingVelocity += 0.8;
+        removeState.fallingY += removeState.fallingVelocity;
+
+        if (removeState.fallingY > CANVAS_HEIGHT + 50) {
+          // Finished falling - actually remove from tree
+          bst.performRemoval(info);
+
+          // Clean up visual
+          if (info.type === 'two-child') {
+            nodePositions.delete(info.iop);
+          } else {
+            nodePositions.delete(info.node);
+          }
+
+          updateAllPositions();
+
+          const deletedValue = removeState.value;
+          removeState = null;
+          showInfo(`Deleted ${deletedValue}`, 'success');
+        }
+      }
+    }
+
+    // ============================================
+    // DRAWING
+    // ============================================
+    function draw3DNode(x, y, value, scale, baseColor) {
+      push();
+      translate(x, y);
+      const r = NODE_RADIUS * scale;
+
+      noStroke();
+      for (let s = 4; s >= 0; s--) {
+        fill(0, 0, 0, 8);
+        ellipse(2 + s * 0.5, 4 + s * 0.5, r * 2.1 + s * 3, r * 1.9 + s * 2);
+      }
+
+      const brightR = Math.min(255, baseColor.r + 40);
+      const brightG = Math.min(255, baseColor.g + 40);
+      const brightB = Math.min(255, baseColor.b + 40);
+      const darkR = baseColor.r * 0.7;
+      const darkG = baseColor.g * 0.7;
+      const darkB = baseColor.b * 0.7;
+
+      for (let i = r; i > 0; i -= 1.5) {
+        const t = i / r;
+        const curve = t * t * t;
+        fill(lerp(brightR, darkR, curve), lerp(brightG, darkG, curve), lerp(brightB, darkB, curve));
+        noStroke();
+        ellipse(0, 0, i * 2);
+      }
+
+      fill(255, 255, 255, 60);
+      ellipse(-r * 0.25, -r * 0.25, r * 0.9, r * 0.7);
+      fill(255, 255, 255, 90);
+      ellipse(-r * 0.3, -r * 0.3, r * 0.5, r * 0.4);
+      fill(255, 255, 255, 130);
+      ellipse(-r * 0.35, -r * 0.35, r * 0.2, r * 0.15);
+      fill(255, 255, 255, 25);
+      ellipse(r * 0.3, r * 0.25, r * 0.4, r * 0.3);
+
+      noFill();
+      stroke(darkR * 0.9, darkG * 0.9, darkB * 0.9, 180);
+      strokeWeight(1.5);
+      ellipse(0, 0, r * 2);
+
+      noStroke();
+      fill(255, 255, 255, 80);
+      textSize(15 * scale);
+      textStyle(BOLD);
+      text(value, 0.5, 0.5);
+      fill(40, 40, 50);
+      text(value, 0, 0);
+      textStyle(NORMAL);
+
+      pop();
+    }
+
+    function drawHighlightRing(x, y) {
+      push();
+      noFill();
+      stroke(255, 200, 0, 200);
+      strokeWeight(4);
+      ellipse(x, y, NODE_RADIUS * 2.5);
+      pop();
+    }
+
+    function drawEdges(node) {
+      if (!node) return;
+      const vis = getNodeVisual(node);
+      if (vis.hidden) return;
+
+      stroke(120);
+      strokeWeight(2);
+
+      if (node.left) {
+        const leftVis = getNodeVisual(node.left);
+        if (!leftVis.hidden) {
+          line(vis.x, vis.y, leftVis.x, leftVis.y);
+        }
+        drawEdges(node.left);
+      }
+      if (node.right) {
+        const rightVis = getNodeVisual(node.right);
+        if (!rightVis.hidden) {
+          line(vis.x, vis.y, rightVis.x, rightVis.y);
+        }
+        drawEdges(node.right);
+      }
+    }
+
+    function drawNodes(node) {
+      if (!node) return;
+      const vis = getNodeVisual(node);
+      if (!vis.hidden) {
+        // During swap animation, hide values for the swapping nodes
+        let displayValue = node.value;
+        if (removeState && removeState.info && removeState.info.type === 'two-child') {
+          if (removeState.phase === 'swap') {
+            if (node === removeState.info.node || node === removeState.info.iop) {
+              displayValue = ''; // Hide value - it's flying!
+            }
+          } else if (removeState.phase === 'swap-flash' || removeState.phase === 'fall') {
+            // After swap, show the new value in the target node
+            if (node === removeState.info.node) {
+              displayValue = removeState.swappedNodeValue;
+            }
+          }
+        }
+        draw3DNode(vis.x, vis.y, displayValue, vis.scale, vis.color);
+      }
+      drawNodes(node.left);
+      drawNodes(node.right);
+    }
+
+    // ============================================
+    // MAIN
+    // ============================================
+    let bst = new BST();
+
+    function setup() {
+      let canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+      canvas.parent('canvas-container');
+      textAlign(CENTER, CENTER);
+      createExampleTree();
+    }
+
+    function draw() {
+      background(255);
+
+      animatePositions(bst.root);
+      updateBounce();
+      updateRemoval();
+
+      if (bst.root) {
+        drawEdges(bst.root);
+        drawNodes(bst.root);
+      }
+
+      // Draw bouncing node (insert)
+      if (bounceState) {
+        draw3DNode(bounceState.x, bounceState.y, bounceState.value, bounceState.scale, bounceState.color);
+      }
+
+      // Draw removal highlight ring
+      if (removeState && (removeState.phase === 'find' || removeState.phase === 'find-iop')) {
+        drawHighlightRing(removeState.highlightX, removeState.highlightY);
+      }
+
+      // Draw flying values during swap
+      if (removeState && removeState.phase === 'swap') {
+        const t = removeState.swapProgress;
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+        // Value flying from node to IOP position
+        const fly1X = lerp(removeState.nodeX, removeState.iopX, ease);
+        const fly1Y = lerp(removeState.nodeY, removeState.iopY, ease) - Math.sin(t * Math.PI) * 30;
+
+        // Value flying from IOP to node position
+        const fly2X = lerp(removeState.iopX, removeState.nodeX, ease);
+        const fly2Y = lerp(removeState.iopY, removeState.nodeY, ease) - Math.sin(t * Math.PI) * 30;
+
+        // Draw flying value labels
+        push();
+        textSize(16);
+        textStyle(BOLD);
+        noStroke();
+
+        // Flying from red node (the value being removed)
+        fill(220, 80, 80);
+        text(removeState.nodeValue, fly1X, fly1Y);
+
+        // Flying from green IOP (the replacement value)
+        fill(80, 200, 80);
+        text(removeState.iopValue, fly2X, fly2Y);
+
+        textStyle(NORMAL);
+        pop();
+      }
+
+      // Draw falling node
+      if (removeState && removeState.phase === 'fall') {
+        draw3DNode(removeState.fallingX, removeState.fallingY, removeState.fallingValue, 1, { r: 220, g: 80, b: 80 });
+      }
+
+      if (!bst.root && !bounceState) {
+        fill(150);
+        textSize(16);
+        noStroke();
+        text("Enter a value and click Insert to build a tree", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+      }
+    }
+
+    function createExampleTree() {
+      bst.clear();
+      clearVisuals();
+      bounceState = null;
+      removeState = null;
+
+      const values = [38, 13, 51, 10, 25, 84, 12, 37, 66, 89, 95];
+      for (const v of values) {
+        bst.insert(v);
+      }
+
+      updateAllPositions();
+      snapAllPositions(bst.root);
+
+      showInfo('Try: remove(37), remove(51), remove(38)');
+      document.getElementById('traversalOutput').textContent = '';
+    }
+
+    function createRandomTree() {
+      bst.clear();
+      clearVisuals();
+      bounceState = null;
+      removeState = null;
+
+      const count = Math.floor(Math.random() * 4) + 7;
+      const values = new Set();
+      while (values.size < count) {
+        values.add(Math.floor(Math.random() * 99) + 1);
+      }
+
+      for (const v of values) {
+        bst.insert(v);
+      }
+
+      updateAllPositions();
+      snapAllPositions(bst.root);
+
+      showInfo(`Created tree with ${count} nodes`);
+      document.getElementById('traversalOutput').textContent = '';
+    }
+
+    function showInfo(msg, type = '') {
+      const el = document.getElementById('info');
+      el.textContent = msg;
+      el.className = 'info ' + type;
+    }
+
+    // ============================================
+    // EVENT HANDLERS
+    // ============================================
+    document.getElementById('insertBtn').addEventListener('click', () => {
+      if (bounceState || removeState) return;
+      const input = document.getElementById('valueInput');
+      const value = parseInt(input.value);
+      if (isNaN(value)) {
+        showInfo('Please enter a valid number', 'error');
+        return;
+      }
+      startBounce(value);
+      input.value = '';
+      input.focus();
+    });
+
+    document.getElementById('findBtn').addEventListener('click', () => {
+      const input = document.getElementById('valueInput');
+      const value = parseInt(input.value);
+      if (isNaN(value)) {
+        showInfo('Please enter a valid number', 'error');
+        return;
+      }
+      const result = bst.find(value);
+      if (result.found) {
+        showInfo(`Found ${value}!`, 'success');
+        // Briefly highlight the node
+        const vis = getNodeVisual(result.node);
+        vis.color = { r: 255, g: 220, b: 100 };
+        setTimeout(() => { vis.color = { r: 100, g: 180, b: 255 }; }, 1000);
+      } else {
+        showInfo(`${value} not found`, 'error');
+      }
+      input.value = '';
+    });
+
+    document.getElementById('deleteBtn').addEventListener('click', () => {
+      if (bounceState || removeState) return;
+      const input = document.getElementById('valueInput');
+      const value = parseInt(input.value);
+      if (isNaN(value)) {
+        showInfo('Please enter a valid number', 'error');
+        return;
+      }
+      startRemoval(value);
+      input.value = '';
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      bst.clear();
+      clearVisuals();
+      bounceState = null;
+      removeState = null;
+      showInfo('Tree cleared');
+      document.getElementById('traversalOutput').textContent = '';
+    });
+
+    document.getElementById('randomBtn').addEventListener('click', createRandomTree);
+
+    document.getElementById('inorderBtn').addEventListener('click', () => {
+      if (!bst.root) { showInfo('Tree is empty', 'error'); return; }
+      document.getElementById('traversalOutput').textContent = `Inorder: [${bst.inorder().join(', ')}]`;
+      showInfo('Inorder: Left → Root → Right');
+    });
+
+    document.getElementById('preorderBtn').addEventListener('click', () => {
+      if (!bst.root) { showInfo('Tree is empty', 'error'); return; }
+      document.getElementById('traversalOutput').textContent = `Preorder: [${bst.preorder().join(', ')}]`;
+      showInfo('Preorder: Root → Left → Right');
+    });
+
+    document.getElementById('postorderBtn').addEventListener('click', () => {
+      if (!bst.root) { showInfo('Tree is empty', 'error'); return; }
+      document.getElementById('traversalOutput').textContent = `Postorder: [${bst.postorder().join(', ')}]`;
+      showInfo('Postorder: Left → Right → Root');
+    });
+
+    document.getElementById('valueInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') document.getElementById('insertBtn').click();
+    });
+
+    document.getElementById('speedSlider').addEventListener('input', (e) => {
+      const val = parseInt(e.target.value);
+      document.getElementById('speedLabel').textContent = val;
+      animSpeed = val * 0.01;
+    });
+  </script>
+</body>
+</html>
