@@ -684,143 +684,14 @@ PUG  SOY  WOO  YAK</code></pre>
           display:block!important;
       }</style></aside>
 </section>
-<section id="binary-tree-height" class="slide level2 smaller">
-<h2>Binary Tree Height</h2>
-<p><strong>height(r)</strong> – length of longest path from node r to a leaf</p>
-<div class="columns">
-<div class="column" style="width:25%;">
-<svg viewbox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" style="max-width: 200px; display: block; margin: 0 auto;">
-  <!-- Expression tree like the original slide: +, *, 4, 2, -, 3, 5 -->
-
-  <!-- Edges -->
-  <line x1="110" y1="35" x2="55" y2="85" stroke="#333" stroke-width="2"></line>
-  <line x1="110" y1="35" x2="165" y2="85" stroke="#333" stroke-width="2"></line>
-  <line x1="55" y1="105" x2="25" y2="155" stroke="#333" stroke-width="2"></line>
-  <line x1="55" y1="105" x2="85" y2="155" stroke="#333" stroke-width="2"></line>
-  <line x1="85" y1="175" x2="55" y2="225" stroke="#333" stroke-width="2"></line>
-  <line x1="85" y1="175" x2="115" y2="225" stroke="#333" stroke-width="2"></line>
-
-  <!-- Root: + (green) -->
-  <circle cx="110" cy="30" r="22" fill="#7cb518" stroke="#333" stroke-width="2"></circle>
-  <text x="110" y="37" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">+</text>
-
-  <!-- Left child: * (green) -->
-  <circle cx="55" cy="95" r="20" fill="#7cb518" stroke="#333" stroke-width="2"></circle>
-  <text x="55" y="102" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">*</text>
-
-  <!-- Right child: 4 (yellow) -->
-  <circle cx="165" cy="95" r="20" fill="#ffc107" stroke="#333" stroke-width="2"></circle>
-  <text x="165" y="102" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">4</text>
-
-  <!-- Left-left child: 2 (yellow) -->
-  <circle cx="25" cy="165" r="18" fill="#ffc107" stroke="#333" stroke-width="2"></circle>
-  <text x="25" y="172" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">2</text>
-
-  <!-- Left-right child: - (green) -->
-  <circle cx="85" cy="165" r="18" fill="#7cb518" stroke="#333" stroke-width="2"></circle>
-  <text x="85" y="172" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">−</text>
-
-  <!-- Left-right-left child: 3 (yellow) -->
-  <circle cx="55" cy="235" r="16" fill="#ffc107" stroke="#333" stroke-width="2"></circle>
-  <text x="55" y="242" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">3</text>
-
-  <!-- Left-right-right child: 5 (yellow) -->
-  <circle cx="115" cy="235" r="16" fill="#ffc107" stroke="#333" stroke-width="2"></circle>
-  <text x="115" y="242" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">5</text>
-</svg>
-</div><div class="column" style="width:60%;">
-<p>Given a binary tree T, <strong>height(T)</strong> is</p>
-<p><br></p>
-<p>_______________________________________</p>
-<p><br></p>
-<p>_______________________________________</p>
-<p><br></p>
-</div></div>
-<aside class="notes">
-<p>Fill in via annotation: - If T is empty: height(T) = -1 - Otherwise: height(T) = 1 + max(height(T.left), height(T.right))</p>
-<p>For N(h): N(h) = 2^(h+1) - 1</p>
-<p>This tree has height 3 (path from + to 3 or 5). The expression it represents is (2 * (3 - 5)) + 4.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="height-and-node-count" class="slide level2 smaller">
-<h2>Height and Node Count</h2>
-<p><strong>Question</strong>: What’s the maximum number of nodes, <span class="math inline">\(N(h)\)</span>, for a binary tree of height <span class="math inline">\(h\)</span>?</p>
-<div class="columns">
-<div class="column" style="width:20%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Height</th>
-<th>Max Nodes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>0</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td>3</td>
-</tr>
-<tr class="odd">
-<td>2</td>
-<td>7</td>
-</tr>
-<tr class="even">
-<td>3</td>
-<td>15</td>
-</tr>
-<tr class="odd">
-<td>h</td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
-</div></div>
-<p><strong>Question</strong>: What’s the least height for a tree of <span class="math inline">\(n\)</span> nodes?</p>
-</section>
-<section id="why-height-matters" class="slide level2">
-<h2>Why Height Matters</h2>
-<p>Many tree operations take time proportional to height:</p>
-<ul>
-<li>Finding a node</li>
-<li>Inserting a node</li>
-<li>Deleting a node</li>
-</ul>
-<p>If height is <span class="math inline">\(O(\log n)\)</span>: these are <strong>fast</strong> (<span class="math inline">\(O(\log n)\)</span>)</p>
-<p>If height is <span class="math inline">\(O(n)\)</span>: these are <strong>slow</strong> (<span class="math inline">\(O(n)\)</span>)</p>
-<p><strong>Goal</strong>: Keep trees short!!</p>
-</section>
-<section id="back-to-wordle" class="slide level2">
-<h2>Back to Wordle</h2>
-<p>Remember our decision tree?</p>
-<ul>
-<li>Height: worst-case guesses</li>
-<li>Good guesses: tree with minimum height</li>
-<li>Goal: split possibilities evenly</li>
-</ul>
-<p><strong>decision trees</strong> model any sequence of choices where each choice narrows down possibilities.</p>
-<p>BUT…</p>
-</section>
 <section id="week-8-summary" class="slide level2">
 <h2>Week 8 Summary</h2>
 <ul>
 <li>Trees are <strong>hierarchical</strong> structures with a root, children, and leaves</li>
 <li><strong>Binary trees</strong> have at most 2 children per node</li>
-<li>Trees are <strong>recursively defined</strong></li>
-<li><strong>Height</strong> determines efficiency of operations</li>
-<li><strong>Decision trees</strong> model choices</li>
+<li>Trees are <strong>recursively defined</strong>: a tree is empty OR a root with subtrees</li>
+<li>Tree <strong>terminology</strong>: root, leaf, parent, child, sibling, ancestor, descendant, depth, height</li>
+<li><strong>Decision trees</strong> model sequences of choices</li>
 </ul>
 
 

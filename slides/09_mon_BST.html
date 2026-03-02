@@ -617,7 +617,7 @@
 <section id="build-the-tree" class="slide level2 smaller">
 <h2>Build the tree:</h2>
 <div class="columns">
-<div class="column" style="width:40%;">
+<div class="column" style="width:33%;">
 <p>Insert: 10, 13, 25, 38, 40, 51, 84</p>
 <p><br>
 </p>
@@ -631,8 +631,27 @@
 </p>
 <p><br>
 </p>
-</div><div class="column" style="width:60%;">
+</div><div class="column" style="width:33%;">
 <p>Build another “bad” tree:</p>
+</div><div class="column" style="width:33%;">
+<svg viewbox="0 0 160 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 140px;">
+  <!-- Zig-zag tree: alternating left-right -->
+  <!-- Edges -->
+  <line x1="50" y1="25" x2="110" y2="60" stroke="#333" stroke-width="2"></line>
+  <line x1="110" y1="75" x2="50" y2="110" stroke="#333" stroke-width="2"></line>
+  <line x1="50" y1="125" x2="110" y2="160" stroke="#333" stroke-width="2"></line>
+  <line x1="110" y1="175" x2="50" y2="210" stroke="#333" stroke-width="2"></line>
+  <line x1="50" y1="225" x2="110" y2="260" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes (no keys, just empty circles) -->
+  <circle cx="50" cy="20" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="110" cy="65" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="50" cy="115" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="110" cy="165" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="50" cy="215" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="110" cy="265" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+</svg>
+<p>Give an insertion order:</p>
 </div></div>
 <p>How many bad trees are there?</p>
 </section>

@@ -508,7 +508,7 @@
     "href": "slides/09_mon_BST.html#build-the-tree",
     "title": "Binary Search Trees",
     "section": "Build the tree:",
-    "text": "Build the tree:\n\n\nInsert: 10, 13, 25, 38, 40, 51, 84\n\n\n\n\n\n\n\n\n\n\n\n\n\nBuild another “bad” tree:\n\nHow many bad trees are there?"
+    "text": "Build the tree:\n\n\nInsert: 10, 13, 25, 38, 40, 51, 84\n\n\n\n\n\n\n\n\n\n\n\n\n\nBuild another “bad” tree:\n\n\n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n  \n\nGive an insertion order:\n\nHow many bad trees are there?"
   },
   {
     "objectID": "slides/09_mon_BST.html#bst-operations-summary",
@@ -616,39 +616,11 @@
     "text": "Special Trees\n\n\nComplete Tree\n\nFull Tree\n\nPerfect Tree\n\n\n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n  \n\n\n\nThis is a matching activity. Students should draw lines connecting: - Perfect Tree: All levels completely filled (coral tree, top) - this is both full AND complete - Complete Tree: All levels filled except possibly the last, which is filled left-to-right (teal tree, middle) - Full Tree: Every node has 0 or 2 children (yellow tree, bottom) - note it can be unbalanced!\nKey insight: Perfect ⊂ Complete, and Perfect ⊂ Full, but Complete and Full are independent properties."
   },
   {
-    "objectID": "slides/08_wed_treedefs.html#binary-tree-height",
-    "href": "slides/08_wed_treedefs.html#binary-tree-height",
-    "title": "Trees Continued",
-    "section": "Binary Tree Height",
-    "text": "Binary Tree Height\nheight(r) – length of longest path from node r to a leaf\n\n\n\n  \n\n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  +\n\n  \n  \n  *\n\n  \n  \n  4\n\n  \n  \n  2\n\n  \n  \n  −\n\n  \n  \n  3\n\n  \n  \n  5\n\n\nGiven a binary tree T, height(T) is\n\n_______________________________________\n\n_______________________________________\n\n\n\nFill in via annotation: - If T is empty: height(T) = -1 - Otherwise: height(T) = 1 + max(height(T.left), height(T.right))\nFor N(h): N(h) = 2^(h+1) - 1\nThis tree has height 3 (path from + to 3 or 5). The expression it represents is (2 * (3 - 5)) + 4."
-  },
-  {
-    "objectID": "slides/08_wed_treedefs.html#height-and-node-count",
-    "href": "slides/08_wed_treedefs.html#height-and-node-count",
-    "title": "Trees Continued",
-    "section": "Height and Node Count",
-    "text": "Height and Node Count\nQuestion: What’s the maximum number of nodes, \\(N(h)\\), for a binary tree of height \\(h\\)?\n\n\n\n\n\nHeight\nMax Nodes\n\n\n\n\n0\n1\n\n\n1\n3\n\n\n2\n7\n\n\n3\n15\n\n\nh\n?\n\n\n\n\nQuestion: What’s the least height for a tree of \\(n\\) nodes?"
-  },
-  {
-    "objectID": "slides/08_wed_treedefs.html#why-height-matters",
-    "href": "slides/08_wed_treedefs.html#why-height-matters",
-    "title": "Trees Continued",
-    "section": "Why Height Matters",
-    "text": "Why Height Matters\nMany tree operations take time proportional to height:\n\nFinding a node\nInserting a node\nDeleting a node\n\nIf height is \\(O(\\log n)\\): these are fast (\\(O(\\log n)\\))\nIf height is \\(O(n)\\): these are slow (\\(O(n)\\))\nGoal: Keep trees short!!"
-  },
-  {
-    "objectID": "slides/08_wed_treedefs.html#back-to-wordle",
-    "href": "slides/08_wed_treedefs.html#back-to-wordle",
-    "title": "Trees Continued",
-    "section": "Back to Wordle",
-    "text": "Back to Wordle\nRemember our decision tree?\n\nHeight: worst-case guesses\nGood guesses: tree with minimum height\nGoal: split possibilities evenly\n\ndecision trees model any sequence of choices where each choice narrows down possibilities.\nBUT…"
-  },
-  {
     "objectID": "slides/08_wed_treedefs.html#week-8-summary",
     "href": "slides/08_wed_treedefs.html#week-8-summary",
     "title": "Trees Continued",
     "section": "Week 8 Summary",
-    "text": "Week 8 Summary\n\nTrees are hierarchical structures with a root, children, and leaves\nBinary trees have at most 2 children per node\nTrees are recursively defined\nHeight determines efficiency of operations\nDecision trees model choices"
+    "text": "Week 8 Summary\n\nTrees are hierarchical structures with a root, children, and leaves\nBinary trees have at most 2 children per node\nTrees are recursively defined: a tree is empty OR a root with subtrees\nTree terminology: root, leaf, parent, child, sibling, ancestor, descendant, depth, height\nDecision trees model sequences of choices"
   },
   {
     "objectID": "slides/08_tue_traversals.html#announcements",
@@ -889,396 +861,480 @@
     "text": "Coming Up\nWednesday: Back to stacks and queues — exploring mazes with DFS and BFS!"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#the-problem-with-bsts",
-    "href": "slides/09_tue_balanced.html#the-problem-with-bsts",
+    "objectID": "slides/06_mon_bfs.html#recap-the-maze-explorer",
+    "href": "slides/06_mon_bfs.html#recap-the-maze-explorer",
+    "title": "Whatever-First Search",
+    "section": "Recap: The Maze Explorer",
+    "text": "Recap: The Maze Explorer\nLast week, we explored a maze using different containers:\n\n\n\nContainer\nOrder\nBehavior\n\n\n\n\nBag\nRandom\nChaotic\n\n\nStack\nLIFO\nGo deep, backtrack\n\n\nQueue\nFIFO\nExplore by distance\n\n\n\nToday: What made this work, and where else can we use it?"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#whatever-first-search",
+    "href": "slides/06_mon_bfs.html#whatever-first-search",
+    "title": "Whatever-First Search",
+    "section": "Whatever-First Search",
+    "text": "Whatever-First Search\ndef whatever_first_search(start, neighbors):\n    bag = Bag([start])\n    visited = {start}\n\n    while bag:\n        current = bag.get()\n        for neighbor in neighbors(current):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                bag.put(neighbor)\n\n    return visited\nAdapted from Jeff Erickson’s Algorithms"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#the-key-insight",
+    "href": "slides/06_mon_bfs.html#the-key-insight",
+    "title": "Whatever-First Search",
+    "section": "The Key Insight",
+    "text": "The Key Insight\nThe algorithm structure is always the same.\nThree things change:\n\nThe bag: What state do we process next?\nThe neighbors: What’s adjacent to the current state?\nThe bookkeeping: What do we track about each state?"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#designing-your-search-a-checklist",
+    "href": "slides/06_mon_bfs.html#designing-your-search-a-checklist",
+    "title": "Whatever-First Search",
+    "section": "Designing Your Search: A Checklist",
+    "text": "Designing Your Search: A Checklist\n\n\n\nQuestion\nYour answer\n\n\n\n\nWhat is a state?\n\n\n\nWhat are the neighbors of a state?\n\n\n\nWhat bag should I use?\n\n\n\nWhat do I need to track?\n\n\n\nWhen do I mark visited?\n\n\n\nWhen do I stop?"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#choosing-the-bag",
+    "href": "slides/06_mon_bfs.html#choosing-the-bag",
+    "title": "Whatever-First Search",
+    "section": "Choosing the Bag",
+    "text": "Choosing the Bag\n\n\n\nBag Type\nName\nBehavior\n\n\n\n\nStack\nDepth-First Search\nGo deep, backtrack\n\n\nQueue\nBreadth-First Search\nExplore by distance\n\n\nPriority Queue\nBest-First Search\nExplore by “goodness”"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#choosing-the-bookkeeping",
+    "href": "slides/06_mon_bfs.html#choosing-the-bookkeeping",
+    "title": "Whatever-First Search",
+    "section": "Choosing the Bookkeeping",
+    "text": "Choosing the Bookkeeping\n\n\n\nQuestion\nWhat to track\n\n\n\n\n“Can I reach X?”\nvisited (set)\n\n\n“How far is X?”\ndistance (dict: state → int)\n\n\n“What’s the path to X?”\nparent (dict: state → state)\n\n\n“When did I discover X?”\ndiscovery_time (dict: state → int)\n\n\n“When did I finish X?”\nfinish_time (dict: state → int)\n\n\n\nThe question determines the data structures."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#when-to-mark-visited",
+    "href": "slides/06_mon_bfs.html#when-to-mark-visited",
+    "title": "Whatever-First Search",
+    "section": "When to Mark Visited?",
+    "text": "When to Mark Visited?\nTwo choices:\n# Option A: Mark when adding to bag\nif neighbor not in visited:\n    visited.add(neighbor)\n    bag.put(neighbor)\n\n# Option B: Mark when removing from bag\ncurrent = bag.get()\nif current not in visited:\n    visited.add(current)\nOption A (our version today): Each state enters bag once.\nOption B: Each transition adds to bag once (so states can appear multiple times)."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#what-is-a-thing-state",
+    "href": "slides/06_mon_bfs.html#what-is-a-thing-state",
+    "title": "Whatever-First Search",
+    "section": "What Is a “Thing”? (State)",
+    "text": "What Is a “Thing”? (State)\nThe “thing” in the bag is whatever describes where you are:\n\n\n\nDomain\nState (the “thing”)\n\n\n\n\nMaze\nRoom number\n\n\nGrid\n(row, col) position\n\n\nSocial network\nPerson\n\n\nTower of Hanoi\nConfiguration of all disks\n\n\nWord ladder\nCurrent word\n\n\n\nState = everything needed to know “where am I now?”"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#what-are-neighbors",
+    "href": "slides/06_mon_bfs.html#what-are-neighbors",
+    "title": "Whatever-First Search",
+    "section": "What Are “Neighbors”?",
+    "text": "What Are “Neighbors”?\nThe neighbors(state) function says what’s reachable in one step:\n\n\n\nDomain\nNeighbors of state\n\n\n\n\nMaze\nRooms connected to current room\n\n\nGrid\nCells adjacent to (row, col)\n\n\nSocial network\nFriends of current person\n\n\nTower of Hanoi\nConfigurations after one valid move\n\n\nWord ladder\nWords differing by one letter\n\n\n\nThe problem defines what “one step” means."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#an-example-problem",
+    "href": "slides/06_mon_bfs.html#an-example-problem",
+    "title": "Whatever-First Search",
+    "section": "An Example Problem",
+    "text": "An Example Problem\nHow do we find the shortest path from S to E in a grid?\n\n  \n  \n    \n      \n    \n  \n  \n\n  \n  \n\n  \n  \n\n  \n  S\n\n  \n  E\n\n\nLet’s fill out our checklist…"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#step-1-what-is-a-state",
+    "href": "slides/06_mon_bfs.html#step-1-what-is-a-state",
+    "title": "Whatever-First Search",
+    "section": "Step 1: What is a state?",
+    "text": "Step 1: What is a state?\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n\n\n\nWhat bag?\n\n\n\nWhat do I track?\n\n\n\nWhen mark visited?\n\n\n\nWhen do I stop?\n\n\n\n\nA state is a cell: (row, col)."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#step-2-what-are-the-neighbors",
+    "href": "slides/06_mon_bfs.html#step-2-what-are-the-neighbors",
+    "title": "Whatever-First Search",
+    "section": "Step 2: What are the neighbors?",
+    "text": "Step 2: What are the neighbors?\n\n\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected\n\n\nWhat bag?\n\n\n\nWhat do I track?\n\n\n\nWhen mark visited?\n\n\n\nWhen do I stop?\n\n\n\n\n\n\n  \n  \n    \n      \n    \n  \n  \n\n  \n  \n  C\n\n  \n  \n  X\n\n  \n  X\n\n  \n  X\n\n  \n  X\n\n\nFrom (r, c), neighbors are (r±1, c) and (r, c±1)."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#step-3-what-bag",
+    "href": "slides/06_mon_bfs.html#step-3-what-bag",
+    "title": "Whatever-First Search",
+    "section": "Step 3: What bag?",
+    "text": "Step 3: What bag?\nWe want shortest paths.\nThe distance from A to B is the minimum number of steps.\n\n  \n  \n    \n      \n    \n  \n  \n\n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n    \n    \n    \n  \n\n  \n  \n    \n    43234\n    \n    32123\n    \n    21012\n    \n    32123\n    \n    43234\n  \n\nHow do we explore in order of distance?\n\nwe only want to mark something as distance 2 when we know it can’t be distance 1, so we have to find ALL the distance 1s first, before we mark any as distance 2. distance 1s have to be a neighbor of a distance 0…"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#why-queues-give-distances",
+    "href": "slides/06_mon_bfs.html#why-queues-give-distances",
+    "title": "Whatever-First Search",
+    "section": "Why Queues Give Distances",
+    "text": "Why Queues Give Distances\nWhen we use a queue:\n\nWe process all distance-1 cells before any distance-2 cells\nWe process all distance-2 cells before any distance-3 cells\nAnd so on…\n\nThis is Breadth-First Search (BFS)."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#bfs-gives-shortest-paths",
+    "href": "slides/06_mon_bfs.html#bfs-gives-shortest-paths",
+    "title": "Whatever-First Search",
+    "section": "BFS Gives Shortest Paths",
+    "text": "BFS Gives Shortest Paths\nObserve: When BFS discovers a state, the recorded distance is the shortest path distance.\nWhy?\n\nBFS explores in order: all distance-1 before any distance-2, etc.\nIf there were a shorter path, we would have found it earlier!"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#step-3-what-bag-answered",
+    "href": "slides/06_mon_bfs.html#step-3-what-bag-answered",
+    "title": "Whatever-First Search",
+    "section": "Step 3: What bag? (answered)",
+    "text": "Step 3: What bag? (answered)\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected adjacent cells\n\n\nWhat bag?\nQueue (FIFO) → BFS\n\n\nWhat do I track?\n\n\n\nWhen mark visited?\n\n\n\nWhen do I stop?\n\n\n\n\nQueue gives us shortest paths!"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#step-4-what-do-i-track",
+    "href": "slides/06_mon_bfs.html#step-4-what-do-i-track",
+    "title": "Whatever-First Search",
+    "section": "Step 4: What do I track?",
+    "text": "Step 4: What do I track?\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected adjacent cells\n\n\nWhat bag?\nQueue (FIFO) → BFS\n\n\nWhat do I track?\ndistance dict, parent dict\n\n\nWhen mark visited?\n\n\n\nWhen do I stop?\n\n\n\n\n\ndistance: how far is each cell?\nparent: how do I get there? (for path reconstruction)"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#step-5-when-mark-visited",
+    "href": "slides/06_mon_bfs.html#step-5-when-mark-visited",
+    "title": "Whatever-First Search",
+    "section": "Step 5: When mark visited?",
+    "text": "Step 5: When mark visited?\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected adjacent cells\n\n\nWhat bag?\nQueue (FIFO) → BFS\n\n\nWhat do I track?\ndistance dict, parent dict\n\n\nWhen mark visited?\nWhen adding to queue\n\n\nWhen do I stop?\n\n\n\n\nMark visited when adding → each cell enters queue once."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#step-6-when-do-i-stop",
+    "href": "slides/06_mon_bfs.html#step-6-when-do-i-stop",
+    "title": "Whatever-First Search",
+    "section": "Step 6: When do I stop?",
+    "text": "Step 6: When do I stop?\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected adjacent cells\n\n\nWhat bag?\nQueue (FIFO) → BFS\n\n\nWhat do I track?\ndistance dict, parent dict\n\n\nWhen mark visited?\nWhen adding to queue\n\n\nWhen do I stop?\nGoal found (or queue empty)\n\n\n\nChecklist complete! Now let’s write the code."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#bfs-on-a-grid",
+    "href": "slides/06_mon_bfs.html#bfs-on-a-grid",
+    "title": "Whatever-First Search",
+    "section": "BFS on a Grid",
+    "text": "BFS on a Grid\n\n\nfrom collections import deque\n\ndef bfs(grid, start, end):\n    rows, cols = len(grid), len(grid[0])\n    distance = {start: 0}\n    parent = {start: None}\n    queue = deque([start])\n\n    while queue:\n        r, c = queue.popleft()\n        if (r, c) == end:\n            return distance, parent\n        for nr, nc in neighbors(r, c, rows, cols):\n            if (nr, nc) not in distance:\n                distance[(nr, nc)] = distance[(r, c)] + 1\n                parent[(nr, nc)] = (r, c)\n                queue.append((nr, nc))\n\n    return distance, parent\n\n\nEach arrow points to parent: the cell that discovered it."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#reconstructing-the-path",
+    "href": "slides/06_mon_bfs.html#reconstructing-the-path",
+    "title": "Whatever-First Search",
+    "section": "Reconstructing the Path",
+    "text": "Reconstructing the Path\ndef get_path(parent, end):\n    # Follow parent pointers, pushing onto stack\n    stack = []\n    current = end\n    while current is not None:\n        stack.append(current)\n        current = parent[current]\n\n    # Pop from stack to reverse the path\n    path = []\n    while stack:\n        path.append(stack.pop())\n    return path\nUse a stack to reverse the parent pointers!"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#the-neighbor-function",
+    "href": "slides/06_mon_bfs.html#the-neighbor-function",
+    "title": "Whatever-First Search",
+    "section": "The Neighbor Function",
+    "text": "The Neighbor Function\ndef grid_neighbors(r, c, rows, cols):\n    \"\"\"4-connected neighbors on a grid.\"\"\"\n    for dr, dc in [(-1,0), (1,0), (0,-1), (0,1)]:\n        nr, nc = r + dr, c + dc\n        if is_valid(nr, nc, rows, cols):\n            yield (nr, nc)\n\ndef is_valid(r, c, rows, cols):\n    return 0 &lt;= r &lt; rows and 0 &lt;= c &lt; cols\nTwo design decisions:\n\nCandidates: 4-connected? 8-connected? Knight moves?\nValidity: In bounds? Not a wall? Climbable?"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#your-turn",
+    "href": "slides/06_mon_bfs.html#your-turn",
+    "title": "Whatever-First Search",
+    "section": "Your Turn",
+    "text": "Your Turn\nHelp Donkey find the shortest path to Dragon’s castle!\nComplete the activity in PL to solve the puzzle!"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#the-story",
+    "href": "slides/06_mon_bfs.html#the-story",
+    "title": "Whatever-First Search",
+    "section": "The Story",
+    "text": "The Story\n\n\nDonkey must deliver a love letter to Dragon through mountainous terrain.\n\nStart at village S in a valley\nDeliver to Dragon’s castle E on a peak\nEach step: move to adjacent cell\nConstraint: Donkey can only climb one elevation level at a time!\n\n\naabqponm\nabcryxxl\naccszzxk\nacctuvwj\nabdefghi\n(heights: a=0, b=1, …, z=25)"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#the-terrain-rules",
+    "href": "slides/06_mon_bfs.html#the-terrain-rules",
+    "title": "Whatever-First Search",
+    "section": "The Terrain Rules",
+    "text": "The Terrain Rules\nFrom height h, you can step to a neighbor with height at most h + 1.\n\nFrom a (height 0): can reach a or b\nFrom c (height 2): can reach a, b, c, or d\nFrom z (height 25): can reach anything!\n\nThis changes what “neighbors” means."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#part-1-exploring-the-valley",
+    "href": "slides/06_mon_bfs.html#part-1-exploring-the-valley",
+    "title": "Whatever-First Search",
+    "section": "Part 1: Exploring the Valley",
+    "text": "Part 1: Exploring the Valley\nQuestion: Starting from S, how many locations can the messenger reach in at most 10 steps?\nThis is BFS with a step limit."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#part-2-finding-the-castle",
+    "href": "slides/06_mon_bfs.html#part-2-finding-the-castle",
+    "title": "Whatever-First Search",
+    "section": "Part 2: Finding the Castle",
+    "text": "Part 2: Finding the Castle\nQuestion: What is the shortest path from S to E?\nThis is BFS for shortest path.\n(Stop when we reach E, return the distance.)"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#part-3-the-scenic-route",
+    "href": "slides/06_mon_bfs.html#part-3-the-scenic-route",
+    "title": "Whatever-First Search",
+    "section": "Part 3: The Scenic Route",
+    "text": "Part 3: The Scenic Route\nDonkey wants to start from a valley—but which one?\nQuestion: Which a cell has the shortest path to Dragon’s castle E?"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#a-clever-observation",
+    "href": "slides/06_mon_bfs.html#a-clever-observation",
+    "title": "Whatever-First Search",
+    "section": "A Clever Observation",
+    "text": "A Clever Observation\nOption 1: Run BFS from every a cell, take minimum. (Slow if there are many a cells!)\nOption 2: Run BFS backwards from E.\n\nUse reversed edges: if A→B exists, search B→A\nFind all cells that can reach E\nCheck which a cell is closest"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#reversing-the-edges",
+    "href": "slides/06_mon_bfs.html#reversing-the-edges",
+    "title": "Whatever-First Search",
+    "section": "Reversing the Edges",
+    "text": "Reversing the Edges\nForward edge (A can reach B): - From height h, can step to height ≤ h + 1\nBackward edge (who can reach me?): - From height h, can step to height ≥ h - 1\nSame algorithm, different neighbor function!"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#the-power-of-abstraction",
+    "href": "slides/06_mon_bfs.html#the-power-of-abstraction",
+    "title": "Whatever-First Search",
+    "section": "The Power of Abstraction",
+    "text": "The Power of Abstraction\nBoth problems use the same BFS template:\n\nBag: Queue (for shortest paths)\nNeighbors: Defined by terrain rules\nTermination: Goal reached or all reachable\n\nOnly the neighbor function changes!"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#neighbors-are-everywhere",
+    "href": "slides/06_mon_bfs.html#neighbors-are-everywhere",
+    "title": "Whatever-First Search",
+    "section": "Neighbors Are Everywhere",
+    "text": "Neighbors Are Everywhere\n\n\n\nProblem\n“State”\nNeighbors\n\n\n\n\nGrid maze\n(row, col)\nAdjacent cells\n\n\nWord ladder\n“COLD”\nWords 1 letter away\n\n\nTower of Hanoi\nDisk positions\nValid moves\n\n\nRubik’s cube\nCube state\nSingle rotations\n\n\nSocial network\nPerson\nFriends\n\n\n\nIf you can define neighbors, you can search."
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#summary-whatever-first-search",
+    "href": "slides/06_mon_bfs.html#summary-whatever-first-search",
+    "title": "Whatever-First Search",
+    "section": "Summary: Whatever-First Search",
+    "text": "Summary: Whatever-First Search\nThe same algorithm works everywhere:\n\nDefine your state (position, game configuration, …)\nDefine neighbors (what’s reachable in one step?)\nChoose your bag:\n\nStack → DFS (explore deeply)\nQueue → BFS (explore by distance)\nPriority queue → Best-first (explore by cost)\n\n\nBFS with a queue finds shortest paths!"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#lab-preview",
+    "href": "slides/06_mon_bfs.html#lab-preview",
+    "title": "Whatever-First Search",
+    "section": "Lab Preview",
+    "text": "Lab Preview\nIn lab this week, you’ll implement:\n\nTower of Hanoi game (state transitions)\nSliding window problems (queue applications)\nNearest smaller element (stack pattern)\nHistogram max area (stack application)"
+  },
+  {
+    "objectID": "slides/06_mon_bfs.html#whats-next",
+    "href": "slides/06_mon_bfs.html#whats-next",
+    "title": "Whatever-First Search",
+    "section": "What’s Next",
+    "text": "What’s Next\n\nTuesday video: The Magic of O(1) Lookup — Dictionaries\nWednesday: Dictionary Puzzles — Two-Sum, anagrams, frequency counting"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#announcements",
+    "href": "slides/02_mon_hierarchy.html#announcements",
+    "title": "The Hierarchy of Speed",
+    "section": "Announcements",
+    "text": "Announcements\n\nLabs begin this week!\n\nMonday 1-3pm or Tuesday 4-6pm"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#rules",
+    "href": "slides/02_mon_hierarchy.html#rules",
+    "title": "The Hierarchy of Speed",
+    "section": "Rules",
+    "text": "Rules\nFor \\(T(n)\\), the running time of an algorithm on input of size \\(n\\)…\n\nConstants don’t matter: \\(5n = O(n)\\)\nLower terms don’t matter: \\(n^2 + n = O(n^2)\\)\nLog base doesn’t matter: \\(log_2 n = O(log_{10}n)\\)\n\n\n“What’s the intuition for #3?”\nAll logs differ by a constant factor. log₂n = log₁₀n / log₁₀2"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#example-1",
+    "href": "slides/02_mon_hierarchy.html#example-1",
+    "title": "The Hierarchy of Speed",
+    "section": "Example 1",
+    "text": "Example 1\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n3\n7\n2\n9\n1\n8\n4\n6\n5\n2\n7\n3\n\n\n\n\nPython questions?\nWhat’s the worst-case running time?\n\n\nOne pass through the array. \\(\\Theta(n)\\), tight.\n“We’ll see this again later with pandas.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#example-2",
+    "href": "slides/02_mon_hierarchy.html#example-2",
+    "title": "The Hierarchy of Speed",
+    "section": "Example 2",
+    "text": "Example 2\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 17th element counted?\nWhat are the values of i and j for the 32nd element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet them trace: i=2, j=4 for 17th. i=5, j=1 for 32nd.\n“Predict for n = 8?” (64)\nDouble n → QUADRUPLE the work. \\(\\Theta(n^2)\\), tight."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#example-3",
+    "href": "slides/02_mon_hierarchy.html#example-3",
+    "title": "The Hierarchy of Speed",
+    "section": "Example 3",
+    "text": "Example 3\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 4th element counted?\nWhat are the values of i and j for the 12th element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\ni=2: j=0,1 (2 elements). i=3: j=0,1,2 (3 elements). So 4th is i=3, j=0.\n\\(0 + 1 + 2 + \\ldots + (n-1) = n(n-1)/2\\)\nStill \\(\\Theta(n^2)\\), tight! The triangle is half the square."
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-two-pillars",
+    "href": "slides/02_mon_hierarchy.html#the-two-pillars",
+    "title": "The Hierarchy of Speed",
+    "section": "The Two Pillars",
+    "text": "The Two Pillars\n\nCorrectness — Does it work?\nEfficiency — How fast?\n\n\n“Last week: efficiency. This week: we add correctness.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-analysis-recipe",
+    "href": "slides/02_mon_hierarchy.html#the-analysis-recipe",
+    "title": "The Hierarchy of Speed",
+    "section": "The Analysis Recipe",
+    "text": "The Analysis Recipe\n\nEstablish the case — usually worst case\nAnalyze the function — count operations for that case\nState the bound:\n\n\\(\\Theta\\) (or “tight \\(O\\)”) if you know it’s exact\n\\(O\\) if you’re only claiming an upper bound\n\\(\\Omega\\) if you’re only claiming a lower bound\n\n\n\n“When we say ‘binary search is \\(O(\\log n)\\)’ we mean it’s tight — \\(\\Theta(\\log n)\\). We’re not hedging.”\n“First: which case? Then: what’s the function? Then: is it tight or just a bound?”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#big-o-is-a-set",
+    "href": "slides/02_mon_hierarchy.html#big-o-is-a-set",
+    "title": "The Hierarchy of Speed",
+    "section": "Big-\\(O\\) is a Set",
+    "text": "Big-\\(O\\) is a Set\n\\(O(g(n))\\) is the set of all functions \\(f(n)\\) satisfying the definition.\n\\[O(n) = \\{f(n) : \\exists c &gt; 0, n_0 \\geq 0 \\text{ such that } f(n) \\leq c \\cdot n \\text{ for all } n \\geq n_0\\}\\]\n\n“From discrete math: Big-O defines a SET of functions.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#the-ladder",
+    "href": "slides/02_mon_hierarchy.html#the-ladder",
+    "title": "The Hierarchy of Speed",
+    "section": "The Ladder",
+    "text": "The Ladder\n\\[O(1) \\subset O(\\log n) \\subset O(n) \\subset O(n \\log n) \\subset O(n^2) \\subset O(2^n)\\]\nEach class contains all the ones to its left.\n\n“Every \\(O(1)\\) function is also \\(O(n)\\), also \\(O(n^2)\\), etc.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
+    "href": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
+    "title": "The Hierarchy of Speed",
+    "section": "A Common Abuse of Notation",
+    "text": "A Common Abuse of Notation\nWe write: \\(\\quad 4n + 2 = O(n)\\)\nWe mean: \\(\\quad 4n + 2 \\in O(n)\\)\n\n“You’ll see this everywhere. Just remember: we’re really talking about set membership.”"
+  },
+  {
+    "objectID": "slides/02_mon_hierarchy.html#true-or-false",
+    "href": "slides/02_mon_hierarchy.html#true-or-false",
+    "title": "The Hierarchy of Speed",
+    "section": "True or False?",
+    "text": "True or False?\n\n\\(3n + 2 \\in O(n)\\)\n\\(3n + 2 \\in O(n^2)\\)\n\\(n^2 \\in O(n)\\)\n\\(5 \\in O(1)\\)\n\\(5 \\in O(n)\\)\n\n\nT, T, F, T, T\n“If \\(f \\in O(g)\\) and \\(O(g) \\subset O(h)\\), then \\(f \\in O(h)\\).”\n“Let’s see what these mean at scale.”"
+  },
+  {
+    "objectID": "slides/09_wed_balanced.html#the-problem-with-bsts",
+    "href": "slides/09_wed_balanced.html#the-problem-with-bsts",
     "title": "Balanced Trees",
     "section": "The Problem with BSTs",
     "text": "The Problem with BSTs\nBST operations are O(height).\n\n\n\nInput Order\nTree Height\nOperations\n\n\n\n\nRandom\nO(log n)\nFast\n\n\nSorted\nO(n)\nSlow\n\n\nNearly sorted\nO(n)\nSlow\n\n\n\nReal-world data is often nearly sorted!\n(Timestamps, IDs, sequential entries…)"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#two-bsts-with-the-same-keys",
-    "href": "slides/09_tue_balanced.html#two-bsts-with-the-same-keys",
+    "objectID": "slides/09_wed_balanced.html#two-bsts-with-the-same-keys",
+    "href": "slides/09_wed_balanced.html#two-bsts-with-the-same-keys",
     "title": "Balanced Trees",
     "section": "Two BSTs with the Same Keys",
     "text": "Two BSTs with the Same Keys\n\n  \n  Balanced (height 2)\n  \n  \n  \n  \n  \n  \n  \n\n  \n  4\n  \n  2\n  \n  6\n  \n  1\n  \n  3\n  \n  5\n  \n  7\n\n  \n  Degenerate (height 6)\n  \n  \n  \n  \n  \n  \n\n  \n  1\n  \n  2\n  \n  3\n  \n  4\n  \n  5\n  \n  6\n  \n  7\n\nSame 7 keys, very different performance!"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#the-big-idea",
-    "href": "slides/09_tue_balanced.html#the-big-idea",
+    "objectID": "slides/09_wed_balanced.html#the-big-idea",
+    "href": "slides/09_wed_balanced.html#the-big-idea",
     "title": "Balanced Trees",
     "section": "The Big Idea",
     "text": "The Big Idea\nCan we automatically rebalance the tree after insertions?\nYes! Several self-balancing tree structures exist:\n\nAVL trees (1962): First balanced BST\nRed-Black trees (1978): Used in most standard libraries\nB-trees (1970): Used in databases and file systems\n\nToday: The concept of balance, using AVL trees as our example."
   },
   {
-    "objectID": "slides/09_tue_balanced.html#what-does-balanced-mean",
-    "href": "slides/09_tue_balanced.html#what-does-balanced-mean",
+    "objectID": "slides/09_wed_balanced.html#what-does-balanced-mean",
+    "href": "slides/09_wed_balanced.html#what-does-balanced-mean",
     "title": "Balanced Trees",
     "section": "What Does “Balanced” Mean?",
     "text": "What Does “Balanced” Mean?\nIntuition: Left and right subtrees should be “about the same size.”\nHeight balance: The heights of left and right subtrees differ by at most 1.\nBalance factor of a node: \\[b = \\text{height}(\\text{right}) - \\text{height}(\\text{left})\\]\nA tree is AVL-balanced if every node has \\(b \\in \\{-1, 0, 1\\}\\)."
   },
   {
-    "objectID": "slides/09_tue_balanced.html#avl-trees",
-    "href": "slides/09_tue_balanced.html#avl-trees",
+    "objectID": "slides/09_wed_balanced.html#avl-trees",
+    "href": "slides/09_wed_balanced.html#avl-trees",
     "title": "Balanced Trees",
     "section": "AVL Trees",
     "text": "AVL Trees\nNamed after inventors Adelson-Velsky and Landis (1962).\nAVL Property: For every node, the heights of left and right subtrees differ by at most 1.\nThis guarantees O(log n) height!"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#checking-balance",
-    "href": "slides/09_tue_balanced.html#checking-balance",
+    "objectID": "slides/09_wed_balanced.html#checking-balance",
+    "href": "slides/09_wed_balanced.html#checking-balance",
     "title": "Balanced Trees",
     "section": "Checking Balance",
     "text": "Checking Balance\n\n  \n  \n  \n  \n  \n\n  \n  50\n  b=0\n\n  \n  30\n  b=0\n\n  \n  70\n  b=1\n\n  \n  20\n\n  \n  40\n\n  \n  90\n\nEvery node has balance factor -1, 0, or 1. ✓ AVL-balanced!"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#an-unbalanced-tree",
-    "href": "slides/09_tue_balanced.html#an-unbalanced-tree",
+    "objectID": "slides/09_wed_balanced.html#an-unbalanced-tree",
+    "href": "slides/09_wed_balanced.html#an-unbalanced-tree",
     "title": "Balanced Trees",
     "section": "An Unbalanced Tree",
     "text": "An Unbalanced Tree\n\n  \n  \n  \n\n  \n  50\n  b=3!\n\n  \n  70\n  b=2!\n\n  \n  90\n  b=1\n\n  \n  95\n\nBalance factor &gt; 1 or &lt; -1? Not AVL-balanced!"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#why-avl-balance-guarantees-olog-n",
-    "href": "slides/09_tue_balanced.html#why-avl-balance-guarantees-olog-n",
+    "objectID": "slides/09_wed_balanced.html#why-avl-balance-guarantees-olog-n",
+    "href": "slides/09_wed_balanced.html#why-avl-balance-guarantees-olog-n",
     "title": "Balanced Trees",
     "section": "Why AVL Balance Guarantees O(log n)",
     "text": "Why AVL Balance Guarantees O(log n)\nTheorem: An AVL tree with n nodes has height O(log n).\nIntuition: If subtrees differ by at most 1, the tree can’t be too “stringy.”\nProof idea: The minimum number of nodes in an AVL tree of height h is: \\[N(h) = N(h-1) + N(h-2) + 1\\]\nThis grows exponentially (like Fibonacci), so \\(h = O(\\log n)\\)."
   },
   {
-    "objectID": "slides/09_tue_balanced.html#the-magic-rotations",
-    "href": "slides/09_tue_balanced.html#the-magic-rotations",
+    "objectID": "slides/09_wed_balanced.html#the-magic-rotations",
+    "href": "slides/09_wed_balanced.html#the-magic-rotations",
     "title": "Balanced Trees",
     "section": "The Magic: Rotations",
     "text": "The Magic: Rotations\nWhen an insertion makes a node unbalanced, we rotate to restore balance.\nA rotation:\n\nRearranges a few nodes\nMaintains the BST property\nReduces height of the subtree\nTakes O(1) time"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#right-rotation-fixing-left-heavy",
-    "href": "slides/09_tue_balanced.html#right-rotation-fixing-left-heavy",
+    "objectID": "slides/09_wed_balanced.html#right-rotation-fixing-left-heavy",
+    "href": "slides/09_wed_balanced.html#right-rotation-fixing-left-heavy",
     "title": "Balanced Trees",
     "section": "Right Rotation (Fixing Left-Heavy)",
     "text": "Right Rotation (Fixing Left-Heavy)\nBefore: Node 50 is left-heavy (balance = -2)\n\n  \n  Before\n  \n  \n  \n\n  \n  50\n\n  \n  30\n\n  \n  20\n\n  \n  40\n\n  \n  \n  rotate right\n\n  \n  After\n  \n  \n  \n\n  \n  30\n\n  \n  20\n\n  \n  50\n\n  \n  40\n\n30 becomes the new root. BST property preserved!"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#left-rotation-fixing-right-heavy",
-    "href": "slides/09_tue_balanced.html#left-rotation-fixing-right-heavy",
+    "objectID": "slides/09_wed_balanced.html#left-rotation-fixing-right-heavy",
+    "href": "slides/09_wed_balanced.html#left-rotation-fixing-right-heavy",
     "title": "Balanced Trees",
     "section": "Left Rotation (Fixing Right-Heavy)",
     "text": "Left Rotation (Fixing Right-Heavy)\nThe mirror image: when a node is right-heavy.\n\n  \n  Before\n  \n  \n  \n\n  \n  50\n\n  \n  70\n\n  \n  60\n\n  \n  90\n\n  \n  \n  rotate left\n\n  \n  After\n  \n  \n  \n\n  \n  70\n\n  \n  50\n\n  \n  90\n\n  \n  60"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#double-rotations",
-    "href": "slides/09_tue_balanced.html#double-rotations",
+    "objectID": "slides/09_wed_balanced.html#double-rotations",
+    "href": "slides/09_wed_balanced.html#double-rotations",
     "title": "Balanced Trees",
     "section": "Double Rotations",
     "text": "Double Rotations\nSometimes a single rotation isn’t enough.\nLeft-Right case: Left child is right-heavy\n\nRotate left on the child\nRotate right on the node\n\nRight-Left case: Right child is left-heavy\n\nRotate right on the child\nRotate left on the node"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#the-avl-insert-algorithm-conceptual",
-    "href": "slides/09_tue_balanced.html#the-avl-insert-algorithm-conceptual",
+    "objectID": "slides/09_wed_balanced.html#the-avl-insert-algorithm-conceptual",
+    "href": "slides/09_wed_balanced.html#the-avl-insert-algorithm-conceptual",
     "title": "Balanced Trees",
     "section": "The AVL Insert Algorithm (Conceptual)",
     "text": "The AVL Insert Algorithm (Conceptual)\ndef avl_insert(tree, key):\n    1. Do standard BST insert (key becomes a leaf)\n    2. Walk back up to the root, checking balance\n    3. If any node has balance factor ±2:\n       - Determine which case (left-left, left-right, etc.)\n       - Apply appropriate rotation(s)\n       - Update heights\n    4. Return the (possibly new) root\nAt most one rotation (single or double) is needed per insert!"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#the-key-insight",
-    "href": "slides/09_tue_balanced.html#the-key-insight",
+    "objectID": "slides/09_wed_balanced.html#the-key-insight",
+    "href": "slides/09_wed_balanced.html#the-key-insight",
     "title": "Balanced Trees",
     "section": "The Key Insight",
     "text": "The Key Insight\nWe don’t need to implement rotations ourselves.\nWhat you need to know:\n\nUnbalanced BSTs can have O(n) height\nAVL (and similar) trees maintain balance via rotations\nThis guarantees O(log n) operations\nMost languages provide balanced tree implementations"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#balanced-trees-in-practice",
-    "href": "slides/09_tue_balanced.html#balanced-trees-in-practice",
+    "objectID": "slides/09_wed_balanced.html#balanced-trees-in-practice",
+    "href": "slides/09_wed_balanced.html#balanced-trees-in-practice",
     "title": "Balanced Trees",
     "section": "Balanced Trees in Practice",
     "text": "Balanced Trees in Practice\n\n\n\nLanguage\nBalanced Tree\n\n\n\n\nC++\nstd::map, std::set (Red-Black)\n\n\nJava\nTreeMap, TreeSet (Red-Black)\n\n\nPython\nsortedcontainers.SortedDict (3rd party)\n\n\nDatabases\nB-trees, B+ trees\n\n\n\nPython’s built-in dict uses hash tables, not trees."
   },
   {
-    "objectID": "slides/09_tue_balanced.html#when-to-use-each",
-    "href": "slides/09_tue_balanced.html#when-to-use-each",
+    "objectID": "slides/09_wed_balanced.html#when-to-use-each",
+    "href": "slides/09_wed_balanced.html#when-to-use-each",
     "title": "Balanced Trees",
     "section": "When to Use Each",
     "text": "When to Use Each\n\n\n\nUse Case\nBest Structure\n\n\n\n\nFast lookup only\nHash table (dict)\n\n\nNeed sorted iteration\nBalanced tree\n\n\nRange queries\nBalanced tree\n\n\nMemory constrained\nHash table\n\n\nKeys not hashable\nBalanced tree"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#visualizing-avl-trees",
-    "href": "slides/09_tue_balanced.html#visualizing-avl-trees",
+    "objectID": "slides/09_wed_balanced.html#visualizing-avl-trees",
+    "href": "slides/09_wed_balanced.html#visualizing-avl-trees",
     "title": "Balanced Trees",
     "section": "Visualizing AVL Trees",
     "text": "Visualizing AVL Trees\nTry the interactive visualization:\nAVL Tree Visualization\n\nInsert keys in sorted order\nWatch rotations happen automatically\nCompare to regular BST behavior"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#summary-balanced-trees",
-    "href": "slides/09_tue_balanced.html#summary-balanced-trees",
+    "objectID": "slides/09_wed_balanced.html#summary-balanced-trees",
+    "href": "slides/09_wed_balanced.html#summary-balanced-trees",
     "title": "Balanced Trees",
     "section": "Summary: Balanced Trees",
     "text": "Summary: Balanced Trees\n\nBST operations are O(height) — height matters!\nUnbalanced BSTs can have O(n) height — bad for sorted input\nAVL trees maintain balance via rotations after insert/delete\nAVL property: heights of subtrees differ by ≤ 1\nGuarantee: O(log n) height, so O(log n) operations\nIn practice: Use library implementations (Red-Black, B-trees)"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#the-trade-off",
-    "href": "slides/09_tue_balanced.html#the-trade-off",
+    "objectID": "slides/09_wed_balanced.html#the-trade-off",
+    "href": "slides/09_wed_balanced.html#the-trade-off",
     "title": "Balanced Trees",
     "section": "The Trade-off",
     "text": "The Trade-off\n\n\n\nStructure\nInsert\nFind\nSorted?\n\n\n\n\nHash table\nO(1) avg\nO(1) avg\nNo\n\n\nBalanced BST\nO(log n)\nO(log n)\nYes\n\n\n\nHash tables win on speed. Trees win on ordering.\nChoose based on your needs!"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#connecting-to-earlier-topics",
-    "href": "slides/09_tue_balanced.html#connecting-to-earlier-topics",
+    "objectID": "slides/09_wed_balanced.html#connecting-to-earlier-topics",
+    "href": "slides/09_wed_balanced.html#connecting-to-earlier-topics",
     "title": "Balanced Trees",
     "section": "Connecting to Earlier Topics",
     "text": "Connecting to Earlier Topics\n\n\n\nConcept\nConnection\n\n\n\n\nBinary search\nBST find is binary search on a tree\n\n\nRecursion\nTree algorithms are naturally recursive\n\n\nBFS/DFS\nLevel-order is BFS; other traversals are DFS\n\n\nDecision trees\nWordle strategy is tree search\n\n\nDivide & conquer\nBalanced trees split data in half"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#whats-next",
-    "href": "slides/09_tue_balanced.html#whats-next",
+    "objectID": "slides/09_wed_balanced.html#whats-next",
+    "href": "slides/09_wed_balanced.html#whats-next",
     "title": "Balanced Trees",
     "section": "What’s Next",
     "text": "What’s Next\n\nLab: Wordle decision tree analysis\nNext week: Priority Queues and Heaps"
   },
   {
-    "objectID": "slides/09_tue_balanced.html#practice",
-    "href": "slides/09_tue_balanced.html#practice",
+    "objectID": "slides/09_wed_balanced.html#practice",
+    "href": "slides/09_wed_balanced.html#practice",
     "title": "Balanced Trees",
     "section": "Practice",
     "text": "Practice\n\nIs this tree AVL-balanced? (Check every node’s balance factor)\n\n        50\n       /  \\\n      30   70\n     /    /  \\\n    20   60   90\n   /\n  10\n\nIf not, which rotation(s) would fix it?\nAfter inserting 5, 3, 7, 2, 4, 6, 8 into an empty AVL tree, what does it look like?\n\n(Hint: Use the visualization tool to check!)"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#announcements",
-    "href": "slides/06_wed_dictionaries.html#announcements",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Announcements",
-    "text": "Announcements"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#dictionaries",
-    "href": "slides/06_wed_dictionaries.html#dictionaries",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Dictionaries",
-    "text": "Dictionaries\nDictionaries are Python’s key-value lookup structure."
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#beware-keyerror",
-    "href": "slides/06_wed_dictionaries.html#beware-keyerror",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Beware: KeyError!",
-    "text": "Beware: KeyError!"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#why-dictionaries",
-    "href": "slides/06_wed_dictionaries.html#why-dictionaries",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Why Dictionaries?",
-    "text": "Why Dictionaries?\nLists: Access by position (index)\nfruit = [(\"apple\",\"red\"), (\"banana\",\"yellow\"), (\"cherry\",\"red\")]\nfruit[0], fruit[1], fruit[2]  # How do you look for \"apple\"?\nDictionaries: Access by meaningful key\nfruit = {\"apple\":\"red\", \"banana\":\"yellow\", \"cherry\":\"red\"}\nfruit[\"apple\"], fruit[\"banana\"], fruit[\"cherry\"]  # Self-documenting!\nDictionaries are also fast — We hope for O(1)…"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#pattern-0-records",
-    "href": "slides/06_wed_dictionaries.html#pattern-0-records",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Pattern 0: Records",
-    "text": "Pattern 0: Records\nAlternative to a data frame or named tuple:"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#pattern-1-membership",
-    "href": "slides/06_wed_dictionaries.html#pattern-1-membership",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Pattern 1: Membership",
-    "text": "Pattern 1: Membership\nFind everyone who was in Gallery A and Gallery B."
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#the-naive-approach-check-every-pair",
-    "href": "slides/06_wed_dictionaries.html#the-naive-approach-check-every-pair",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "The Naive Approach: Check Every Pair",
-    "text": "The Naive Approach: Check Every Pair\n\n\n\n\n\n\nThis works… but what if the lists are LONG?"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#the-problem-with-nested-loops",
-    "href": "slides/06_wed_dictionaries.html#the-problem-with-nested-loops",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "The Problem with Nested Loops",
-    "text": "The Problem with Nested Loops\n\nWith 10 people in Gallery A and 12 in Gallery B: 10 × 12 = 120 comparisons\nWith 10,000 in each: 100,000,000 comparisons!"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#pattern-1-membership-with-a-dictionary",
-    "href": "slides/06_wed_dictionaries.html#pattern-1-membership-with-a-dictionary",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Pattern 1: Membership with a Dictionary",
-    "text": "Pattern 1: Membership with a Dictionary"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#why-is-this-faster",
-    "href": "slides/06_wed_dictionaries.html#why-is-this-faster",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Why Is This Faster?",
-    "text": "Why Is This Faster?\n\nStep 1: Look at each Gallery A person once → 10 operations\nStep 2: Look at each Gallery B person once → 12 operations\nTotal: 10 + 12 = 22 operations (not 120!)\n\nDictionary lookup is instant — it doesn’t matter how many keys are stored!"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#the-pattern-set-intersection",
-    "href": "slides/06_wed_dictionaries.html#the-pattern-set-intersection",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "The Pattern: Set Intersection",
-    "text": "The Pattern: Set Intersection\n\nfrom collections import defaultdict\nseen_in_first = defaultdict(bool)\nfor item in first_list:\n    seen_in_first[item] = True\n\nin_both = [item for item in second_list if seen_in_first[item]]\nUse when: Finding common elements, detecting duplicates"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#pattern-2-counting-frequencies",
-    "href": "slides/06_wed_dictionaries.html#pattern-2-counting-frequencies",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Pattern 2: Counting Frequencies",
-    "text": "Pattern 2: Counting Frequencies\nUse case: Count how many times each item appears."
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#pattern-3-finding-complements",
-    "href": "slides/06_wed_dictionaries.html#pattern-3-finding-complements",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Pattern 3: Finding Complements",
-    "text": "Pattern 3: Finding Complements\nUse case: Find two numbers that add up to a target.\n\n\n\n\n\n\nAs we scan, we remember what we’ve seen — and check if the complement exists!"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#pattern-4-grouping-by-category",
-    "href": "slides/06_wed_dictionaries.html#pattern-4-grouping-by-category",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Pattern 4: Grouping by Category",
-    "text": "Pattern 4: Grouping by Category\nUse case: Organize items into categories"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#grouping-with-dictionaries",
-    "href": "slides/06_wed_dictionaries.html#grouping-with-dictionaries",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Grouping with Dictionaries",
-    "text": "Grouping with Dictionaries\nWhat if our items are dictionaries, not tuples?\n\n\n\n\n\n\nSame pattern — just access the key with suspect[\"alibi\"] instead of unpacking a tuple!"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#lets-practice",
-    "href": "slides/06_wed_dictionaries.html#lets-practice",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Let’s Practice!",
-    "text": "Let’s Practice!\nOpen the Data Heist activity. You’ll solve 4 puzzles with LARGE datasets.\nInspired by Advent of Code puzzles!\nPrairieLearn Activity"
-  },
-  {
-    "objectID": "slides/06_wed_dictionaries.html#the-dictionary-patterns",
-    "href": "slides/06_wed_dictionaries.html#the-dictionary-patterns",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "The Dictionary Patterns",
-    "text": "The Dictionary Patterns\n\n\n\nPattern\nUse Case\nTechnique\n\n\n\n\nRecord\nStore named fields\n{\"name\": ..., \"age\": ...}\n\n\nMembership\nTrack what we’ve seen\nseen[x] = True\n\n\nCounting\nCount occurrences\nCounter(items)\n\n\nComplement\nFind pairs\nStore & check complements\n\n\nGrouping\nOrganize by category\ndefaultdict(list)"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#can-we-do-better",
-    "href": "slides/05_mon_stacks.html#can-we-do-better",
-    "title": "Stacks",
-    "section": "Can We Do Better?",
-    "text": "Can We Do Better?\nWe’ve seen:\n\nInsertion sort: \\(O(n^2)\\) (PEX1, HW1)\nSelection sort: \\(O(n^2)\\)\nMerge sort: \\(O(n \\log n)\\)\n\nQuestion: Is \\(O(n \\log n)\\) the best we can do?\nOr is there some clever algorithm that sorts in \\(O(n)\\)?"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#the-surprising-answer",
-    "href": "slides/05_mon_stacks.html#the-surprising-answer",
-    "title": "Stacks",
-    "section": "The Surprising Answer",
-    "text": "The Surprising Answer\nTheorem: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nThis means:\n\nMerge sort is optimal\nNo comparison sort can do better\n\\(O(n \\log n)\\) is a fundamental barrier\n\n\n“This is one of the most beautiful results in CS: we can prove a lower bound on ALL possible algorithms, not just the ones we know about.”"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#the-key-idea",
-    "href": "slides/05_mon_stacks.html#the-key-idea",
-    "title": "Stacks",
-    "section": "The Key Idea",
-    "text": "The Key Idea\nEvery comparison-based sort makes decisions by comparing pairs of elements:\nif arr[i] &lt; arr[j]:\n    ...\nelse:\n    ...\nWe can model the algorithm as a binary tree of decisions."
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#example-sorting-3-elements",
-    "href": "slides/05_mon_stacks.html#example-sorting-3-elements",
-    "title": "Stacks",
-    "section": "Example: Sorting 3 Elements",
-    "text": "Example: Sorting 3 Elements\nSuppose we want to sort \\([v_1, v_2, v_3]\\).\n\n  \n  \n  v₁ &lt; v₂?\n\n  \n  \n  \n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  \n\n  \n  \n  \n\n  \n  \n  [v₁, v₂, v₃]\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  [v₂, v₁, v₃]\n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  \n  \n  \n\n  \n  \n  [v₁, v₃, v₂]\n\n  \n  [v₃, v₁, v₂]\n\n  \n  [v₂, v₃, v₁]\n\n  \n  [v₃, v₂, v₁]"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#what-the-tree-represents",
-    "href": "slides/05_mon_stacks.html#what-the-tree-represents",
-    "title": "Stacks",
-    "section": "What the Tree Represents",
-    "text": "What the Tree Represents\n\nInternal nodes: Comparisons\nEdges: Answers (yes/no, or \\(&lt;\\) / \\(\\geq\\))\nLeaves: sorted ordering of the elements\nHeight: running time of the algorithm\n\nNote:\n\nThere must be a leaf (endpoint) for each ordering of the elements\nthe tree itself is an encoding of an algorithm"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#counting-leaves",
-    "href": "slides/05_mon_stacks.html#counting-leaves",
-    "title": "Stacks",
-    "section": "Counting Leaves",
-    "text": "Counting Leaves\nHow many different rearrangements are possible for an \\(n\\) element list?\nEach ordering needs its own leaf (otherwise we’d give the same answer for different inputs).\nThe decision tree must have at least \\(n!\\) leaves!"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#a-question-for-later",
-    "href": "slides/05_mon_stacks.html#a-question-for-later",
-    "title": "Stacks",
-    "section": "A Question for Later",
-    "text": "A Question for Later\nWhose answer we need now…\nA decision tree of height \\(h\\) has at most _______ leaves?"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#connecting-height-to-comparisons",
-    "href": "slides/05_mon_stacks.html#connecting-height-to-comparisons",
-    "title": "Stacks",
-    "section": "Connecting Height to Comparisons",
-    "text": "Connecting Height to Comparisons\nRecall: The height of the decision tree is the maximum number of comparisons in the worst case.\nIf the tree has height \\(h\\), then:\n\nAt most \\(2^h\\) leaves\nWe need at least \\(n!\\) leaves\n\nTherefore: \\(2^h \\geq n!\\)\nTaking logarithms: \\(h \\geq \\log_2(n!)\\)"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#but-how-big-is-logn",
-    "href": "slides/05_mon_stacks.html#but-how-big-is-logn",
-    "title": "Stacks",
-    "section": "But How Big is \\(\\log(n!)\\)?",
-    "text": "But How Big is \\(\\log(n!)\\)?\nClaim: \\(\\log(n!) = \\Omega(n\\log n)\\)\nProof: \\[\n\\begin{align}\n\\log(n!) &= \\log n + \\log(n-1) + \\cdots + \\log 2 + \\log 1 \\\\\n&\\geq \\log n + \\log(n-1) + \\cdots + \\log\\left(\\tfrac{n}{2}\\right) & \\text{(drop small half)} \\\\\n&\\geq \\tfrac{n}{2} \\cdot \\log\\left(\\tfrac{n}{2}\\right) & \\text{(each term } \\geq \\log(n/2)\\text{)} \\\\\n&= \\tfrac{n}{2}\\log n - \\tfrac{n}{2} \\\\\n&= \\tfrac{n}{4}\\log n + \\tfrac{n}{4}\\log n - \\tfrac{n}{2} \\\\\n&\\geq \\tfrac{n}{4}\\log n & \\text{(when } \\log n \\geq 2 \\text{, i.e., } n \\geq 4\\text{)} \\\\\n&= \\Omega(n \\log n) \\quad \\blacksquare\n\\end{align}\n\\]"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#the-result",
-    "href": "slides/05_mon_stacks.html#the-result",
-    "title": "Stacks",
-    "section": "The Result",
-    "text": "The Result\nObservation: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nJustification:\n\nModel the algorithm as a decision tree\nThe tree needs at least \\(n!\\) leaves\nA tree with \\(\\geq n!\\) leaves has height \\(\\geq \\log_2(n!)\\)\n\\(\\log_2(n!) = \\Theta(n \\log n)\\)\nTherefore, worst-case comparisons \\(\\Omega(n \\log n)\\) ∎\n\n\n“This proof is remarkable: we didn’t analyze any specific algorithm. We proved a limit on ALL possible comparison-based sorting algorithms!”"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#what-this-means",
-    "href": "slides/05_mon_stacks.html#what-this-means",
-    "title": "Stacks",
-    "section": "What This Means",
-    "text": "What This Means\n\n\n\nAlgorithm\nWorst Case\nOptimal?\n\n\n\n\nMerge Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nHeap Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nQuick Sort\n\\(O(n^2)\\)\nNo (but avg is optimal)\n\n\nInsertion Sort\n\\(O(n^2)\\)\nNo\n\n\nSelection Sort\n\\(O(n^2)\\)\nNo\n\n\n\nMerge sort achieves the theoretical limit."
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#can-we-beat-on-log-n",
-    "href": "slides/05_mon_stacks.html#can-we-beat-on-log-n",
-    "title": "Stacks",
-    "section": "Can We Beat \\(O(n \\log n)\\)?",
-    "text": "Can We Beat \\(O(n \\log n)\\)?\nThe lower bound applies to comparison-based sorts.\nIf we know something about the input, we can do better:\n\n\n\nAlgorithm\nConstraint\nTime\n\n\n\n\nCounting Sort\nIntegers in \\([0, k]\\)\n\\(O(n + k)\\)\n\n\nRadix Sort\nFixed-width integers\n\\(O(d \\cdot n)\\)\n\n\n\nIn practice: Just use Python’s sorted() (Timsort, \\(O(n \\log n)\\))."
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#summary",
-    "href": "slides/05_mon_stacks.html#summary",
-    "title": "Stacks",
-    "section": "Summary",
-    "text": "Summary\n\nLabs this week will close up sorting.\nSorting has been a good playground for examples."
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#the-maze",
-    "href": "slides/05_mon_stacks.html#the-maze",
-    "title": "Stacks",
-    "section": "The Maze",
-    "text": "The Maze\n\n\nYou wake up in a maze. Every room has a number. Some rooms have multiple exits.\nQuestion: How do you explore systematically to find the way out?\nhttps://www.youtube.com/watch?v=8qrZ1clEp-Y\n\nwe don’t have yarn!"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#what-did-you-notice",
-    "href": "slides/05_mon_stacks.html#what-did-you-notice",
-    "title": "Stacks",
-    "section": "What Did You Notice?",
-    "text": "What Did You Notice?\nWrite down everything you noticed:\n\n\n\n\n\n\n\nBag (random):\n\nChaotic, unpredictable order\nHard to reason about\nDifferent every time\n\nStack (LIFO):\n\nGoes deep first\nBacktracks when stuck\nConsistent, predictable\ntells us something aobut shape of the maze.\n\nQueue (FIFO): - explores at same depth before moving on. - consistent, predictable"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#abstract-data-type-adt-stack",
-    "href": "slides/05_mon_stacks.html#abstract-data-type-adt-stack",
-    "title": "Stacks",
-    "section": "Abstract Data Type (ADT) Stack",
-    "text": "Abstract Data Type (ADT) Stack\n\n\nProgrammatic realization of a ________________.\n \nStack functions:\n\nInsert: push(item)\nRemove: pop() \\(\\rightarrow\\) item\n\nList functions:\n\nInsert: append(item)\nRemove: pop() \\(\\rightarrow\\) item"
-  },
-  {
-    "objectID": "slides/05_mon_stacks.html#tuesday-video",
-    "href": "slides/05_mon_stacks.html#tuesday-video",
-    "title": "Stacks",
-    "section": "Tuesday Video:",
-    "text": "Tuesday Video:\n“Dynamic Array Diversion”"
   },
   {
     "objectID": "slides/04_tue_recurrences.html#what-this-video-covers",
@@ -1736,7 +1792,7 @@
     "href": "index.html#weekly-announcement",
     "title": "DSCI 221: Data Structures and Algorithms for Data Science",
     "section": "Weekly announcement",
-    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\nWarning: Values from `path` are not uniquely identified; output will contain list-cols.\n• Use `values_fn = list` to suppress this warning.\n• Use `values_fn = {summary_fun}` to summarise duplicates.\n• Use the following dplyr code to identify duplicates.\n  {data} |&gt;\n  dplyr::summarise(n = dplyr::n(), .by = c(week, day, type)) |&gt;\n  dplyr::filter(n &gt; 1L)\n\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n    02 \nJan 12\n\n\n\n\n\n\n\n\n\n\n\n    03 \nJan 19\n\n\n\n\n\n\n\n\n\nHW1\n\n    04 \nJan 26\n\n\n\n\n\n\n\n\n\n\nEX1\n    05 \nFeb 2\n\n\n\n\n\n\n\n\n\nPA1\n\n    06 \nFeb 9\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07 \nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n    08 \nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n    09 \nMar 2\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10 \nMar 9\n\n\n\n\n\n\n\n\n\n\n\n    11 \nMar 16\n\n\n\n\n\n\n\n\n\n\nEX4\n    12 \nMar 23\n\n\n\n\n\n\n\n\n\nPA3\n\n    13 \nMar 30\n\n\n\n\n\n\n\n\n\n\nEX5\n    14 \nApr 6\n\n\n\n\n\n\n\n\n\nHW3",
+    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\nHW3",
     "crumbs": [
       "Course information",
       "Schedule"
@@ -2245,326 +2301,242 @@
     "text": "Questions?"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#announcements",
-    "href": "slides/02_mon_hierarchy.html#announcements",
-    "title": "The Hierarchy of Speed",
+    "objectID": "slides/05_mon_stacks.html#can-we-do-better",
+    "href": "slides/05_mon_stacks.html#can-we-do-better",
+    "title": "Stacks",
+    "section": "Can We Do Better?",
+    "text": "Can We Do Better?\nWe’ve seen:\n\nInsertion sort: \\(O(n^2)\\) (PEX1, HW1)\nSelection sort: \\(O(n^2)\\)\nMerge sort: \\(O(n \\log n)\\)\n\nQuestion: Is \\(O(n \\log n)\\) the best we can do?\nOr is there some clever algorithm that sorts in \\(O(n)\\)?"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#the-surprising-answer",
+    "href": "slides/05_mon_stacks.html#the-surprising-answer",
+    "title": "Stacks",
+    "section": "The Surprising Answer",
+    "text": "The Surprising Answer\nTheorem: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nThis means:\n\nMerge sort is optimal\nNo comparison sort can do better\n\\(O(n \\log n)\\) is a fundamental barrier\n\n\n“This is one of the most beautiful results in CS: we can prove a lower bound on ALL possible algorithms, not just the ones we know about.”"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#the-key-idea",
+    "href": "slides/05_mon_stacks.html#the-key-idea",
+    "title": "Stacks",
+    "section": "The Key Idea",
+    "text": "The Key Idea\nEvery comparison-based sort makes decisions by comparing pairs of elements:\nif arr[i] &lt; arr[j]:\n    ...\nelse:\n    ...\nWe can model the algorithm as a binary tree of decisions."
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#example-sorting-3-elements",
+    "href": "slides/05_mon_stacks.html#example-sorting-3-elements",
+    "title": "Stacks",
+    "section": "Example: Sorting 3 Elements",
+    "text": "Example: Sorting 3 Elements\nSuppose we want to sort \\([v_1, v_2, v_3]\\).\n\n  \n  \n  v₁ &lt; v₂?\n\n  \n  \n  \n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  \n\n  \n  \n  \n\n  \n  \n  [v₁, v₂, v₃]\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  [v₂, v₁, v₃]\n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  \n  \n  \n\n  \n  \n  [v₁, v₃, v₂]\n\n  \n  [v₃, v₁, v₂]\n\n  \n  [v₂, v₃, v₁]\n\n  \n  [v₃, v₂, v₁]"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#what-the-tree-represents",
+    "href": "slides/05_mon_stacks.html#what-the-tree-represents",
+    "title": "Stacks",
+    "section": "What the Tree Represents",
+    "text": "What the Tree Represents\n\nInternal nodes: Comparisons\nEdges: Answers (yes/no, or \\(&lt;\\) / \\(\\geq\\))\nLeaves: sorted ordering of the elements\nHeight: running time of the algorithm\n\nNote:\n\nThere must be a leaf (endpoint) for each ordering of the elements\nthe tree itself is an encoding of an algorithm"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#counting-leaves",
+    "href": "slides/05_mon_stacks.html#counting-leaves",
+    "title": "Stacks",
+    "section": "Counting Leaves",
+    "text": "Counting Leaves\nHow many different rearrangements are possible for an \\(n\\) element list?\nEach ordering needs its own leaf (otherwise we’d give the same answer for different inputs).\nThe decision tree must have at least \\(n!\\) leaves!"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#a-question-for-later",
+    "href": "slides/05_mon_stacks.html#a-question-for-later",
+    "title": "Stacks",
+    "section": "A Question for Later",
+    "text": "A Question for Later\nWhose answer we need now…\nA decision tree of height \\(h\\) has at most _______ leaves?"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#connecting-height-to-comparisons",
+    "href": "slides/05_mon_stacks.html#connecting-height-to-comparisons",
+    "title": "Stacks",
+    "section": "Connecting Height to Comparisons",
+    "text": "Connecting Height to Comparisons\nRecall: The height of the decision tree is the maximum number of comparisons in the worst case.\nIf the tree has height \\(h\\), then:\n\nAt most \\(2^h\\) leaves\nWe need at least \\(n!\\) leaves\n\nTherefore: \\(2^h \\geq n!\\)\nTaking logarithms: \\(h \\geq \\log_2(n!)\\)"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#but-how-big-is-logn",
+    "href": "slides/05_mon_stacks.html#but-how-big-is-logn",
+    "title": "Stacks",
+    "section": "But How Big is \\(\\log(n!)\\)?",
+    "text": "But How Big is \\(\\log(n!)\\)?\nClaim: \\(\\log(n!) = \\Omega(n\\log n)\\)\nProof: \\[\n\\begin{align}\n\\log(n!) &= \\log n + \\log(n-1) + \\cdots + \\log 2 + \\log 1 \\\\\n&\\geq \\log n + \\log(n-1) + \\cdots + \\log\\left(\\tfrac{n}{2}\\right) & \\text{(drop small half)} \\\\\n&\\geq \\tfrac{n}{2} \\cdot \\log\\left(\\tfrac{n}{2}\\right) & \\text{(each term } \\geq \\log(n/2)\\text{)} \\\\\n&= \\tfrac{n}{2}\\log n - \\tfrac{n}{2} \\\\\n&= \\tfrac{n}{4}\\log n + \\tfrac{n}{4}\\log n - \\tfrac{n}{2} \\\\\n&\\geq \\tfrac{n}{4}\\log n & \\text{(when } \\log n \\geq 2 \\text{, i.e., } n \\geq 4\\text{)} \\\\\n&= \\Omega(n \\log n) \\quad \\blacksquare\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#the-result",
+    "href": "slides/05_mon_stacks.html#the-result",
+    "title": "Stacks",
+    "section": "The Result",
+    "text": "The Result\nObservation: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nJustification:\n\nModel the algorithm as a decision tree\nThe tree needs at least \\(n!\\) leaves\nA tree with \\(\\geq n!\\) leaves has height \\(\\geq \\log_2(n!)\\)\n\\(\\log_2(n!) = \\Theta(n \\log n)\\)\nTherefore, worst-case comparisons \\(\\Omega(n \\log n)\\) ∎\n\n\n“This proof is remarkable: we didn’t analyze any specific algorithm. We proved a limit on ALL possible comparison-based sorting algorithms!”"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#what-this-means",
+    "href": "slides/05_mon_stacks.html#what-this-means",
+    "title": "Stacks",
+    "section": "What This Means",
+    "text": "What This Means\n\n\n\nAlgorithm\nWorst Case\nOptimal?\n\n\n\n\nMerge Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nHeap Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nQuick Sort\n\\(O(n^2)\\)\nNo (but avg is optimal)\n\n\nInsertion Sort\n\\(O(n^2)\\)\nNo\n\n\nSelection Sort\n\\(O(n^2)\\)\nNo\n\n\n\nMerge sort achieves the theoretical limit."
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#can-we-beat-on-log-n",
+    "href": "slides/05_mon_stacks.html#can-we-beat-on-log-n",
+    "title": "Stacks",
+    "section": "Can We Beat \\(O(n \\log n)\\)?",
+    "text": "Can We Beat \\(O(n \\log n)\\)?\nThe lower bound applies to comparison-based sorts.\nIf we know something about the input, we can do better:\n\n\n\nAlgorithm\nConstraint\nTime\n\n\n\n\nCounting Sort\nIntegers in \\([0, k]\\)\n\\(O(n + k)\\)\n\n\nRadix Sort\nFixed-width integers\n\\(O(d \\cdot n)\\)\n\n\n\nIn practice: Just use Python’s sorted() (Timsort, \\(O(n \\log n)\\))."
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#summary",
+    "href": "slides/05_mon_stacks.html#summary",
+    "title": "Stacks",
+    "section": "Summary",
+    "text": "Summary\n\nLabs this week will close up sorting.\nSorting has been a good playground for examples."
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#the-maze",
+    "href": "slides/05_mon_stacks.html#the-maze",
+    "title": "Stacks",
+    "section": "The Maze",
+    "text": "The Maze\n\n\nYou wake up in a maze. Every room has a number. Some rooms have multiple exits.\nQuestion: How do you explore systematically to find the way out?\nhttps://www.youtube.com/watch?v=8qrZ1clEp-Y\n\nwe don’t have yarn!"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#what-did-you-notice",
+    "href": "slides/05_mon_stacks.html#what-did-you-notice",
+    "title": "Stacks",
+    "section": "What Did You Notice?",
+    "text": "What Did You Notice?\nWrite down everything you noticed:\n\n\n\n\n\n\n\nBag (random):\n\nChaotic, unpredictable order\nHard to reason about\nDifferent every time\n\nStack (LIFO):\n\nGoes deep first\nBacktracks when stuck\nConsistent, predictable\ntells us something aobut shape of the maze.\n\nQueue (FIFO): - explores at same depth before moving on. - consistent, predictable"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#abstract-data-type-adt-stack",
+    "href": "slides/05_mon_stacks.html#abstract-data-type-adt-stack",
+    "title": "Stacks",
+    "section": "Abstract Data Type (ADT) Stack",
+    "text": "Abstract Data Type (ADT) Stack\n\n\nProgrammatic realization of a ________________.\n \nStack functions:\n\nInsert: push(item)\nRemove: pop() \\(\\rightarrow\\) item\n\nList functions:\n\nInsert: append(item)\nRemove: pop() \\(\\rightarrow\\) item"
+  },
+  {
+    "objectID": "slides/05_mon_stacks.html#tuesday-video",
+    "href": "slides/05_mon_stacks.html#tuesday-video",
+    "title": "Stacks",
+    "section": "Tuesday Video:",
+    "text": "Tuesday Video:\n“Dynamic Array Diversion”"
+  },
+  {
+    "objectID": "slides/06_wed_dictionaries.html#announcements",
+    "href": "slides/06_wed_dictionaries.html#announcements",
+    "title": "Data Structures and Algorithms for Data Science",
     "section": "Announcements",
-    "text": "Announcements\n\nLabs begin this week!\n\nMonday 1-3pm or Tuesday 4-6pm"
+    "text": "Announcements"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#rules",
-    "href": "slides/02_mon_hierarchy.html#rules",
-    "title": "The Hierarchy of Speed",
-    "section": "Rules",
-    "text": "Rules\nFor \\(T(n)\\), the running time of an algorithm on input of size \\(n\\)…\n\nConstants don’t matter: \\(5n = O(n)\\)\nLower terms don’t matter: \\(n^2 + n = O(n^2)\\)\nLog base doesn’t matter: \\(log_2 n = O(log_{10}n)\\)\n\n\n“What’s the intuition for #3?”\nAll logs differ by a constant factor. log₂n = log₁₀n / log₁₀2"
+    "objectID": "slides/06_wed_dictionaries.html#dictionaries",
+    "href": "slides/06_wed_dictionaries.html#dictionaries",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Dictionaries",
+    "text": "Dictionaries\nDictionaries are Python’s key-value lookup structure."
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#example-1",
-    "href": "slides/02_mon_hierarchy.html#example-1",
-    "title": "The Hierarchy of Speed",
-    "section": "Example 1",
-    "text": "Example 1\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n\n\n\n3\n7\n2\n9\n1\n8\n4\n6\n5\n2\n7\n3\n\n\n\n\nPython questions?\nWhat’s the worst-case running time?\n\n\nOne pass through the array. \\(\\Theta(n)\\), tight.\n“We’ll see this again later with pandas.”"
+    "objectID": "slides/06_wed_dictionaries.html#beware-keyerror",
+    "href": "slides/06_wed_dictionaries.html#beware-keyerror",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Beware: KeyError!",
+    "text": "Beware: KeyError!"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#example-2",
-    "href": "slides/02_mon_hierarchy.html#example-2",
-    "title": "The Hierarchy of Speed",
-    "section": "Example 2",
-    "text": "Example 2\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 17th element counted?\nWhat are the values of i and j for the 32nd element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet them trace: i=2, j=4 for 17th. i=5, j=1 for 32nd.\n“Predict for n = 8?” (64)\nDouble n → QUADRUPLE the work. \\(\\Theta(n^2)\\), tight."
+    "objectID": "slides/06_wed_dictionaries.html#why-dictionaries",
+    "href": "slides/06_wed_dictionaries.html#why-dictionaries",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Why Dictionaries?",
+    "text": "Why Dictionaries?\nLists: Access by position (index)\nfruit = [(\"apple\",\"red\"), (\"banana\",\"yellow\"), (\"cherry\",\"red\")]\nfruit[0], fruit[1], fruit[2]  # How do you look for \"apple\"?\nDictionaries: Access by meaningful key\nfruit = {\"apple\":\"red\", \"banana\":\"yellow\", \"cherry\":\"red\"}\nfruit[\"apple\"], fruit[\"banana\"], fruit[\"cherry\"]  # Self-documenting!\nDictionaries are also fast — We hope for O(1)…"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#example-3",
-    "href": "slides/02_mon_hierarchy.html#example-3",
-    "title": "The Hierarchy of Speed",
-    "section": "Example 3",
-    "text": "Example 3\n\n\n\n\n\n\n\n\nFor \\(n = 6\\):\n\nWhat are the values of i and j for the 4th element counted?\nWhat are the values of i and j for the 12th element counted?\nWhat’s the worst-case running time?\n\n\n\n\n\n\n\n\n\n\n\n\n\ni=2: j=0,1 (2 elements). i=3: j=0,1,2 (3 elements). So 4th is i=3, j=0.\n\\(0 + 1 + 2 + \\ldots + (n-1) = n(n-1)/2\\)\nStill \\(\\Theta(n^2)\\), tight! The triangle is half the square."
+    "objectID": "slides/06_wed_dictionaries.html#pattern-0-records",
+    "href": "slides/06_wed_dictionaries.html#pattern-0-records",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Pattern 0: Records",
+    "text": "Pattern 0: Records\nAlternative to a data frame or named tuple:"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#the-two-pillars",
-    "href": "slides/02_mon_hierarchy.html#the-two-pillars",
-    "title": "The Hierarchy of Speed",
-    "section": "The Two Pillars",
-    "text": "The Two Pillars\n\nCorrectness — Does it work?\nEfficiency — How fast?\n\n\n“Last week: efficiency. This week: we add correctness.”"
+    "objectID": "slides/06_wed_dictionaries.html#pattern-1-membership",
+    "href": "slides/06_wed_dictionaries.html#pattern-1-membership",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Pattern 1: Membership",
+    "text": "Pattern 1: Membership\nFind everyone who was in Gallery A and Gallery B."
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#the-analysis-recipe",
-    "href": "slides/02_mon_hierarchy.html#the-analysis-recipe",
-    "title": "The Hierarchy of Speed",
-    "section": "The Analysis Recipe",
-    "text": "The Analysis Recipe\n\nEstablish the case — usually worst case\nAnalyze the function — count operations for that case\nState the bound:\n\n\\(\\Theta\\) (or “tight \\(O\\)”) if you know it’s exact\n\\(O\\) if you’re only claiming an upper bound\n\\(\\Omega\\) if you’re only claiming a lower bound\n\n\n\n“When we say ‘binary search is \\(O(\\log n)\\)’ we mean it’s tight — \\(\\Theta(\\log n)\\). We’re not hedging.”\n“First: which case? Then: what’s the function? Then: is it tight or just a bound?”"
+    "objectID": "slides/06_wed_dictionaries.html#the-naive-approach-check-every-pair",
+    "href": "slides/06_wed_dictionaries.html#the-naive-approach-check-every-pair",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "The Naive Approach: Check Every Pair",
+    "text": "The Naive Approach: Check Every Pair\n\n\n\n\n\n\nThis works… but what if the lists are LONG?"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#big-o-is-a-set",
-    "href": "slides/02_mon_hierarchy.html#big-o-is-a-set",
-    "title": "The Hierarchy of Speed",
-    "section": "Big-\\(O\\) is a Set",
-    "text": "Big-\\(O\\) is a Set\n\\(O(g(n))\\) is the set of all functions \\(f(n)\\) satisfying the definition.\n\\[O(n) = \\{f(n) : \\exists c &gt; 0, n_0 \\geq 0 \\text{ such that } f(n) \\leq c \\cdot n \\text{ for all } n \\geq n_0\\}\\]\n\n“From discrete math: Big-O defines a SET of functions.”"
+    "objectID": "slides/06_wed_dictionaries.html#the-problem-with-nested-loops",
+    "href": "slides/06_wed_dictionaries.html#the-problem-with-nested-loops",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "The Problem with Nested Loops",
+    "text": "The Problem with Nested Loops\n\nWith 10 people in Gallery A and 12 in Gallery B: 10 × 12 = 120 comparisons\nWith 10,000 in each: 100,000,000 comparisons!"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#the-ladder",
-    "href": "slides/02_mon_hierarchy.html#the-ladder",
-    "title": "The Hierarchy of Speed",
-    "section": "The Ladder",
-    "text": "The Ladder\n\\[O(1) \\subset O(\\log n) \\subset O(n) \\subset O(n \\log n) \\subset O(n^2) \\subset O(2^n)\\]\nEach class contains all the ones to its left.\n\n“Every \\(O(1)\\) function is also \\(O(n)\\), also \\(O(n^2)\\), etc.”"
+    "objectID": "slides/06_wed_dictionaries.html#pattern-1-membership-with-a-dictionary",
+    "href": "slides/06_wed_dictionaries.html#pattern-1-membership-with-a-dictionary",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Pattern 1: Membership with a Dictionary",
+    "text": "Pattern 1: Membership with a Dictionary"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
-    "href": "slides/02_mon_hierarchy.html#a-common-abuse-of-notation",
-    "title": "The Hierarchy of Speed",
-    "section": "A Common Abuse of Notation",
-    "text": "A Common Abuse of Notation\nWe write: \\(\\quad 4n + 2 = O(n)\\)\nWe mean: \\(\\quad 4n + 2 \\in O(n)\\)\n\n“You’ll see this everywhere. Just remember: we’re really talking about set membership.”"
+    "objectID": "slides/06_wed_dictionaries.html#why-is-this-faster",
+    "href": "slides/06_wed_dictionaries.html#why-is-this-faster",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Why Is This Faster?",
+    "text": "Why Is This Faster?\n\nStep 1: Look at each Gallery A person once → 10 operations\nStep 2: Look at each Gallery B person once → 12 operations\nTotal: 10 + 12 = 22 operations (not 120!)\n\nDictionary lookup is instant — it doesn’t matter how many keys are stored!"
   },
   {
-    "objectID": "slides/02_mon_hierarchy.html#true-or-false",
-    "href": "slides/02_mon_hierarchy.html#true-or-false",
-    "title": "The Hierarchy of Speed",
-    "section": "True or False?",
-    "text": "True or False?\n\n\\(3n + 2 \\in O(n)\\)\n\\(3n + 2 \\in O(n^2)\\)\n\\(n^2 \\in O(n)\\)\n\\(5 \\in O(1)\\)\n\\(5 \\in O(n)\\)\n\n\nT, T, F, T, T\n“If \\(f \\in O(g)\\) and \\(O(g) \\subset O(h)\\), then \\(f \\in O(h)\\).”\n“Let’s see what these mean at scale.”"
+    "objectID": "slides/06_wed_dictionaries.html#the-pattern-set-intersection",
+    "href": "slides/06_wed_dictionaries.html#the-pattern-set-intersection",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "The Pattern: Set Intersection",
+    "text": "The Pattern: Set Intersection\n\nfrom collections import defaultdict\nseen_in_first = defaultdict(bool)\nfor item in first_list:\n    seen_in_first[item] = True\n\nin_both = [item for item in second_list if seen_in_first[item]]\nUse when: Finding common elements, detecting duplicates"
   },
   {
-    "objectID": "slides/06_mon_bfs.html#recap-the-maze-explorer",
-    "href": "slides/06_mon_bfs.html#recap-the-maze-explorer",
-    "title": "Whatever-First Search",
-    "section": "Recap: The Maze Explorer",
-    "text": "Recap: The Maze Explorer\nLast week, we explored a maze using different containers:\n\n\n\nContainer\nOrder\nBehavior\n\n\n\n\nBag\nRandom\nChaotic\n\n\nStack\nLIFO\nGo deep, backtrack\n\n\nQueue\nFIFO\nExplore by distance\n\n\n\nToday: What made this work, and where else can we use it?"
+    "objectID": "slides/06_wed_dictionaries.html#pattern-2-counting-frequencies",
+    "href": "slides/06_wed_dictionaries.html#pattern-2-counting-frequencies",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Pattern 2: Counting Frequencies",
+    "text": "Pattern 2: Counting Frequencies\nUse case: Count how many times each item appears."
   },
   {
-    "objectID": "slides/06_mon_bfs.html#whatever-first-search",
-    "href": "slides/06_mon_bfs.html#whatever-first-search",
-    "title": "Whatever-First Search",
-    "section": "Whatever-First Search",
-    "text": "Whatever-First Search\ndef whatever_first_search(start, neighbors):\n    bag = Bag([start])\n    visited = {start}\n\n    while bag:\n        current = bag.get()\n        for neighbor in neighbors(current):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                bag.put(neighbor)\n\n    return visited\nAdapted from Jeff Erickson’s Algorithms"
+    "objectID": "slides/06_wed_dictionaries.html#pattern-3-finding-complements",
+    "href": "slides/06_wed_dictionaries.html#pattern-3-finding-complements",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Pattern 3: Finding Complements",
+    "text": "Pattern 3: Finding Complements\nUse case: Find two numbers that add up to a target.\n\n\n\n\n\n\nAs we scan, we remember what we’ve seen — and check if the complement exists!"
   },
   {
-    "objectID": "slides/06_mon_bfs.html#the-key-insight",
-    "href": "slides/06_mon_bfs.html#the-key-insight",
-    "title": "Whatever-First Search",
-    "section": "The Key Insight",
-    "text": "The Key Insight\nThe algorithm structure is always the same.\nThree things change:\n\nThe bag: What state do we process next?\nThe neighbors: What’s adjacent to the current state?\nThe bookkeeping: What do we track about each state?"
+    "objectID": "slides/06_wed_dictionaries.html#pattern-4-grouping-by-category",
+    "href": "slides/06_wed_dictionaries.html#pattern-4-grouping-by-category",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Pattern 4: Grouping by Category",
+    "text": "Pattern 4: Grouping by Category\nUse case: Organize items into categories"
   },
   {
-    "objectID": "slides/06_mon_bfs.html#designing-your-search-a-checklist",
-    "href": "slides/06_mon_bfs.html#designing-your-search-a-checklist",
-    "title": "Whatever-First Search",
-    "section": "Designing Your Search: A Checklist",
-    "text": "Designing Your Search: A Checklist\n\n\n\nQuestion\nYour answer\n\n\n\n\nWhat is a state?\n\n\n\nWhat are the neighbors of a state?\n\n\n\nWhat bag should I use?\n\n\n\nWhat do I need to track?\n\n\n\nWhen do I mark visited?\n\n\n\nWhen do I stop?"
+    "objectID": "slides/06_wed_dictionaries.html#grouping-with-dictionaries",
+    "href": "slides/06_wed_dictionaries.html#grouping-with-dictionaries",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Grouping with Dictionaries",
+    "text": "Grouping with Dictionaries\nWhat if our items are dictionaries, not tuples?\n\n\n\n\n\n\nSame pattern — just access the key with suspect[\"alibi\"] instead of unpacking a tuple!"
   },
   {
-    "objectID": "slides/06_mon_bfs.html#choosing-the-bag",
-    "href": "slides/06_mon_bfs.html#choosing-the-bag",
-    "title": "Whatever-First Search",
-    "section": "Choosing the Bag",
-    "text": "Choosing the Bag\n\n\n\nBag Type\nName\nBehavior\n\n\n\n\nStack\nDepth-First Search\nGo deep, backtrack\n\n\nQueue\nBreadth-First Search\nExplore by distance\n\n\nPriority Queue\nBest-First Search\nExplore by “goodness”"
+    "objectID": "slides/06_wed_dictionaries.html#lets-practice",
+    "href": "slides/06_wed_dictionaries.html#lets-practice",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Let’s Practice!",
+    "text": "Let’s Practice!\nOpen the Data Heist activity. You’ll solve 4 puzzles with LARGE datasets.\nInspired by Advent of Code puzzles!\nPrairieLearn Activity"
   },
   {
-    "objectID": "slides/06_mon_bfs.html#choosing-the-bookkeeping",
-    "href": "slides/06_mon_bfs.html#choosing-the-bookkeeping",
-    "title": "Whatever-First Search",
-    "section": "Choosing the Bookkeeping",
-    "text": "Choosing the Bookkeeping\n\n\n\nQuestion\nWhat to track\n\n\n\n\n“Can I reach X?”\nvisited (set)\n\n\n“How far is X?”\ndistance (dict: state → int)\n\n\n“What’s the path to X?”\nparent (dict: state → state)\n\n\n“When did I discover X?”\ndiscovery_time (dict: state → int)\n\n\n“When did I finish X?”\nfinish_time (dict: state → int)\n\n\n\nThe question determines the data structures."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#when-to-mark-visited",
-    "href": "slides/06_mon_bfs.html#when-to-mark-visited",
-    "title": "Whatever-First Search",
-    "section": "When to Mark Visited?",
-    "text": "When to Mark Visited?\nTwo choices:\n# Option A: Mark when adding to bag\nif neighbor not in visited:\n    visited.add(neighbor)\n    bag.put(neighbor)\n\n# Option B: Mark when removing from bag\ncurrent = bag.get()\nif current not in visited:\n    visited.add(current)\nOption A (our version today): Each state enters bag once.\nOption B: Each transition adds to bag once (so states can appear multiple times)."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#what-is-a-thing-state",
-    "href": "slides/06_mon_bfs.html#what-is-a-thing-state",
-    "title": "Whatever-First Search",
-    "section": "What Is a “Thing”? (State)",
-    "text": "What Is a “Thing”? (State)\nThe “thing” in the bag is whatever describes where you are:\n\n\n\nDomain\nState (the “thing”)\n\n\n\n\nMaze\nRoom number\n\n\nGrid\n(row, col) position\n\n\nSocial network\nPerson\n\n\nTower of Hanoi\nConfiguration of all disks\n\n\nWord ladder\nCurrent word\n\n\n\nState = everything needed to know “where am I now?”"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#what-are-neighbors",
-    "href": "slides/06_mon_bfs.html#what-are-neighbors",
-    "title": "Whatever-First Search",
-    "section": "What Are “Neighbors”?",
-    "text": "What Are “Neighbors”?\nThe neighbors(state) function says what’s reachable in one step:\n\n\n\nDomain\nNeighbors of state\n\n\n\n\nMaze\nRooms connected to current room\n\n\nGrid\nCells adjacent to (row, col)\n\n\nSocial network\nFriends of current person\n\n\nTower of Hanoi\nConfigurations after one valid move\n\n\nWord ladder\nWords differing by one letter\n\n\n\nThe problem defines what “one step” means."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#an-example-problem",
-    "href": "slides/06_mon_bfs.html#an-example-problem",
-    "title": "Whatever-First Search",
-    "section": "An Example Problem",
-    "text": "An Example Problem\nHow do we find the shortest path from S to E in a grid?\n\n  \n  \n    \n      \n    \n  \n  \n\n  \n  \n\n  \n  \n\n  \n  S\n\n  \n  E\n\n\nLet’s fill out our checklist…"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#step-1-what-is-a-state",
-    "href": "slides/06_mon_bfs.html#step-1-what-is-a-state",
-    "title": "Whatever-First Search",
-    "section": "Step 1: What is a state?",
-    "text": "Step 1: What is a state?\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n\n\n\nWhat bag?\n\n\n\nWhat do I track?\n\n\n\nWhen mark visited?\n\n\n\nWhen do I stop?\n\n\n\n\nA state is a cell: (row, col)."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#step-2-what-are-the-neighbors",
-    "href": "slides/06_mon_bfs.html#step-2-what-are-the-neighbors",
-    "title": "Whatever-First Search",
-    "section": "Step 2: What are the neighbors?",
-    "text": "Step 2: What are the neighbors?\n\n\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected\n\n\nWhat bag?\n\n\n\nWhat do I track?\n\n\n\nWhen mark visited?\n\n\n\nWhen do I stop?\n\n\n\n\n\n\n  \n  \n    \n      \n    \n  \n  \n\n  \n  \n  C\n\n  \n  \n  X\n\n  \n  X\n\n  \n  X\n\n  \n  X\n\n\nFrom (r, c), neighbors are (r±1, c) and (r, c±1)."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#step-3-what-bag",
-    "href": "slides/06_mon_bfs.html#step-3-what-bag",
-    "title": "Whatever-First Search",
-    "section": "Step 3: What bag?",
-    "text": "Step 3: What bag?\nWe want shortest paths.\nThe distance from A to B is the minimum number of steps.\n\n  \n  \n    \n      \n    \n  \n  \n\n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n    \n    \n    \n  \n\n  \n  \n    \n    43234\n    \n    32123\n    \n    21012\n    \n    32123\n    \n    43234\n  \n\nHow do we explore in order of distance?\n\nwe only want to mark something as distance 2 when we know it can’t be distance 1, so we have to find ALL the distance 1s first, before we mark any as distance 2. distance 1s have to be a neighbor of a distance 0…"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#why-queues-give-distances",
-    "href": "slides/06_mon_bfs.html#why-queues-give-distances",
-    "title": "Whatever-First Search",
-    "section": "Why Queues Give Distances",
-    "text": "Why Queues Give Distances\nWhen we use a queue:\n\nWe process all distance-1 cells before any distance-2 cells\nWe process all distance-2 cells before any distance-3 cells\nAnd so on…\n\nThis is Breadth-First Search (BFS)."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#bfs-gives-shortest-paths",
-    "href": "slides/06_mon_bfs.html#bfs-gives-shortest-paths",
-    "title": "Whatever-First Search",
-    "section": "BFS Gives Shortest Paths",
-    "text": "BFS Gives Shortest Paths\nObserve: When BFS discovers a state, the recorded distance is the shortest path distance.\nWhy?\n\nBFS explores in order: all distance-1 before any distance-2, etc.\nIf there were a shorter path, we would have found it earlier!"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#step-3-what-bag-answered",
-    "href": "slides/06_mon_bfs.html#step-3-what-bag-answered",
-    "title": "Whatever-First Search",
-    "section": "Step 3: What bag? (answered)",
-    "text": "Step 3: What bag? (answered)\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected adjacent cells\n\n\nWhat bag?\nQueue (FIFO) → BFS\n\n\nWhat do I track?\n\n\n\nWhen mark visited?\n\n\n\nWhen do I stop?\n\n\n\n\nQueue gives us shortest paths!"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#step-4-what-do-i-track",
-    "href": "slides/06_mon_bfs.html#step-4-what-do-i-track",
-    "title": "Whatever-First Search",
-    "section": "Step 4: What do I track?",
-    "text": "Step 4: What do I track?\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected adjacent cells\n\n\nWhat bag?\nQueue (FIFO) → BFS\n\n\nWhat do I track?\ndistance dict, parent dict\n\n\nWhen mark visited?\n\n\n\nWhen do I stop?\n\n\n\n\n\ndistance: how far is each cell?\nparent: how do I get there? (for path reconstruction)"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#step-5-when-mark-visited",
-    "href": "slides/06_mon_bfs.html#step-5-when-mark-visited",
-    "title": "Whatever-First Search",
-    "section": "Step 5: When mark visited?",
-    "text": "Step 5: When mark visited?\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected adjacent cells\n\n\nWhat bag?\nQueue (FIFO) → BFS\n\n\nWhat do I track?\ndistance dict, parent dict\n\n\nWhen mark visited?\nWhen adding to queue\n\n\nWhen do I stop?\n\n\n\n\nMark visited when adding → each cell enters queue once."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#step-6-when-do-i-stop",
-    "href": "slides/06_mon_bfs.html#step-6-when-do-i-stop",
-    "title": "Whatever-First Search",
-    "section": "Step 6: When do I stop?",
-    "text": "Step 6: When do I stop?\n\n\n\nQuestion\nAnswer\n\n\n\n\nWhat is a state?\n(row, col) position\n\n\nWhat are the neighbors?\n4-connected adjacent cells\n\n\nWhat bag?\nQueue (FIFO) → BFS\n\n\nWhat do I track?\ndistance dict, parent dict\n\n\nWhen mark visited?\nWhen adding to queue\n\n\nWhen do I stop?\nGoal found (or queue empty)\n\n\n\nChecklist complete! Now let’s write the code."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#bfs-on-a-grid",
-    "href": "slides/06_mon_bfs.html#bfs-on-a-grid",
-    "title": "Whatever-First Search",
-    "section": "BFS on a Grid",
-    "text": "BFS on a Grid\n\n\nfrom collections import deque\n\ndef bfs(grid, start, end):\n    rows, cols = len(grid), len(grid[0])\n    distance = {start: 0}\n    parent = {start: None}\n    queue = deque([start])\n\n    while queue:\n        r, c = queue.popleft()\n        if (r, c) == end:\n            return distance, parent\n        for nr, nc in neighbors(r, c, rows, cols):\n            if (nr, nc) not in distance:\n                distance[(nr, nc)] = distance[(r, c)] + 1\n                parent[(nr, nc)] = (r, c)\n                queue.append((nr, nc))\n\n    return distance, parent\n\n\nEach arrow points to parent: the cell that discovered it."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#reconstructing-the-path",
-    "href": "slides/06_mon_bfs.html#reconstructing-the-path",
-    "title": "Whatever-First Search",
-    "section": "Reconstructing the Path",
-    "text": "Reconstructing the Path\ndef get_path(parent, end):\n    # Follow parent pointers, pushing onto stack\n    stack = []\n    current = end\n    while current is not None:\n        stack.append(current)\n        current = parent[current]\n\n    # Pop from stack to reverse the path\n    path = []\n    while stack:\n        path.append(stack.pop())\n    return path\nUse a stack to reverse the parent pointers!"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#the-neighbor-function",
-    "href": "slides/06_mon_bfs.html#the-neighbor-function",
-    "title": "Whatever-First Search",
-    "section": "The Neighbor Function",
-    "text": "The Neighbor Function\ndef grid_neighbors(r, c, rows, cols):\n    \"\"\"4-connected neighbors on a grid.\"\"\"\n    for dr, dc in [(-1,0), (1,0), (0,-1), (0,1)]:\n        nr, nc = r + dr, c + dc\n        if is_valid(nr, nc, rows, cols):\n            yield (nr, nc)\n\ndef is_valid(r, c, rows, cols):\n    return 0 &lt;= r &lt; rows and 0 &lt;= c &lt; cols\nTwo design decisions:\n\nCandidates: 4-connected? 8-connected? Knight moves?\nValidity: In bounds? Not a wall? Climbable?"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#your-turn",
-    "href": "slides/06_mon_bfs.html#your-turn",
-    "title": "Whatever-First Search",
-    "section": "Your Turn",
-    "text": "Your Turn\nHelp Donkey find the shortest path to Dragon’s castle!\nComplete the activity in PL to solve the puzzle!"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#the-story",
-    "href": "slides/06_mon_bfs.html#the-story",
-    "title": "Whatever-First Search",
-    "section": "The Story",
-    "text": "The Story\n\n\nDonkey must deliver a love letter to Dragon through mountainous terrain.\n\nStart at village S in a valley\nDeliver to Dragon’s castle E on a peak\nEach step: move to adjacent cell\nConstraint: Donkey can only climb one elevation level at a time!\n\n\naabqponm\nabcryxxl\naccszzxk\nacctuvwj\nabdefghi\n(heights: a=0, b=1, …, z=25)"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#the-terrain-rules",
-    "href": "slides/06_mon_bfs.html#the-terrain-rules",
-    "title": "Whatever-First Search",
-    "section": "The Terrain Rules",
-    "text": "The Terrain Rules\nFrom height h, you can step to a neighbor with height at most h + 1.\n\nFrom a (height 0): can reach a or b\nFrom c (height 2): can reach a, b, c, or d\nFrom z (height 25): can reach anything!\n\nThis changes what “neighbors” means."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#part-1-exploring-the-valley",
-    "href": "slides/06_mon_bfs.html#part-1-exploring-the-valley",
-    "title": "Whatever-First Search",
-    "section": "Part 1: Exploring the Valley",
-    "text": "Part 1: Exploring the Valley\nQuestion: Starting from S, how many locations can the messenger reach in at most 10 steps?\nThis is BFS with a step limit."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#part-2-finding-the-castle",
-    "href": "slides/06_mon_bfs.html#part-2-finding-the-castle",
-    "title": "Whatever-First Search",
-    "section": "Part 2: Finding the Castle",
-    "text": "Part 2: Finding the Castle\nQuestion: What is the shortest path from S to E?\nThis is BFS for shortest path.\n(Stop when we reach E, return the distance.)"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#part-3-the-scenic-route",
-    "href": "slides/06_mon_bfs.html#part-3-the-scenic-route",
-    "title": "Whatever-First Search",
-    "section": "Part 3: The Scenic Route",
-    "text": "Part 3: The Scenic Route\nDonkey wants to start from a valley—but which one?\nQuestion: Which a cell has the shortest path to Dragon’s castle E?"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#a-clever-observation",
-    "href": "slides/06_mon_bfs.html#a-clever-observation",
-    "title": "Whatever-First Search",
-    "section": "A Clever Observation",
-    "text": "A Clever Observation\nOption 1: Run BFS from every a cell, take minimum. (Slow if there are many a cells!)\nOption 2: Run BFS backwards from E.\n\nUse reversed edges: if A→B exists, search B→A\nFind all cells that can reach E\nCheck which a cell is closest"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#reversing-the-edges",
-    "href": "slides/06_mon_bfs.html#reversing-the-edges",
-    "title": "Whatever-First Search",
-    "section": "Reversing the Edges",
-    "text": "Reversing the Edges\nForward edge (A can reach B): - From height h, can step to height ≤ h + 1\nBackward edge (who can reach me?): - From height h, can step to height ≥ h - 1\nSame algorithm, different neighbor function!"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#the-power-of-abstraction",
-    "href": "slides/06_mon_bfs.html#the-power-of-abstraction",
-    "title": "Whatever-First Search",
-    "section": "The Power of Abstraction",
-    "text": "The Power of Abstraction\nBoth problems use the same BFS template:\n\nBag: Queue (for shortest paths)\nNeighbors: Defined by terrain rules\nTermination: Goal reached or all reachable\n\nOnly the neighbor function changes!"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#neighbors-are-everywhere",
-    "href": "slides/06_mon_bfs.html#neighbors-are-everywhere",
-    "title": "Whatever-First Search",
-    "section": "Neighbors Are Everywhere",
-    "text": "Neighbors Are Everywhere\n\n\n\nProblem\n“State”\nNeighbors\n\n\n\n\nGrid maze\n(row, col)\nAdjacent cells\n\n\nWord ladder\n“COLD”\nWords 1 letter away\n\n\nTower of Hanoi\nDisk positions\nValid moves\n\n\nRubik’s cube\nCube state\nSingle rotations\n\n\nSocial network\nPerson\nFriends\n\n\n\nIf you can define neighbors, you can search."
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#summary-whatever-first-search",
-    "href": "slides/06_mon_bfs.html#summary-whatever-first-search",
-    "title": "Whatever-First Search",
-    "section": "Summary: Whatever-First Search",
-    "text": "Summary: Whatever-First Search\nThe same algorithm works everywhere:\n\nDefine your state (position, game configuration, …)\nDefine neighbors (what’s reachable in one step?)\nChoose your bag:\n\nStack → DFS (explore deeply)\nQueue → BFS (explore by distance)\nPriority queue → Best-first (explore by cost)\n\n\nBFS with a queue finds shortest paths!"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#lab-preview",
-    "href": "slides/06_mon_bfs.html#lab-preview",
-    "title": "Whatever-First Search",
-    "section": "Lab Preview",
-    "text": "Lab Preview\nIn lab this week, you’ll implement:\n\nTower of Hanoi game (state transitions)\nSliding window problems (queue applications)\nNearest smaller element (stack pattern)\nHistogram max area (stack application)"
-  },
-  {
-    "objectID": "slides/06_mon_bfs.html#whats-next",
-    "href": "slides/06_mon_bfs.html#whats-next",
-    "title": "Whatever-First Search",
-    "section": "What’s Next",
-    "text": "What’s Next\n\nTuesday video: The Magic of O(1) Lookup — Dictionaries\nWednesday: Dictionary Puzzles — Two-Sum, anagrams, frequency counting"
+    "objectID": "slides/06_wed_dictionaries.html#the-dictionary-patterns",
+    "href": "slides/06_wed_dictionaries.html#the-dictionary-patterns",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "The Dictionary Patterns",
+    "text": "The Dictionary Patterns\n\n\n\nPattern\nUse Case\nTechnique\n\n\n\n\nRecord\nStore named fields\n{\"name\": ..., \"age\": ...}\n\n\nMembership\nTrack what we’ve seen\nseen[x] = True\n\n\nCounting\nCount occurrences\nCounter(items)\n\n\nComplement\nFind pairs\nStore & check complements\n\n\nGrouping\nOrganize by category\ndefaultdict(list)"
   },
   {
     "objectID": "slides/05_wed_queues.html#recap-stack-adt",
