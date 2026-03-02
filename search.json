@@ -2067,7 +2067,7 @@
     "href": "slides/09_tue_removal.html#recap-bst-operations",
     "title": "BST Removal",
     "section": "Recap: BST Operations",
-    "text": "Recap: BST Operations\nWe’ve seen find and insert — both O(height).\ndef find(self, key: int) -&gt; BSTNode:\n    return self._find(self.root, key)\n\ndef insert(self, key: int):\n    self.root = self._insert(self.root, key)\nToday: How do we remove a key?"
+    "text": "Recap: BST Operations\nWe’ve seen find and insert — both O(height).\ndef find(self, key: int) -&gt; BSTNode:\n    return self._find(self.root, key)\n\ndef insert(self, key: int):\n    self.root = self._insert(self.root, key)\nToday: How do we remove a key?\ndef remove(self, key: int):\n    self.root = self._remove(self.root, key)"
   },
   {
     "objectID": "slides/09_tue_removal.html#binary-search-tree-remove",

@@ -224,6 +224,8 @@
 <span id="cb1-4"><a></a><span class="kw">def</span> insert(<span class="va">self</span>, key: <span class="bu">int</span>):</span>
 <span id="cb1-5"><a></a>    <span class="va">self</span>.root <span class="op">=</span> <span class="va">self</span>._insert(<span class="va">self</span>.root, key)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Today: How do we <strong>remove</strong> a key?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> remove(<span class="va">self</span>, key: <span class="bu">int</span>):</span>
+<span id="cb2-2"><a></a>    <span class="va">self</span>.root <span class="op">=</span> <span class="va">self</span>._remove(<span class="va">self</span>.root, key)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="binary-search-tree-remove" class="slide level2">
 <h2>Binary Search Tree – Remove</h2>
@@ -389,25 +391,25 @@
   <text x="315" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
 </svg>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> _remove(<span class="va">self</span>, node, key):</span>
-<span id="cb2-2"><a></a>    <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb2-3"><a></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb2-4"><a></a>    <span class="cf">if</span> node.key <span class="op">==</span> key:</span>
-<span id="cb2-5"><a></a>        <span class="cf">return</span> <span class="va">self</span>._do_removal(node)</span>
-<span id="cb2-6"><a></a>    <span class="cf">elif</span> key <span class="op">&lt;</span> node.key:</span>
-<span id="cb2-7"><a></a>        node.left <span class="op">=</span> <span class="va">self</span>._remove(</span>
-<span id="cb2-8"><a></a>            node.left, key)</span>
-<span id="cb2-9"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb2-10"><a></a>        node.right <span class="op">=</span> <span class="va">self</span>._remove(</span>
-<span id="cb2-11"><a></a>            node.right, key)</span>
-<span id="cb2-12"><a></a>    <span class="cf">return</span> node</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> _remove(<span class="va">self</span>, node, key):</span>
+<span id="cb3-2"><a></a>    <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb3-3"><a></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb3-4"><a></a>    <span class="cf">if</span> node.key <span class="op">==</span> key:</span>
+<span id="cb3-5"><a></a>        <span class="cf">return</span> <span class="va">self</span>._do_removal(node)</span>
+<span id="cb3-6"><a></a>    <span class="cf">elif</span> key <span class="op">&lt;</span> node.key:</span>
+<span id="cb3-7"><a></a>        node.left <span class="op">=</span> <span class="va">self</span>._remove(</span>
+<span id="cb3-8"><a></a>            node.left, key)</span>
+<span id="cb3-9"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb3-10"><a></a>        node.right <span class="op">=</span> <span class="va">self</span>._remove(</span>
+<span id="cb3-11"><a></a>            node.right, key)</span>
+<span id="cb3-12"><a></a>    <span class="cf">return</span> node</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> _do_removal(<span class="va">self</span>, node):</span>
-<span id="cb3-2"><a></a>    <span class="cf">if</span> node.left <span class="kw">and</span> node.right:</span>
-<span id="cb3-3"><a></a>        <span class="cf">return</span> <span class="va">self</span>._____child_remove(node)</span>
-<span id="cb3-4"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb3-5"><a></a>        <span class="cf">return</span> <span class="va">self</span>._____child_remove(node)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> _do_removal(<span class="va">self</span>, node):</span>
+<span id="cb4-2"><a></a>    <span class="cf">if</span> node.left <span class="kw">and</span> node.right:</span>
+<span id="cb4-3"><a></a>        <span class="cf">return</span> <span class="va">self</span>._____child_remove(node)</span>
+<span id="cb4-4"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb4-5"><a></a>        <span class="cf">return</span> <span class="va">self</span>._____child_remove(node)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="binary-search-tree---remove-1" class="slide level2">
@@ -451,17 +453,17 @@
   <text x="315" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
 </svg>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> _do_removal(<span class="va">self</span>, node):</span>
-<span id="cb4-2"><a></a>    <span class="cf">if</span> node.left <span class="kw">and</span> node.right:</span>
-<span id="cb4-3"><a></a>        <span class="cf">return</span> <span class="va">self</span>._two_child_remove(node)</span>
-<span id="cb4-4"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb4-5"><a></a>        <span class="cf">return</span> <span class="va">self</span>._zero_one_child_remove(node)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> _zero_one_child_remove(<span class="va">self</span>, node):</span>
-<span id="cb5-2"><a></a>    <span class="cf">if</span> <span class="kw">not</span> node.left:</span>
-<span id="cb5-3"><a></a>        <span class="cf">return</span> node.right</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> _do_removal(<span class="va">self</span>, node):</span>
+<span id="cb5-2"><a></a>    <span class="cf">if</span> node.left <span class="kw">and</span> node.right:</span>
+<span id="cb5-3"><a></a>        <span class="cf">return</span> <span class="va">self</span>._two_child_remove(node)</span>
 <span id="cb5-4"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb5-5"><a></a>        <span class="cf">return</span> node.left</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-5"><a></a>        <span class="cf">return</span> <span class="va">self</span>._zero_one_child_remove(node)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> _zero_one_child_remove(<span class="va">self</span>, node):</span>
+<span id="cb6-2"><a></a>    <span class="cf">if</span> <span class="kw">not</span> node.left:</span>
+<span id="cb6-3"><a></a>        <span class="cf">return</span> node.right</span>
+<span id="cb6-4"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb6-5"><a></a>        <span class="cf">return</span> node.left</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="binary-search-tree---remove-2" class="slide level2">
 <h2>Binary Search Tree - Remove</h2>
@@ -505,18 +507,18 @@
   <text x="315" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
 </svg>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> _two_child_remove(<span class="va">self</span>, node):</span>
-<span id="cb6-2"><a></a>    iop <span class="op">=</span> <span class="va">self</span>._find_max(node.left)</span>
-<span id="cb6-3"><a></a>    node.key <span class="op">=</span> iop.key</span>
-<span id="cb6-4"><a></a>    node.left <span class="op">=</span> <span class="va">self</span>._remove_max(node.left)</span>
-<span id="cb6-5"><a></a>    <span class="cf">return</span> node</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">def</span> _two_child_remove(<span class="va">self</span>, node):</span>
+<span id="cb7-2"><a></a>    iop <span class="op">=</span> <span class="va">self</span>._find_max(node.left)</span>
+<span id="cb7-3"><a></a>    node.key <span class="op">=</span> iop.key</span>
+<span id="cb7-4"><a></a>    node.left <span class="op">=</span> <span class="va">self</span>._remove_max(node.left)</span>
+<span id="cb7-5"><a></a>    <span class="cf">return</span> node</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">def</span> _remove_max(<span class="va">self</span>, node):</span>
-<span id="cb7-2"><a></a>    <span class="cf">if</span> <span class="kw">not</span> node.right:</span>
-<span id="cb7-3"><a></a>        <span class="cf">return</span> node.left  <span class="co"># remove this node</span></span>
-<span id="cb7-4"><a></a>    node.right <span class="op">=</span> <span class="va">self</span>._remove_max(node.right)</span>
-<span id="cb7-5"><a></a>    <span class="cf">return</span> node</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> _remove_max(<span class="va">self</span>, node):</span>
+<span id="cb8-2"><a></a>    <span class="cf">if</span> <span class="kw">not</span> node.right:</span>
+<span id="cb8-3"><a></a>        <span class="cf">return</span> node.left  <span class="co"># remove this node</span></span>
+<span id="cb8-4"><a></a>    node.right <span class="op">=</span> <span class="va">self</span>._remove_max(node.right)</span>
+<span id="cb8-5"><a></a>    <span class="cf">return</span> node</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="try-it-interactive-bst" class="slide level2">
@@ -539,12 +541,12 @@
 <section id="recap" class="slide level2">
 <h2>Recap</h2>
 <p>A <strong>dictionary</strong> is a structure supporting:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> insert(<span class="va">self</span>, key, data): ...</span>
-<span id="cb8-2"><a></a><span class="kw">def</span> find(<span class="va">self</span>, key): ...</span>
-<span id="cb8-3"><a></a><span class="kw">def</span> remove(<span class="va">self</span>, key): ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">def</span> insert(<span class="va">self</span>, key, data): ...</span>
+<span id="cb9-2"><a></a><span class="kw">def</span> find(<span class="va">self</span>, key): ...</span>
+<span id="cb9-3"><a></a><span class="kw">def</span> remove(<span class="va">self</span>, key): ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>B_______ S_______ T_____ implementation of a dictionary incurs running time _________ for all of these.</p>
 </section>
-<section id="binary-search-tree" class="slide level2">
+<section id="binary-search-tree" class="slide level2 smaller">
 <h2>Binary Search Tree</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
