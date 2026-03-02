@@ -18,6 +18,11 @@ def insert(self, key: int):
 
 Today: How do we **remove** a key?
 
+```python
+def remove(self, key: int):
+    self.root = self._remove(self.root, key)
+```
+
 ## Binary Search Tree -- Remove
 
 ::::: columns
@@ -379,7 +384,7 @@ def remove(self, key): ...
 
 B_______ S_______ T_____ implementation of a dictionary incurs running time _________ for all of these.
 
-## Binary Search Tree
+## Binary Search Tree {.smaller}
 
 ::::: columns
 ::: {.column width="50%"}
