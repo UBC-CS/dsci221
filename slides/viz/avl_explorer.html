@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVL Tree Explorer</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+    h1 {
+      margin: 15px 0 10px 0;
+      font-size: 24px;
+      color: #333;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    input[type="number"] {
+      width: 80px;
+      padding: 8px 12px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      text-align: center;
+    }
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #4a90d9;
+    }
+    button {
+      padding: 10px 18px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .insert-btn { background: #5cb85c; color: white; }
+    .insert-btn:hover { background: #4cae4c; }
+    .find-btn { background: #4a90d9; color: white; }
+    .find-btn:hover { background: #3a7bc8; }
+    .delete-btn { background: #d9534f; color: white; }
+    .delete-btn:hover { background: #c9302c; }
+    .clear-btn { background: #f0ad4e; color: white; }
+    .clear-btn:hover { background: #ec971f; }
+    .random-btn { background: #9b59b6; color: white; }
+    .random-btn:hover { background: #8e44ad; }
+    .pause-btn { background: #607d8b; color: white; min-width: 80px; }
+    .pause-btn:hover { background: #546e7a; }
+    .step-btn { background: #00897b; color: white; }
+    .step-btn:hover { background: #00796b; }
+    button:disabled { opacity: 0.4; cursor: default; }
+    #canvas-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+      min-height: 20px;
+    }
+    .info.success { color: #5cb85c; }
+    .info.error { color: #d9534f; }
+    .info.rotation { color: #9b59b6; font-weight: bold; }
+    .rotation-log {
+      margin-top: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #333;
+      min-height: 20px;
+    }
+    .sound-note {
+      font-size: 11px;
+      color: #999;
+      margin-top: 5px;
+    }
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #666;
+    }
+    .speed-control input[type="range"] {
+      width: 120px;
+      cursor: pointer;
+    }
+    .legend {
+      display: flex;
+      gap: 20px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+    .balanced { background: linear-gradient(135deg, #64b5f6, #1976d2); }
+    .unbalanced { background: linear-gradient(135deg, #ef5350, #c62828); }
+    .rotation-nodes { background: linear-gradient(135deg, #ffb74d, #e65100); }
+  </style>
+</head>
+<body>
+  <h1>AVL Tree Explorer</h1>
+  <div class="controls">
+    <input type="number" id="valueInput" placeholder="Value" min="0" max="999">
+    <button class="insert-btn" id="insertBtn">Insert</button>
+    <button class="find-btn" id="findBtn">Find</button>
+    <button class="delete-btn" id="deleteBtn">Delete</button>
+    <button class="random-btn" id="randomBtn">Random Tree</button>
+    <button class="clear-btn" id="clearBtn">Clear</button>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color balanced"></div> Balanced (|bf| ≤ 1)</div>
+    <div class="legend-item"><div class="legend-color unbalanced"></div> Unbalanced (|bf| > 1)</div>
+    <div class="legend-item"><div class="legend-color rotation-nodes"></div> Rotation nodes</div>
+  </div>
+  <div id="canvas-container"></div>
+  <div class="info" id="info"></div>
+  <div class="rotation-log" id="rotationLog"></div>
+  <div class="speed-control">
+    <button class="pause-btn" id="pauseBtn" disabled>Pause ⏸</button>
+    <button class="step-btn" id="stepBtn" disabled>Step ▶</button>
+    <span style="margin-left: 10px;">Speed:</span>
+    <input type="range" id="speedSlider" min="1" max="10" value="5">
+    <span id="speedLabel">5</span>
+  </div>
+  <div class="sound-note">🔊 Sound effects enabled | Balance factors shown on each node</div>
+
+  <script>
+    // ============================================
+    // SOUND EFFECTS
+    // ============================================
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playBoop(frequency = 440, duration = 0.08) {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = frequency;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) { }
+    }
+
+    function playLanding() {
+      try {
+        initAudio();
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const osc3 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc1.connect(gain);
+        osc2.connect(gain);
+        osc3.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc1.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc1.type = 'sine';
+        osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
+        osc2.type = 'sine';
+        osc3.frequency.setValueAtTime(1800, audioCtx.currentTime);
+        osc3.type = 'sine';
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+        osc1.start(audioCtx.currentTime);
+        osc2.start(audioCtx.currentTime);
+        osc3.start(audioCtx.currentTime);
+        osc1.stop(audioCtx.currentTime + 0.1);
+        osc2.stop(audioCtx.currentTime + 0.1);
+        osc3.stop(audioCtx.currentTime + 0.1);
+      } catch (e) { }
+    }
+
+    function playRotation() {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+        osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.3);
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.35);
+      } catch (e) { }
+    }
+
+    function playBalance() {
+      try {
+        initAudio();
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc1.frequency.setValueAtTime(523, audioCtx.currentTime);
+        osc2.frequency.setValueAtTime(659, audioCtx.currentTime);
+        osc1.type = 'sine';
+        osc2.type = 'sine';
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc1.start(audioCtx.currentTime);
+        osc2.start(audioCtx.currentTime);
+        osc1.stop(audioCtx.currentTime + 0.25);
+        osc2.stop(audioCtx.currentTime + 0.25);
+      } catch (e) { }
+    }
+
+    // ============================================
+    // CONSTANTS
+    // ============================================
+    const CANVAS_WIDTH = 900;
+    const CANVAS_HEIGHT = 500;
+    const NODE_RADIUS = 24;
+    const VERTICAL_SPACING = 80;
+
+    let animSpeed = 0.05;
+
+    // ============================================
+    // AVL DATA STRUCTURE
+    // ============================================
+    class AVLNode {
+      constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+        this.height = 1;
+      }
+    }
+
+    function getHeight(node) {
+      return node ? node.height : 0;
+    }
+
+    function getBalanceFactor(node) {
+      return node ? getHeight(node.left) - getHeight(node.right) : 0;
+    }
+
+    function updateHeight(node) {
+      if (node) {
+        node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
+      }
+    }
+
+    function updateAllHeights(node) {
+      if (!node) return;
+      updateAllHeights(node.left);
+      updateAllHeights(node.right);
+      updateHeight(node);
+    }
+
+    // Simple BST insert (no balancing) — we balance with animation
+    function bstInsert(root, value) {
+      if (!root) return new AVLNode(value);
+      if (value < root.value) {
+        root.left = bstInsert(root.left, value);
+      } else if (value > root.value) {
+        root.right = bstInsert(root.right, value);
+      }
+      updateHeight(root);
+      return root;
+    }
+
+    function findNode(root, value) {
+      if (!root) return null;
+      if (value === root.value) return root;
+      if (value < root.value) return findNode(root.left, value);
+      return findNode(root.right, value);
+    }
+
+    function getPathToNode(root, value) {
+      const path = [];
+      let current = root;
+      while (current) {
+        path.push(current);
+        if (value === current.value) break;
+        current = value < current.value ? current.left : current.right;
+      }
+      return path;
+    }
+
+    function findParent(root, target) {
+      if (!root || root === target) return null;
+      if (root.left === target || root.right === target) return root;
+      if (target.value < root.value) return findParent(root.left, target);
+      return findParent(root.right, target);
+    }
+
+    // Find the lowest imbalance in the tree (bottom-up)
+    function findImbalanceFromRoot(node) {
+      if (!node) return null;
+      const leftImbalance = findImbalanceFromRoot(node.left);
+      if (leftImbalance) return leftImbalance;
+      const rightImbalance = findImbalanceFromRoot(node.right);
+      if (rightImbalance) return rightImbalance;
+      if (Math.abs(getBalanceFactor(node)) > 1) return node;
+      return null;
+    }
+
+    function getRotationTypeForNode(node) {
+      const bf = getBalanceFactor(node);
+      if (bf > 1) {
+        return getBalanceFactor(node.left) >= 0 ? 'Right' : 'Left-Right';
+      } else {
+        return getBalanceFactor(node.right) <= 0 ? 'Left' : 'Right-Left';
+      }
+    }
+
+    // The 3 nodes forming the "stick" that becomes a "mountain"
+    function getRotationTriple(imbalancedNode, rotationType) {
+      if (rotationType === 'Right') {
+        // LL case: z → y → x going left-left
+        return [imbalancedNode, imbalancedNode.left, imbalancedNode.left.left];
+      } else if (rotationType === 'Left') {
+        // RR case: z → y → x going right-right
+        return [imbalancedNode, imbalancedNode.right, imbalancedNode.right.right];
+      } else if (rotationType === 'Left-Right') {
+        // LR case: z → y → x (left then right, zig-zag)
+        return [imbalancedNode, imbalancedNode.left, imbalancedNode.left.right];
+      } else {
+        // RL case: z → y → x (right then left, zig-zag)
+        return [imbalancedNode, imbalancedNode.right, imbalancedNode.right.left];
+      }
+    }
+
+    // Rotation operations
+    function rotateRight(y) {
+      const x = y.left;
+      const T2 = x.right;
+      x.right = y;
+      y.left = T2;
+      updateHeight(y);
+      updateHeight(x);
+      return x;
+    }
+
+    function rotateLeft(x) {
+      const y = x.right;
+      const T2 = y.left;
+      y.left = x;
+      x.right = T2;
+      updateHeight(x);
+      updateHeight(y);
+      return y;
+    }
+
+    function performRotation(root, imbalancedNode, rotationType) {
+      const parent = findParent(root, imbalancedNode);
+      let newSubtreeRoot;
+
+      if (rotationType === 'Right') {
+        newSubtreeRoot = rotateRight(imbalancedNode);
+      } else if (rotationType === 'Left') {
+        newSubtreeRoot = rotateLeft(imbalancedNode);
+      } else if (rotationType === 'Left-Right') {
+        imbalancedNode.left = rotateLeft(imbalancedNode.left);
+        newSubtreeRoot = rotateRight(imbalancedNode);
+      } else {
+        imbalancedNode.right = rotateRight(imbalancedNode.right);
+        newSubtreeRoot = rotateLeft(imbalancedNode);
+      }
+
+      if (!parent) {
+        return newSubtreeRoot;
+      } else if (parent.left === imbalancedNode) {
+        parent.left = newSubtreeRoot;
+      } else {
+        parent.right = newSubtreeRoot;
+      }
+      return root;
+    }
+
+    class AVLTree {
+      constructor() {
+        this.root = null;
+      }
+
+      find(value) {
+        let current = this.root;
+        const path = [];
+        while (current) {
+          path.push(current);
+          if (value === current.value) return { found: true, node: current, path };
+          current = value < current.value ? current.left : current.right;
+        }
+        return { found: false, path };
+      }
+
+      // Full AVL insert (for initialization, no animation)
+      insertBalanced(value) {
+        this.root = this._insertBalanced(this.root, value);
+      }
+
+      _insertBalanced(node, value) {
+        if (!node) return new AVLNode(value);
+        if (value < node.value) {
+          node.left = this._insertBalanced(node.left, value);
+        } else if (value > node.value) {
+          node.right = this._insertBalanced(node.right, value);
+        } else {
+          return node;
+        }
+        updateHeight(node);
+        const bf = getBalanceFactor(node);
+        if (bf > 1 && value < node.left.value) return rotateRight(node);
+        if (bf < -1 && value > node.right.value) return rotateLeft(node);
+        if (bf > 1 && value > node.left.value) {
+          node.left = rotateLeft(node.left);
+          return rotateRight(node);
+        }
+        if (bf < -1 && value < node.right.value) {
+          node.right = rotateRight(node.right);
+          return rotateLeft(node);
+        }
+        return node;
+      }
+
+      delete(value) {
+        const result = this._delete(this.root, value);
+        this.root = result.node;
+        return result;
+      }
+
+      _delete(node, value) {
+        if (!node) return { node: null, success: false, rotations: [] };
+        let rotations = [];
+        if (value < node.value) {
+          const result = this._delete(node.left, value);
+          node.left = result.node;
+          if (!result.success) return { node, success: false, rotations: [] };
+          rotations = result.rotations;
+        } else if (value > node.value) {
+          const result = this._delete(node.right, value);
+          node.right = result.node;
+          if (!result.success) return { node, success: false, rotations: [] };
+          rotations = result.rotations;
+        } else {
+          if (!node.left || !node.right) {
+            return { node: node.left || node.right, success: true, rotations: [] };
+          }
+          let temp = node.left;
+          while (temp.right) temp = temp.right;
+          node.value = temp.value;
+          const result = this._delete(node.left, temp.value);
+          node.left = result.node;
+          rotations = result.rotations;
+        }
+        updateHeight(node);
+        const bf = getBalanceFactor(node);
+        if (bf > 1 && getBalanceFactor(node.left) >= 0) {
+          rotations.push({ type: 'Right', pivot: node.value });
+          return { node: rotateRight(node), success: true, rotations };
+        }
+        if (bf > 1 && getBalanceFactor(node.left) < 0) {
+          rotations.push({ type: 'Left-Right', pivot: node.value });
+          node.left = rotateLeft(node.left);
+          return { node: rotateRight(node), success: true, rotations };
+        }
+        if (bf < -1 && getBalanceFactor(node.right) <= 0) {
+          rotations.push({ type: 'Left', pivot: node.value });
+          return { node: rotateLeft(node), success: true, rotations };
+        }
+        if (bf < -1 && getBalanceFactor(node.right) > 0) {
+          rotations.push({ type: 'Right-Left', pivot: node.value });
+          node.right = rotateRight(node.right);
+          return { node: rotateLeft(node), success: true, rotations };
+        }
+        return { node, success: true, rotations };
+      }
+
+      clear() {
+        this.root = null;
+      }
+    }
+
+    // ============================================
+    // VISUAL STATE
+    // ============================================
+    let nodePositions = new Map();
+    let highlightedRotationNodes = new Set();
+
+    function getNodeVisual(node) {
+      if (!nodePositions.has(node)) {
+        nodePositions.set(node, {
+          x: CANVAS_WIDTH / 2,
+          y: -50,
+          targetX: CANVAS_WIDTH / 2,
+          targetY: 60,
+          scale: 1
+        });
+      }
+      return nodePositions.get(node);
+    }
+
+    function clearVisuals() {
+      nodePositions.clear();
+    }
+
+    // ============================================
+    // LAYOUT
+    // ============================================
+    function getTreeDepth(node) {
+      if (!node) return 0;
+      return 1 + Math.max(getTreeDepth(node.left), getTreeDepth(node.right));
+    }
+
+    function updateAllPositions() {
+      if (!avl.root) return;
+      const treeHeight = getTreeDepth(avl.root);
+      const minSpacingAtBottom = NODE_RADIUS * 2 + 10;
+      const idealWidth = minSpacingAtBottom * Math.pow(2, treeHeight);
+      const totalWidth = Math.min(idealWidth, CANVAS_WIDTH - 80);
+      layoutNode(avl.root, CANVAS_WIDTH / 2, 60, 0, treeHeight, totalWidth);
+    }
+
+    function layoutNode(node, x, y, depth, treeHeight, totalWidth) {
+      if (!node) return;
+      const visual = getNodeVisual(node);
+      visual.targetX = x;
+      visual.targetY = y;
+      const childOffset = totalWidth / Math.pow(2, depth + 2);
+      if (node.left) layoutNode(node.left, x - childOffset, y + VERTICAL_SPACING, depth + 1, treeHeight, totalWidth);
+      if (node.right) layoutNode(node.right, x + childOffset, y + VERTICAL_SPACING, depth + 1, treeHeight, totalWidth);
+    }
+
+    function snapAllPositions(node) {
+      if (!node) return;
+      const visual = getNodeVisual(node);
+      visual.x = visual.targetX;
+      visual.y = visual.targetY;
+      snapAllPositions(node.left);
+      snapAllPositions(node.right);
+    }
+
+    function animatePositions(node) {
+      if (!node) return;
+      const visual = getNodeVisual(node);
+      visual.x = lerp(visual.x, visual.targetX, animSpeed * 3);
+      visual.y = lerp(visual.y, visual.targetY, animSpeed * 3);
+      visual.scale = lerp(visual.scale, 1, animSpeed * 4);
+      animatePositions(node.left);
+      animatePositions(node.right);
+    }
+
+    // ============================================
+    // ANIMATION STATE
+    // ============================================
+    // Phases: bounce → land → show-imbalance → rotate → settle → done
+    let animState = null;
+    let paused = false;
+
+    function startInsert(value) {
+      const findResult = avl.find(value);
+      if (findResult.found) {
+        showInfo(`${value} already exists`, 'error');
+        return false;
+      }
+
+      // Build bounce waypoints
+      const waypoints = [];
+      if (!avl.root) {
+        waypoints.push({ x: CANVAS_WIDTH / 2, y: -50 });
+        waypoints.push({ x: CANVAS_WIDTH / 2, y: 60 });
+      } else {
+        let current = avl.root;
+        const rootVis = getNodeVisual(current);
+        waypoints.push({ x: rootVis.x, y: -50 });
+
+        while (current) {
+          const vis = getNodeVisual(current);
+          waypoints.push({ x: vis.x, y: vis.y });
+          if (value < current.value) {
+            if (!current.left) break;
+            current = current.left;
+          } else {
+            if (!current.right) break;
+            current = current.right;
+          }
+        }
+
+        // Calculate landing position
+        const parentVis = getNodeVisual(current);
+        const treeHeight = getTreeDepth(avl.root);
+        const depth = waypoints.length - 1;
+        const totalWidth = Math.min((NODE_RADIUS * 2 + 10) * Math.pow(2, treeHeight + 1), CANVAS_WIDTH - 80);
+        const childOffset = totalWidth / Math.pow(2, depth + 2);
+
+        if (value < current.value) {
+          waypoints.push({ x: parentVis.x - childOffset, y: parentVis.y + VERTICAL_SPACING });
+        } else {
+          waypoints.push({ x: parentVis.x + childOffset, y: parentVis.y + VERTICAL_SPACING });
+        }
+      }
+
+      animState = {
+        type: 'insert',
+        value: value,
+        x: waypoints[0].x,
+        y: waypoints[0].y,
+        scale: 1,
+        pathIndex: 0,
+        progress: 0,
+        waypoints: waypoints,
+        phase: 'bounce',
+        color: { r: 120, g: 200, b: 120 }
+      };
+      return true;
+    }
+
+    function updateAnimation() {
+      if (!animState) return;
+      if (paused) return;
+
+      if (animState.phase === 'bounce') {
+        animState.progress += animSpeed * 1.2;
+        if (animState.progress >= 1) {
+          animState.pathIndex++;
+          animState.progress = 0;
+          if (animState.pathIndex >= animState.waypoints.length - 1) {
+            animState.phase = 'land';
+            animState.x = animState.waypoints[animState.waypoints.length - 1].x;
+            animState.y = animState.waypoints[animState.waypoints.length - 1].y;
+            animState.scale = 1.3;
+            playLanding();
+            return;
+          }
+          playBoop(300 + animState.pathIndex * 80, 0.06);
+        }
+
+        const from = animState.waypoints[animState.pathIndex];
+        const to = animState.waypoints[animState.pathIndex + 1];
+        const t = animState.progress;
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        animState.x = lerp(from.x, to.x, ease);
+        animState.y = lerp(from.y, to.y, ease);
+        animState.y += Math.sin(t * Math.PI) * -20;
+
+      } else if (animState.phase === 'land') {
+        animState.scale = lerp(animState.scale, 1, animSpeed * 5);
+        if (Math.abs(animState.scale - 1) < 0.03) {
+          // Step 1: Insert as plain BST (no balancing)
+          avl.root = bstInsert(avl.root, animState.value);
+          updateAllHeights(avl.root);
+
+          // Place the new node's visual where the bounce landed
+          const newNode = findNode(avl.root, animState.value);
+          if (newNode) {
+            const vis = getNodeVisual(newNode);
+            vis.x = animState.x;
+            vis.y = animState.y;
+          }
+
+          updateAllPositions();
+
+          // Step 2: Walk back up the insertion path checking balance
+          const path = getPathToNode(avl.root, animState.value);
+          const reversedPath = [...path].reverse(); // bottom-up
+
+          // Build waypoints from inserted node up to root
+          const checkWaypoints = reversedPath.map(n => {
+            const vis = getNodeVisual(n);
+            return { x: vis.targetX, y: vis.targetY, node: n };
+          });
+
+          animState.phase = 'check-balance';
+          animState.checkWaypoints = checkWaypoints;
+          animState.checkIndex = 0;
+          animState.checkProgress = 0;
+          animState.checkPauseFrames = 0;
+          animState.highlightX = checkWaypoints[0].x;
+          animState.highlightY = checkWaypoints[0].y;
+
+          showInfo(`Inserted ${animState.value} — checking balance...`);
+          document.getElementById('rotationLog').textContent = 'Checking ancestors for imbalance...';
+        }
+
+      } else if (animState.phase === 'check-balance') {
+        // Ring travels up the insertion path checking bf at each ancestor
+        const wp = animState.checkWaypoints;
+        const idx = animState.checkIndex;
+
+        if (animState.checkPauseFrames > 0) {
+          // Pausing at a node to "check" it
+          animState.checkPauseFrames -= Math.max(0.2, animSpeed * 20);
+          if (animState.checkPauseFrames <= 0) {
+            // Check if this node is imbalanced
+            const currentNode = wp[idx].node;
+            const bf = getBalanceFactor(currentNode);
+
+            if (Math.abs(bf) > 1) {
+              // Found imbalance! Highlight the 3 rotation nodes
+              const rotationType = getRotationTypeForNode(currentNode);
+              const triple = getRotationTriple(currentNode, rotationType);
+              highlightedRotationNodes.clear();
+              triple.forEach(n => highlightedRotationNodes.add(n));
+
+              animState.phase = 'show-imbalance';
+              animState.imbalancedNode = currentNode;
+              animState.rotationType = rotationType;
+              animState.pauseFrames = 70;
+
+              const tripleValues = triple.map(n => n.value).join(' → ');
+              showInfo(`Imbalanced at ${currentNode.value}!`, 'rotation');
+              document.getElementById('rotationLog').textContent =
+                `${rotationType} rotation needed: ${tripleValues} (stick → mountain)`;
+              playBoop(200, 0.15);
+              return;
+            }
+
+            // Balanced here — move to next ancestor
+            animState.checkIndex++;
+            animState.checkProgress = 0;
+
+            if (animState.checkIndex >= wp.length) {
+              // Reached root, no imbalance
+              showInfo(`Inserted ${animState.value} — balanced!`, 'success');
+              document.getElementById('rotationLog').textContent = 'No rotation needed';
+              animState.phase = 'settle';
+              animState.settleFrames = 20;
+            }
+            return; // Let next frame pick up new index
+          }
+        } else if (animState.checkIndex < wp.length) {
+          // Traveling between nodes
+          if (animState.checkIndex === 0 && animState.checkProgress === 0) {
+            // Start: pause at the inserted node
+            animState.highlightX = wp[0].x;
+            animState.highlightY = wp[0].y;
+            animState.checkPauseFrames = 20;
+            playBoop(500, 0.06);
+          } else {
+            // Animate ring moving to next node
+            const nextIdx = animState.checkIndex;
+            if (nextIdx < wp.length) {
+              animState.checkProgress += animSpeed * 1.5;
+              const from = wp[nextIdx - 1];
+              const to = wp[nextIdx];
+              const t = animState.checkProgress;
+              const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+              animState.highlightX = lerp(from.x, to.x, ease);
+              animState.highlightY = lerp(from.y, to.y, ease);
+
+              if (animState.checkProgress >= 1) {
+                // Arrived at next node
+                animState.highlightX = to.x;
+                animState.highlightY = to.y;
+                animState.checkProgress = 0;
+                animState.checkPauseFrames = 25;
+                playBoop(400 + nextIdx * 50, 0.06);
+                showInfo(`Checking balance at ${to.node.value}... bf = ${getBalanceFactor(to.node)}`);
+              }
+            }
+          }
+        }
+
+      } else if (animState.phase === 'show-imbalance') {
+        // Pause so students can see the imbalance + highlighted stick
+        animState.pauseFrames -= Math.max(0.2, animSpeed * 20);
+        if (animState.pauseFrames <= 0) {
+          // Step 4: Perform the rotation on the tree structure.
+          // Edges re-attach instantly; nodes animate to new positions.
+          avl.root = performRotation(avl.root, animState.imbalancedNode, animState.rotationType);
+          updateAllHeights(avl.root);
+          updateAllPositions();
+
+          animState.phase = 'rotate';
+          animState.rotateFrames = 70;
+          playRotation();
+
+          document.getElementById('rotationLog').textContent =
+            `Performing ${animState.rotationType} rotation...`;
+        }
+
+      } else if (animState.phase === 'rotate') {
+        // Nodes smoothly slide to new positions (animatePositions handles lerp)
+        animState.rotateFrames -= Math.max(0.2, animSpeed * 20);
+        if (animState.rotateFrames <= 0) {
+          highlightedRotationNodes.clear();
+          playBalance();
+          showInfo('Balanced!', 'success');
+          document.getElementById('rotationLog').textContent = 'Rotation complete — tree balanced';
+          animState.phase = 'settle';
+          animState.settleFrames = 20;
+        }
+
+      } else if (animState.phase === 'settle') {
+        animState.settleFrames--;
+        if (animState.settleFrames <= 0) {
+          animState = null;
+        }
+      }
+    }
+
+    // ============================================
+    // DRAWING
+    // ============================================
+    function getNodeColor(node) {
+      if (highlightedRotationNodes.has(node)) {
+        return { r: 255, g: 165, b: 0 }; // Orange for rotation participants
+      }
+      const bf = getBalanceFactor(node);
+      if (Math.abs(bf) > 1) {
+        return { r: 220, g: 80, b: 80 }; // Red for imbalanced
+      }
+      return { r: 100, g: 180, b: 255 }; // Blue for balanced
+    }
+
+    function draw3DNode(x, y, value, scale, baseColor, balanceFactor = null) {
+      push();
+      translate(x, y);
+      const r = NODE_RADIUS * scale;
+
+      noStroke();
+      for (let s = 4; s >= 0; s--) {
+        fill(0, 0, 0, 8);
+        ellipse(2 + s * 0.5, 4 + s * 0.5, r * 2.1 + s * 3, r * 1.9 + s * 2);
+      }
+
+      const brightR = Math.min(255, baseColor.r + 40);
+      const brightG = Math.min(255, baseColor.g + 40);
+      const brightB = Math.min(255, baseColor.b + 40);
+      const darkR = baseColor.r * 0.7;
+      const darkG = baseColor.g * 0.7;
+      const darkB = baseColor.b * 0.7;
+
+      for (let i = r; i > 0; i -= 1.5) {
+        const t = i / r;
+        const curve = t * t * t;
+        fill(lerp(brightR, darkR, curve), lerp(brightG, darkG, curve), lerp(brightB, darkB, curve));
+        noStroke();
+        ellipse(0, 0, i * 2);
+      }
+
+      fill(255, 255, 255, 60);
+      ellipse(-r * 0.25, -r * 0.25, r * 0.9, r * 0.7);
+      fill(255, 255, 255, 90);
+      ellipse(-r * 0.3, -r * 0.3, r * 0.5, r * 0.4);
+      fill(255, 255, 255, 130);
+      ellipse(-r * 0.35, -r * 0.35, r * 0.2, r * 0.15);
+      fill(255, 255, 255, 25);
+      ellipse(r * 0.3, r * 0.25, r * 0.4, r * 0.3);
+
+      noFill();
+      stroke(darkR * 0.9, darkG * 0.9, darkB * 0.9, 180);
+      strokeWeight(1.5);
+      ellipse(0, 0, r * 2);
+
+      noStroke();
+      fill(255, 255, 255, 80);
+      textSize(15 * scale);
+      textStyle(BOLD);
+      text(value, 0.5, 0.5);
+      fill(40, 40, 50);
+      text(value, 0, 0);
+      textStyle(NORMAL);
+
+      if (balanceFactor !== null) {
+        const bfX = r * 0.9;
+        const bfY = -r * 0.9;
+        const bfR = 10;
+
+        if (Math.abs(balanceFactor) > 1) {
+          fill(220, 50, 50);
+        } else if (balanceFactor === 0) {
+          fill(80, 180, 80);
+        } else {
+          fill(255, 180, 50);
+        }
+        noStroke();
+        ellipse(bfX, bfY, bfR * 2);
+
+        fill(255);
+        textSize(10);
+        textStyle(BOLD);
+        const bfText = balanceFactor > 0 ? `+${balanceFactor}` : `${balanceFactor}`;
+        text(bfText, bfX, bfY);
+        textStyle(NORMAL);
+      }
+
+      pop();
+    }
+
+    function drawHighlightRing(x, y) {
+      push();
+      noFill();
+      stroke(255, 200, 0, 200);
+      strokeWeight(4);
+      ellipse(x, y, NODE_RADIUS * 2.5);
+      pop();
+    }
+
+    function drawEdges(node) {
+      if (!node) return;
+      const vis = getNodeVisual(node);
+
+      stroke(120);
+      strokeWeight(2);
+
+      if (node.left) {
+        const leftVis = getNodeVisual(node.left);
+        line(vis.x, vis.y, leftVis.x, leftVis.y);
+        drawEdges(node.left);
+      }
+      if (node.right) {
+        const rightVis = getNodeVisual(node.right);
+        line(vis.x, vis.y, rightVis.x, rightVis.y);
+        drawEdges(node.right);
+      }
+    }
+
+    function drawNodes(node) {
+      if (!node) return;
+      const vis = getNodeVisual(node);
+      const color = getNodeColor(node);
+      const bf = getBalanceFactor(node);
+      draw3DNode(vis.x, vis.y, node.value, vis.scale, color, bf);
+      drawNodes(node.left);
+      drawNodes(node.right);
+    }
+
+    // ============================================
+    // MAIN
+    // ============================================
+    let avl = new AVLTree();
+
+    function setup() {
+      let canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+      canvas.parent('canvas-container');
+      textAlign(CENTER, CENTER);
+      createExampleTree();
+    }
+
+    function draw() {
+      background(255);
+
+      animatePositions(avl.root);
+      updateAnimation();
+      updatePlaybackButtons();
+
+      if (avl.root) {
+        drawEdges(avl.root);
+        drawNodes(avl.root);
+      }
+
+      if (animState && (animState.phase === 'bounce' || animState.phase === 'land')) {
+        draw3DNode(animState.x, animState.y, animState.value, animState.scale, animState.color, null);
+      }
+
+      // Draw balance-check highlight ring traveling up the tree
+      if (animState && animState.phase === 'check-balance') {
+        drawHighlightRing(animState.highlightX, animState.highlightY);
+      }
+
+      if (!avl.root && !animState) {
+        fill(150);
+        textSize(16);
+        noStroke();
+        text("Enter a value and click Insert to build an AVL tree", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+      }
+    }
+
+    function createExampleTree() {
+      avl.clear();
+      clearVisuals();
+      animState = null;
+      highlightedRotationNodes.clear();
+
+      const values = [50, 30, 70, 20, 40, 60, 80];
+      for (const v of values) {
+        avl.insertBalanced(v);
+      }
+
+      updateAllPositions();
+      snapAllPositions(avl.root);
+
+      showInfo('Try inserting: 15, 25, 35 (triggers rotations)');
+      document.getElementById('rotationLog').textContent = 'Insert values to see rotations';
+    }
+
+    function createRandomTree() {
+      avl.clear();
+      clearVisuals();
+      animState = null;
+      highlightedRotationNodes.clear();
+
+      const count = Math.floor(Math.random() * 4) + 7;
+      const values = new Set();
+      while (values.size < count) {
+        values.add(Math.floor(Math.random() * 99) + 1);
+      }
+
+      for (const v of values) {
+        avl.insertBalanced(v);
+      }
+
+      updateAllPositions();
+      snapAllPositions(avl.root);
+
+      showInfo(`Created AVL tree with ${count} nodes`);
+      document.getElementById('rotationLog').textContent = '';
+    }
+
+    function showInfo(msg, type = '') {
+      const el = document.getElementById('info');
+      el.textContent = msg;
+      el.className = 'info ' + type;
+    }
+
+    // ============================================
+    // PLAYBACK CONTROLS
+    // ============================================
+    function updatePlaybackButtons() {
+      const pauseBtn = document.getElementById('pauseBtn');
+      const stepBtn = document.getElementById('stepBtn');
+      if (animState) {
+        pauseBtn.disabled = false;
+        pauseBtn.textContent = paused ? 'Resume ▶' : 'Pause ⏸';
+        stepBtn.disabled = !paused;
+      } else {
+        pauseBtn.disabled = true;
+        stepBtn.disabled = true;
+        pauseBtn.textContent = 'Pause ⏸';
+        paused = false;
+      }
+    }
+
+    function togglePause() {
+      if (!animState) return;
+      paused = !paused;
+      updatePlaybackButtons();
+    }
+
+    function stepAnimation() {
+      if (!animState) return;
+      paused = true;
+
+      if (animState.phase === 'bounce' || animState.phase === 'land') {
+        // Snap to post-insert, then skip to check-balance result
+        avl.root = bstInsert(avl.root, animState.value);
+        updateAllHeights(avl.root);
+        updateAllPositions();
+        snapAllPositions(avl.root);
+        animState.phase = 'check-balance'; // so fallthrough works
+      }
+
+      if (animState && animState.phase === 'check-balance') {
+        // Snap to the imbalance result
+        const imbalanced = findImbalanceFromRoot(avl.root);
+        if (imbalanced) {
+          const rotationType = getRotationTypeForNode(imbalanced);
+          const triple = getRotationTriple(imbalanced, rotationType);
+          highlightedRotationNodes.clear();
+          triple.forEach(n => highlightedRotationNodes.add(n));
+
+          animState.phase = 'show-imbalance';
+          animState.imbalancedNode = imbalanced;
+          animState.rotationType = rotationType;
+          animState.pauseFrames = 70;
+
+          const tripleValues = triple.map(n => n.value).join(' → ');
+          showInfo(`Inserted ${animState.value} — imbalanced at ${imbalanced.value}`, 'rotation');
+          document.getElementById('rotationLog').textContent =
+            `${rotationType} rotation needed: ${tripleValues} (stick → mountain)`;
+        } else {
+          showInfo(`Inserted ${animState.value}`, 'success');
+          document.getElementById('rotationLog').textContent = 'No rotation needed';
+          animState = null;
+          paused = false;
+        }
+
+      } else if (animState.phase === 'show-imbalance') {
+        // Perform rotation and snap to final
+        avl.root = performRotation(avl.root, animState.imbalancedNode, animState.rotationType);
+        updateAllHeights(avl.root);
+        updateAllPositions();
+        snapAllPositions(avl.root);
+        highlightedRotationNodes.clear();
+        playBalance();
+        showInfo('Balanced!', 'success');
+        document.getElementById('rotationLog').textContent = 'Rotation complete — tree balanced';
+        animState = null;
+        paused = false;
+
+      } else if (animState.phase === 'rotate' || animState.phase === 'settle') {
+        // Snap to done
+        snapAllPositions(avl.root);
+        highlightedRotationNodes.clear();
+        showInfo('Balanced!', 'success');
+        animState = null;
+        paused = false;
+      }
+
+      updatePlaybackButtons();
+    }
+
+    // ============================================
+    // EVENT HANDLERS
+    // ============================================
+    document.getElementById('insertBtn').addEventListener('click', () => {
+      if (animState) return;
+      const input = document.getElementById('valueInput');
+      const value = parseInt(input.value);
+      if (isNaN(value)) {
+        showInfo('Please enter a valid number', 'error');
+        return;
+      }
+      startInsert(value);
+      input.value = '';
+      input.focus();
+    });
+
+    document.getElementById('findBtn').addEventListener('click', () => {
+      const input = document.getElementById('valueInput');
+      const value = parseInt(input.value);
+      if (isNaN(value)) {
+        showInfo('Please enter a valid number', 'error');
+        return;
+      }
+      const result = avl.find(value);
+      if (result.found) {
+        showInfo(`Found ${value}!`, 'success');
+        const vis = getNodeVisual(result.node);
+        vis.scale = 1.3;
+        setTimeout(() => { vis.scale = 1; }, 500);
+      } else {
+        showInfo(`${value} not found`, 'error');
+      }
+      input.value = '';
+    });
+
+    document.getElementById('deleteBtn').addEventListener('click', () => {
+      if (animState) return;
+      const input = document.getElementById('valueInput');
+      const value = parseInt(input.value);
+      if (isNaN(value)) {
+        showInfo('Please enter a valid number', 'error');
+        return;
+      }
+
+      const result = avl.delete(value);
+      if (result.success) {
+        if (result.rotations && result.rotations.length > 0) {
+          const rotDesc = result.rotations.map(r => `${r.type} at ${r.pivot}`).join(', ');
+          document.getElementById('rotationLog').textContent = `Rotation after delete: ${rotDesc}`;
+          playRotation();
+        } else {
+          document.getElementById('rotationLog').textContent = 'No rotation needed after delete';
+        }
+        showInfo(`Deleted ${value}`, 'success');
+        updateAllPositions();
+      } else {
+        showInfo(`${value} not found`, 'error');
+      }
+      input.value = '';
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      avl.clear();
+      clearVisuals();
+      animState = null;
+      highlightedRotationNodes.clear();
+      showInfo('Tree cleared');
+      document.getElementById('rotationLog').textContent = '';
+    });
+
+    document.getElementById('randomBtn').addEventListener('click', createRandomTree);
+
+    document.getElementById('pauseBtn').addEventListener('click', togglePause);
+    document.getElementById('stepBtn').addEventListener('click', stepAnimation);
+
+    document.getElementById('valueInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') document.getElementById('insertBtn').click();
+    });
+
+    document.getElementById('speedSlider').addEventListener('input', (e) => {
+      const val = parseInt(e.target.value);
+      document.getElementById('speedLabel').textContent = val;
+      animSpeed = val * 0.01;
+    });
+  </script>
+</body>
+</html>
