@@ -1,0 +1,485 @@
+---
+title: "BST Removal"
+subtitle: "Week 9, Tuesday"
+date: 2026-03-03
+---
+
+## Recap: BST Operations
+
+We've seen `find` and `insert` — both O(height).
+
+```python
+def find(self, key: int) -> BSTNode:
+    return self._find(self.root, key)
+
+def insert(self, key: int):
+    self.root = self._insert(self.root, key)
+```
+
+Today: How do we **remove** a key?
+
+## Binary Search Tree -- Remove
+
+::::: columns
+::: {.column width="50%"}
+`T.remove(37)` 
+
+```{=html}
+<svg viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 320px;">
+  <!-- Tree: 38 at root, 13-51, 10-25-84, 12-37-66-89, 95 -->
+  <!-- Edges -->
+  <line x1="170" y1="30" x2="85" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="170" y1="30" x2="255" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="45" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="125" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="255" y1="95" x2="295" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="45" y1="160" x2="25" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="125" y1="160" x2="145" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="265" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="315" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="315" y1="225" x2="315" y2="260" stroke="#333" stroke-width="2"/>
+  <!-- Nodes -->
+  <circle cx="170" cy="30" r="18" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="170" y="36" text-anchor="middle" font-size="14" font-weight="bold" fill="white">38</text>
+  <circle cx="85" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="85" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">13</text>
+  <circle cx="255" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="255" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">51</text>
+  <circle cx="45" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="45" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">10</text>
+  <circle cx="125" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="125" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">25</text>
+  <circle cx="295" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="295" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">84</text>
+  <circle cx="25" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="25" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">12</text>
+  <circle cx="145" cy="215" r="14" fill="#e74c3c" stroke="#333" stroke-width="2"/>
+  <text x="145" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">37</text>
+  <circle cx="265" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="265" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">66</text>
+  <circle cx="315" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">89</text>
+  <circle cx="315" cy="265" r="13" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
+</svg>
+```
+:::
+
+::: {.column width="50%"}
+`T.remove(51)` 
+
+```{=html}
+<svg viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 320px;">
+  <!-- Edges -->
+  <line x1="170" y1="30" x2="85" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="170" y1="30" x2="255" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="45" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="125" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="255" y1="95" x2="295" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="45" y1="160" x2="25" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="125" y1="160" x2="145" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="265" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="315" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="315" y1="225" x2="315" y2="260" stroke="#333" stroke-width="2"/>
+  <!-- Nodes -->
+  <circle cx="170" cy="30" r="18" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="170" y="36" text-anchor="middle" font-size="14" font-weight="bold" fill="white">38</text>
+  <circle cx="85" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="85" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">13</text>
+  <circle cx="255" cy="85" r="16" fill="#e74c3c" stroke="#333" stroke-width="2"/>
+  <text x="255" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">51</text>
+  <circle cx="45" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="45" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">10</text>
+  <circle cx="125" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="125" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">25</text>
+  <circle cx="295" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="295" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">84</text>
+  <circle cx="25" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="25" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">12</text>
+  <circle cx="145" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="145" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">37</text>
+  <circle cx="265" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="265" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">66</text>
+  <circle cx="315" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">89</text>
+  <circle cx="315" cy="265" r="13" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
+</svg>
+```
+:::
+:::::
+
+## Binary Search Tree -- Remove
+
+`T.remove(38)`
+
+```{=html}
+<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 380px; display: block; margin: 0 auto;">
+  <!-- Edges -->
+  <line x1="200" y1="30" x2="100" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="200" y1="30" x2="300" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="100" y1="95" x2="50" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="100" y1="95" x2="150" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="300" y1="95" x2="350" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="50" y1="160" x2="25" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="150" y1="160" x2="175" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="350" y1="160" x2="320" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="350" y1="160" x2="375" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="375" y1="225" x2="375" y2="260" stroke="#333" stroke-width="2"/>
+  <!-- Nodes -->
+  <circle cx="200" cy="30" r="18" fill="#e74c3c" stroke="#333" stroke-width="2"/>
+  <text x="200" y="36" text-anchor="middle" font-size="14" font-weight="bold" fill="white">38</text>
+  <circle cx="100" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="100" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">13</text>
+  <circle cx="300" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="300" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">51</text>
+  <circle cx="50" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="50" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">10</text>
+  <circle cx="150" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="150" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">25</text>
+  <circle cx="350" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="350" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">84</text>
+  <circle cx="25" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="25" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">12</text>
+  <circle cx="175" cy="215" r="14" fill="#2ecc71" stroke="#333" stroke-width="2"/>
+  <text x="175" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">37</text>
+  <text x="175" y="240" text-anchor="middle" font-size="10" fill="#2ecc71" font-weight="bold">IOP</text>
+  <circle cx="320" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="320" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">66</text>
+  <circle cx="375" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="375" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">89</text>
+  <circle cx="375" cy="265" r="13" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="375" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
+</svg>
+```
+
+## Binary Search Tree - Remove
+
+::::: columns
+::: {.column width="50%"}
+```{=html}
+<svg viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 300px;">
+  <!-- Edges -->
+  <line x1="170" y1="30" x2="85" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="170" y1="30" x2="255" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="45" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="125" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="255" y1="95" x2="295" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="45" y1="160" x2="25" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="125" y1="160" x2="145" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="265" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="315" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="315" y1="225" x2="315" y2="260" stroke="#333" stroke-width="2"/>
+  <!-- Nodes -->
+  <circle cx="170" cy="30" r="18" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="170" y="36" text-anchor="middle" font-size="14" font-weight="bold" fill="white">38</text>
+  <circle cx="85" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="85" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">13</text>
+  <circle cx="255" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="255" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">51</text>
+  <circle cx="45" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="45" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">10</text>
+  <circle cx="125" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="125" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">25</text>
+  <circle cx="295" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="295" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">84</text>
+  <circle cx="25" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="25" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">12</text>
+  <circle cx="145" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="145" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">37</text>
+  <circle cx="265" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="265" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">66</text>
+  <circle cx="315" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">89</text>
+  <circle cx="315" cy="265" r="13" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
+</svg>
+```
+:::
+
+::: {.column width="50%"}
+```python
+def _remove(self, node, key):
+    if node is None:
+        return None
+    if node.key == key:
+        return self._do_removal(node)
+    elif key < node.key:
+        node.left = self._remove(
+            node.left, key)
+    else:
+        node.right = self._remove(
+            node.right, key)
+    return node
+```
+:::
+:::::
+
+. . .
+
+```python
+def _do_removal(self, node):
+    if node.left and node.right:
+        return self._____child_remove(node)
+    else:
+        return self._____child_remove(node)
+```
+
+## Binary Search Tree - Remove
+
+::::: columns
+::: {.column width="50%"}
+```{=html}
+<svg viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 300px;">
+  <!-- Edges -->
+  <line x1="170" y1="30" x2="85" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="170" y1="30" x2="255" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="45" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="125" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="255" y1="95" x2="295" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="45" y1="160" x2="25" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="125" y1="160" x2="145" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="265" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="315" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="315" y1="225" x2="315" y2="260" stroke="#333" stroke-width="2"/>
+  <!-- Nodes -->
+  <circle cx="170" cy="30" r="18" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="170" y="36" text-anchor="middle" font-size="14" font-weight="bold" fill="white">38</text>
+  <circle cx="85" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="85" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">13</text>
+  <circle cx="255" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="255" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">51</text>
+  <circle cx="45" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="45" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">10</text>
+  <circle cx="125" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="125" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">25</text>
+  <circle cx="295" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="295" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">84</text>
+  <circle cx="25" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="25" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">12</text>
+  <circle cx="145" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="145" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">37</text>
+  <circle cx="265" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="265" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">66</text>
+  <circle cx="315" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">89</text>
+  <circle cx="315" cy="265" r="13" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
+</svg>
+```
+:::
+
+::: {.column width="50%"}
+```python
+def _do_removal(self, node):
+    if node.left and node.right:
+        return self._two_child_remove(node)
+    else:
+        return self._zero_one_child_remove(node)
+```
+:::
+:::::
+
+```python
+def _zero_one_child_remove(self, node):
+    if not node.left:
+        return node.right
+    else:
+        return node.left
+```
+
+## Binary Search Tree - Remove
+
+::::: columns
+::: {.column width="50%"}
+```{=html}
+<svg viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 300px;">
+  <!-- Edges -->
+  <line x1="170" y1="30" x2="85" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="170" y1="30" x2="255" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="45" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="125" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="255" y1="95" x2="295" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="45" y1="160" x2="25" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="125" y1="160" x2="145" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="265" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="315" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="315" y1="225" x2="315" y2="260" stroke="#333" stroke-width="2"/>
+  <!-- Nodes -->
+  <circle cx="170" cy="30" r="18" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="170" y="36" text-anchor="middle" font-size="14" font-weight="bold" fill="white">38</text>
+  <circle cx="85" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="85" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">13</text>
+  <circle cx="255" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="255" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">51</text>
+  <circle cx="45" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="45" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">10</text>
+  <circle cx="125" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="125" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">25</text>
+  <circle cx="295" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="295" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">84</text>
+  <circle cx="25" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="25" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">12</text>
+  <circle cx="145" cy="215" r="14" fill="#2ecc71" stroke="#333" stroke-width="2"/>
+  <text x="145" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">37</text>
+  <text x="145" y="240" text-anchor="middle" font-size="10" fill="#2ecc71" font-weight="bold">IOP</text>
+  <circle cx="265" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="265" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">66</text>
+  <circle cx="315" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">89</text>
+  <circle cx="315" cy="265" r="13" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
+</svg>
+```
+:::
+
+::: {.column width="50%"}
+```python
+def _two_child_remove(self, node):
+    iop = self._find_max(node.left)
+    node.key = iop.key
+    node.left = self._remove_max(node.left)
+    return node
+```
+:::
+:::::
+
+. . .
+
+```python
+def _remove_max(self, node):
+    if not node.right:
+        return node.left  # remove this node
+    node.right = self._remove_max(node.right)
+    return node
+```
+
+## Try It: Interactive BST
+
+```{=html}
+<iframe src="viz/bst_explorer.html" width="100%" height="500" style="border: none; border-radius: 8px;"></iframe>
+```
+
+::: notes
+Have students try deleting nodes with different numbers of children:
+- Delete a leaf (e.g., 12)
+- Delete a node with one child (e.g., 25 after inserting 12)
+- Delete a node with two children (e.g., 13)
+:::
+
+## Recap
+
+A **dictionary** is a structure supporting:
+
+```python
+def insert(self, key, data): ...
+def find(self, key): ...
+def remove(self, key): ...
+```
+
+B_______ S_______ T_____ implementation of a dictionary incurs running time _________ for all of these.
+
+## Binary Search Tree
+
+::::: columns
+::: {.column width="50%"}
+```{=html}
+<svg viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg" style="max-width: 300px;">
+  <!-- Edges -->
+  <line x1="170" y1="30" x2="85" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="170" y1="30" x2="255" y2="75" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="45" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="85" y1="95" x2="125" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="255" y1="95" x2="295" y2="140" stroke="#333" stroke-width="2"/>
+  <line x1="45" y1="160" x2="25" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="125" y1="160" x2="145" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="265" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="295" y1="160" x2="315" y2="205" stroke="#333" stroke-width="2"/>
+  <line x1="315" y1="225" x2="315" y2="260" stroke="#333" stroke-width="2"/>
+  <!-- Nodes -->
+  <circle cx="170" cy="30" r="18" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="170" y="36" text-anchor="middle" font-size="14" font-weight="bold" fill="white">38</text>
+  <circle cx="85" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="85" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">13</text>
+  <circle cx="255" cy="85" r="16" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="255" y="91" text-anchor="middle" font-size="13" font-weight="bold" fill="white">51</text>
+  <circle cx="45" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="45" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">10</text>
+  <circle cx="125" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="125" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">25</text>
+  <circle cx="295" cy="150" r="15" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="295" y="156" text-anchor="middle" font-size="12" font-weight="bold" fill="white">84</text>
+  <circle cx="25" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="25" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">12</text>
+  <circle cx="145" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="145" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">37</text>
+  <circle cx="265" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="265" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">66</text>
+  <circle cx="315" cy="215" r="14" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="221" text-anchor="middle" font-size="11" font-weight="bold" fill="white">89</text>
+  <circle cx="315" cy="265" r="13" fill="#3498db" stroke="#333" stroke-width="2"/>
+  <text x="315" y="271" text-anchor="middle" font-size="10" font-weight="bold" fill="white">95</text>
+</svg>
+```
+:::
+
+::: {.column width="50%"}
+The *algorithms* on BST depend on the **height (h)** of the tree.
+
+The *analysis* should be in terms of the **amount of data (n)** the tree contains.
+
+So we need relationships between h and n.
+
+$$h \geq f(n)$$
+
+$$h \leq g(n)$$
+:::
+:::::
+
+Reminder: height(T) is:
+
+- ______ if T is empty
+- 1 + max{height(T~L~), height(T~R~)}, otherwise
+
+## Average Case
+
+The height of a BST depends on the **order** in which the data is inserted into it.
+
+ex. `1 3 2 4 5 7 6` vs. `4 2 3 6 7 1 5`
+
+How many different ways are there to insert n keys into a tree?
+
+. . .
+
+Average height, over all arrangements of n keys is _____________.
+
+## BST Operations Summary
+
+| Operation | Avg Case | Worst Case | Sorted Array | Sorted List |
+|-----------|----------|------------|--------------|-------------|
+| find      |          |            |              |             |
+| insert    |          |            |              |             |
+| remove    |          |            |              |             |
+| traverse  |          |            |              |             |
+
+## The Takeaway
+
+BSTs give us O(height) operations.
+
+**Lower Bound**: Height = O(log n) → fast!
+
+**Worst case**: Height = O(n) → slow!
+
+**Question**: Can we guarantee O(log n) height?
+
+## Practice Problems
+
+1. Draw the BST after these operations starting from empty:
+   - Insert: 50, 30, 70, 20, 40, 60, 80
+   - Remove: 30
+
+2. In the tree from #1, what is the inorder predecessor of 50?
+
+3. Remove 50 from the tree. What does the tree look like after?
+
+4. Write a function `find_min` that finds the minimum key in a BST.
