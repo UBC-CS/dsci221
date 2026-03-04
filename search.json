@@ -504,34 +504,6 @@
     "text": "Building a BST\nDraw the resulting tree.\ntree = BST()\nfor key in [38, 13, 51, 10, 25, 40, 84]:\n    tree.insert(key)"
   },
   {
-    "objectID": "slides/09_mon_BST.html#build-the-tree",
-    "href": "slides/09_mon_BST.html#build-the-tree",
-    "title": "Binary Search Trees",
-    "section": "Build the tree:",
-    "text": "Build the tree:\n\n\nInsert: 10, 13, 25, 38, 40, 51, 84\n\n\n\n\n\n\n\n\n\n\n\n\n\nBuild another “bad” tree:\n\n\n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n  \n\nGive an insertion order:\n\nHow many bad trees are there?"
-  },
-  {
-    "objectID": "slides/09_mon_BST.html#bst-operations-summary",
-    "href": "slides/09_mon_BST.html#bst-operations-summary",
-    "title": "Binary Search Trees",
-    "section": "BST Operations Summary",
-    "text": "BST Operations Summary\n\n\n\nOperation\nLower bound\nWorst Case\n\n\n\n\nfind\nO(log n)\nO(n)\n\n\ninsert\nO(log n)\nO(n)\n\n\ndelete\nO(log n)\nO(n)\n\n\nmin/max\nO(log n)\nO(n)\n\n\ntraversal\nO(n)\nO(n)\n\n\n\nThe key insight: everything depends on height."
-  },
-  {
-    "objectID": "slides/09_mon_BST.html#comparing-dictionary-implementations",
-    "href": "slides/09_mon_BST.html#comparing-dictionary-implementations",
-    "title": "Binary Search Trees",
-    "section": "Comparing Dictionary Implementations",
-    "text": "Comparing Dictionary Implementations\n\n\n\nStructure\nInsert\nFind\nDelete\nSorted Iterate\n\n\n\n\nUnsorted list\nO(1)\nO(n)\nO(n)\nO(n log n)\n\n\nSorted list\nO(n)\nO(log n)\nO(n)\nO(n)\n\n\nHash table\nO(1) avg\nO(1) avg\nO(1) avg\nNot possible\n\n\nBST\nO(____)\nO(____)\nO(____)\nO(n)"
-  },
-  {
-    "objectID": "slides/09_mon_BST.html#why-trees-instead-of-hash-tables",
-    "href": "slides/09_mon_BST.html#why-trees-instead-of-hash-tables",
-    "title": "Binary Search Trees",
-    "section": "Why Trees Instead of Hash Tables?",
-    "text": "Why Trees Instead of Hash Tables?\nHash tables give O(1) expected time. Why use trees?\nTrees can do things hash tables can’t:\n\nSorted iteration: Traverse keys in order\nRange queries: Find all keys between A and B\nPredecessor/successor: Find the next-smallest key\nNo hash function needed: Works with any comparable type"
-  },
-  {
     "objectID": "slides/09_mon_BST.html#summary-binary-search-trees",
     "href": "slides/09_mon_BST.html#summary-binary-search-trees",
     "title": "Binary Search Trees",
@@ -1183,102 +1155,95 @@
     "text": "True or False?\n\n\\(3n + 2 \\in O(n)\\)\n\\(3n + 2 \\in O(n^2)\\)\n\\(n^2 \\in O(n)\\)\n\\(5 \\in O(1)\\)\n\\(5 \\in O(n)\\)\n\n\nT, T, F, T, T\n“If \\(f \\in O(g)\\) and \\(O(g) \\subset O(h)\\), then \\(f \\in O(h)\\).”\n“Let’s see what these mean at scale.”"
   },
   {
-    "objectID": "slides/09_wed_balanced.html#the-problem-with-bsts",
-    "href": "slides/09_wed_balanced.html#the-problem-with-bsts",
+    "objectID": "slides/09_wed_balanced.html#recap-bsts",
+    "href": "slides/09_wed_balanced.html#recap-bsts",
     "title": "Balanced Trees",
-    "section": "The Problem with BSTs",
-    "text": "The Problem with BSTs\nBST operations are O(height).\n\n\n\nInput Order\nTree Height\nOperations\n\n\n\n\nRandom\nO(log n)\nFast\n\n\nSorted\nO(n)\nSlow\n\n\nNearly sorted\nO(n)\nSlow\n\n\n\nReal-world data is often nearly sorted!\n(Timestamps, IDs, sequential entries…)"
+    "section": "Recap: BSTs",
+    "text": "Recap: BSTs\nInsert and Find running time are O(______)"
   },
   {
-    "objectID": "slides/09_wed_balanced.html#two-bsts-with-the-same-keys",
-    "href": "slides/09_wed_balanced.html#two-bsts-with-the-same-keys",
+    "objectID": "slides/09_wed_balanced.html#recap-building-a-bst",
+    "href": "slides/09_wed_balanced.html#recap-building-a-bst",
     "title": "Balanced Trees",
-    "section": "Two BSTs with the Same Keys",
-    "text": "Two BSTs with the Same Keys\n\n  \n  Balanced (height 2)\n  \n  \n  \n  \n  \n  \n  \n\n  \n  4\n  \n  2\n  \n  6\n  \n  1\n  \n  3\n  \n  5\n  \n  7\n\n  \n  Degenerate (height 6)\n  \n  \n  \n  \n  \n  \n\n  \n  1\n  \n  2\n  \n  3\n  \n  4\n  \n  5\n  \n  6\n  \n  7\n\nSame 7 keys, very different performance!"
+    "section": "Recap: Building a BST",
+    "text": "Recap: Building a BST\n\n\nInsert: 10, 13, 25, 38, 40, 51, 84\n\n\n\n\n\n\n\n\n\n\n\n\n\nBuild another “bad” tree:\n\n\n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n  \n  \n\nGive an insertion order:\n\nHow many bad trees are there?"
   },
   {
-    "objectID": "slides/09_wed_balanced.html#the-big-idea",
-    "href": "slides/09_wed_balanced.html#the-big-idea",
+    "objectID": "slides/09_wed_balanced.html#bst-height-and-data",
+    "href": "slides/09_wed_balanced.html#bst-height-and-data",
     "title": "Balanced Trees",
-    "section": "The Big Idea",
-    "text": "The Big Idea\nCan we automatically rebalance the tree after insertions?\nYes! Several self-balancing tree structures exist:\n\nAVL trees (1962): First balanced BST\nRed-Black trees (1978): Used in most standard libraries\nB-trees (1970): Used in databases and file systems\n\nToday: The concept of balance, using AVL trees as our example."
+    "section": "BST: Height and Data",
+    "text": "BST: Height and Data\n\n\nBST operations depend on the height (\\(h\\)) of the tree.\nBut we want to analyze in terms of \\(n\\) (the amount of data).\nSo we need relationships between \\(h\\) and \\(n\\):\n\n\\(h \\geq\\) ________\n\\(h \\leq\\) ________\n\n\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  50\n\n  \n  30\n\n  \n  70\n\n  \n  20\n\n  \n  40\n\n  \n  80\n\n  \n  35\n\n  \n  10\n\n  \n  5\n\n\n\nFill in: - h &gt;= log₂(n) (lower bound — best case, perfectly balanced) - h &lt;= n - 1 (upper bound — worst case, degenerate)\nLower bound is good news (fast operations). Upper bound is bad news (slow operations)."
   },
   {
-    "objectID": "slides/09_wed_balanced.html#what-does-balanced-mean",
-    "href": "slides/09_wed_balanced.html#what-does-balanced-mean",
+    "objectID": "slides/09_wed_balanced.html#average-case",
+    "href": "slides/09_wed_balanced.html#average-case",
     "title": "Balanced Trees",
-    "section": "What Does “Balanced” Mean?",
-    "text": "What Does “Balanced” Mean?\nIntuition: Left and right subtrees should be “about the same size.”\nHeight balance: The heights of left and right subtrees differ by at most 1.\nBalance factor of a node: \\[b = \\text{height}(\\text{right}) - \\text{height}(\\text{left})\\]\nA tree is AVL-balanced if every node has \\(b \\in \\{-1, 0, 1\\}\\)."
+    "section": "Average Case",
+    "text": "Average Case\nThe height of a BST depends on the order data is inserted.\nHow many different insertion orders for \\(n\\) keys? _____\nAverage height, over all arrangements of \\(n\\) keys: ________\n\n\n\n\nOperation\nAvg Case\nWorst Case\n\n\n\n\nfind\n\\(\\Theta(\\log n)\\)\n\\(\\Theta(n)\\)\n\n\ninsert\n\\(\\Theta(\\log n)\\)\n\\(\\Theta(n)\\)\n\n\ndelete\n\\(\\Theta(\\log n)\\)\n\\(\\Theta(n)\\)\n\n\n\n\n\n\nn! different insertion orders\nAverage height is O(log n) — this was proven by Reed (2003)\nBut worst case is still O(n), and real-world data is often nearly sorted!"
+  },
+  {
+    "objectID": "slides/09_wed_balanced.html#comparing-dictionary-implementations",
+    "href": "slides/09_wed_balanced.html#comparing-dictionary-implementations",
+    "title": "Balanced Trees",
+    "section": "Comparing Dictionary Implementations",
+    "text": "Comparing Dictionary Implementations\n\n\n\nStructure\nInsert\nFind\nDelete\nSorted Iterate\n\n\n\n\nUnsorted list\nO(1)\nO(n)\nO(n)\nO(n log n)\n\n\nSorted list\nO(n)\nO(log n)\nO(n)\nO(n)\n\n\nHash table\nO(1) avg\nO(1) avg\nO(1) avg\nNot possible\n\n\nBST\nO(____)\nO(____)\nO(____)\nO(n)\n\n\n\n\nBST answers are O(height) — which is O(log n) average, O(n) worst case."
+  },
+  {
+    "objectID": "slides/09_wed_balanced.html#why-trees-instead-of-hash-tables",
+    "href": "slides/09_wed_balanced.html#why-trees-instead-of-hash-tables",
+    "title": "Balanced Trees",
+    "section": "Why Trees Instead of Hash Tables?",
+    "text": "Why Trees Instead of Hash Tables?\nHash tables give O(1) expected time. Why use trees?\nTrees can do things hash tables can’t:\n\nSorted iteration: Traverse keys in order\nRange queries: Find all keys between A and B\nPredecessor/successor: Find the next-smallest key\nNo hash function needed: Works with any comparable type"
+  },
+  {
+    "objectID": "slides/09_wed_balanced.html#which-tree-makes-you-happiest",
+    "href": "slides/09_wed_balanced.html#which-tree-makes-you-happiest",
+    "title": "Balanced Trees",
+    "section": "Which Tree Makes You Happiest?",
+    "text": "Which Tree Makes You Happiest?\n\n  \n  Tree A\n  \n  \n\n  \n  40\n  \n  30\n  \n  50\n\n  \n  Tree B\n  \n  \n\n  \n  30\n  \n  40\n  \n  50\n\n \nThe height balance of a tree \\(T\\) is: \\(b = \\text{height}(T_R) - \\text{height}(T_L)\\)\nA tree \\(T\\) is height balanced if:\n\n_______________________________________\n_______________________________________\n\n\nFill in: - |b| ≤ 1 for every node in the tree - Both subtrees are also height balanced (recursive!)\nEquivalently: every node has balance factor in {-1, 0, 1}.\n\n\nLead students to articulate: “balanced” — left and right subtrees are about the same height. Then formalize on next slide."
+  },
+  {
+    "objectID": "slides/09_wed_balanced.html#rotations-on-a-bst",
+    "href": "slides/09_wed_balanced.html#rotations-on-a-bst",
+    "title": "Balanced Trees",
+    "section": "Rotations on a BST",
+    "text": "Rotations on a BST\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  50\n\n  \n  30\n\n  \n  80\n\n  \n  20\n\n  \n  40\n\n  \n  60\n\n  \n  90\n\n  \n  85\n\n  \n  99\n\n  \n  95\n\n\nBalance factors: 50 (b=2), 30 (b=0), 80 (b=2), 20 (b=0), 40 (b=0), 60 (b=0), 90 (b=1), 85 (b=0), 99 (b=-1), 95 (b=0).\nLowest unbalanced node is 80 (b=+2). Its right child 90 has b=+1 → right-right (outer) case → single left rotation at 80. Annotate the rotation on the board.\nAfter left rotation at 80: 90 replaces 80, 80 becomes 90’s left child, 85 moves to become 80’s right child. Result: balanced!"
+  },
+  {
+    "objectID": "slides/09_wed_balanced.html#rotations-on-a-bst-1",
+    "href": "slides/09_wed_balanced.html#rotations-on-a-bst-1",
+    "title": "Balanced Trees",
+    "section": "Rotations on a BST",
+    "text": "Rotations on a BST\n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  70\n\n  \n  40\n\n  \n  80\n\n  \n  20\n\n  \n  50\n\n  \n  60\n\n\nb=-2 at 70, left child 40 has b=+1 (right-heavy). This is a zig-zag (left-right / inner case). Try a single right rotation at 70: 40 becomes root, 70 becomes right child, 50 moves to 70’s left child. Result: 40(20, 70(50(_, 60), 80)) — still b=+2 at 40! The single rotation just moved the problem. We need a double rotation.\nThe fix (left-right double rotation): Step 1: Left rotate at 40 → 70(50(40(20), 60), 80) Step 2: Right rotate at 70 → 50(40(20), 70(60, 80)) Now balanced!"
+  },
+  {
+    "objectID": "slides/09_wed_balanced.html#rotations-on-a-bst-2",
+    "href": "slides/09_wed_balanced.html#rotations-on-a-bst-2",
+    "title": "Balanced Trees",
+    "section": "Rotations on a BST",
+    "text": "Rotations on a BST\n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  70\n\n  \n  40\n\n  \n  80\n\n  \n  20\n\n  \n  50\n\n  \n  60\n\n\nb=-2 at 70, left child 40 has b=+1 (right-heavy). This is a zig-zag (left-right / inner case). Try a single right rotation at 70: 40 becomes root, 70 becomes right child, 50 moves to 70’s left child. Result: 40(20, 70(50(_, 60), 80)) — still b=+2 at 40! The single rotation just moved the problem. We need a double rotation.\nThe fix (left-right double rotation): Step 1: Left rotate at 40 → 70(50(40(20), 60), 80) Step 2: Right rotate at 70 → 50(40(20), 70(60, 80)) Now balanced!"
+  },
+  {
+    "objectID": "slides/09_wed_balanced.html#operations-on-bsts-rotations",
+    "href": "slides/09_wed_balanced.html#operations-on-bsts-rotations",
+    "title": "Balanced Trees",
+    "section": "Operations on BSTs — Rotations",
+    "text": "Operations on BSTs — Rotations\nRotation properties:\n\nThere are 4 kinds: left, right, left-right, right-left\nLocal operations (subtrees not affected)\nConstant time (\\(O(1)\\))\nBST property maintained"
   },
   {
     "objectID": "slides/09_wed_balanced.html#avl-trees",
     "href": "slides/09_wed_balanced.html#avl-trees",
     "title": "Balanced Trees",
     "section": "AVL Trees",
-    "text": "AVL Trees\nNamed after inventors Adelson-Velsky and Landis (1962).\nAVL Property: For every node, the heights of left and right subtrees differ by at most 1.\nThis guarantees O(log n) height!"
+    "text": "AVL Trees\nGOAL: use rotations to maintain balance of BSTs.\nThese trees have a special name: AVL Trees\nNamed after Adelson-Velsky and Landis (1962).\nAVL Property: For every node, \\(|b| \\leq 1\\).\nThree issues to consider in the implementation:\n\nRotation\nMaintaining height\nDetecting imbalance"
   },
   {
-    "objectID": "slides/09_wed_balanced.html#checking-balance",
-    "href": "slides/09_wed_balanced.html#checking-balance",
+    "objectID": "slides/09_wed_balanced.html#avl-tree-explorer",
+    "href": "slides/09_wed_balanced.html#avl-tree-explorer",
     "title": "Balanced Trees",
-    "section": "Checking Balance",
-    "text": "Checking Balance\n\n  \n  \n  \n  \n  \n\n  \n  50\n  b=0\n\n  \n  30\n  b=0\n\n  \n  70\n  b=1\n\n  \n  20\n\n  \n  40\n\n  \n  90\n\nEvery node has balance factor -1, 0, or 1. ✓ AVL-balanced!"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#an-unbalanced-tree",
-    "href": "slides/09_wed_balanced.html#an-unbalanced-tree",
-    "title": "Balanced Trees",
-    "section": "An Unbalanced Tree",
-    "text": "An Unbalanced Tree\n\n  \n  \n  \n\n  \n  50\n  b=3!\n\n  \n  70\n  b=2!\n\n  \n  90\n  b=1\n\n  \n  95\n\nBalance factor &gt; 1 or &lt; -1? Not AVL-balanced!"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#why-avl-balance-guarantees-olog-n",
-    "href": "slides/09_wed_balanced.html#why-avl-balance-guarantees-olog-n",
-    "title": "Balanced Trees",
-    "section": "Why AVL Balance Guarantees O(log n)",
-    "text": "Why AVL Balance Guarantees O(log n)\nTheorem: An AVL tree with n nodes has height O(log n).\nIntuition: If subtrees differ by at most 1, the tree can’t be too “stringy.”\nProof idea: The minimum number of nodes in an AVL tree of height h is: \\[N(h) = N(h-1) + N(h-2) + 1\\]\nThis grows exponentially (like Fibonacci), so \\(h = O(\\log n)\\)."
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#the-magic-rotations",
-    "href": "slides/09_wed_balanced.html#the-magic-rotations",
-    "title": "Balanced Trees",
-    "section": "The Magic: Rotations",
-    "text": "The Magic: Rotations\nWhen an insertion makes a node unbalanced, we rotate to restore balance.\nA rotation:\n\nRearranges a few nodes\nMaintains the BST property\nReduces height of the subtree\nTakes O(1) time"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#right-rotation-fixing-left-heavy",
-    "href": "slides/09_wed_balanced.html#right-rotation-fixing-left-heavy",
-    "title": "Balanced Trees",
-    "section": "Right Rotation (Fixing Left-Heavy)",
-    "text": "Right Rotation (Fixing Left-Heavy)\nBefore: Node 50 is left-heavy (balance = -2)\n\n  \n  Before\n  \n  \n  \n\n  \n  50\n\n  \n  30\n\n  \n  20\n\n  \n  40\n\n  \n  \n  rotate right\n\n  \n  After\n  \n  \n  \n\n  \n  30\n\n  \n  20\n\n  \n  50\n\n  \n  40\n\n30 becomes the new root. BST property preserved!"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#left-rotation-fixing-right-heavy",
-    "href": "slides/09_wed_balanced.html#left-rotation-fixing-right-heavy",
-    "title": "Balanced Trees",
-    "section": "Left Rotation (Fixing Right-Heavy)",
-    "text": "Left Rotation (Fixing Right-Heavy)\nThe mirror image: when a node is right-heavy.\n\n  \n  Before\n  \n  \n  \n\n  \n  50\n\n  \n  70\n\n  \n  60\n\n  \n  90\n\n  \n  \n  rotate left\n\n  \n  After\n  \n  \n  \n\n  \n  70\n\n  \n  50\n\n  \n  90\n\n  \n  60"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#double-rotations",
-    "href": "slides/09_wed_balanced.html#double-rotations",
-    "title": "Balanced Trees",
-    "section": "Double Rotations",
-    "text": "Double Rotations\nSometimes a single rotation isn’t enough.\nLeft-Right case: Left child is right-heavy\n\nRotate left on the child\nRotate right on the node\n\nRight-Left case: Right child is left-heavy\n\nRotate right on the child\nRotate left on the node"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#the-avl-insert-algorithm-conceptual",
-    "href": "slides/09_wed_balanced.html#the-avl-insert-algorithm-conceptual",
-    "title": "Balanced Trees",
-    "section": "The AVL Insert Algorithm (Conceptual)",
-    "text": "The AVL Insert Algorithm (Conceptual)\ndef avl_insert(tree, key):\n    1. Do standard BST insert (key becomes a leaf)\n    2. Walk back up to the root, checking balance\n    3. If any node has balance factor ±2:\n       - Determine which case (left-left, left-right, etc.)\n       - Apply appropriate rotation(s)\n       - Update heights\n    4. Return the (possibly new) root\nAt most one rotation (single or double) is needed per insert!"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#the-key-insight",
-    "href": "slides/09_wed_balanced.html#the-key-insight",
-    "title": "Balanced Trees",
-    "section": "The Key Insight",
-    "text": "The Key Insight\nWe don’t need to implement rotations ourselves.\nWhat you need to know:\n\nUnbalanced BSTs can have O(n) height\nAVL (and similar) trees maintain balance via rotations\nThis guarantees O(log n) operations\nMost languages provide balanced tree implementations"
+    "section": "AVL Tree Explorer",
+    "text": "AVL Tree Explorer\n\n\nTry: insert 1, 2, 3, 4, 5, 6, 7 and watch rotations happen. Compare to what happens in the regular BST explorer with the same sequence. At most ONE rotation (single or double) per insert to restore balance."
   },
   {
     "objectID": "slides/09_wed_balanced.html#balanced-trees-in-practice",
@@ -1288,46 +1253,11 @@
     "text": "Balanced Trees in Practice\n\n\n\nLanguage\nBalanced Tree\n\n\n\n\nC++\nstd::map, std::set (Red-Black)\n\n\nJava\nTreeMap, TreeSet (Red-Black)\n\n\nPython\nsortedcontainers.SortedDict (3rd party)\n\n\nDatabases\nB-trees, B+ trees\n\n\n\nPython’s built-in dict uses hash tables, not trees."
   },
   {
-    "objectID": "slides/09_wed_balanced.html#when-to-use-each",
-    "href": "slides/09_wed_balanced.html#when-to-use-each",
-    "title": "Balanced Trees",
-    "section": "When to Use Each",
-    "text": "When to Use Each\n\n\n\nUse Case\nBest Structure\n\n\n\n\nFast lookup only\nHash table (dict)\n\n\nNeed sorted iteration\nBalanced tree\n\n\nRange queries\nBalanced tree\n\n\nMemory constrained\nHash table\n\n\nKeys not hashable\nBalanced tree"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#visualizing-avl-trees",
-    "href": "slides/09_wed_balanced.html#visualizing-avl-trees",
-    "title": "Balanced Trees",
-    "section": "Visualizing AVL Trees",
-    "text": "Visualizing AVL Trees\nTry the interactive visualization:\nAVL Tree Visualization\n\nInsert keys in sorted order\nWatch rotations happen automatically\nCompare to regular BST behavior"
-  },
-  {
     "objectID": "slides/09_wed_balanced.html#summary-balanced-trees",
     "href": "slides/09_wed_balanced.html#summary-balanced-trees",
     "title": "Balanced Trees",
     "section": "Summary: Balanced Trees",
-    "text": "Summary: Balanced Trees\n\nBST operations are O(height) — height matters!\nUnbalanced BSTs can have O(n) height — bad for sorted input\nAVL trees maintain balance via rotations after insert/delete\nAVL property: heights of subtrees differ by ≤ 1\nGuarantee: O(log n) height, so O(log n) operations\nIn practice: Use library implementations (Red-Black, B-trees)"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#the-trade-off",
-    "href": "slides/09_wed_balanced.html#the-trade-off",
-    "title": "Balanced Trees",
-    "section": "The Trade-off",
-    "text": "The Trade-off\n\n\n\nStructure\nInsert\nFind\nSorted?\n\n\n\n\nHash table\nO(1) avg\nO(1) avg\nNo\n\n\nBalanced BST\nO(log n)\nO(log n)\nYes\n\n\n\nHash tables win on speed. Trees win on ordering.\nChoose based on your needs!"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#connecting-to-earlier-topics",
-    "href": "slides/09_wed_balanced.html#connecting-to-earlier-topics",
-    "title": "Balanced Trees",
-    "section": "Connecting to Earlier Topics",
-    "text": "Connecting to Earlier Topics\n\n\n\nConcept\nConnection\n\n\n\n\nBinary search\nBST find is binary search on a tree\n\n\nRecursion\nTree algorithms are naturally recursive\n\n\nBFS/DFS\nLevel-order is BFS; other traversals are DFS\n\n\nDecision trees\nWordle strategy is tree search\n\n\nDivide & conquer\nBalanced trees split data in half"
-  },
-  {
-    "objectID": "slides/09_wed_balanced.html#whats-next",
-    "href": "slides/09_wed_balanced.html#whats-next",
-    "title": "Balanced Trees",
-    "section": "What’s Next",
-    "text": "What’s Next\n\nLab: Wordle decision tree analysis\nNext week: Priority Queues and Heaps"
+    "text": "Summary: Balanced Trees\n\nBST operations are O(height) — height matters!\nUnbalanced BSTs can have O(n) height — bad for sorted input\nRotations reshape BSTs while preserving order\nAVL trees use rotations to maintain \\(|b| \\leq 1\\) for every node\nDiagnosing: check child’s balance factor to pick the rotation\nGuarantee: O(log n) height, so O(log n) operations"
   },
   {
     "objectID": "slides/09_wed_balanced.html#practice",

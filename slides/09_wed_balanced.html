@@ -149,317 +149,488 @@
 
   <p class="date">March 4, 2026</p>
 </section>
-<section id="the-problem-with-bsts" class="slide level2">
-<h2>The Problem with BSTs</h2>
-<p>BST operations are O(height).</p>
+<section id="recap-bsts" class="slide level2 tiny">
+<h2>Recap: BSTs</h2>
+<p>Insert and Find running time are O(______)</p>
+<iframe src="viz/bst_explorer.html" width="100%" height="500" style="border: none; border-radius: 8px;"></iframe>
+</section>
+<section id="recap-building-a-bst" class="slide level2 smaller">
+<h2>Recap: Building a BST</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p>Insert: 10, 13, 25, 38, 40, 51, 84</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+<p><br>
+</p>
+</div><div class="column" style="width:33%;">
+<p>Build another “bad” tree:</p>
+</div><div class="column" style="width:33%;">
+<svg viewbox="0 0 160 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 140px;">
+  <!-- Zig-zag tree: alternating left-right -->
+  <!-- Edges -->
+  <line x1="50" y1="25" x2="110" y2="60" stroke="#333" stroke-width="2"></line>
+  <line x1="110" y1="75" x2="50" y2="110" stroke="#333" stroke-width="2"></line>
+  <line x1="50" y1="125" x2="110" y2="160" stroke="#333" stroke-width="2"></line>
+  <line x1="110" y1="175" x2="50" y2="210" stroke="#333" stroke-width="2"></line>
+  <line x1="50" y1="225" x2="110" y2="260" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes (no keys, just empty circles) -->
+  <circle cx="50" cy="20" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="110" cy="65" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="50" cy="115" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="110" cy="165" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="50" cy="215" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+  <circle cx="110" cy="265" r="16" fill="#ccc" stroke="#333" stroke-width="2"></circle>
+</svg>
+<p>Give an insertion order:</p>
+</div></div>
+<p>How many bad trees are there?</p>
+</section>
+<section id="bst-height-and-data" class="slide level2 smaller">
+<h2>BST: Height and Data</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>BST operations depend on the <strong>height</strong> (<span class="math inline">\(h\)</span>) of the tree.</p>
+<p>But we want to analyze in terms of <strong><span class="math inline">\(n\)</span></strong> (the amount of data).</p>
+<p>So we need relationships between <span class="math inline">\(h\)</span> and <span class="math inline">\(n\)</span>:</p>
+<ul>
+<li><span class="math inline">\(h \geq\)</span> ________</li>
+<li><span class="math inline">\(h \leq\)</span> ________</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<svg viewbox="0 0 310 250" xmlns="http://www.w3.org/2000/svg" style="max-width: 290px;">
+  <!-- Edges -->
+  <line x1="165" y1="25" x2="95" y2="70" stroke="#333" stroke-width="2"></line>
+  <line x1="165" y1="25" x2="245" y2="70" stroke="#333" stroke-width="2"></line>
+  <line x1="95" y1="70" x2="55" y2="120" stroke="#333" stroke-width="2"></line>
+  <line x1="95" y1="70" x2="135" y2="120" stroke="#333" stroke-width="2"></line>
+  <line x1="245" y1="70" x2="285" y2="120" stroke="#333" stroke-width="2"></line>
+  <line x1="135" y1="120" x2="115" y2="170" stroke="#333" stroke-width="2"></line>
+  <line x1="55" y1="120" x2="30" y2="170" stroke="#333" stroke-width="2"></line>
+  <line x1="30" y1="170" x2="18" y2="220" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes -->
+  <circle cx="165" cy="25" r="16" fill="#27ae60"></circle>
+  <text x="165" y="31" text-anchor="middle" fill="black" font-size="13">50</text>
+
+  <circle cx="95" cy="70" r="16" fill="#27ae60"></circle>
+  <text x="95" y="76" text-anchor="middle" fill="black" font-size="13">30</text>
+
+  <circle cx="245" cy="70" r="16" fill="#27ae60"></circle>
+  <text x="245" y="76" text-anchor="middle" fill="black" font-size="13">70</text>
+
+  <circle cx="55" cy="120" r="16" fill="#27ae60"></circle>
+  <text x="55" y="126" text-anchor="middle" fill="black" font-size="13">20</text>
+
+  <circle cx="135" cy="120" r="16" fill="#27ae60"></circle>
+  <text x="135" y="126" text-anchor="middle" fill="black" font-size="13">40</text>
+
+  <circle cx="285" cy="120" r="16" fill="#27ae60"></circle>
+  <text x="285" y="126" text-anchor="middle" fill="black" font-size="13">80</text>
+
+  <circle cx="115" cy="170" r="16" fill="#27ae60"></circle>
+  <text x="115" y="176" text-anchor="middle" fill="black" font-size="13">35</text>
+
+  <circle cx="30" cy="170" r="16" fill="#27ae60"></circle>
+  <text x="30" y="176" text-anchor="middle" fill="black" font-size="13">10</text>
+
+  <circle cx="18" cy="220" r="16" fill="#27ae60"></circle>
+  <text x="18" y="226" text-anchor="middle" fill="black" font-size="13">5</text>
+</svg>
+</div></div>
+<aside class="notes">
+<p>Fill in: - h &gt;= log₂(n) (lower bound — best case, perfectly balanced) - h &lt;= n - 1 (upper bound — worst case, degenerate)</p>
+<p>Lower bound is good news (fast operations). Upper bound is bad news (slow operations).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="average-case" class="slide level2">
+<h2>Average Case</h2>
+<p>The height of a BST depends on the <strong>order</strong> data is inserted.</p>
+<p>How many different insertion orders for <span class="math inline">\(n\)</span> keys? _____</p>
+<p>Average height, over all arrangements of <span class="math inline">\(n\)</span> keys: ________</p>
+<div class="fragment">
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Input Order</th>
-<th>Tree Height</th>
-<th>Operations</th>
+<th>Operation</th>
+<th>Avg Case</th>
+<th>Worst Case</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Random</td>
-<td>O(log n)</td>
-<td>Fast</td>
+<td>find</td>
+<td><span class="math inline">\(\Theta(\log n)\)</span></td>
+<td><span class="math inline">\(\Theta(n)\)</span></td>
 </tr>
 <tr class="even">
-<td>Sorted</td>
-<td>O(n)</td>
-<td>Slow</td>
+<td>insert</td>
+<td><span class="math inline">\(\Theta(\log n)\)</span></td>
+<td><span class="math inline">\(\Theta(n)\)</span></td>
 </tr>
 <tr class="odd">
-<td>Nearly sorted</td>
-<td>O(n)</td>
-<td>Slow</td>
+<td>delete</td>
+<td><span class="math inline">\(\Theta(\log n)\)</span></td>
+<td><span class="math inline">\(\Theta(n)\)</span></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Real-world data is often nearly sorted!</strong></p>
-<p>(Timestamps, IDs, sequential entries…)</p>
-</section>
-<section id="two-bsts-with-the-same-keys" class="slide level2">
-<h2>Two BSTs with the Same Keys</h2>
-<svg viewbox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 500px;">
-  <!-- Left tree (balanced) -->
-  <text x="100" y="15" text-anchor="middle" font-size="14" font-weight="bold">Balanced (height 2)</text>
-  <line x1="100" y1="40" x2="50" y2="80" stroke="#333" stroke-width="2"></line>
-  <line x1="100" y1="40" x2="150" y2="80" stroke="#333" stroke-width="2"></line>
-  <line x1="50" y1="80" x2="25" y2="120" stroke="#333" stroke-width="2"></line>
-  <line x1="50" y1="80" x2="75" y2="120" stroke="#333" stroke-width="2"></line>
-  <line x1="150" y1="80" x2="125" y2="120" stroke="#333" stroke-width="2"></line>
-  <line x1="150" y1="80" x2="175" y2="120" stroke="#333" stroke-width="2"></line>
-  <line x1="175" y1="120" x2="190" y2="160" stroke="#333" stroke-width="2"></line>
-
-  <circle cx="100" cy="40" r="18" fill="#27ae60"></circle>
-  <text x="100" y="45" text-anchor="middle" fill="white" font-weight="bold">4</text>
-  <circle cx="50" cy="80" r="18" fill="#27ae60"></circle>
-  <text x="50" y="85" text-anchor="middle" fill="white" font-weight="bold">2</text>
-  <circle cx="150" cy="80" r="18" fill="#27ae60"></circle>
-  <text x="150" y="85" text-anchor="middle" fill="white" font-weight="bold">6</text>
-  <circle cx="25" cy="120" r="18" fill="#27ae60"></circle>
-  <text x="25" y="125" text-anchor="middle" fill="white" font-weight="bold">1</text>
-  <circle cx="75" cy="120" r="18" fill="#27ae60"></circle>
-  <text x="75" y="125" text-anchor="middle" fill="white" font-weight="bold">3</text>
-  <circle cx="125" cy="120" r="18" fill="#27ae60"></circle>
-  <text x="125" y="125" text-anchor="middle" fill="white" font-weight="bold">5</text>
-  <circle cx="175" cy="120" r="18" fill="#27ae60"></circle>
-  <text x="175" y="125" text-anchor="middle" fill="white" font-weight="bold">7</text>
-
-  <!-- Right tree (degenerate) -->
-  <text x="350" y="15" text-anchor="middle" font-size="14" font-weight="bold">Degenerate (height 6)</text>
-  <line x1="280" y1="40" x2="300" y2="65" stroke="#333" stroke-width="2"></line>
-  <line x1="300" y1="65" x2="320" y2="90" stroke="#333" stroke-width="2"></line>
-  <line x1="320" y1="90" x2="340" y2="115" stroke="#333" stroke-width="2"></line>
-  <line x1="340" y1="115" x2="360" y2="140" stroke="#333" stroke-width="2"></line>
-  <line x1="360" y1="140" x2="380" y2="165" stroke="#333" stroke-width="2"></line>
-  <line x1="380" y1="165" x2="400" y2="190" stroke="#333" stroke-width="2"></line>
-
-  <circle cx="280" cy="40" r="15" fill="#e74c3c"></circle>
-  <text x="280" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="12">1</text>
-  <circle cx="300" cy="65" r="15" fill="#e74c3c"></circle>
-  <text x="300" y="70" text-anchor="middle" fill="white" font-weight="bold" font-size="12">2</text>
-  <circle cx="320" cy="90" r="15" fill="#e74c3c"></circle>
-  <text x="320" y="95" text-anchor="middle" fill="white" font-weight="bold" font-size="12">3</text>
-  <circle cx="340" cy="115" r="15" fill="#e74c3c"></circle>
-  <text x="340" y="120" text-anchor="middle" fill="white" font-weight="bold" font-size="12">4</text>
-  <circle cx="360" cy="140" r="15" fill="#e74c3c"></circle>
-  <text x="360" y="145" text-anchor="middle" fill="white" font-weight="bold" font-size="12">5</text>
-  <circle cx="380" cy="165" r="15" fill="#e74c3c"></circle>
-  <text x="380" y="170" text-anchor="middle" fill="white" font-weight="bold" font-size="12">6</text>
-  <circle cx="400" cy="190" r="15" fill="#e74c3c"></circle>
-  <text x="400" y="195" text-anchor="middle" fill="white" font-weight="bold" font-size="12">7</text>
-</svg>
-<p>Same 7 keys, very different performance!</p>
-</section>
-<section id="the-big-idea" class="slide level2">
-<h2>The Big Idea</h2>
-<p>Can we <strong>automatically rebalance</strong> the tree after insertions?</p>
-<p><strong>Yes!</strong> Several self-balancing tree structures exist:</p>
+</div>
+<aside class="notes">
 <ul>
-<li><strong>AVL trees</strong> (1962): First balanced BST</li>
-<li><strong>Red-Black trees</strong> (1978): Used in most standard libraries</li>
-<li><strong>B-trees</strong> (1970): Used in databases and file systems</li>
+<li>n! different insertion orders</li>
+<li>Average height is O(log n) — this was proven by Reed (2003)</li>
+<li>But worst case is still O(n), and real-world data is often nearly sorted!</li>
 </ul>
-<p>Today: The <strong>concept</strong> of balance, using AVL trees as our example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-does-balanced-mean" class="slide level2">
-<h2>What Does “Balanced” Mean?</h2>
-<p>Intuition: Left and right subtrees should be “about the same size.”</p>
-<p><strong>Height balance</strong>: The heights of left and right subtrees differ by at most 1.</p>
-<p><strong>Balance factor</strong> of a node: <span class="math display">\[b = \text{height}(\text{right}) - \text{height}(\text{left})\]</span></p>
-<p>A tree is <strong>AVL-balanced</strong> if every node has <span class="math inline">\(b \in \{-1, 0, 1\}\)</span>.</p>
+<section id="comparing-dictionary-implementations" class="slide level2">
+<h2>Comparing Dictionary Implementations</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Structure</th>
+<th>Insert</th>
+<th>Find</th>
+<th>Delete</th>
+<th>Sorted Iterate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Unsorted list</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n log n)</td>
+</tr>
+<tr class="even">
+<td>Sorted list</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr class="odd">
+<td>Hash table</td>
+<td>O(1) avg</td>
+<td>O(1) avg</td>
+<td>O(1) avg</td>
+<td>Not possible</td>
+</tr>
+<tr class="even">
+<td>BST</td>
+<td>O(____)</td>
+<td>O(____)</td>
+<td>O(____)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>BST answers are O(height) — which is O(log n) average, O(n) worst case.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="avl-trees" class="slide level2">
+<section id="why-trees-instead-of-hash-tables" class="slide level2">
+<h2>Why Trees Instead of Hash Tables?</h2>
+<p>Hash tables give O(1) expected time. Why use trees?</p>
+<p>Trees can do things hash tables can’t:</p>
+<ul>
+<li><strong>Sorted iteration</strong>: Traverse keys in order</li>
+<li><strong>Range queries</strong>: Find all keys between A and B</li>
+<li><strong>Predecessor/successor</strong>: Find the next-smallest key</li>
+<li><strong>No hash function needed</strong>: Works with any comparable type</li>
+</ul>
+</section>
+<section id="which-tree-makes-you-happiest" class="slide level2 tiny">
+<h2>Which Tree Makes You Happiest?</h2>
+<svg viewbox="0 0 400 205" xmlns="http://www.w3.org/2000/svg" style="max-width: 400px;">
+  <!-- Left tree (balanced): 40 at root, 30 left, 50 right -->
+  <text x="80" y="15" text-anchor="middle" font-size="14" font-weight="bold">Tree A</text>
+  <line x1="80" y1="40" x2="30" y2="110" stroke="#333" stroke-width="2"></line>
+  <line x1="80" y1="40" x2="130" y2="110" stroke="#333" stroke-width="2"></line>
+
+  <circle cx="80" cy="40" r="20" fill="#27ae60"></circle>
+  <text x="80" y="47" text-anchor="middle" fill="black">40</text>
+  <circle cx="30" cy="110" r="20" fill="#27ae60"></circle>
+  <text x="30" y="117" text-anchor="middle" fill="black">30</text>
+  <circle cx="130" cy="110" r="20" fill="#27ae60"></circle>
+  <text x="130" y="117" text-anchor="middle" fill="black">50</text>
+
+  <!-- Right tree (degenerate): 30 -> 40 -> 50, same edge length -->
+  <text x="300" y="15" text-anchor="middle" font-size="14" font-weight="bold">Tree B</text>
+  <line x1="280" y1="40" x2="310" y2="110" stroke="#333" stroke-width="2"></line>
+  <line x1="310" y1="110" x2="340" y2="180" stroke="#333" stroke-width="2"></line>
+
+  <circle cx="280" cy="40" r="20" fill="#e74c3c"></circle>
+  <text x="280" y="47" text-anchor="middle" fill="black">30</text>
+  <circle cx="310" cy="110" r="20" fill="#e74c3c"></circle>
+  <text x="310" y="117" text-anchor="middle" fill="black">40</text>
+  <circle cx="340" cy="180" r="20" fill="#e74c3c"></circle>
+  <text x="340" y="187" text-anchor="middle" fill="black">50</text>
+</svg>
+<p>&nbsp;</p>
+<p>The <strong>height balance</strong> of a tree <span class="math inline">\(T\)</span> is: <span class="math inline">\(b = \text{height}(T_R) - \text{height}(T_L)\)</span></p>
+<p>A tree <span class="math inline">\(T\)</span> is <strong>height balanced</strong> if:</p>
+<ul>
+<li><p>_______________________________________</p></li>
+<li><p>_______________________________________</p></li>
+</ul>
+<aside class="notes">
+<p>Fill in: - |b| ≤ 1 for every node in the tree - Both subtrees are also height balanced (recursive!)</p>
+<p>Equivalently: every node has balance factor in {-1, 0, 1}.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside class="notes">
+<p>Lead students to articulate: “balanced” — left and right subtrees are about the same height. Then formalize on next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rotations-on-a-bst" class="slide level2 smaller">
+<h2>Rotations on a BST</h2>
+<svg viewbox="0 0 500 290" xmlns="http://www.w3.org/2000/svg" style="max-width: 500px;">
+  <!-- Edges -->
+  <line x1="250" y1="30" x2="130" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="250" y1="30" x2="370" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="130" y1="90" x2="70" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="130" y1="90" x2="190" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="370" y1="90" x2="310" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="370" y1="90" x2="430" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="430" y1="150" x2="400" y2="210" stroke="#333" stroke-width="2"></line>
+  <line x1="430" y1="150" x2="470" y2="210" stroke="#333" stroke-width="2"></line>
+  <line x1="470" y1="210" x2="445" y2="270" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes -->
+  <circle cx="250" cy="30" r="18" fill="#27ae60"></circle>
+  <text x="250" y="37" text-anchor="middle" fill="black">50</text>
+
+  <circle cx="130" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="130" y="97" text-anchor="middle" fill="black">30</text>
+
+  <circle cx="370" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="370" y="97" text-anchor="middle" fill="black">80</text>
+
+  <circle cx="70" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="70" y="157" text-anchor="middle" fill="black">20</text>
+
+  <circle cx="190" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="190" y="157" text-anchor="middle" fill="black">40</text>
+
+  <circle cx="310" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="310" y="157" text-anchor="middle" fill="black">60</text>
+
+  <circle cx="430" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="430" y="157" text-anchor="middle" fill="black">90</text>
+
+  <circle cx="400" cy="210" r="18" fill="#27ae60"></circle>
+  <text x="400" y="217" text-anchor="middle" fill="black">85</text>
+
+  <circle cx="470" cy="210" r="18" fill="#27ae60"></circle>
+  <text x="470" y="217" text-anchor="middle" fill="black">99</text>
+
+  <circle cx="445" cy="270" r="18" fill="#27ae60"></circle>
+  <text x="445" y="277" text-anchor="middle" fill="black">95</text>
+</svg>
+<aside class="notes">
+<p>Balance factors: 50 (b=2), 30 (b=0), 80 (b=2), 20 (b=0), 40 (b=0), 60 (b=0), 90 (b=1), 85 (b=0), 99 (b=-1), 95 (b=0).</p>
+<p>Lowest unbalanced node is 80 (b=+2). Its right child 90 has b=+1 → right-right (outer) case → single left rotation at 80. Annotate the rotation on the board.</p>
+<p>After left rotation at 80: 90 replaces 80, 80 becomes 90’s left child, 85 moves to become 80’s right child. Result: balanced!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rotations-on-a-bst-1" class="slide level2 smaller">
+<h2>Rotations on a BST</h2>
+<svg viewbox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" style="max-width: 380px;">
+  <!-- Edges -->
+  <line x1="200" y1="30" x2="100" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="200" y1="30" x2="300" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="90" x2="50" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="90" x2="150" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="150" y1="150" x2="190" y2="210" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes -->
+  <circle cx="200" cy="30" r="18" fill="#27ae60"></circle>
+  <text x="200" y="37" text-anchor="middle" fill="black">70</text>
+
+  <circle cx="100" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="100" y="97" text-anchor="middle" fill="black">40</text>
+
+  <circle cx="300" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="300" y="97" text-anchor="middle" fill="black">80</text>
+
+  <circle cx="50" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="50" y="157" text-anchor="middle" fill="black">20</text>
+
+  <circle cx="150" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="150" y="157" text-anchor="middle" fill="black">50</text>
+
+  <circle cx="190" cy="210" r="18" fill="#27ae60"></circle>
+  <text x="190" y="217" text-anchor="middle" fill="black">60</text>
+</svg>
+<aside class="notes">
+<p>b=-2 at 70, left child 40 has b=+1 (right-heavy). This is a zig-zag (left-right / inner case). Try a single right rotation at 70: 40 becomes root, 70 becomes right child, 50 moves to 70’s left child. Result: 40(20, 70(50(_, 60), 80)) — still b=+2 at 40! The single rotation just moved the problem. We need a double rotation.</p>
+<p>The fix (left-right double rotation): Step 1: Left rotate at 40 → 70(50(40(20), 60), 80) Step 2: Right rotate at 70 → 50(40(20), 70(60, 80)) Now balanced!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rotations-on-a-bst-2" class="slide level2 smaller">
+<h2>Rotations on a BST</h2>
+<svg viewbox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" style="max-width: 380px;">
+  <!-- Edges -->
+  <line x1="200" y1="30" x2="100" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="200" y1="30" x2="300" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="90" x2="50" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="90" x2="150" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="150" y1="150" x2="190" y2="210" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes -->
+  <circle cx="200" cy="30" r="18" fill="#27ae60"></circle>
+  <text x="200" y="37" text-anchor="middle" fill="black">70</text>
+
+  <circle cx="100" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="100" y="97" text-anchor="middle" fill="black">40</text>
+
+  <circle cx="300" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="300" y="97" text-anchor="middle" fill="black">80</text>
+
+  <circle cx="50" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="50" y="157" text-anchor="middle" fill="black">20</text>
+
+  <circle cx="150" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="150" y="157" text-anchor="middle" fill="black">50</text>
+
+  <circle cx="190" cy="210" r="18" fill="#27ae60"></circle>
+  <text x="190" y="217" text-anchor="middle" fill="black">60</text>
+</svg>
+<aside class="notes">
+<p>b=-2 at 70, left child 40 has b=+1 (right-heavy). This is a zig-zag (left-right / inner case). Try a single right rotation at 70: 40 becomes root, 70 becomes right child, 50 moves to 70’s left child. Result: 40(20, 70(50(_, 60), 80)) — still b=+2 at 40! The single rotation just moved the problem. We need a double rotation.</p>
+<p>The fix (left-right double rotation): Step 1: Left rotate at 40 → 70(50(40(20), 60), 80) Step 2: Right rotate at 70 → 50(40(20), 70(60, 80)) Now balanced!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="operations-on-bsts-rotations" class="slide level2 smaller">
+<h2>Operations on BSTs — Rotations</h2>
+<p>Rotation properties:</p>
+<ul>
+<li>There are <strong>4 kinds</strong>: left, right, left-right, right-left</li>
+<li><strong>Local</strong> operations (subtrees not affected)</li>
+<li><strong>Constant time</strong> (<span class="math inline">\(O(1)\)</span>)</li>
+<li><strong>BST property maintained</strong></li>
+</ul>
+</section>
+<section id="avl-trees" class="slide level2 smaller">
 <h2>AVL Trees</h2>
-<p>Named after inventors <strong>A</strong>delson-<strong>V</strong>elsky and <strong>L</strong>andis (1962).</p>
-<p><strong>AVL Property</strong>: For every node, the heights of left and right subtrees differ by at most 1.</p>
-<p>This guarantees O(log n) height!</p>
-</section>
-<section id="checking-balance" class="slide level2">
-<h2>Checking Balance</h2>
-<svg viewbox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" style="max-width: 300px;">
-  <line x1="150" y1="30" x2="80" y2="90" stroke="#333" stroke-width="2"></line>
-  <line x1="150" y1="30" x2="220" y2="90" stroke="#333" stroke-width="2"></line>
-  <line x1="80" y1="90" x2="40" y2="150" stroke="#333" stroke-width="2"></line>
-  <line x1="80" y1="90" x2="120" y2="150" stroke="#333" stroke-width="2"></line>
-  <line x1="220" y1="90" x2="260" y2="150" stroke="#333" stroke-width="2"></line>
-
-  <circle cx="150" cy="30" r="22" fill="#27ae60"></circle>
-  <text x="150" y="37" text-anchor="middle" fill="white" font-weight="bold">50</text>
-  <text x="150" y="10" text-anchor="middle" font-size="12" fill="#666">b=0</text>
-
-  <circle cx="80" cy="90" r="22" fill="#27ae60"></circle>
-  <text x="80" y="97" text-anchor="middle" fill="white" font-weight="bold">30</text>
-  <text x="80" y="70" text-anchor="middle" font-size="12" fill="#666">b=0</text>
-
-  <circle cx="220" cy="90" r="22" fill="#27ae60"></circle>
-  <text x="220" y="97" text-anchor="middle" fill="white" font-weight="bold">70</text>
-  <text x="220" y="70" text-anchor="middle" font-size="12" fill="#666">b=1</text>
-
-  <circle cx="40" cy="150" r="22" fill="#27ae60"></circle>
-  <text x="40" y="157" text-anchor="middle" fill="white" font-weight="bold">20</text>
-
-  <circle cx="120" cy="150" r="22" fill="#27ae60"></circle>
-  <text x="120" y="157" text-anchor="middle" fill="white" font-weight="bold">40</text>
-
-  <circle cx="260" cy="150" r="22" fill="#27ae60"></circle>
-  <text x="260" y="157" text-anchor="middle" fill="white" font-weight="bold">90</text>
-</svg>
-<p>Every node has balance factor -1, 0, or 1. ✓ AVL-balanced!</p>
-</section>
-<section id="an-unbalanced-tree" class="slide level2">
-<h2>An Unbalanced Tree</h2>
-<svg viewbox="0 0 250 220" xmlns="http://www.w3.org/2000/svg" style="max-width: 250px;">
-  <line x1="60" y1="30" x2="120" y2="80" stroke="#333" stroke-width="2"></line>
-  <line x1="120" y1="80" x2="180" y2="130" stroke="#333" stroke-width="2"></line>
-  <line x1="180" y1="130" x2="220" y2="180" stroke="#333" stroke-width="2"></line>
-
-  <circle cx="60" cy="30" r="22" fill="#e74c3c"></circle>
-  <text x="60" y="37" text-anchor="middle" fill="white" font-weight="bold">50</text>
-  <text x="60" y="10" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="bold">b=3!</text>
-
-  <circle cx="120" cy="80" r="22" fill="#e74c3c"></circle>
-  <text x="120" y="87" text-anchor="middle" fill="white" font-weight="bold">70</text>
-  <text x="120" y="60" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="bold">b=2!</text>
-
-  <circle cx="180" cy="130" r="22" fill="#f39c12"></circle>
-  <text x="180" y="137" text-anchor="middle" fill="white" font-weight="bold">90</text>
-  <text x="180" y="110" text-anchor="middle" font-size="12" fill="#666">b=1</text>
-
-  <circle cx="220" cy="180" r="22" fill="#27ae60"></circle>
-  <text x="220" y="187" text-anchor="middle" fill="white" font-weight="bold">95</text>
-</svg>
-<p>Balance factor &gt; 1 or &lt; -1? Not AVL-balanced!</p>
-</section>
-<section id="why-avl-balance-guarantees-olog-n" class="slide level2">
-<h2>Why AVL Balance Guarantees O(log n)</h2>
-<p><strong>Theorem</strong>: An AVL tree with n nodes has height O(log n).</p>
-<p><strong>Intuition</strong>: If subtrees differ by at most 1, the tree can’t be too “stringy.”</p>
-<p><strong>Proof idea</strong>: The minimum number of nodes in an AVL tree of height h is: <span class="math display">\[N(h) = N(h-1) + N(h-2) + 1\]</span></p>
-<p>This grows exponentially (like Fibonacci), so <span class="math inline">\(h = O(\log n)\)</span>.</p>
-</section>
-<section id="the-magic-rotations" class="slide level2">
-<h2>The Magic: Rotations</h2>
-<p>When an insertion makes a node unbalanced, we <strong>rotate</strong> to restore balance.</p>
-<p>A rotation:</p>
-<ul>
-<li>Rearranges a few nodes</li>
-<li>Maintains the BST property</li>
-<li>Reduces height of the subtree</li>
-<li>Takes O(1) time</li>
-</ul>
-</section>
-<section id="right-rotation-fixing-left-heavy" class="slide level2">
-<h2>Right Rotation (Fixing Left-Heavy)</h2>
-<p>Before: Node 50 is left-heavy (balance = -2)</p>
-<svg viewbox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 400px;">
-  <!-- Before -->
-  <text x="90" y="15" text-anchor="middle" font-weight="bold">Before</text>
-  <line x1="100" y1="40" x2="50" y2="90" stroke="#333" stroke-width="2"></line>
-  <line x1="50" y1="90" x2="25" y2="140" stroke="#333" stroke-width="2"></line>
-  <line x1="50" y1="90" x2="75" y2="140" stroke="#333" stroke-width="2"></line>
-
-  <circle cx="100" cy="40" r="20" fill="#e74c3c"></circle>
-  <text x="100" y="47" text-anchor="middle" fill="white" font-weight="bold">50</text>
-
-  <circle cx="50" cy="90" r="20" fill="#3498db"></circle>
-  <text x="50" y="97" text-anchor="middle" fill="white" font-weight="bold">30</text>
-
-  <circle cx="25" cy="140" r="20" fill="#3498db"></circle>
-  <text x="25" y="147" text-anchor="middle" fill="white" font-weight="bold">20</text>
-
-  <circle cx="75" cy="140" r="20" fill="#3498db"></circle>
-  <text x="75" y="147" text-anchor="middle" fill="white" font-weight="bold">40</text>
-
-  <!-- Arrow -->
-  <path d="M 150 100 L 220 100" stroke="#333" stroke-width="3" marker-end="url(#arrow)"></path>
-  <text x="185" y="90" text-anchor="middle" font-size="12">rotate right</text>
-
-  <!-- After -->
-  <text x="300" y="15" text-anchor="middle" font-weight="bold">After</text>
-  <line x1="300" y1="40" x2="250" y2="90" stroke="#333" stroke-width="2"></line>
-  <line x1="300" y1="40" x2="350" y2="90" stroke="#333" stroke-width="2"></line>
-  <line x1="350" y1="90" x2="325" y2="140" stroke="#333" stroke-width="2"></line>
-
-  <circle cx="300" cy="40" r="20" fill="#27ae60"></circle>
-  <text x="300" y="47" text-anchor="middle" fill="white" font-weight="bold">30</text>
-
-  <circle cx="250" cy="90" r="20" fill="#27ae60"></circle>
-  <text x="250" y="97" text-anchor="middle" fill="white" font-weight="bold">20</text>
-
-  <circle cx="350" cy="90" r="20" fill="#27ae60"></circle>
-  <text x="350" y="97" text-anchor="middle" fill="white" font-weight="bold">50</text>
-
-  <circle cx="325" cy="140" r="20" fill="#27ae60"></circle>
-  <text x="325" y="147" text-anchor="middle" fill="white" font-weight="bold">40</text>
-</svg>
-<p>30 becomes the new root. BST property preserved!</p>
-</section>
-<section id="left-rotation-fixing-right-heavy" class="slide level2">
-<h2>Left Rotation (Fixing Right-Heavy)</h2>
-<p>The mirror image: when a node is right-heavy.</p>
-<svg viewbox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 400px;">
-  <!-- Before -->
-  <text x="90" y="15" text-anchor="middle" font-weight="bold">Before</text>
-  <line x1="50" y1="40" x2="100" y2="90" stroke="#333" stroke-width="2"></line>
-  <line x1="100" y1="90" x2="75" y2="140" stroke="#333" stroke-width="2"></line>
-  <line x1="100" y1="90" x2="130" y2="140" stroke="#333" stroke-width="2"></line>
-
-  <circle cx="50" cy="40" r="20" fill="#e74c3c"></circle>
-  <text x="50" y="47" text-anchor="middle" fill="white" font-weight="bold">50</text>
-
-  <circle cx="100" cy="90" r="20" fill="#3498db"></circle>
-  <text x="100" y="97" text-anchor="middle" fill="white" font-weight="bold">70</text>
-
-  <circle cx="75" cy="140" r="20" fill="#3498db"></circle>
-  <text x="75" y="147" text-anchor="middle" fill="white" font-weight="bold">60</text>
-
-  <circle cx="130" cy="140" r="20" fill="#3498db"></circle>
-  <text x="130" y="147" text-anchor="middle" fill="white" font-weight="bold">90</text>
-
-  <!-- Arrow -->
-  <path d="M 160 100 L 230 100" stroke="#333" stroke-width="3"></path>
-  <text x="195" y="90" text-anchor="middle" font-size="12">rotate left</text>
-
-  <!-- After -->
-  <text x="310" y="15" text-anchor="middle" font-weight="bold">After</text>
-  <line x1="310" y1="40" x2="260" y2="90" stroke="#333" stroke-width="2"></line>
-  <line x1="310" y1="40" x2="360" y2="90" stroke="#333" stroke-width="2"></line>
-  <line x1="260" y1="90" x2="285" y2="140" stroke="#333" stroke-width="2"></line>
-
-  <circle cx="310" cy="40" r="20" fill="#27ae60"></circle>
-  <text x="310" y="47" text-anchor="middle" fill="white" font-weight="bold">70</text>
-
-  <circle cx="260" cy="90" r="20" fill="#27ae60"></circle>
-  <text x="260" y="97" text-anchor="middle" fill="white" font-weight="bold">50</text>
-
-  <circle cx="360" cy="90" r="20" fill="#27ae60"></circle>
-  <text x="360" y="97" text-anchor="middle" fill="white" font-weight="bold">90</text>
-
-  <circle cx="285" cy="140" r="20" fill="#27ae60"></circle>
-  <text x="285" y="147" text-anchor="middle" fill="white" font-weight="bold">60</text>
-</svg>
-</section>
-<section id="double-rotations" class="slide level2">
-<h2>Double Rotations</h2>
-<p>Sometimes a single rotation isn’t enough.</p>
-<p><strong>Left-Right case</strong>: Left child is right-heavy</p>
+<p><strong>GOAL</strong>: use rotations to maintain balance of BSTs.</p>
+<p>These trees have a special name: <strong>AVL Trees</strong></p>
+<p>Named after <strong>A</strong>delson-<strong>V</strong>elsky and <strong>L</strong>andis (1962).</p>
+<p><strong>AVL Property</strong>: For every node, <span class="math inline">\(|b| \leq 1\)</span>.</p>
+<p>Three issues to consider in the implementation:</p>
 <ol type="1">
-<li>Rotate left on the child</li>
-<li>Rotate right on the node</li>
-</ol>
-<p><strong>Right-Left case</strong>: Right child is left-heavy</p>
-<ol type="1">
-<li>Rotate right on the child</li>
-<li>Rotate left on the node</li>
+<li>Rotation</li>
+<li>Maintaining height</li>
+<li>Detecting imbalance</li>
 </ol>
 </section>
-<section id="the-avl-insert-algorithm-conceptual" class="slide level2">
-<h2>The AVL Insert Algorithm (Conceptual)</h2>
-<pre><code>def avl_insert(tree, key):
-    1. Do standard BST insert (key becomes a leaf)
-    2. Walk back up to the root, checking balance
-    3. If any node has balance factor ±2:
-       - Determine which case (left-left, left-right, etc.)
-       - Apply appropriate rotation(s)
-       - Update heights
-    4. Return the (possibly new) root</code></pre>
-<p>At most <strong>one rotation</strong> (single or double) is needed per insert!</p>
-</section>
-<section id="the-key-insight" class="slide level2">
-<h2>The Key Insight</h2>
-<p>We don’t need to implement rotations ourselves.</p>
-<p><strong>What you need to know</strong>:</p>
-<ol type="1">
-<li>Unbalanced BSTs can have O(n) height</li>
-<li>AVL (and similar) trees maintain balance via rotations</li>
-<li>This guarantees O(log n) operations</li>
-<li>Most languages provide balanced tree implementations</li>
-</ol>
+<section id="avl-tree-explorer" class="slide level2 smaller">
+<h2>AVL Tree Explorer</h2>
+<iframe src="viz/avl_explorer.html" width="100%" height="500" style="border: none; border-radius: 8px;"></iframe>
+<aside class="notes">
+<p>Try: insert 1, 2, 3, 4, 5, 6, 7 and watch rotations happen. Compare to what happens in the regular BST explorer with the same sequence. At most ONE rotation (single or double) per insert to restore balance.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="balanced-trees-in-practice" class="slide level2">
 <h2>Balanced Trees in Practice</h2>
@@ -491,128 +662,16 @@
 </table>
 <p>Python’s built-in <code>dict</code> uses hash tables, not trees.</p>
 </section>
-<section id="when-to-use-each" class="slide level2">
-<h2>When to Use Each</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Use Case</th>
-<th>Best Structure</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Fast lookup only</td>
-<td>Hash table (<code>dict</code>)</td>
-</tr>
-<tr class="even">
-<td>Need sorted iteration</td>
-<td>Balanced tree</td>
-</tr>
-<tr class="odd">
-<td>Range queries</td>
-<td>Balanced tree</td>
-</tr>
-<tr class="even">
-<td>Memory constrained</td>
-<td>Hash table</td>
-</tr>
-<tr class="odd">
-<td>Keys not hashable</td>
-<td>Balanced tree</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="visualizing-avl-trees" class="slide level2">
-<h2>Visualizing AVL Trees</h2>
-<p>Try the interactive visualization:</p>
-<p><a href="https://www.cs.usfca.edu/~galles/visualization/AVLtree.html">AVL Tree Visualization</a></p>
-<ul>
-<li>Insert keys in sorted order</li>
-<li>Watch rotations happen automatically</li>
-<li>Compare to regular BST behavior</li>
-</ul>
-</section>
 <section id="summary-balanced-trees" class="slide level2">
 <h2>Summary: Balanced Trees</h2>
 <ol type="1">
 <li><p><strong>BST operations are O(height)</strong> — height matters!</p></li>
 <li><p><strong>Unbalanced BSTs can have O(n) height</strong> — bad for sorted input</p></li>
-<li><p><strong>AVL trees maintain balance</strong> via rotations after insert/delete</p></li>
-<li><p><strong>AVL property</strong>: heights of subtrees differ by ≤ 1</p></li>
+<li><p><strong>Rotations</strong> reshape BSTs while preserving order</p></li>
+<li><p><strong>AVL trees</strong> use rotations to maintain <span class="math inline">\(|b| \leq 1\)</span> for every node</p></li>
+<li><p><strong>Diagnosing</strong>: check child’s balance factor to pick the rotation</p></li>
 <li><p><strong>Guarantee</strong>: O(log n) height, so O(log n) operations</p></li>
-<li><p><strong>In practice</strong>: Use library implementations (Red-Black, B-trees)</p></li>
 </ol>
-</section>
-<section id="the-trade-off" class="slide level2">
-<h2>The Trade-off</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Structure</th>
-<th>Insert</th>
-<th>Find</th>
-<th>Sorted?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Hash table</td>
-<td>O(1) avg</td>
-<td>O(1) avg</td>
-<td>No</td>
-</tr>
-<tr class="even">
-<td>Balanced BST</td>
-<td>O(log n)</td>
-<td>O(log n)</td>
-<td>Yes</td>
-</tr>
-</tbody>
-</table>
-<p>Hash tables win on speed. Trees win on ordering.</p>
-<p><strong>Choose based on your needs!</strong></p>
-</section>
-<section id="connecting-to-earlier-topics" class="slide level2">
-<h2>Connecting to Earlier Topics</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Concept</th>
-<th>Connection</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Binary search</td>
-<td>BST find is binary search on a tree</td>
-</tr>
-<tr class="even">
-<td>Recursion</td>
-<td>Tree algorithms are naturally recursive</td>
-</tr>
-<tr class="odd">
-<td>BFS/DFS</td>
-<td>Level-order is BFS; other traversals are DFS</td>
-</tr>
-<tr class="even">
-<td>Decision trees</td>
-<td>Wordle strategy is tree search</td>
-</tr>
-<tr class="odd">
-<td>Divide &amp; conquer</td>
-<td>Balanced trees split data in half</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="whats-next" class="slide level2">
-<h2>What’s Next</h2>
-<ul>
-<li><strong>Lab</strong>: Wordle decision tree analysis</li>
-<li><strong>Next week</strong>: Priority Queues and Heaps</li>
-</ul>
 </section>
 <section id="practice" class="slide level2">
 <h2>Practice</h2>
