@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.27">
 
-  <meta name="dcterms.date" content="2026-01-12">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Hierarchy of Speed</title>
+  <meta name="dcterms.date" content="2026-03-09">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Balanced Trees (cont’d)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -129,11 +129,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 2, Monday">
+<meta property="og:title" content="Balanced Trees (cont’d) – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 10, Monday">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="The Hierarchy of Speed – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 2, Monday">
+<meta name="twitter:title" content="Balanced Trees (cont’d) – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 10, Monday">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -141,39 +141,19 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The Hierarchy of Speed</h1>
-  <p class="subtitle">Week 2, Monday</p>
+  <h1 class="title">Balanced Trees (cont’d)</h1>
+  <p class="subtitle">Week 10, Monday</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 12, 2026</p>
+  <p class="date">March 9, 2026</p>
 </section>
-<section id="announcements" class="slide level2">
-<h2>Announcements</h2>
-<ul>
-<li>Labs begin this week!
-<ul>
-<li>Monday 1-3pm or Tuesday 4-6pm</li>
-</ul></li>
-</ul>
-</section>
-<section>
-<section id="warm-up-code-analysis" class="title-slide slide level1 center">
-<h1>Warm-up: Code Analysis</h1>
-
-</section>
-<section id="rules" class="slide level2">
-<h2>Rules</h2>
-<p>For <span class="math inline">\(T(n)\)</span>, the running time of an algorithm on input of size <span class="math inline">\(n\)</span>…</p>
-<ol type="1">
-<li>Constants don’t matter: <span class="math inline">\(5n = O(n)\)</span></li>
-<li>Lower terms don’t matter: <span class="math inline">\(n^2 + n = O(n^2)\)</span></li>
-<li>Log base doesn’t matter: <span class="math inline">\(log_2 n = O(log_{10}n)\)</span></li>
-</ol>
+<section id="avl-tree-explorer" class="slide level2 smaller">
+<h2>AVL Tree Explorer</h2>
+<iframe src="viz/avl_explorer.html" width="100%" height="500" style="border: none; border-radius: 8px;"></iframe>
 <aside class="notes">
-<p>“What’s the intuition for #3?”</p>
-<p>All logs differ by a constant factor. log₂n = log₁₀n / log₁₀2</p>
+<p>Recap from Friday: insert 1, 2, 3, 4, 5, 6, 7 and watch rotations happen. Compare to what happens in the regular BST explorer with the same sequence. At most ONE rotation (single or double) per insert to restore balance.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -186,301 +166,316 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="example-1" class="slide level2">
-<h2>Example 1</h2>
-<div>
-<div id="pyodide-1" class="exercise-cell">
+<section id="rotations-on-a-bst" class="slide level2 smaller">
+<h2>Rotations on a BST</h2>
+<svg viewbox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" style="max-width: 380px;">
+  <!-- Edges -->
+  <line x1="200" y1="30" x2="100" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="200" y1="30" x2="300" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="90" x2="50" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="90" x2="150" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="150" y1="150" x2="190" y2="210" stroke="#333" stroke-width="2"></line>
 
-</div>
-<script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGNvbXB1dGVNZWFuKGFycik6XG4gICAgdG90YWwgPSAwXG4gICAgZm9yIHggaW4gYXJyOlxuICAgICAgICB0b3RhbCArPSB4XG4gICAgcmV0dXJuIHRvdGFsIC8gbGVuKGFycikifQ==
-</script>
-</div>
+  <!-- Nodes -->
+  <circle cx="200" cy="30" r="18" fill="#27ae60"></circle>
+  <text x="200" y="37" text-anchor="middle" fill="black">70</text>
+
+  <circle cx="100" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="100" y="97" text-anchor="middle" fill="black">40</text>
+
+  <circle cx="300" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="300" y="97" text-anchor="middle" fill="black">80</text>
+
+  <circle cx="50" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="50" y="157" text-anchor="middle" fill="black">20</text>
+
+  <circle cx="150" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="150" y="157" text-anchor="middle" fill="black">50</text>
+
+  <circle cx="190" cy="210" r="18" fill="#27ae60"></circle>
+  <text x="190" y="217" text-anchor="middle" fill="black">60</text>
+</svg>
+<aside class="notes">
+<p>b=-2 at 70, left child 40 has b=+1 (right-heavy). This is a zig-zag (left-right / inner case). Try a single right rotation at 70: 40 becomes root, 70 becomes right child, 50 moves to 70’s left child. Result: 40(20, 70(50(_, 60), 80)) — still b=+2 at 40! The single rotation just moved the problem. We need a double rotation.</p>
+<p>The fix (left-right double rotation): Step 1: Left rotate at 40 → 70(50(40(20), 60), 80) Step 2: Right rotate at 70 → 50(40(20), 70(60, 80)) Now balanced!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rotations-on-a-bst-1" class="slide level2 smaller">
+<h2>Rotations on a BST</h2>
+<svg viewbox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" style="max-width: 380px;">
+  <!-- Edges -->
+  <line x1="200" y1="30" x2="100" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="200" y1="30" x2="300" y2="90" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="90" x2="50" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="100" y1="90" x2="150" y2="150" stroke="#333" stroke-width="2"></line>
+  <line x1="150" y1="150" x2="190" y2="210" stroke="#333" stroke-width="2"></line>
+
+  <!-- Nodes -->
+  <circle cx="200" cy="30" r="18" fill="#27ae60"></circle>
+  <text x="200" y="37" text-anchor="middle" fill="black">70</text>
+
+  <circle cx="100" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="100" y="97" text-anchor="middle" fill="black">40</text>
+
+  <circle cx="300" cy="90" r="18" fill="#27ae60"></circle>
+  <text x="300" y="97" text-anchor="middle" fill="black">80</text>
+
+  <circle cx="50" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="50" y="157" text-anchor="middle" fill="black">20</text>
+
+  <circle cx="150" cy="150" r="18" fill="#27ae60"></circle>
+  <text x="150" y="157" text-anchor="middle" fill="black">50</text>
+
+  <circle cx="190" cy="210" r="18" fill="#27ae60"></circle>
+  <text x="190" y="217" text-anchor="middle" fill="black">60</text>
+</svg>
+<aside class="notes">
+<p>b=-2 at 70, left child 40 has b=+1 (right-heavy). This is a zig-zag (left-right / inner case). Try a single right rotation at 70: 40 becomes root, 70 becomes right child, 50 moves to 70’s left child. Result: 40(20, 70(50(_, 60), 80)) — still b=+2 at 40! The single rotation just moved the problem. We need a double rotation.</p>
+<p>The fix (left-right double rotation): Step 1: Left rotate at 40 → 70(50(40(20), 60), 80) Step 2: Right rotate at 70 → 50(40(20), 70(60, 80)) Now balanced!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="operations-on-bsts-rotations" class="slide level2 smaller">
+<h2>Operations on BSTs — Rotations</h2>
+<p>Rotation properties:</p>
+<ul>
+<li>There are <strong>4 kinds</strong>: left, right, left-right, right-left</li>
+<li><strong>Local</strong> operations (subtrees not affected)</li>
+<li><strong>Constant time</strong> (<span class="math inline">\(O(1)\)</span>)</li>
+<li><strong>BST property maintained</strong></li>
+</ul>
+</section>
+<section id="avl-trees" class="slide level2 smaller">
+<h2>AVL Trees</h2>
+<p><strong>GOAL</strong>: use rotations to maintain balance of BSTs.</p>
+<p>These trees have a special name: <strong>AVL Trees</strong></p>
+<p>Named after <strong>A</strong>delson-<strong>V</strong>elsky and <strong>L</strong>andis (1962).</p>
+<p><strong>AVL Property</strong>: For every node, <span class="math inline">\(|b| \leq 1\)</span>.</p>
+<p>Three issues to consider in the implementation:</p>
+<ol type="1">
+<li>Rotation</li>
+<li>Maintaining height</li>
+<li>Detecting imbalance</li>
+</ol>
+</section>
+<section id="avl-height-is-olog-n" class="slide level2 smaller">
+<h2>AVL Height is O(log n)</h2>
+<p><strong>Theorem</strong>: An AVL tree with <span class="math inline">\(n\)</span> nodes has height <span class="math inline">\(h = O(\log n)\)</span>.</p>
+<p>&nbsp;</p>
+<p>Let <span class="math inline">\(N(h)\)</span> denote the <em>fewest</em> nodes possible in an AVL tree of height <span class="math inline">\(h\)</span>.</p>
+<ul>
+<li><span class="math inline">\(N(0) = 1\)</span></li>
+<li><span class="math inline">\(N(1) = 2\)</span></li>
+<li><span class="math inline">\(N(h) =\)</span> ______________</li>
+</ul>
+<aside class="notes">
+<p><span class="math display">\[N(h) = N(h-1) + N(h-2) + 1\]</span></p>
+<p>(One subtree has height <span class="math inline">\(h-1\)</span>, the other <em>at least</em> <span class="math inline">\(h-2\)</span> by AVL property, plus the root.)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside class="notes">
+<p>Draw a tree of height h. Root has two subtrees. One must have height h-1 (otherwise root wouldn’t have height h). The other has height at least h-2 (if it were h-3, the balance factor would be ≥ 2, violating AVL).</p>
+<p>So to minimize nodes: one subtree has height h-1, the other h-2. Recursively minimize each.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="proof-by-induction" class="slide level2 smaller">
+<h2>Proof by Induction</h2>
+<p><strong>Claim</strong>: <span class="math inline">\(N(h) \geq 2^{h/2}\)</span></p>
+<p><strong>Base cases</strong>: <span class="math inline">\(N(0) = 1 \geq 2^0 = 1\)</span> ✓ and <span class="math inline">\(N(1) = 2 \geq 2^{1/2} \approx 1.41\)</span> ✓</p>
+<p><strong>Inductive step</strong> (<span class="math inline">\(h \geq 2\)</span>): Assume the claim holds for all <span class="math inline">\(j &lt; h\)</span>.</p>
+<p><span class="math display">\[N(h) = N(h-1) + N(h-2) + 1\]</span></p>
+<aside class="notes">
+<p><span class="math display">\[\geq 2^{(h-1)/2} + 2^{(h-2)/2} + 1\]</span> <span class="math display">\[\geq 2 \cdot 2^{(h-2)/2} = 2^{h/2} \quad \checkmark\]</span></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside class="notes">
+<p>So <span class="math inline">\(n \geq N(h) \geq 2^{h/2}\)</span>, which gives <span class="math inline">\(h \leq 2 \log_2 n = O(\log n)\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside class="notes">
+<p>The bound h ≤ 2 log₂(n) is NOT tight — the true bound is h ≤ 1.44 log₂(n) (via the connection to Fibonacci and the golden ratio). But the 2x proof is clean, easy to follow, and enough to establish O(log n).</p>
+<p>The key step: N(h-2) ≥ 2^{(h-2)/2} by inductive hypothesis, so we drop the N(h-1) + 1 terms (they only help!) and just use N(h) ≥ 2 · 2^{(h-2)/2} = 2^{h/2}.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="updated-dictionary-comparison" class="slide level2 smaller">
+<h2>Updated Dictionary Comparison</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">8</th>
-<th style="text-align: center;">9</th>
-<th style="text-align: center;">10</th>
-<th style="text-align: center;">11</th>
+<th>Structure</th>
+<th>Insert</th>
+<th>Find</th>
+<th>Delete</th>
+<th>Sorted Iterate</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
+<td>Unsorted list</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n log n)</td>
+</tr>
+<tr class="even">
+<td>Sorted list</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr class="odd">
+<td>Hash table</td>
+<td>O(1) avg</td>
+<td>O(1) avg</td>
+<td>O(1) avg</td>
+<td>Not possible</td>
+</tr>
+<tr class="even">
+<td>BST (unbalanced)</td>
+<td>O(n) worst</td>
+<td>O(n) worst</td>
+<td>O(n) worst</td>
+<td>O(n)</td>
+</tr>
+<tr class="odd">
+<td><strong>AVL tree</strong></td>
+<td><strong>O(log n)</strong></td>
+<td><strong>O(log n)</strong></td>
+<td><strong>O(log n)</strong></td>
+<td><strong>O(n)</strong></td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>Python questions?</li>
-<li>What’s the worst-case running time?</li>
-</ul>
-<aside class="notes">
-<p>One pass through the array. <span class="math inline">\(\Theta(n)\)</span>, tight.</p>
-<p>“We’ll see this again later with pandas.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="example-2" class="slide level2 smaller">
-<h2>Example 2</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div>
-<div id="pyodide-2" class="exercise-cell">
-
-</div>
-<script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxuZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgZm9yIGogaW4gcmFuZ2Uobik6XG4gICAgICAgIGNvdW50ICs9IDEifQ==
-</script>
-</div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
-<ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 17th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 32nd element counted?</p></li>
-<li><p>What’s the worst-case running time?</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div id="5bdbcabc" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02_mon_hierarchy_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-<aside class="notes">
-<p>Let them trace: i=2, j=4 for 17th. i=5, j=1 for 32nd.</p>
-<p>“Predict for n = 8?” (64)</p>
-<p>Double n → QUADRUPLE the work. <span class="math inline">\(\Theta(n^2)\)</span>, tight.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="balanced-trees-in-practice" class="slide level2">
+<h2>Balanced Trees in Practice</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Language</th>
+<th>Balanced Tree</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>C++</td>
+<td><code>std::map</code>, <code>std::set</code> (Red-Black)</td>
+</tr>
+<tr class="even">
+<td>Java</td>
+<td><code>TreeMap</code>, <code>TreeSet</code> (Red-Black)</td>
+</tr>
+<tr class="odd">
+<td>Python</td>
+<td><code>sortedcontainers.SortedDict</code> (3rd party)</td>
+</tr>
+<tr class="even">
+<td>Databases</td>
+<td>B-trees, B+ trees</td>
+</tr>
+</tbody>
+</table>
+<p>Python’s built-in <code>dict</code> uses hash tables, not trees.</p>
 </section>
-<section id="example-3" class="slide level2 smaller">
-<h2>Example 3</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div>
-<div id="pyodide-3" class="exercise-cell">
-
-</div>
-<script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibiA9IDZcbmNvdW50ID0gMFxuZm9yIGkgaW4gcmFuZ2Uobik6XG4gICAgZm9yIGogaW4gcmFuZ2UoaSk6XG4gICAgICAgIGNvdW50ICs9IDEifQ==
-</script>
-</div>
-<p>For <span class="math inline">\(n = 6\)</span>:</p>
-<ul>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 4th element counted?</p></li>
-<li><p>What are the values of <code>i</code> and <code>j</code> for the 12th element counted?</p></li>
-<li><p>What’s the worst-case running time?</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div id="a9014363" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02_mon_hierarchy_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="374" height="374"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-<aside class="notes">
-<p>i=2: j=0,1 (2 elements). i=3: j=0,1,2 (3 elements). So 4th is i=3, j=0.</p>
-<p><span class="math inline">\(0 + 1 + 2 + \ldots + (n-1) = n(n-1)/2\)</span></p>
-<p>Still <span class="math inline">\(\Theta(n^2)\)</span>, tight! The triangle is half the square.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="from-last-week" class="title-slide slide level1 center">
-<h1>From Last Week</h1>
-
-</section>
-<section id="the-two-pillars" class="slide level2">
-<h2>The Two Pillars</h2>
+<section id="summary-balanced-trees" class="slide level2">
+<h2>Summary: Balanced Trees</h2>
 <ol type="1">
-<li><strong>Correctness</strong> — Does it work?</li>
-<li><strong>Efficiency</strong> — How fast?</li>
+<li><p><strong>BST operations are O(height)</strong> — height matters!</p></li>
+<li><p><strong>Unbalanced BSTs can have O(n) height</strong> — bad for sorted input</p></li>
+<li><p><strong>Rotations</strong> reshape BSTs while preserving order</p></li>
+<li><p><strong>AVL trees</strong> use rotations to maintain <span class="math inline">\(|b| \leq 1\)</span> for every node</p></li>
+<li><p><strong>Diagnosing</strong>: check child’s balance factor to pick the rotation</p></li>
+<li><p><strong>Guarantee</strong>: <span class="math inline">\(O(\log n)\)</span> height, so <span class="math inline">\(O(\log n)\)</span> operations</p></li>
 </ol>
-<aside class="notes">
-<p>“Last week: efficiency. This week: we add correctness.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="the-analysis-recipe" class="slide level2">
-<h2>The Analysis Recipe</h2>
+<section id="practice" class="slide level2">
+<h2>Practice</h2>
 <ol type="1">
-<li><strong>Establish the case</strong> — usually worst case</li>
-<li><strong>Analyze the function</strong> — count operations for that case</li>
-<li><strong>State the bound:</strong>
-<ul>
-<li><span class="math inline">\(\Theta\)</span> (or “tight <span class="math inline">\(O\)</span>”) if you know it’s exact</li>
-<li><span class="math inline">\(O\)</span> if you’re only claiming an upper bound</li>
-<li><span class="math inline">\(\Omega\)</span> if you’re only claiming a lower bound</li>
-</ul></li>
+<li>Is this tree AVL-balanced? (Check every node’s balance factor)</li>
 </ol>
-<aside class="notes">
-<p>“When we say ‘binary search is <span class="math inline">\(O(\log n)\)</span>’ we mean it’s <em>tight</em> — <span class="math inline">\(\Theta(\log n)\)</span>. We’re not hedging.”</p>
-<p>“First: which case? Then: what’s the function? Then: is it tight or just a bound?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="the-hierarchy" class="title-slide slide level1 center">
-<h1>The Hierarchy</h1>
-
-</section>
-<section id="big-o-is-a-set" class="slide level2">
-<h2>Big-<span class="math inline">\(O\)</span> is a Set</h2>
-<p><span class="math inline">\(O(g(n))\)</span> is the <strong>set</strong> of all functions <span class="math inline">\(f(n)\)</span> satisfying the definition.</p>
-<p><span class="math display">\[O(n) = \{f(n) : \exists c &gt; 0, n_0 \geq 0 \text{ such that } f(n) \leq c \cdot n \text{ for all } n \geq n_0\}\]</span></p>
-<aside class="notes">
-<p>“From discrete math: Big-O defines a SET of functions.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-ladder" class="slide level2">
-<h2>The Ladder</h2>
-<p><span class="math display">\[O(1) \subset O(\log n) \subset O(n) \subset O(n \log n) \subset O(n^2) \subset O(2^n)\]</span></p>
-<p>Each class contains all the ones to its left.</p>
-<aside class="notes">
-<p>“Every <span class="math inline">\(O(1)\)</span> function is also <span class="math inline">\(O(n)\)</span>, also <span class="math inline">\(O(n^2)\)</span>, etc.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="a-common-abuse-of-notation" class="slide level2">
-<h2>A Common Abuse of Notation</h2>
-<p>We write: <span class="math inline">\(\quad 4n + 2 = O(n)\)</span></p>
-<p>We mean: <span class="math inline">\(\quad 4n + 2 \in O(n)\)</span></p>
-<aside class="notes">
-<p>“You’ll see this everywhere. Just remember: we’re really talking about set membership.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="true-or-false" class="slide level2 activity">
-<h2>True or False?</h2>
-<ul>
-<li><span class="math inline">\(3n + 2 \in O(n)\)</span></li>
-<li><span class="math inline">\(3n + 2 \in O(n^2)\)</span></li>
-<li><span class="math inline">\(n^2 \in O(n)\)</span></li>
-<li><span class="math inline">\(5 \in O(1)\)</span></li>
-<li><span class="math inline">\(5 \in O(n)\)</span></li>
-</ul>
-<aside class="notes">
-<p>T, T, F, T, T</p>
-<p>“If <span class="math inline">\(f \in O(g)\)</span> and <span class="math inline">\(O(g) \subset O(h)\)</span>, then <span class="math inline">\(f \in O(h)\)</span>.”</p>
-<p>“Let’s see what these mean at scale.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<pre><code>        50
+       /  \
+      30   70
+     /    /  \
+    20   60   90
+   /
+  10</code></pre>
+<ol start="2" type="1">
+<li><p>If not, which rotation(s) would fix it?</p></li>
+<li><p>After inserting 5, 3, 7, 2, 4, 6, 8 into an empty AVL tree, what does it look like?</p></li>
+</ol>
+<p>(Hint: Use the visualization tool to check!)</p>
 
 
-<script type="pyodide-data">
-eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
-</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -493,7 +488,7 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2RO
 <script type="vfs-file">
 W10=
 </script>
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
