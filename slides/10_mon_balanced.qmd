@@ -1,0 +1,235 @@
+---
+title: "Balanced Trees (cont'd)"
+subtitle: "Week 10, Monday"
+date: 2026-03-09
+---
+
+## AVL Tree Explorer {.smaller}
+
+```{=html}
+<iframe src="viz/avl_explorer.html" width="100%" height="500" style="border: none; border-radius: 8px;"></iframe>
+```
+
+::: notes
+Recap from Friday: insert 1, 2, 3, 4, 5, 6, 7 and watch rotations happen.
+Compare to what happens in the regular BST explorer with the same sequence.
+At most ONE rotation (single or double) per insert to restore balance.
+:::
+
+## Rotations on a BST {.smaller}
+
+```{=html}
+<svg viewBox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" style="max-width: 380px;">
+  <!-- Edges -->
+  <line x1="200" y1="30" x2="100" y2="90" stroke="#333" stroke-width="2"/>
+  <line x1="200" y1="30" x2="300" y2="90" stroke="#333" stroke-width="2"/>
+  <line x1="100" y1="90" x2="50" y2="150" stroke="#333" stroke-width="2"/>
+  <line x1="100" y1="90" x2="150" y2="150" stroke="#333" stroke-width="2"/>
+  <line x1="150" y1="150" x2="190" y2="210" stroke="#333" stroke-width="2"/>
+
+  <!-- Nodes -->
+  <circle cx="200" cy="30" r="18" fill="#27ae60"/>
+  <text x="200" y="37" text-anchor="middle" fill="black">70</text>
+
+  <circle cx="100" cy="90" r="18" fill="#27ae60"/>
+  <text x="100" y="97" text-anchor="middle" fill="black">40</text>
+
+  <circle cx="300" cy="90" r="18" fill="#27ae60"/>
+  <text x="300" y="97" text-anchor="middle" fill="black">80</text>
+
+  <circle cx="50" cy="150" r="18" fill="#27ae60"/>
+  <text x="50" y="157" text-anchor="middle" fill="black">20</text>
+
+  <circle cx="150" cy="150" r="18" fill="#27ae60"/>
+  <text x="150" y="157" text-anchor="middle" fill="black">50</text>
+
+  <circle cx="190" cy="210" r="18" fill="#27ae60"/>
+  <text x="190" y="217" text-anchor="middle" fill="black">60</text>
+</svg>
+```
+
+::: notes
+b=-2 at 70, left child 40 has b=+1 (right-heavy). This is a zig-zag (left-right / inner case). Try a single right rotation at 70: 40 becomes root, 70 becomes right child, 50 moves to 70's left child. Result: 40(20, 70(50(_, 60), 80)) — still b=+2 at 40! The single rotation just moved the problem. We need a double rotation.
+
+The fix (left-right double rotation):
+Step 1: Left rotate at 40 → 70(50(40(20), 60), 80)
+Step 2: Right rotate at 70 → 50(40(20), 70(60, 80))
+Now balanced!
+:::
+
+## Rotations on a BST {.smaller}
+
+```{=html}
+<svg viewBox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" style="max-width: 380px;">
+  <!-- Edges -->
+  <line x1="200" y1="30" x2="100" y2="90" stroke="#333" stroke-width="2"/>
+  <line x1="200" y1="30" x2="300" y2="90" stroke="#333" stroke-width="2"/>
+  <line x1="100" y1="90" x2="50" y2="150" stroke="#333" stroke-width="2"/>
+  <line x1="100" y1="90" x2="150" y2="150" stroke="#333" stroke-width="2"/>
+  <line x1="150" y1="150" x2="190" y2="210" stroke="#333" stroke-width="2"/>
+
+  <!-- Nodes -->
+  <circle cx="200" cy="30" r="18" fill="#27ae60"/>
+  <text x="200" y="37" text-anchor="middle" fill="black">70</text>
+
+  <circle cx="100" cy="90" r="18" fill="#27ae60"/>
+  <text x="100" y="97" text-anchor="middle" fill="black">40</text>
+
+  <circle cx="300" cy="90" r="18" fill="#27ae60"/>
+  <text x="300" y="97" text-anchor="middle" fill="black">80</text>
+
+  <circle cx="50" cy="150" r="18" fill="#27ae60"/>
+  <text x="50" y="157" text-anchor="middle" fill="black">20</text>
+
+  <circle cx="150" cy="150" r="18" fill="#27ae60"/>
+  <text x="150" y="157" text-anchor="middle" fill="black">50</text>
+
+  <circle cx="190" cy="210" r="18" fill="#27ae60"/>
+  <text x="190" y="217" text-anchor="middle" fill="black">60</text>
+</svg>
+```
+
+::: notes
+b=-2 at 70, left child 40 has b=+1 (right-heavy). This is a zig-zag (left-right / inner case). Try a single right rotation at 70: 40 becomes root, 70 becomes right child, 50 moves to 70's left child. Result: 40(20, 70(50(_, 60), 80)) — still b=+2 at 40! The single rotation just moved the problem. We need a double rotation.
+
+The fix (left-right double rotation):
+Step 1: Left rotate at 40 → 70(50(40(20), 60), 80)
+Step 2: Right rotate at 70 → 50(40(20), 70(60, 80))
+Now balanced!
+:::
+
+
+## Operations on BSTs — Rotations {.smaller}
+
+Rotation properties:
+
+- There are **4 kinds**: left, right, left-right, right-left
+- **Local** operations (subtrees not affected)
+- **Constant time** ($O(1)$)
+- **BST property maintained**
+
+## AVL Trees {.smaller}
+
+**GOAL**: use rotations to maintain balance of BSTs.
+
+These trees have a special name: **AVL Trees**
+
+Named after **A**delson-**V**elsky and **L**andis (1962).
+
+**AVL Property**: For every node, $|b| \leq 1$.
+
+Three issues to consider in the implementation:
+
+1. Rotation
+2. Maintaining height
+3. Detecting imbalance
+
+
+## AVL Height is O(log n) {.smaller}
+
+**Theorem**: An AVL tree with $n$ nodes has height $h = O(\log n)$.
+
+\ 
+
+Let $N(h)$ denote the *fewest* nodes possible in an AVL tree of height $h$.
+
+- $N(0) = 1$
+- $N(1) = 2$
+- $N(h) =$ \_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+::: notes
+$$N(h) = N(h-1) + N(h-2) + 1$$
+
+(One subtree has height $h-1$, the other *at least* $h-2$ by AVL property, plus the root.)
+:::
+
+::: notes
+Draw a tree of height h. Root has two subtrees. One must have height h-1 (otherwise root wouldn't have height h). The other has height at least h-2 (if it were h-3, the balance factor would be ≥ 2, violating AVL).
+
+So to minimize nodes: one subtree has height h-1, the other h-2. Recursively minimize each.
+:::
+
+
+## Proof by Induction {.smaller}
+
+**Claim**: $N(h) \geq 2^{h/2}$
+
+**Base cases**: $N(0) = 1 \geq 2^0 = 1$ ✓ and $N(1) = 2 \geq 2^{1/2} \approx 1.41$ ✓
+
+**Inductive step** ($h \geq 2$): Assume the claim holds for all $j < h$.
+
+$$N(h) = N(h-1) + N(h-2) + 1$$
+
+::: notes
+$$\geq 2^{(h-1)/2} + 2^{(h-2)/2} + 1$$
+$$\geq 2 \cdot 2^{(h-2)/2} = 2^{h/2} \quad \checkmark$$
+:::
+
+::: notes
+So $n \geq N(h) \geq 2^{h/2}$, which gives $h \leq 2 \log_2 n = O(\log n)$.
+:::
+
+::: notes
+The bound h ≤ 2 log₂(n) is NOT tight — the true bound is h ≤ 1.44 log₂(n) (via the connection to Fibonacci and the golden ratio). But the 2x proof is clean, easy to follow, and enough to establish O(log n).
+
+The key step: N(h-2) ≥ 2^{(h-2)/2} by inductive hypothesis, so we drop the N(h-1) + 1 terms (they only help!) and just use N(h) ≥ 2 · 2^{(h-2)/2} = 2^{h/2}.
+:::
+
+
+## Updated Dictionary Comparison {.smaller}
+
+| Structure | Insert | Find | Delete | Sorted Iterate |
+|-----------|--------|------|--------|----------------|
+| Unsorted list | O(1) | O(n) | O(n) | O(n log n) |
+| Sorted list | O(n) | O(log n) | O(n) | O(n) |
+| Hash table | O(1) avg | O(1) avg | O(1) avg | Not possible |
+| BST (unbalanced) | O(n) worst | O(n) worst | O(n) worst | O(n) |
+| **AVL tree** | **O(log n)** | **O(log n)** | **O(log n)** | **O(n)** |
+
+
+
+## Balanced Trees in Practice
+
+| Language | Balanced Tree |
+|----------|---------------|
+| C++ | `std::map`, `std::set` (Red-Black) |
+| Java | `TreeMap`, `TreeSet` (Red-Black) |
+| Python | `sortedcontainers.SortedDict` (3rd party) |
+| Databases | B-trees, B+ trees |
+
+Python's built-in `dict` uses hash tables, not trees.
+
+## Summary: Balanced Trees
+
+1. **BST operations are O(height)** — height matters!
+
+2. **Unbalanced BSTs can have O(n) height** — bad for sorted input
+
+3. **Rotations** reshape BSTs while preserving order
+
+4. **AVL trees** use rotations to maintain $|b| \leq 1$ for every node
+
+5. **Diagnosing**: check child's balance factor to pick the rotation
+
+6. **Guarantee**: $O(\log n)$ height, so $O(\log n)$ operations
+
+
+## Practice
+
+1. Is this tree AVL-balanced? (Check every node's balance factor)
+
+```
+        50
+       /  \
+      30   70
+     /    /  \
+    20   60   90
+   /
+  10
+```
+
+2. If not, which rotation(s) would fix it?
+
+3. After inserting 5, 3, 7, 2, 4, 6, 8 into an empty AVL tree, what does it look like?
+
+(Hint: Use the visualization tool to check!)
