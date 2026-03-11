@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Min-Heap Explorer</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+    h1 {
+      margin: 15px 0 10px 0;
+      font-size: 24px;
+      color: #333;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    input[type="number"] {
+      width: 80px;
+      padding: 8px 12px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      text-align: center;
+    }
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #4a90d9;
+    }
+    button {
+      padding: 10px 18px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .insert-btn { background: #5cb85c; color: white; }
+    .insert-btn:hover { background: #4cae4c; }
+    .remove-btn { background: #d9534f; color: white; }
+    .remove-btn:hover { background: #c9302c; }
+    .clear-btn { background: #f0ad4e; color: white; }
+    .clear-btn:hover { background: #ec971f; }
+    .random-btn { background: #9b59b6; color: white; }
+    .random-btn:hover { background: #8e44ad; }
+    #canvas-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+      min-height: 20px;
+    }
+    .info.success { color: #5cb85c; }
+    .info.error { color: #d9534f; }
+    .sound-note {
+      font-size: 11px;
+      color: #999;
+      margin-top: 5px;
+    }
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #666;
+    }
+    .speed-control input[type="range"] {
+      width: 120px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <input type="number" id="valueInput" placeholder="Value" min="0" max="999">
+    <button class="insert-btn" id="insertBtn">Insert</button>
+    <button class="remove-btn" id="removeBtn">Remove Min</button>
+    <button class="random-btn" id="randomBtn">Random Heap</button>
+    <button class="clear-btn" id="clearBtn">Clear</button>
+  </div>
+  <div id="canvas-container"></div>
+  <div class="info" id="info"></div>
+  <div class="speed-control">
+    <span>Speed:</span>
+    <input type="range" id="speedSlider" min="1" max="10" value="5">
+    <span id="speedLabel">5</span>
+  </div>
+  <div class="sound-note">Click anywhere to enable sound</div>
+
+  <script>
+    // ============================================
+    // SOUND EFFECTS
+    // ============================================
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playBoop(frequency = 440, duration = 0.08) {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = frequency;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) { }
+    }
+
+    function playLanding() {
+      try {
+        initAudio();
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc1.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc1.type = 'sine';
+        osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
+        osc2.type = 'sine';
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+        osc1.start(audioCtx.currentTime);
+        osc2.start(audioCtx.currentTime);
+        osc1.stop(audioCtx.currentTime + 0.1);
+        osc2.stop(audioCtx.currentTime + 0.1);
+      } catch (e) { }
+    }
+
+    function playSwap() {
+      try {
+        initAudio();
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc1.frequency.setValueAtTime(500, audioCtx.currentTime);
+        osc2.frequency.setValueAtTime(700, audioCtx.currentTime + 0.08);
+        osc1.type = 'sine';
+        osc2.type = 'sine';
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.16);
+        osc1.start(audioCtx.currentTime);
+        osc1.stop(audioCtx.currentTime + 0.08);
+        osc2.start(audioCtx.currentTime + 0.08);
+        osc2.stop(audioCtx.currentTime + 0.16);
+      } catch (e) { }
+    }
+
+    function playRemoveMin() {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.15);
+        osc.type = 'sawtooth';
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.17);
+      } catch (e) { }
+    }
+
+    // ============================================
+    // CONSTANTS
+    // ============================================
+    const CANVAS_WIDTH = 900;
+    const CANVAS_HEIGHT = 600;
+    const NODE_RADIUS = 22;
+    const TREE_TOP = 50;
+    const TREE_HEIGHT = 340;
+    const ARRAY_TOP = 440;
+    const ARRAY_CELL_W = 44;
+    const ARRAY_CELL_H = 40;
+    const MAX_CAPACITY = 15;
+
+    let animSpeed = 0.05;
+
+    // ============================================
+    // HEAP DATA STRUCTURE
+    // ============================================
+    // 1-indexed array: items[0] unused, items[1] is root
+    let heapItems = [null]; // index 0 unused
+    let heapSize = 0;
+
+    function parent(i) { return Math.floor(i / 2); }
+    function leftChild(i) { return 2 * i; }
+    function rightChild(i) { return 2 * i + 1; }
+    function hasChild(i) { return leftChild(i) <= heapSize; }
+
+    function heapInsert(key) {
+      if (heapSize >= MAX_CAPACITY) return false;
+      heapSize++;
+      if (heapSize >= heapItems.length) heapItems.push(key);
+      else heapItems[heapSize] = key;
+      return true;
+    }
+
+    // Returns list of swap pairs for bubble-up from position i
+    function getBubbleUpSwaps(i) {
+      const swaps = [];
+      let pos = i;
+      while (pos > 1) {
+        const p = parent(pos);
+        if (heapItems[pos] < heapItems[p]) {
+          swaps.push([pos, p]);
+          // Do the swap
+          const tmp = heapItems[pos];
+          heapItems[pos] = heapItems[p];
+          heapItems[p] = tmp;
+          pos = p;
+        } else {
+          break;
+        }
+      }
+      return swaps;
+    }
+
+    function minChild(i) {
+      const l = leftChild(i);
+      const r = rightChild(i);
+      if (r > heapSize) return l;
+      return heapItems[l] <= heapItems[r] ? l : r;
+    }
+
+    // Returns list of swap pairs for bubble-down from position i
+    function getBubbleDownSwaps(i) {
+      const swaps = [];
+      let pos = i;
+      while (hasChild(pos)) {
+        const mc = minChild(pos);
+        if (heapItems[pos] > heapItems[mc]) {
+          swaps.push([pos, mc]);
+          const tmp = heapItems[pos];
+          heapItems[pos] = heapItems[mc];
+          heapItems[mc] = tmp;
+          pos = mc;
+        } else {
+          break;
+        }
+      }
+      return swaps;
+    }
+
+    function heapClear() {
+      heapItems = [null];
+      heapSize = 0;
+    }
+
+    // ============================================
+    // VISUAL STATE
+    // ============================================
+    // nodeVisuals[i] stores {x, y, targetX, targetY, scale, color} for heap index i
+    let nodeVisuals = [];
+
+    const DEFAULT_COLOR = { r: 100, g: 180, b: 255 };
+    const SWAP_COLOR = { r: 255, g: 200, b: 80 };
+    const MIN_COLOR = { r: 120, g: 200, b: 120 };
+    const COMPARE_COLOR = { r: 255, g: 160, b: 100 };
+
+    function getTreePos(index) {
+      // Compute x,y for heap index (1-based) in a complete binary tree layout
+      const depth = Math.floor(Math.log2(index));
+      const posInLevel = index - Math.pow(2, depth);
+      const nodesAtLevel = Math.pow(2, depth);
+
+      const treeWidth = CANVAS_WIDTH - 100;
+      const x = 50 + treeWidth * (posInLevel + 0.5) / nodesAtLevel;
+      const maxDepth = Math.floor(Math.log2(MAX_CAPACITY));
+      const y = TREE_TOP + (TREE_HEIGHT * depth) / maxDepth;
+
+      return { x, y };
+    }
+
+    function ensureVisual(i) {
+      while (nodeVisuals.length <= i) {
+        nodeVisuals.push(null);
+      }
+      if (!nodeVisuals[i]) {
+        const pos = getTreePos(i);
+        nodeVisuals[i] = {
+          x: pos.x, y: pos.y,
+          targetX: pos.x, targetY: pos.y,
+          scale: 1,
+          color: { ...DEFAULT_COLOR },
+          highlight: false
+        };
+      }
+      return nodeVisuals[i];
+    }
+
+    function resetVisual(i) {
+      const pos = getTreePos(i);
+      const vis = ensureVisual(i);
+      vis.targetX = pos.x;
+      vis.targetY = pos.y;
+      vis.color = { ...DEFAULT_COLOR };
+      vis.highlight = false;
+    }
+
+    function updateAllTargets() {
+      for (let i = 1; i <= heapSize; i++) {
+        const pos = getTreePos(i);
+        const vis = ensureVisual(i);
+        vis.targetX = pos.x;
+        vis.targetY = pos.y;
+      }
+    }
+
+    function snapAll() {
+      for (let i = 1; i <= heapSize; i++) {
+        const vis = ensureVisual(i);
+        vis.x = vis.targetX;
+        vis.y = vis.targetY;
+      }
+    }
+
+    function resetAllColors() {
+      for (let i = 1; i <= heapSize; i++) {
+        const vis = ensureVisual(i);
+        vis.color = { ...DEFAULT_COLOR };
+        vis.highlight = false;
+      }
+    }
+
+    // ============================================
+    // ANIMATION STATE
+    // ============================================
+    let animState = null;
+    // Possible phases:
+    //   insert: 'appear', 'bubble-up-compare', 'bubble-up-swap', 'done'
+    //   remove: 'flash-root', 'move-last', 'bubble-down-compare', 'bubble-down-swap', 'done'
+
+    function startInsertAnimation(value) {
+      if (heapSize >= MAX_CAPACITY) {
+        showInfo('Heap is full (max 15 elements)', 'error');
+        return;
+      }
+
+      // Insert at end
+      heapInsert(value);
+      const insertPos = heapSize;
+
+      // Set up visual for new node (start at array position, animate to tree position)
+      const vis = ensureVisual(insertPos);
+      const treePos = getTreePos(insertPos);
+      vis.x = getArrayCellX(insertPos);
+      vis.y = ARRAY_TOP + ARRAY_CELL_H / 2;
+      vis.targetX = treePos.x;
+      vis.targetY = treePos.y;
+      vis.scale = 0.3;
+      vis.color = { ...MIN_COLOR };
+
+      // Compute the bubble-up swaps we'll need (but undo them first — animate step by step)
+      // Actually, let's compute swaps on a copy
+      const savedItems = heapItems.slice();
+      const swaps = getBubbleUpSwaps(insertPos);
+      // Undo: restore original
+      for (let i = 0; i < heapItems.length; i++) heapItems[i] = savedItems[i];
+
+      animState = {
+        type: 'insert',
+        phase: 'appear',
+        insertPos: insertPos,
+        swaps: swaps,
+        swapIndex: 0,
+        progress: 0,
+        value: value
+      };
+
+      showInfo(`Inserting ${value} at index ${insertPos}...`);
+    }
+
+    function startRemoveMinAnimation() {
+      if (heapSize === 0) {
+        showInfo('Heap is empty', 'error');
+        return;
+      }
+
+      const minVal = heapItems[1];
+
+      if (heapSize === 1) {
+        // Special case: only one element
+        animState = {
+          type: 'remove',
+          phase: 'flash-root',
+          progress: 0,
+          minVal: minVal,
+          swaps: [],
+          swapIndex: 0,
+          singleElement: true
+        };
+        showInfo(`Removing min: ${minVal}`);
+        return;
+      }
+
+      // We need to compute bubble-down swaps after moving last to root
+      // Save state, simulate, collect swaps, restore
+      const savedItems = heapItems.slice();
+      const savedSize = heapSize;
+
+      heapItems[1] = heapItems[heapSize];
+      heapSize--;
+      const swaps = getBubbleDownSwaps(1);
+
+      // Restore
+      heapItems = savedItems;
+      heapSize = savedSize;
+
+      animState = {
+        type: 'remove',
+        phase: 'flash-root',
+        progress: 0,
+        minVal: minVal,
+        lastVal: heapItems[heapSize],
+        lastPos: heapSize,
+        swaps: swaps,
+        swapIndex: 0,
+        singleElement: false
+      };
+
+      showInfo(`Removing min: ${minVal}`);
+    }
+
+    function updateAnimation() {
+      if (!animState) return;
+
+      if (animState.type === 'insert') {
+        updateInsertAnimation();
+      } else if (animState.type === 'remove') {
+        updateRemoveAnimation();
+      }
+    }
+
+    function updateInsertAnimation() {
+      const st = animState;
+
+      if (st.phase === 'appear') {
+        // Animate node flying from array to tree position
+        st.progress += animSpeed * 2;
+        const vis = ensureVisual(st.insertPos);
+        vis.x = lerp(vis.x, vis.targetX, animSpeed * 3);
+        vis.y = lerp(vis.y, vis.targetY, animSpeed * 3);
+        vis.scale = lerp(vis.scale, 1, animSpeed * 4);
+
+        if (st.progress >= 1) {
+          vis.x = vis.targetX;
+          vis.y = vis.targetY;
+          vis.scale = 1;
+          playLanding();
+
+          if (st.swaps.length === 0) {
+            vis.color = { ...DEFAULT_COLOR };
+            animState = null;
+            showInfo(`Inserted ${st.value}. No swaps needed.`, 'success');
+            return;
+          }
+
+          // Start bubble-up
+          st.phase = 'bubble-up-compare';
+          st.swapIndex = 0;
+          st.progress = 0;
+          st.pauseFrames = 20;
+          highlightCompare(st.swaps[0][0], st.swaps[0][1]);
+          showInfo(`Comparing index ${st.swaps[0][0]} (${heapItems[st.swaps[0][0]]}) with parent ${st.swaps[0][1]} (${heapItems[st.swaps[0][1]]})`);
+        }
+
+      } else if (st.phase === 'bubble-up-compare') {
+        st.pauseFrames--;
+        if (st.pauseFrames <= 0) {
+          st.phase = 'bubble-up-swap';
+          st.progress = 0;
+          const [child, par] = st.swaps[st.swapIndex];
+          // Start swap animation
+          st.swapChildPos = child;
+          st.swapParPos = par;
+          const childVis = ensureVisual(child);
+          const parVis = ensureVisual(par);
+          st.startChildX = childVis.x;
+          st.startChildY = childVis.y;
+          st.startParX = parVis.x;
+          st.startParY = parVis.y;
+          playSwap();
+        }
+
+      } else if (st.phase === 'bubble-up-swap') {
+        st.progress += animSpeed * 1.5;
+
+        const t = Math.min(st.progress, 1);
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+        const childVis = ensureVisual(st.swapChildPos);
+        const parVis = ensureVisual(st.swapParPos);
+
+        // Swap positions with arc
+        childVis.x = lerp(st.startChildX, st.startParX, ease);
+        childVis.y = lerp(st.startChildY, st.startParY, ease) - Math.sin(t * Math.PI) * 25;
+        parVis.x = lerp(st.startParX, st.startChildX, ease);
+        parVis.y = lerp(st.startParY, st.startChildY, ease) + Math.sin(t * Math.PI) * 15;
+
+        if (st.progress >= 1) {
+          // Perform the actual swap in data
+          const tmp = heapItems[st.swapChildPos];
+          heapItems[st.swapChildPos] = heapItems[st.swapParPos];
+          heapItems[st.swapParPos] = tmp;
+
+          // Swap the visuals too (so index i always corresponds to the node at position i)
+          const tmpVis = nodeVisuals[st.swapChildPos];
+          nodeVisuals[st.swapChildPos] = nodeVisuals[st.swapParPos];
+          nodeVisuals[st.swapParPos] = tmpVis;
+
+          // Reset positions to targets
+          resetVisual(st.swapChildPos);
+          resetVisual(st.swapParPos);
+          const cv = ensureVisual(st.swapChildPos);
+          cv.x = cv.targetX; cv.y = cv.targetY;
+          const pv = ensureVisual(st.swapParPos);
+          pv.x = pv.targetX; pv.y = pv.targetY;
+
+          // Highlight the bubbled-up node
+          ensureVisual(st.swapParPos).color = { ...MIN_COLOR };
+
+          st.swapIndex++;
+          if (st.swapIndex >= st.swaps.length) {
+            // Done!
+            resetAllColors();
+            animState = null;
+            showInfo(`Inserted ${st.value}. Bubbled up ${st.swaps.length} time(s).`, 'success');
+          } else {
+            st.phase = 'bubble-up-compare';
+            st.progress = 0;
+            st.pauseFrames = 20;
+            highlightCompare(st.swaps[st.swapIndex][0], st.swaps[st.swapIndex][1]);
+            showInfo(`Comparing index ${st.swaps[st.swapIndex][0]} (${heapItems[st.swaps[st.swapIndex][0]]}) with parent ${st.swaps[st.swapIndex][1]} (${heapItems[st.swaps[st.swapIndex][1]]})`);
+          }
+        }
+      }
+    }
+
+    function updateRemoveAnimation() {
+      const st = animState;
+
+      if (st.phase === 'flash-root') {
+        st.progress += animSpeed;
+        const vis = ensureVisual(1);
+        vis.color = { r: 220, g: 80, b: 80 };
+        vis.scale = 1 + 0.15 * Math.sin(st.progress * Math.PI * 4);
+
+        if (st.progress >= 0.8) {
+          playRemoveMin();
+
+          if (st.singleElement) {
+            heapSize = 0;
+            nodeVisuals = [];
+            animState = null;
+            showInfo(`Removed min: ${st.minVal}. Heap is now empty.`, 'success');
+            return;
+          }
+
+          // Replace root with last element
+          st.phase = 'move-last';
+          st.progress = 0;
+
+          // Visual: last node flies to root position
+          const lastVis = ensureVisual(st.lastPos);
+          st.moveStartX = lastVis.x;
+          st.moveStartY = lastVis.y;
+          const rootPos = getTreePos(1);
+          st.moveEndX = rootPos.x;
+          st.moveEndY = rootPos.y;
+
+          // Mark root as "gone"
+          vis.scale = 1;
+
+          showInfo(`Moving last element (${st.lastVal}) to root...`);
+        }
+
+      } else if (st.phase === 'move-last') {
+        st.progress += animSpeed * 1.5;
+        const t = Math.min(st.progress, 1);
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+        // Animate the "root" visual to show the last value moving up
+        const rootVis = ensureVisual(1);
+        rootVis.x = lerp(st.moveStartX, st.moveEndX, ease);
+        rootVis.y = lerp(st.moveStartY, st.moveEndY, ease) - Math.sin(t * Math.PI) * 30;
+        rootVis.color = { ...SWAP_COLOR };
+
+        if (st.progress >= 1) {
+          // Actually do the data change
+          heapItems[1] = heapItems[heapSize];
+          heapSize--;
+
+          // Clean up visuals
+          nodeVisuals = [];
+          for (let i = 1; i <= heapSize; i++) {
+            const pos = getTreePos(i);
+            ensureVisual(i);
+            nodeVisuals[i].x = pos.x;
+            nodeVisuals[i].y = pos.y;
+            nodeVisuals[i].targetX = pos.x;
+            nodeVisuals[i].targetY = pos.y;
+            nodeVisuals[i].color = { ...DEFAULT_COLOR };
+          }
+          ensureVisual(1).color = { ...SWAP_COLOR };
+
+          if (st.swaps.length === 0) {
+            resetAllColors();
+            animState = null;
+            showInfo(`Removed min: ${st.minVal}. No swaps needed.`, 'success');
+            return;
+          }
+
+          // Start bubble-down
+          st.phase = 'bubble-down-compare';
+          st.swapIndex = 0;
+          st.progress = 0;
+          st.pauseFrames = 20;
+          highlightCompare(st.swaps[0][0], st.swaps[0][1]);
+
+          const [par, child] = st.swaps[0];
+          showInfo(`Comparing index ${par} (${heapItems[par]}) with child ${child} (${heapItems[child]})`);
+        }
+
+      } else if (st.phase === 'bubble-down-compare') {
+        st.pauseFrames--;
+        if (st.pauseFrames <= 0) {
+          st.phase = 'bubble-down-swap';
+          st.progress = 0;
+          const [par, child] = st.swaps[st.swapIndex];
+          st.swapParPos = par;
+          st.swapChildPos = child;
+          const parVis = ensureVisual(par);
+          const childVis = ensureVisual(child);
+          st.startParX = parVis.x;
+          st.startParY = parVis.y;
+          st.startChildX = childVis.x;
+          st.startChildY = childVis.y;
+          playSwap();
+        }
+
+      } else if (st.phase === 'bubble-down-swap') {
+        st.progress += animSpeed * 1.5;
+        const t = Math.min(st.progress, 1);
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+        const parVis = ensureVisual(st.swapParPos);
+        const childVis = ensureVisual(st.swapChildPos);
+
+        parVis.x = lerp(st.startParX, st.startChildX, ease);
+        parVis.y = lerp(st.startParY, st.startChildY, ease) + Math.sin(t * Math.PI) * 15;
+        childVis.x = lerp(st.startChildX, st.startParX, ease);
+        childVis.y = lerp(st.startChildY, st.startParY, ease) - Math.sin(t * Math.PI) * 25;
+
+        if (st.progress >= 1) {
+          // Perform swap
+          const tmp = heapItems[st.swapParPos];
+          heapItems[st.swapParPos] = heapItems[st.swapChildPos];
+          heapItems[st.swapChildPos] = tmp;
+
+          const tmpVis = nodeVisuals[st.swapParPos];
+          nodeVisuals[st.swapParPos] = nodeVisuals[st.swapChildPos];
+          nodeVisuals[st.swapChildPos] = tmpVis;
+
+          resetVisual(st.swapParPos);
+          resetVisual(st.swapChildPos);
+          const pv = ensureVisual(st.swapParPos);
+          pv.x = pv.targetX; pv.y = pv.targetY;
+          const cv = ensureVisual(st.swapChildPos);
+          cv.x = cv.targetX; cv.y = cv.targetY;
+
+          ensureVisual(st.swapChildPos).color = { ...SWAP_COLOR };
+
+          st.swapIndex++;
+          if (st.swapIndex >= st.swaps.length) {
+            resetAllColors();
+            animState = null;
+            showInfo(`Removed min: ${st.minVal}. Bubbled down ${st.swaps.length} time(s).`, 'success');
+          } else {
+            st.phase = 'bubble-down-compare';
+            st.progress = 0;
+            st.pauseFrames = 20;
+            const [par, child] = st.swaps[st.swapIndex];
+            highlightCompare(par, child);
+            showInfo(`Comparing index ${par} (${heapItems[par]}) with child ${child} (${heapItems[child]})`);
+          }
+        }
+      }
+    }
+
+    function highlightCompare(a, b) {
+      resetAllColors();
+      ensureVisual(a).color = { ...COMPARE_COLOR };
+      ensureVisual(b).color = { ...COMPARE_COLOR };
+    }
+
+    // ============================================
+    // DRAWING
+    // ============================================
+    function draw3DNode(x, y, value, scale, baseColor) {
+      push();
+      translate(x, y);
+      const r = NODE_RADIUS * scale;
+
+      // Shadow
+      noStroke();
+      for (let s = 4; s >= 0; s--) {
+        fill(0, 0, 0, 8);
+        ellipse(2 + s * 0.5, 4 + s * 0.5, r * 2.1 + s * 3, r * 1.9 + s * 2);
+      }
+
+      const brightR = Math.min(255, baseColor.r + 40);
+      const brightG = Math.min(255, baseColor.g + 40);
+      const brightB = Math.min(255, baseColor.b + 40);
+      const darkR = baseColor.r * 0.7;
+      const darkG = baseColor.g * 0.7;
+      const darkB = baseColor.b * 0.7;
+
+      for (let i = r; i > 0; i -= 1.5) {
+        const t = i / r;
+        const curve = t * t * t;
+        fill(lerp(brightR, darkR, curve), lerp(brightG, darkG, curve), lerp(brightB, darkB, curve));
+        noStroke();
+        ellipse(0, 0, i * 2);
+      }
+
+      // Highlights
+      fill(255, 255, 255, 60);
+      ellipse(-r * 0.25, -r * 0.25, r * 0.9, r * 0.7);
+      fill(255, 255, 255, 90);
+      ellipse(-r * 0.3, -r * 0.3, r * 0.5, r * 0.4);
+      fill(255, 255, 255, 130);
+      ellipse(-r * 0.35, -r * 0.35, r * 0.2, r * 0.15);
+
+      // Border
+      noFill();
+      stroke(darkR * 0.9, darkG * 0.9, darkB * 0.9, 180);
+      strokeWeight(1.5);
+      ellipse(0, 0, r * 2);
+
+      // Text
+      noStroke();
+      fill(255, 255, 255, 80);
+      textSize(14 * scale);
+      textStyle(BOLD);
+      text(value, 0.5, 0.5);
+      fill(40, 40, 50);
+      text(value, 0, 0);
+      textStyle(NORMAL);
+
+      pop();
+    }
+
+    function getArrayCellX(index) {
+      // Center the array
+      const totalWidth = (heapSize + 1) * ARRAY_CELL_W;
+      const startX = (CANVAS_WIDTH - totalWidth) / 2;
+      return startX + index * ARRAY_CELL_W + ARRAY_CELL_W / 2;
+    }
+
+    function drawArray() {
+      if (heapSize === 0) return;
+
+      const totalCells = heapSize + 1; // include index 0
+      const totalWidth = totalCells * ARRAY_CELL_W;
+      const startX = (CANVAS_WIDTH - totalWidth) / 2;
+
+      push();
+
+      // Label
+      noStroke();
+      fill(100);
+      textSize(13);
+      textStyle(NORMAL);
+      textAlign(CENTER, BOTTOM);
+      text('Array representation (1-indexed)', CANVAS_WIDTH / 2, ARRAY_TOP - 8);
+
+      for (let i = 0; i <= heapSize; i++) {
+        const x = startX + i * ARRAY_CELL_W;
+
+        // Cell background
+        if (i === 0) {
+          fill(230, 230, 230);
+        } else {
+          fill(245, 248, 255);
+        }
+        stroke(180);
+        strokeWeight(1);
+        rect(x, ARRAY_TOP, ARRAY_CELL_W, ARRAY_CELL_H, 3);
+
+        // Index label
+        noStroke();
+        fill(150);
+        textSize(10);
+        textAlign(CENTER, TOP);
+        text(i, x + ARRAY_CELL_W / 2, ARRAY_TOP + ARRAY_CELL_H + 3);
+
+        // Value
+        textAlign(CENTER, CENTER);
+        if (i === 0) {
+          fill(180);
+          textSize(11);
+          text('—', x + ARRAY_CELL_W / 2, ARRAY_TOP + ARRAY_CELL_H / 2);
+        } else {
+          fill(40);
+          textSize(14);
+          textStyle(BOLD);
+          text(heapItems[i], x + ARRAY_CELL_W / 2, ARRAY_TOP + ARRAY_CELL_H / 2);
+          textStyle(NORMAL);
+        }
+      }
+
+      // Navigation formulas
+      fill(130);
+      textSize(11);
+      textAlign(CENTER, TOP);
+      text('parent(i) = i // 2     left(i) = 2i     right(i) = 2i + 1', CANVAS_WIDTH / 2, ARRAY_TOP + ARRAY_CELL_H + 20);
+
+      pop();
+    }
+
+    function drawEdges() {
+      stroke(120);
+      strokeWeight(2);
+      for (let i = 1; i <= heapSize; i++) {
+        const l = leftChild(i);
+        const r = rightChild(i);
+        const vis = ensureVisual(i);
+
+        if (l <= heapSize) {
+          const lv = ensureVisual(l);
+          line(vis.x, vis.y, lv.x, lv.y);
+        }
+        if (r <= heapSize) {
+          const rv = ensureVisual(r);
+          line(vis.x, vis.y, rv.x, rv.y);
+        }
+      }
+    }
+
+    function drawNodes() {
+      for (let i = 1; i <= heapSize; i++) {
+        const vis = ensureVisual(i);
+        draw3DNode(vis.x, vis.y, heapItems[i], vis.scale, vis.color);
+
+        // Draw index below node
+        push();
+        noStroke();
+        fill(150);
+        textSize(10);
+        textAlign(CENTER, TOP);
+        text(`[${i}]`, vis.x, vis.y + NODE_RADIUS + 2);
+        pop();
+      }
+    }
+
+    // ============================================
+    // MAIN
+    // ============================================
+    function setup() {
+      let canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+      canvas.parent('canvas-container');
+      textAlign(CENTER, CENTER);
+      createExampleHeap();
+    }
+
+    function draw() {
+      background(255);
+
+      updateAnimation();
+
+      // Smoothly animate positions when not in animation
+      if (!animState) {
+        for (let i = 1; i <= heapSize; i++) {
+          const vis = ensureVisual(i);
+          vis.x = lerp(vis.x, vis.targetX, animSpeed * 3);
+          vis.y = lerp(vis.y, vis.targetY, animSpeed * 3);
+          vis.scale = lerp(vis.scale, 1, animSpeed * 4);
+        }
+      }
+
+      if (heapSize > 0) {
+        drawEdges();
+        drawNodes();
+        drawArray();
+      } else if (!animState) {
+        fill(150);
+        textSize(16);
+        noStroke();
+        textAlign(CENTER, CENTER);
+        text("Enter a value and click Insert to build a heap", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 - 50);
+      }
+    }
+
+    function createExampleHeap() {
+      heapClear();
+      nodeVisuals = [];
+
+      const values = [4, 5, 6, 9, 15, 16, 7, 20, 14, 25];
+      for (const v of values) {
+        heapInsert(v);
+        getBubbleUpSwaps(heapSize);
+      }
+
+      updateAllTargets();
+      snapAll();
+      showInfo('Min-heap with 10 elements. Try insert or remove min!');
+    }
+
+    function createRandomHeap() {
+      heapClear();
+      nodeVisuals = [];
+      animState = null;
+
+      const count = Math.floor(Math.random() * 6) + 5;
+      const values = new Set();
+      while (values.size < count) {
+        values.add(Math.floor(Math.random() * 99) + 1);
+      }
+
+      for (const v of values) {
+        heapInsert(v);
+        getBubbleUpSwaps(heapSize);
+      }
+
+      updateAllTargets();
+      snapAll();
+      showInfo(`Created random heap with ${count} elements`);
+    }
+
+    function showInfo(msg, type = '') {
+      const el = document.getElementById('info');
+      el.textContent = msg;
+      el.className = 'info ' + type;
+    }
+
+    // ============================================
+    // EVENT HANDLERS
+    // ============================================
+    document.getElementById('insertBtn').addEventListener('click', () => {
+      if (animState) return;
+      const input = document.getElementById('valueInput');
+      const value = parseInt(input.value);
+      if (isNaN(value)) {
+        showInfo('Please enter a valid number', 'error');
+        return;
+      }
+      startInsertAnimation(value);
+      input.value = '';
+      input.focus();
+    });
+
+    document.getElementById('removeBtn').addEventListener('click', () => {
+      if (animState) return;
+      startRemoveMinAnimation();
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      heapClear();
+      nodeVisuals = [];
+      animState = null;
+      showInfo('Heap cleared');
+    });
+
+    document.getElementById('randomBtn').addEventListener('click', () => {
+      if (animState) return;
+      createRandomHeap();
+    });
+
+    document.getElementById('valueInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') document.getElementById('insertBtn').click();
+    });
+
+    document.getElementById('speedSlider').addEventListener('input', (e) => {
+      const val = parseInt(e.target.value);
+      document.getElementById('speedLabel').textContent = val;
+      animSpeed = val * 0.01;
+    });
+
+    // Initialize audio on first click
+    document.addEventListener('click', () => { initAudio(); }, { once: true });
+  </script>
+</body>
+</html>
