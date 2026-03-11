@@ -243,7 +243,6 @@
         const p = parent(pos);
         if (heapItems[pos] < heapItems[p]) {
           swaps.push([pos, p]);
-          // Do the swap
           const tmp = heapItems[pos];
           heapItems[pos] = heapItems[p];
           heapItems[p] = tmp;
@@ -289,7 +288,8 @@
     // ============================================
     // VISUAL STATE
     // ============================================
-    // nodeVisuals[i] stores {x, y, targetX, targetY, scale, color} for heap index i
+    // nodeVisuals[i] stores {x, y, scale, color} for heap index i
+    // Nodes stay at their fixed tree positions — only values move during swaps
     let nodeVisuals = [];
 
     const DEFAULT_COLOR = { r: 100, g: 180, b: 255 };
@@ -298,7 +298,6 @@
     const COMPARE_COLOR = { r: 255, g: 160, b: 100 };
 
     function getTreePos(index) {
-      // Compute x,y for heap index (1-based) in a complete binary tree layout
       const depth = Math.floor(Math.log2(index));
       const posInLevel = index - Math.pow(2, depth);
       const nodesAtLevel = Math.pow(2, depth);
@@ -319,10 +318,8 @@
         const pos = getTreePos(i);
         nodeVisuals[i] = {
           x: pos.x, y: pos.y,
-          targetX: pos.x, targetY: pos.y,
           scale: 1,
-          color: { ...DEFAULT_COLOR },
-          highlight: false
+          color: { ...DEFAULT_COLOR }
         };
       }
       return nodeVisuals[i];
@@ -331,26 +328,17 @@
     function resetVisual(i) {
       const pos = getTreePos(i);
       const vis = ensureVisual(i);
-      vis.targetX = pos.x;
-      vis.targetY = pos.y;
+      vis.x = pos.x;
+      vis.y = pos.y;
       vis.color = { ...DEFAULT_COLOR };
-      vis.highlight = false;
-    }
-
-    function updateAllTargets() {
-      for (let i = 1; i <= heapSize; i++) {
-        const pos = getTreePos(i);
-        const vis = ensureVisual(i);
-        vis.targetX = pos.x;
-        vis.targetY = pos.y;
-      }
     }
 
     function snapAll() {
       for (let i = 1; i <= heapSize; i++) {
+        const pos = getTreePos(i);
         const vis = ensureVisual(i);
-        vis.x = vis.targetX;
-        vis.y = vis.targetY;
+        vis.x = pos.x;
+        vis.y = pos.y;
       }
     }
 
@@ -358,7 +346,6 @@
       for (let i = 1; i <= heapSize; i++) {
         const vis = ensureVisual(i);
         vis.color = { ...DEFAULT_COLOR };
-        vis.highlight = false;
       }
     }
 
@@ -369,6 +356,11 @@
     // Possible phases:
     //   insert: 'appear', 'bubble-up-compare', 'bubble-up-swap', 'done'
     //   remove: 'flash-root', 'move-last', 'bubble-down-compare', 'bubble-down-swap', 'done'
+    //
+    // During swap phases, animState.activeSwap holds:
+    //   { indexA, indexB, valA, valB, posA, posB }
+    // The draw function uses this to render floating value texts
+    // and highlighted array cells instead of static values.
 
     function startInsertAnimation(value) {
       if (heapSize >= MAX_CAPACITY) {
@@ -376,25 +368,20 @@
         return;
       }
 
-      // Insert at end
       heapInsert(value);
       const insertPos = heapSize;
 
-      // Set up visual for new node (start at array position, animate to tree position)
+      // Set up visual for new node (start small at tree position)
       const vis = ensureVisual(insertPos);
       const treePos = getTreePos(insertPos);
-      vis.x = getArrayCellX(insertPos);
-      vis.y = ARRAY_TOP + ARRAY_CELL_H / 2;
-      vis.targetX = treePos.x;
-      vis.targetY = treePos.y;
-      vis.scale = 0.3;
+      vis.x = treePos.x;
+      vis.y = treePos.y;
+      vis.scale = 0.1;
       vis.color = { ...MIN_COLOR };
 
-      // Compute the bubble-up swaps we'll need (but undo them first — animate step by step)
-      // Actually, let's compute swaps on a copy
+      // Compute bubble-up swaps on a copy
       const savedItems = heapItems.slice();
       const swaps = getBubbleUpSwaps(insertPos);
-      // Undo: restore original
       for (let i = 0; i < heapItems.length; i++) heapItems[i] = savedItems[i];
 
       animState = {
@@ -404,7 +391,8 @@
         swaps: swaps,
         swapIndex: 0,
         progress: 0,
-        value: value
+        value: value,
+        activeSwap: null
       };
 
       showInfo(`Inserting ${value} at index ${insertPos}...`);
@@ -419,7 +407,6 @@
       const minVal = heapItems[1];
 
       if (heapSize === 1) {
-        // Special case: only one element
         animState = {
           type: 'remove',
           phase: 'flash-root',
@@ -427,22 +414,20 @@
           minVal: minVal,
           swaps: [],
           swapIndex: 0,
-          singleElement: true
+          singleElement: true,
+          activeSwap: null,
+          activeMove: null
         };
         showInfo(`Removing min: ${minVal}`);
         return;
       }
 
-      // We need to compute bubble-down swaps after moving last to root
-      // Save state, simulate, collect swaps, restore
+      // Compute bubble-down swaps after moving last to root
       const savedItems = heapItems.slice();
       const savedSize = heapSize;
-
       heapItems[1] = heapItems[heapSize];
       heapSize--;
       const swaps = getBubbleDownSwaps(1);
-
-      // Restore
       heapItems = savedItems;
       heapSize = savedSize;
 
@@ -455,7 +440,9 @@
         lastPos: heapSize,
         swaps: swaps,
         swapIndex: 0,
-        singleElement: false
+        singleElement: false,
+        activeSwap: null,
+        activeMove: null
       };
 
       showInfo(`Removing min: ${minVal}`);
@@ -475,16 +462,12 @@
       const st = animState;
 
       if (st.phase === 'appear') {
-        // Animate node flying from array to tree position
+        // Node grows into place at its tree position
         st.progress += animSpeed * 2;
         const vis = ensureVisual(st.insertPos);
-        vis.x = lerp(vis.x, vis.targetX, animSpeed * 3);
-        vis.y = lerp(vis.y, vis.targetY, animSpeed * 3);
         vis.scale = lerp(vis.scale, 1, animSpeed * 4);
 
         if (st.progress >= 1) {
-          vis.x = vis.targetX;
-          vis.y = vis.targetY;
           vis.scale = 1;
           playLanding();
 
@@ -510,58 +493,47 @@
           st.phase = 'bubble-up-swap';
           st.progress = 0;
           const [child, par] = st.swaps[st.swapIndex];
-          // Start swap animation
-          st.swapChildPos = child;
-          st.swapParPos = par;
-          const childVis = ensureVisual(child);
-          const parVis = ensureVisual(par);
-          st.startChildX = childVis.x;
-          st.startChildY = childVis.y;
-          st.startParX = parVis.x;
-          st.startParY = parVis.y;
+
+          // Set up the key swap animation (values float between fixed nodes)
+          const childPos = getTreePos(child);
+          const parPos = getTreePos(par);
+          st.activeSwap = {
+            indexA: child,
+            indexB: par,
+            valA: heapItems[child],
+            valB: heapItems[par],
+            posA: childPos,
+            posB: parPos
+          };
+
+          // Color nodes to show they're swapping
+          ensureVisual(child).color = { ...SWAP_COLOR };
+          ensureVisual(par).color = { ...SWAP_COLOR };
+
           playSwap();
         }
 
       } else if (st.phase === 'bubble-up-swap') {
+        // Keys float between nodes — nodes stay in place
         st.progress += animSpeed * 1.5;
 
-        const t = Math.min(st.progress, 1);
-        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-
-        const childVis = ensureVisual(st.swapChildPos);
-        const parVis = ensureVisual(st.swapParPos);
-
-        // Swap positions with arc
-        childVis.x = lerp(st.startChildX, st.startParX, ease);
-        childVis.y = lerp(st.startChildY, st.startParY, ease) - Math.sin(t * Math.PI) * 25;
-        parVis.x = lerp(st.startParX, st.startChildX, ease);
-        parVis.y = lerp(st.startParY, st.startChildY, ease) + Math.sin(t * Math.PI) * 15;
-
         if (st.progress >= 1) {
-          // Perform the actual swap in data
-          const tmp = heapItems[st.swapChildPos];
-          heapItems[st.swapChildPos] = heapItems[st.swapParPos];
-          heapItems[st.swapParPos] = tmp;
+          // Perform the actual value swap in data
+          const a = st.activeSwap.indexA;
+          const b = st.activeSwap.indexB;
+          const tmp = heapItems[a];
+          heapItems[a] = heapItems[b];
+          heapItems[b] = tmp;
 
-          // Swap the visuals too (so index i always corresponds to the node at position i)
-          const tmpVis = nodeVisuals[st.swapChildPos];
-          nodeVisuals[st.swapChildPos] = nodeVisuals[st.swapParPos];
-          nodeVisuals[st.swapParPos] = tmpVis;
+          // Clear swap animation
+          st.activeSwap = null;
 
-          // Reset positions to targets
-          resetVisual(st.swapChildPos);
-          resetVisual(st.swapParPos);
-          const cv = ensureVisual(st.swapChildPos);
-          cv.x = cv.targetX; cv.y = cv.targetY;
-          const pv = ensureVisual(st.swapParPos);
-          pv.x = pv.targetX; pv.y = pv.targetY;
-
-          // Highlight the bubbled-up node
-          ensureVisual(st.swapParPos).color = { ...MIN_COLOR };
+          // Color: the bubbled-up value (now at parent) gets highlight
+          ensureVisual(b).color = { ...MIN_COLOR };
+          ensureVisual(a).color = { ...DEFAULT_COLOR };
 
           st.swapIndex++;
           if (st.swapIndex >= st.swaps.length) {
-            // Done!
             resetAllColors();
             animState = null;
             showInfo(`Inserted ${st.value}. Bubbled up ${st.swaps.length} time(s).`, 'success');
@@ -596,20 +568,24 @@
             return;
           }
 
-          // Replace root with last element
+          // Start moving last value to root
           st.phase = 'move-last';
           st.progress = 0;
 
-          // Visual: last node flies to root position
-          const lastVis = ensureVisual(st.lastPos);
-          st.moveStartX = lastVis.x;
-          st.moveStartY = lastVis.y;
+          // Set up the value-move animation
+          const lastPos = getTreePos(st.lastPos);
           const rootPos = getTreePos(1);
-          st.moveEndX = rootPos.x;
-          st.moveEndY = rootPos.y;
+          st.activeMove = {
+            fromIndex: st.lastPos,
+            toIndex: 1,
+            value: st.lastVal,
+            posFrom: lastPos,
+            posTo: rootPos
+          };
 
-          // Mark root as "gone"
+          // Flash root gone, last node fading
           vis.scale = 1;
+          vis.color = { r: 220, g: 80, b: 80 };
 
           showInfo(`Moving last element (${st.lastVal}) to root...`);
         }
@@ -617,28 +593,27 @@
       } else if (st.phase === 'move-last') {
         st.progress += animSpeed * 1.5;
         const t = Math.min(st.progress, 1);
-        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
-        // Animate the "root" visual to show the last value moving up
-        const rootVis = ensureVisual(1);
-        rootVis.x = lerp(st.moveStartX, st.moveEndX, ease);
-        rootVis.y = lerp(st.moveStartY, st.moveEndY, ease) - Math.sin(t * Math.PI) * 30;
-        rootVis.color = { ...SWAP_COLOR };
+        // Fade out the last node
+        if (st.lastPos <= nodeVisuals.length && nodeVisuals[st.lastPos]) {
+          nodeVisuals[st.lastPos].scale = 1 - t * 0.8;
+        }
+        // Fade out the root node's value (it's being removed)
+        ensureVisual(1).color = { r: 220, g: 80, b: 80 };
 
         if (st.progress >= 1) {
-          // Actually do the data change
+          // Do the data change
           heapItems[1] = heapItems[heapSize];
           heapSize--;
+          st.activeMove = null;
 
-          // Clean up visuals
+          // Rebuild visuals for remaining nodes
           nodeVisuals = [];
           for (let i = 1; i <= heapSize; i++) {
             const pos = getTreePos(i);
             ensureVisual(i);
             nodeVisuals[i].x = pos.x;
             nodeVisuals[i].y = pos.y;
-            nodeVisuals[i].targetX = pos.x;
-            nodeVisuals[i].targetY = pos.y;
             nodeVisuals[i].color = { ...DEFAULT_COLOR };
           }
           ensureVisual(1).color = { ...SWAP_COLOR };
@@ -667,48 +642,42 @@
           st.phase = 'bubble-down-swap';
           st.progress = 0;
           const [par, child] = st.swaps[st.swapIndex];
-          st.swapParPos = par;
-          st.swapChildPos = child;
-          const parVis = ensureVisual(par);
-          const childVis = ensureVisual(child);
-          st.startParX = parVis.x;
-          st.startParY = parVis.y;
-          st.startChildX = childVis.x;
-          st.startChildY = childVis.y;
+
+          // Set up key swap animation
+          const parPos = getTreePos(par);
+          const childPos = getTreePos(child);
+          st.activeSwap = {
+            indexA: par,
+            indexB: child,
+            valA: heapItems[par],
+            valB: heapItems[child],
+            posA: parPos,
+            posB: childPos
+          };
+
+          ensureVisual(par).color = { ...SWAP_COLOR };
+          ensureVisual(child).color = { ...SWAP_COLOR };
+
           playSwap();
         }
 
       } else if (st.phase === 'bubble-down-swap') {
+        // Keys float between nodes — nodes stay in place
         st.progress += animSpeed * 1.5;
-        const t = Math.min(st.progress, 1);
-        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-
-        const parVis = ensureVisual(st.swapParPos);
-        const childVis = ensureVisual(st.swapChildPos);
-
-        parVis.x = lerp(st.startParX, st.startChildX, ease);
-        parVis.y = lerp(st.startParY, st.startChildY, ease) + Math.sin(t * Math.PI) * 15;
-        childVis.x = lerp(st.startChildX, st.startParX, ease);
-        childVis.y = lerp(st.startChildY, st.startParY, ease) - Math.sin(t * Math.PI) * 25;
 
         if (st.progress >= 1) {
-          // Perform swap
-          const tmp = heapItems[st.swapParPos];
-          heapItems[st.swapParPos] = heapItems[st.swapChildPos];
-          heapItems[st.swapChildPos] = tmp;
+          // Perform value swap
+          const a = st.activeSwap.indexA;
+          const b = st.activeSwap.indexB;
+          const tmp = heapItems[a];
+          heapItems[a] = heapItems[b];
+          heapItems[b] = tmp;
 
-          const tmpVis = nodeVisuals[st.swapParPos];
-          nodeVisuals[st.swapParPos] = nodeVisuals[st.swapChildPos];
-          nodeVisuals[st.swapChildPos] = tmpVis;
+          st.activeSwap = null;
 
-          resetVisual(st.swapParPos);
-          resetVisual(st.swapChildPos);
-          const pv = ensureVisual(st.swapParPos);
-          pv.x = pv.targetX; pv.y = pv.targetY;
-          const cv = ensureVisual(st.swapChildPos);
-          cv.x = cv.targetX; cv.y = cv.targetY;
-
-          ensureVisual(st.swapChildPos).color = { ...SWAP_COLOR };
+          // The bubbled-down value (now at child) gets highlight
+          ensureVisual(b).color = { ...SWAP_COLOR };
+          ensureVisual(a).color = { ...DEFAULT_COLOR };
 
           st.swapIndex++;
           if (st.swapIndex >= st.swaps.length) {
@@ -736,7 +705,28 @@
     // ============================================
     // DRAWING
     // ============================================
-    function draw3DNode(x, y, value, scale, baseColor) {
+
+    // Set of indices whose VALUE text should be hidden (being animated as floating)
+    function getHiddenValueIndices() {
+      if (!animState) return new Set();
+      const hidden = new Set();
+
+      if (animState.activeSwap) {
+        hidden.add(animState.activeSwap.indexA);
+        hidden.add(animState.activeSwap.indexB);
+      }
+      if (animState.activeMove) {
+        hidden.add(animState.activeMove.fromIndex);
+        hidden.add(animState.activeMove.toIndex);
+      }
+      // During flash-root of remove, hide root value
+      if (animState.type === 'remove' && animState.phase === 'flash-root') {
+        // Don't hide — let it flash with value visible
+      }
+      return hidden;
+    }
+
+    function draw3DNode(x, y, value, scale, baseColor, hideValue) {
       push();
       translate(x, y);
       const r = NODE_RADIUS * scale;
@@ -777,32 +767,39 @@
       strokeWeight(1.5);
       ellipse(0, 0, r * 2);
 
-      // Text
-      noStroke();
-      fill(255, 255, 255, 80);
-      textSize(14 * scale);
-      textStyle(BOLD);
-      text(value, 0.5, 0.5);
-      fill(40, 40, 50);
-      text(value, 0, 0);
-      textStyle(NORMAL);
+      // Text (only if not hidden)
+      if (!hideValue && value !== '') {
+        noStroke();
+        fill(255, 255, 255, 80);
+        textSize(14 * scale);
+        textStyle(BOLD);
+        text(value, 0.5, 0.5);
+        fill(40, 40, 50);
+        text(value, 0, 0);
+        textStyle(NORMAL);
+      }
 
       pop();
     }
 
     function getArrayCellX(index) {
-      // Center the array
       const totalWidth = (heapSize + 1) * ARRAY_CELL_W;
       const startX = (CANVAS_WIDTH - totalWidth) / 2;
       return startX + index * ARRAY_CELL_W + ARRAY_CELL_W / 2;
     }
 
+    function getArrayStartX() {
+      const totalCells = heapSize + 1;
+      return (CANVAS_WIDTH - totalCells * ARRAY_CELL_W) / 2;
+    }
+
     function drawArray() {
       if (heapSize === 0) return;
 
-      const totalCells = heapSize + 1; // include index 0
+      const totalCells = heapSize + 1;
       const totalWidth = totalCells * ARRAY_CELL_W;
       const startX = (CANVAS_WIDTH - totalWidth) / 2;
+      const hiddenIndices = getHiddenValueIndices();
 
       push();
 
@@ -817,15 +814,32 @@
       for (let i = 0; i <= heapSize; i++) {
         const x = startX + i * ARRAY_CELL_W;
 
+        // Check if this cell is involved in a swap
+        const isSwapping = animState && animState.activeSwap &&
+          (i === animState.activeSwap.indexA || i === animState.activeSwap.indexB);
+        const isMoving = animState && animState.activeMove &&
+          (i === animState.activeMove.fromIndex || i === animState.activeMove.toIndex);
+
         // Cell background
         if (i === 0) {
           fill(230, 230, 230);
+        } else if (isSwapping || isMoving) {
+          fill(255, 235, 180); // highlight yellow
+          stroke(255, 180, 50);
+          strokeWeight(2.5);
+          rect(x, ARRAY_TOP, ARRAY_CELL_W, ARRAY_CELL_H, 3);
+          // Reset for index label
+          stroke(180);
+          strokeWeight(1);
         } else {
           fill(245, 248, 255);
         }
-        stroke(180);
-        strokeWeight(1);
-        rect(x, ARRAY_TOP, ARRAY_CELL_W, ARRAY_CELL_H, 3);
+
+        if (!(isSwapping || isMoving)) {
+          stroke(180);
+          strokeWeight(1);
+          rect(x, ARRAY_TOP, ARRAY_CELL_W, ARRAY_CELL_H, 3);
+        }
 
         // Index label
         noStroke();
@@ -834,13 +848,13 @@
         textAlign(CENTER, TOP);
         text(i, x + ARRAY_CELL_W / 2, ARRAY_TOP + ARRAY_CELL_H + 3);
 
-        // Value
+        // Value (skip if this cell's value is being animated)
         textAlign(CENTER, CENTER);
         if (i === 0) {
           fill(180);
           textSize(11);
           text('—', x + ARRAY_CELL_W / 2, ARRAY_TOP + ARRAY_CELL_H / 2);
-        } else {
+        } else if (!hiddenIndices.has(i)) {
           fill(40);
           textSize(14);
           textStyle(BOLD);
@@ -856,6 +870,90 @@
       text('parent(i) = i // 2     left(i) = 2i     right(i) = 2i + 1', CANVAS_WIDTH / 2, ARRAY_TOP + ARRAY_CELL_H + 20);
 
       pop();
+    }
+
+    // Draw floating value texts during key-swap animations
+    function drawSwapAnimation() {
+      if (!animState) return;
+
+      if (animState.activeSwap) {
+        const swap = animState.activeSwap;
+        const t = Math.min(animState.progress, 1);
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+        // ---- Tree: values float between node positions ----
+        // Value A (was at posA) moves to posB
+        const treeAx = lerp(swap.posA.x, swap.posB.x, ease);
+        const treeAy = lerp(swap.posA.y, swap.posB.y, ease) - Math.sin(t * Math.PI) * 25;
+        // Value B (was at posB) moves to posA
+        const treeBx = lerp(swap.posB.x, swap.posA.x, ease);
+        const treeBy = lerp(swap.posB.y, swap.posA.y, ease) + Math.sin(t * Math.PI) * 15;
+
+        push();
+        textAlign(CENTER, CENTER);
+        textSize(14);
+        textStyle(BOLD);
+
+        // Draw with slight background for readability
+        noStroke();
+        fill(40, 40, 50);
+        text(swap.valA, treeAx, treeAy);
+        text(swap.valB, treeBx, treeBy);
+        textStyle(NORMAL);
+        pop();
+
+        // ---- Array: values slide between cells ----
+        const arrAx = getArrayCellX(swap.indexA);
+        const arrBx = getArrayCellX(swap.indexB);
+        const arrY = ARRAY_TOP + ARRAY_CELL_H / 2;
+
+        const arrValAx = lerp(arrAx, arrBx, ease);
+        const arrValBx = lerp(arrBx, arrAx, ease);
+
+        push();
+        textAlign(CENTER, CENTER);
+        textSize(14);
+        textStyle(BOLD);
+        fill(40);
+        text(swap.valA, arrValAx, arrY);
+        text(swap.valB, arrValBx, arrY);
+        textStyle(NORMAL);
+        pop();
+      }
+
+      if (animState.activeMove) {
+        const mv = animState.activeMove;
+        const t = Math.min(animState.progress, 1);
+        const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+        // Tree: value floats from last position to root
+        const treeX = lerp(mv.posFrom.x, mv.posTo.x, ease);
+        const treeY = lerp(mv.posFrom.y, mv.posTo.y, ease) - Math.sin(t * Math.PI) * 30;
+
+        push();
+        textAlign(CENTER, CENTER);
+        textSize(14);
+        textStyle(BOLD);
+        fill(40, 40, 50);
+        text(mv.value, treeX, treeY);
+        textStyle(NORMAL);
+        pop();
+
+        // Array: value slides from last cell to first cell
+        const arrFromX = getArrayCellX(mv.fromIndex);
+        const arrToX = getArrayCellX(mv.toIndex);
+        const arrY = ARRAY_TOP + ARRAY_CELL_H / 2;
+        const arrX = lerp(arrFromX, arrToX, ease);
+
+        push();
+        textAlign(CENTER, CENTER);
+        textSize(14);
+        textStyle(BOLD);
+        fill(40);
+        text(mv.value, arrX, arrY);
+        textStyle(NORMAL);
+        pop();
+      }
     }
 
     function drawEdges() {
@@ -878,9 +976,12 @@
     }
 
     function drawNodes() {
+      const hiddenIndices = getHiddenValueIndices();
+
       for (let i = 1; i <= heapSize; i++) {
         const vis = ensureVisual(i);
-        draw3DNode(vis.x, vis.y, heapItems[i], vis.scale, vis.color);
+        const hideValue = hiddenIndices.has(i);
+        draw3DNode(vis.x, vis.y, hideValue ? '' : heapItems[i], vis.scale, vis.color, hideValue);
 
         // Draw index below node
         push();
@@ -908,12 +1009,10 @@
 
       updateAnimation();
 
-      // Smoothly animate positions when not in animation
+      // Smooth scale animation when not in swap
       if (!animState) {
         for (let i = 1; i <= heapSize; i++) {
           const vis = ensureVisual(i);
-          vis.x = lerp(vis.x, vis.targetX, animSpeed * 3);
-          vis.y = lerp(vis.y, vis.targetY, animSpeed * 3);
           vis.scale = lerp(vis.scale, 1, animSpeed * 4);
         }
       }
@@ -922,6 +1021,7 @@
         drawEdges();
         drawNodes();
         drawArray();
+        drawSwapAnimation();
       } else if (!animState) {
         fill(150);
         textSize(16);
@@ -941,7 +1041,6 @@
         getBubbleUpSwaps(heapSize);
       }
 
-      updateAllTargets();
       snapAll();
       showInfo('Min-heap with 10 elements. Try insert or remove min!');
     }
@@ -962,7 +1061,6 @@
         getBubbleUpSwaps(heapSize);
       }
 
-      updateAllTargets();
       snapAll();
       showInfo(`Created random heap with ${count} elements`);
     }
