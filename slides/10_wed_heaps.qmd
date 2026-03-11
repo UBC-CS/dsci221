@@ -105,28 +105,28 @@ you don't need to sort all 500M, just track the top 10 efficiently.
   <!-- ========== ERROR TABLE (below) ========== -->
 
   <!-- Header row -->
-  <rect x="10" y="10" width="170" height="40" fill="#444" rx="4"/>
-  <text x="95" y="36" text-anchor="middle" font-size="15" font-weight="bold" fill="white">implementation</text>
-  <rect x="180" y="10" width="120" height="40" fill="#444" rx="4"/>
-  <text x="240" y="36" text-anchor="middle" font-size="15" font-weight="bold" fill="white">insert</text>
-  <rect x="300" y="10" width="120" height="40" fill="#444" rx="4"/>
-  <text x="360" y="36" text-anchor="middle" font-size="15" font-weight="bold" fill="white">remove_min</text>
+  <rect x="10" y="7" width="170" height="34" fill="#444" rx="4"/>
+  <text x="95" y="29" text-anchor="middle" font-size="15" font-weight="bold" fill="white">implementation</text>
+  <rect x="180" y="7" width="120" height="34" fill="#444" rx="4"/>
+  <text x="240" y="29" text-anchor="middle" font-size="15" font-weight="bold" fill="white">insert</text>
+  <rect x="300" y="7" width="120" height="34" fill="#444" rx="4"/>
+  <text x="360" y="29" text-anchor="middle" font-size="15" font-weight="bold" fill="white">remove_min</text>
 
-  <!-- Row 1: Unsorted array -->
-  <rect x="10" y="55" width="170" height="45" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="3"/>
-  <text x="95" y="83" text-anchor="middle" font-size="14">unsorted array</text>
-  <rect x="180" y="55" width="120" height="45" fill="#fff" stroke="#ccc" stroke-width="1" rx="3"/>
-  <text x="240" y="83" text-anchor="middle" font-size="16" font-weight="bold">O(1)</text>
-  <rect x="300" y="55" width="120" height="45" fill="#fff" stroke="#ccc" stroke-width="1" rx="3"/>
-  <text x="360" y="83" text-anchor="middle" font-size="16" font-weight="bold">O(1)</text>
+  <!-- Row 1: Unsorted array (aligned with unsorted array diagram at y=45) -->
+  <rect x="10" y="47" width="170" height="38" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="3"/>
+  <text x="95" y="70" text-anchor="middle" font-size="14">unsorted array</text>
+  <rect x="180" y="47" width="120" height="38" fill="#fff" stroke="#ccc" stroke-width="1" rx="3"/>
+  <text x="240" y="70" text-anchor="middle" font-size="16" font-weight="bold">O(1)</text>
+  <rect x="300" y="47" width="120" height="38" fill="#fff" stroke="#ccc" stroke-width="1" rx="3"/>
+  <text x="360" y="70" text-anchor="middle" font-size="16" font-weight="bold">O(1)</text>
 
-  <!-- Row 2: Sorted array -->
-  <rect x="10" y="105" width="170" height="45" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="3"/>
-  <text x="95" y="133" text-anchor="middle" font-size="14">sorted array</text>
-  <rect x="180" y="105" width="120" height="45" fill="#fff" stroke="#ccc" stroke-width="1" rx="3"/>/>
-  <text x="240" y="133" text-anchor="middle" font-size="16" font-weight="bold">O(1)</text>
-  <rect x="300" y="105" width="120" height="45" fill="#fff" stroke="#ccc" stroke-width="1" rx="3"/>
-  <text x="360" y="133" text-anchor="middle" font-size="16" font-weight="bold">O(n)</text>
+  <!-- Row 2: Sorted array (aligned with sorted array diagram at y=125) -->
+  <rect x="10" y="125" width="170" height="38" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="3"/>
+  <text x="95" y="148" text-anchor="middle" font-size="14">sorted array</text>
+  <rect x="180" y="125" width="120" height="38" fill="#fff" stroke="#ccc" stroke-width="1" rx="3"/>
+  <text x="240" y="148" text-anchor="middle" font-size="16" font-weight="bold">O(1)</text>
+  <rect x="300" y="125" width="120" height="38" fill="#fff" stroke="#ccc" stroke-width="1" rx="3"/>
+  <text x="360" y="148" text-anchor="middle" font-size="16" font-weight="bold">O(n)</text>
 
   <!-- ========== UNSORTED ARRAY DIAGRAM ========== -->
   <!-- Array cells -->
