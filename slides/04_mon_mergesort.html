@@ -6,11 +6,11 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+  <meta name="generator" content="quarto-1.9.36">
 
   <meta name="dcterms.date" content="2026-01-26">
   <title>DSCI 221: Data Structures and Algorithms for Data Science – Merge Sort and Recurrence Forms</title>
@@ -20,6 +20,9 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -98,7 +101,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7e745c094e38f47e1e49ac7c09d7c9b4.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-fe2bb2e42c137ac7a4000b4f3cbf8fb8.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -231,7 +234,7 @@
 <section id="last-weeks-recursion" class="slide level2">
 <h2>Last Week’s Recursion</h2>
 <p>We computed <span class="math inline">\(1 + 2 + 3 + \ldots + n\)</span> recursively:</p>
-<div id="8c1ef1fe" class="cell" data-execution_count="1">
+<div id="3c4ed96e" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -299,7 +302,7 @@
 </section>
 <section id="what-does-this-function-do" class="slide level2">
 <h2>What Does This Function Do?</h2>
-<div id="de2e6aaf" class="cell" data-execution_count="2">
+<div id="0ae79d01" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -321,7 +324,7 @@
 <section id="lets-think-about-it" class="slide level2">
 <h2>Let’s Think About It</h2>
 <p>What’s the <strong>simplest case</strong>?</p>
-<div id="762f24fd" class="cell" data-execution_count="3">
+<div id="4b1482a3" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -334,7 +337,7 @@
 </section>
 <section id="the-key-insight" class="slide level2">
 <h2>The Key Insight</h2>
-<div id="863a4663" class="cell" data-execution_count="4">
+<div id="78c8f0bc" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -406,7 +409,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGVmdCA9IFsxLCA0LCA2LCA3
 </section>
 <section id="merge-correctness-the-key-insight" class="slide level2">
 <h2>Merge Correctness: The Key Insight</h2>
-<div id="1344b1e5" class="cell" data-execution_count="5">
+<div id="224c6128" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -435,7 +438,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGVmdCA9IFsxLCA0LCA2LCA3
 </section>
 <section id="ok-now-sort-this-array" class="slide level2">
 <h2>OK, Now Sort This Array</h2>
-<div id="cbbcebef" class="cell" data-execution_count="6">
+<div id="2d7bea79" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -491,7 +494,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHJhbmRvbVxuYXJy
 </section>
 <section id="the-induction-visualized" class="slide level2">
 <h2>The Induction Visualized</h2>
-<div id="3c7828b5" class="cell" data-execution_count="7">
+<div id="ce9f8af6" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
