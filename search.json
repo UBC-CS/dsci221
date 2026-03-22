@@ -28,256 +28,312 @@
     "text": "Resources\n\nDaring Fireball: Markdown\nInteractive Commonmark Markdown tutorial\nQuarto documentation\nGet started with Quarto Workshop including the material and this video:"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#from-monday",
-    "href": "slides/02_tue_invariants.html#from-monday",
-    "title": "Loop Invariants",
-    "section": "From Monday",
-    "text": "From Monday\nWe now have two pillars:\n\nEfficiency — How fast? (Big-\\(O\\))\nCorrectness — Does it work?"
+    "objectID": "slides/11_tue_disjointsets.html#announcements",
+    "href": "slides/11_tue_disjointsets.html#announcements",
+    "title": "Disjoint Sets",
+    "section": "Announcements",
+    "text": "Announcements\n\nPA3 due Week 12\nPEX5 this week!"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#what-big-o-actually-tells-us",
-    "href": "slides/02_tue_invariants.html#what-big-o-actually-tells-us",
-    "title": "Loop Invariants",
-    "section": "What Big-\\(O\\) Actually Tells Us",
-    "text": "What Big-\\(O\\) Actually Tells Us\nConsider \\(T(n) = 3n^2 + 5n + 7\\). What happens when \\(n\\) doubles?\n\n\n\n\n\n\n\nThe ratio approaches 4. Always. For ANY quadratic.\n“The constant 3, the +5n, the +7 — none of them matter. Doubling n → quadrupling T(n). That’s what \\(O(n^2)\\) means.”"
+    "objectID": "slides/11_tue_disjointsets.html#a-disjoint-sets-example",
+    "href": "slides/11_tue_disjointsets.html#a-disjoint-sets-example",
+    "title": "Disjoint Sets",
+    "section": "A Disjoint Sets Example",
+    "text": "A Disjoint Sets Example\nLet R be an equivalence relation on the set of students in this room, where (s, t) ∈ R if s and t have the same favorite among {AC, FN, FB, TR, CC, CR, PMC, ___}.\n\n\n  \n  \n  2\n  5\n  9\n\n  \n  \n  7\n\n  \n  \n  0\n  1\n  4\n  8\n\n  \n  \n  3\n  6"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#the-doubling-test",
-    "href": "slides/02_tue_invariants.html#the-doubling-test",
-    "title": "Loop Invariants",
-    "section": "The Doubling Test",
-    "text": "The Doubling Test\n\n\n\nClass\nWhen \\(n\\) doubles, time…\n\n\n\n\n\\(O(1)\\)\nstays the same\n\n\n\\(O(\\log n)\\)\nincreases by a constant\n\n\n\\(O(n)\\)\ndoubles\n\n\n\\(O(n \\log n)\\)\nslightly more than doubles\n\n\n\\(O(n^2)\\)\nquadruples\n\n\n\\(O(2^n)\\)\nsquares (!!)\n\n\n\n\n“This is what Big-O tells us: the SHAPE of growth, not the exact numbers.”"
+    "objectID": "slides/11_tue_disjointsets.html#operations-wed-like-to-facilitate",
+    "href": "slides/11_tue_disjointsets.html#operations-wed-like-to-facilitate",
+    "title": "Disjoint Sets",
+    "section": "Operations We’d Like to Facilitate",
+    "text": "Operations We’d Like to Facilitate\n\nfind(4)\nfind(4) == find(8)\nif find(7) != find(2): union(find(7), find(2))\n\n\nfind(4) returns the representative of the set containing 4. find(4)==find(8) tests whether 4 and 8 are in the same set. The third operation merges two sets if they’re different."
   },
   {
-    "objectID": "slides/02_tue_invariants.html#o1-constant",
-    "href": "slides/02_tue_invariants.html#o1-constant",
-    "title": "Loop Invariants",
-    "section": "\\(O(1)\\): Constant",
-    "text": "\\(O(1)\\): Constant\narr[0]\nd[key]\nstack.pop()\n“No matter how big the input, same time.”\n\nDictionary lookup, array access, stack operations."
+    "objectID": "slides/11_tue_disjointsets.html#disjoint-sets-adt",
+    "href": "slides/11_tue_disjointsets.html#disjoint-sets-adt",
+    "title": "Disjoint Sets",
+    "section": "Disjoint Sets ADT",
+    "text": "Disjoint Sets ADT\nWe will implement a data structure in support of “Disjoint Sets”:\n\nMaintains a collection S = {s0, s1, … sk} of disjoint sets.\nEach set has a representative member.\nSupports functions:\n\n \nmake_set(k) — creates a new set containing only k\nunion(k1, k2) — merges the sets containing k1 and k2\nfind(k) — returns the representative of the set containing k"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#olog-n-logarithmic",
-    "href": "slides/02_tue_invariants.html#olog-n-logarithmic",
-    "title": "Loop Invariants",
-    "section": "\\(O(\\log n)\\): Logarithmic",
-    "text": "\\(O(\\log n)\\): Logarithmic\ndef binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\n\n“Halving at each step. \\(\\log_2(1 \\text{ billion}) \\approx 30\\).”\n“Worst case: target not in array. We halve until the range is empty → \\(\\Theta(\\log n)\\).”\nWe’ll prove this correct on Wednesday."
+    "objectID": "slides/11_tue_disjointsets.html#a-first-data-structure-for-disjoint-sets",
+    "href": "slides/11_tue_disjointsets.html#a-first-data-structure-for-disjoint-sets",
+    "title": "Disjoint Sets",
+    "section": "A First Data Structure for Disjoint Sets",
+    "text": "A First Data Structure for Disjoint Sets\n\n\n  \n  \n  0\n  1\n  4\n\n  \n  \n  2\n  7\n\n  \n  \n  3\n  5\n  6\n\n\n\n\n  \n  \n  0\n  \n  1\n  \n  2\n  \n  3\n  \n  4\n  \n  5\n  \n  6\n  \n  7\n\n  \n  \n  0\n  \n  0\n  \n  2\n  \n  3\n  \n  0\n  \n  3\n  \n  3\n  \n  2\n\n\n \nFind: __________\nUnion: __________\n\nFind is O(1) — just look up the array. Union is O(n) — have to update all elements in one set to point to the new representative."
   },
   {
-    "objectID": "slides/02_tue_invariants.html#on-linear",
-    "href": "slides/02_tue_invariants.html#on-linear",
-    "title": "Loop Invariants",
-    "section": "\\(O(n)\\): Linear",
-    "text": "\\(O(n)\\): Linear\ndef find_max(arr):\n    max_val = arr[0]\n    for x in arr:\n        if x &gt; max_val:\n            max_val = x\n    return max_val\n\n“Must look at every element once.”\n“Worst case = every case: we always scan the whole array. \\(\\Theta(n)\\), tight.”"
+    "objectID": "slides/11_tue_disjointsets.html#a-better-data-structure-uptrees",
+    "href": "slides/11_tue_disjointsets.html#a-better-data-structure-uptrees",
+    "title": "Disjoint Sets",
+    "section": "A Better Data Structure: UpTrees",
+    "text": "A Better Data Structure: UpTrees\n\nIf array value is -1, then we’ve found a root; otherwise value is the index of the parent.\nx and y are in the same tree iff they are in the same set.\n\n\n\n  \n  Sketch:\n  \n  \n\n  \n  \n  0\n  \n  1\n  \n  2\n  \n  3\n\n  Memory:\n\n  \n  \n\n  \n  \n  0\n  \n  1\n  \n  2\n  \n  3\n\n\n\nDraw two examples on the board: (1) All singletons: [-1, -1, -1, -1]. Four separate roots. (2) After some unions, e.g., union(0,1) and union(2,3): [−1, 0, −1, 2]. Two trees of size 2."
   },
   {
-    "objectID": "slides/02_tue_invariants.html#on-log-n-linearithmic",
-    "href": "slides/02_tue_invariants.html#on-log-n-linearithmic",
-    "title": "Loop Invariants",
-    "section": "\\(O(n \\log n)\\): Linearithmic",
-    "text": "\\(O(n \\log n)\\): Linearithmic\nsorted(arr)          # Python's built-in\ndf.sort_values()     # pandas\n\n“The sweet spot for sorting. We’ll see why in Week 6.”"
+    "objectID": "slides/11_tue_disjointsets.html#example-partition-of-elements-into-disjoint-sets",
+    "href": "slides/11_tue_disjointsets.html#example-partition-of-elements-into-disjoint-sets",
+    "title": "Disjoint Sets",
+    "section": "Example: Partition of Elements into Disjoint Sets",
+    "text": "Example: Partition of Elements into Disjoint Sets\n\n\n  \n  \n  2\n  5\n  9\n\n  \n  7\n\n  \n  0\n  1\n  4\n  8\n\n  \n  3\n  6\n\n\n\n\n  \n  \n  \n  \n  5\n  \n  9\n  \n  2\n\n  \n  \n  7\n\n  \n  \n  \n  \n  \n  4\n  \n  0\n  \n  8\n  \n  1\n\n  \n  \n  \n  6\n  \n  3\n\n  \n  \n  0\n  1\n  2\n  3\n  4\n  5\n  6\n  7\n  8\n  9\n\n  \n  \n  4\n  \n  8\n  \n  5\n  \n  6\n  \n  -1\n  \n  -1\n  \n  -1\n  \n  -1\n  \n  4\n  \n  5\n\n\n\nRoots store -1. Non-roots store the index of their parent. find(1) → s[1]=8 → s[8]=4 → s[4]=-1 → return 4. find(3) → s[3]=6 → s[6]=-1 → return 6."
   },
   {
-    "objectID": "slides/02_tue_invariants.html#on2-quadratic",
-    "href": "slides/02_tue_invariants.html#on2-quadratic",
-    "title": "Loop Invariants",
-    "section": "\\(O(n^2)\\): Quadratic",
-    "text": "\\(O(n^2)\\): Quadratic\n\n\ndef has_duplicate(arr):\n    for i in range(len(arr)):\n        for j in range(i + 1, len(arr)):\n            if arr[i] == arr[j]:\n                return True\n    return False\n\n\n\n\n\n\n\n\n\n\n\n\nwhy not j in range(n)? “All pairs. Gets painful quickly.”\n“Worst case: no duplicates → check all \\(n(n-1)/2\\) pairs. \\(\\Theta(n^2)\\), tight.”"
+    "objectID": "slides/11_tue_disjointsets.html#uptree-implementation",
+    "href": "slides/11_tue_disjointsets.html#uptree-implementation",
+    "title": "Disjoint Sets",
+    "section": "UpTree Implementation",
+    "text": "UpTree Implementation\ndef find(self, i):\n    if self.s[i] &lt; 0:\n        return i\n    else:\n        return self.find(self.s[i])\n\n\nRunning time depends on ___________.\nWorst case? ___________\nWhat’s an ideal tree? ___________\n\n\ndef union(self, root1, root2):\n    self.s[root2] = root1\n\nRunning time of find depends on the height of the tree. Worst case is O(n) — a degenerate chain. Ideal tree is short and wide (star-shaped). Union as shown is naive — it can create tall trees."
   },
   {
-    "objectID": "slides/02_tue_invariants.html#o2n-exponential",
-    "href": "slides/02_tue_invariants.html#o2n-exponential",
-    "title": "Loop Invariants",
-    "section": "\\(O(2^n)\\): Exponential",
-    "text": "\\(O(2^n)\\): Exponential\ndef all_subsets(arr):\n    if not arr:\n        return [[]]\n    rest = all_subsets(arr[1:])\n    return rest + [[arr[0]] + s for s in rest]\n\n\n\n\n\n\n\n“Doubles with each element.”\nn=50: more operations than atoms in a grain of sand. n=100: more operations than atoms in the observable universe.\nAt 1 billion ops/sec, n=100 would take \\(10^{21}\\) years — heat death of universe.\n“Often intractable. We’ll see NP-completeness in Week 12.”"
+    "objectID": "slides/11_tue_disjointsets.html#smart-unions",
+    "href": "slides/11_tue_disjointsets.html#smart-unions",
+    "title": "Disjoint Sets",
+    "section": "Smart Unions",
+    "text": "Smart Unions\n\n\nUnion by height:\nKeeps overall height of tree as small as possible.\n\nUnion by size:\nIncreases distance to root for fewest nodes.\n\n \nBoth of these schemes for Union guarantee the height of the tree is ________.\n\nBoth guarantee O(log n) height. Union by height: attach shorter tree under taller tree’s root. Union by size: attach smaller tree under larger tree’s root. Both yield O(log n) for find."
   },
   {
-    "objectID": "slides/02_tue_invariants.html#the-setup",
-    "href": "slides/02_tue_invariants.html#the-setup",
-    "title": "Loop Invariants",
-    "section": "The Setup",
-    "text": "The Setup\n\n\n\n\n\n\n\n“Same problem, two approaches. Let’s race them.”"
+    "objectID": "slides/11_tue_disjointsets.html#smart-unions-implementation",
+    "href": "slides/11_tue_disjointsets.html#smart-unions-implementation",
+    "title": "Disjoint Sets",
+    "section": "Smart Unions: Implementation",
+    "text": "Smart Unions: Implementation\ndef find(self, i):\n    if self.s[i] &lt; 0:\n        return i\n    else:\n        return self.find(self.s[i])\n\n\ndef union_by_size(self, root1, root2):\n    new_size = self.s[root1] + self.s[root2]\n    if self.s[root1] &lt;= self.s[root2]:   # root1 is bigger (more negative)\n        self.s[root2] = root1\n        self.s[root1] = new_size\n    else:\n        self.s[root1] = root2\n        self.s[root2] = new_size\n\nRoots store the negative of the set size (e.g., -3 means 3 elements). When merging, the smaller tree becomes a child of the larger tree’s root. The new root updates its size to the combined total."
   },
   {
-    "objectID": "slides/02_tue_invariants.html#the-race",
-    "href": "slides/02_tue_invariants.html#the-race",
-    "title": "Loop Invariants",
-    "section": "The Race",
-    "text": "The Race\n\n\n\n\n\n\n\n“We’re testing worst case: no duplicates, so both algorithms scan everything.”\n“What do you notice?”\n\\(\\Theta(n^2)\\): 4× slower when n doubles — that’s quadratic! \\(\\Theta(n)\\): barely changes — that’s linear!\n“The set gives \\(O(1)\\) lookup — transforms \\(\\Theta(n^2)\\) into \\(\\Theta(n)\\).”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#two-methods-of-speculating",
+    "href": "slides/04_wed_sorting_lowerbound.html#two-methods-of-speculating",
+    "title": "The Sorting Lower Bound",
+    "section": "Two Methods of Speculating",
+    "text": "Two Methods of Speculating\n\nExpansion method: Unroll the recurrence, find the pattern\nRecursion tree method: Visualize as a tree, sum the work\n\n\nThis is more of a sketch than a certainty\ncovered in enough detail in Tuesday video\n\nBoth give the same asymptotic answer. Choose whichever works for you!"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#what-happened",
-    "href": "slides/02_tue_invariants.html#what-happened",
-    "title": "Loop Invariants",
-    "section": "What Happened",
-    "text": "What Happened\nWorst case: \\(\\Theta(n^2) \\to \\Theta(n)\\)\nThe set provides \\(O(1)\\) lookup.\n\n“This is the power of data structures. We’ll learn how sets work in Week 5.”\n“Both bounds are tight. We’re not hedging — we analyzed the worst case and know exactly how it scales.”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#the-idea",
+    "href": "slides/04_wed_sorting_lowerbound.html#the-idea",
+    "title": "The Sorting Lower Bound",
+    "section": "The Idea",
+    "text": "The Idea\nUnroll the recurrence step by step until you see a pattern.\nThen apply the pattern to the base case to terminate."
   },
   {
-    "objectID": "slides/02_tue_invariants.html#the-crossover",
-    "href": "slides/02_tue_invariants.html#the-crossover",
-    "title": "Loop Invariants",
-    "section": "The Crossover",
-    "text": "The Crossover\n\n\n\n\n\n\n\n“At small n, constants dominate. The ‘\\(O(1)\\)’ algorithm with 10ms overhead is slower!”\nLive demo: add larger n values (10000, 100000, 1000000) to show the crossover where linear catches up and passes."
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-1",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-1",
+    "title": "The Sorting Lower Bound",
+    "section": "Example 1:",
+    "text": "Example 1:\n\\(T(n) = T(n-1) + c\\)"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#the-lesson",
-    "href": "slides/02_tue_invariants.html#the-lesson",
-    "title": "Loop Invariants",
-    "section": "The Lesson",
-    "text": "The Lesson\nSmall data: write clear code.\nBig data: Big-O is destiny."
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-2",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-2",
+    "title": "The Sorting Lower Bound",
+    "section": "Example 2:",
+    "text": "Example 2:\n(assume \\(n = 2^k\\) for simplicity):\n\\(T(n) = T(n/2) + c\\)"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#galactic-pizza",
-    "href": "slides/02_tue_invariants.html#galactic-pizza",
-    "title": "Loop Invariants",
-    "section": "Galactic Pizza",
-    "text": "Galactic Pizza"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-3",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-3",
+    "title": "The Sorting Lower Bound",
+    "section": "Example 3:",
+    "text": "Example 3:\n(assume \\(n = 2^k\\) for simplicity)::\n\\(T(n) = 2T(n/2) + 1\\)"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#two-ways-to-compute-the-mean",
-    "href": "slides/02_tue_invariants.html#two-ways-to-compute-the-mean",
-    "title": "Loop Invariants",
-    "section": "Two Ways to Compute the Mean",
-    "text": "Two Ways to Compute the Mean\n\n\n\n\n\n\n\n“Both are \\(O(n)\\). Why the difference?”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#speculation-is-not-a-proof",
+    "href": "slides/04_wed_sorting_lowerbound.html#speculation-is-not-a-proof",
+    "title": "The Sorting Lower Bound",
+    "section": "Speculation is not a proof!!",
+    "text": "Speculation is not a proof!!\nClaim: The running time of merge-sort on data of size \\(n\\) is \\(T(n) = O(n\\log n)\\).\nProof: Prove that there is a constant \\(c\\) so that \\(T(n) \\leq cn\\log n\\) for sufficiently large \\(n\\).\n\\(T(n) = 2T(n/2) + n, n &gt; 1\\)\nBy IH, \\(T(n)\\leq 2\\cdot c(n/2)T(\\log n/2) + n\\)\n\\(=cn\\log n - cn + n\\)\n\\(\\leq cn\\log n\\) when ______"
   },
   {
-    "objectID": "slides/02_tue_invariants.html#same-big-o-different-speed",
-    "href": "slides/02_tue_invariants.html#same-big-o-different-speed",
-    "title": "Loop Invariants",
-    "section": "Same Big-\\(O\\), Different Speed",
-    "text": "Same Big-\\(O\\), Different Speed\nBoth touch every row: \\(O(n)\\)\nBut:\n\nVectorized: tiny constants (compiled C)\nPython loop: large constants (interpreter overhead)\n\n\n“Big-O tells you SCALING, not SPEED.”\n“In pandas: prefer vectorized operations. But that’s about constants, not complexity class.”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#can-we-do-better",
+    "href": "slides/04_wed_sorting_lowerbound.html#can-we-do-better",
+    "title": "The Sorting Lower Bound",
+    "section": "Can We Do Better?",
+    "text": "Can We Do Better?\nWe’ve seen:\n\nInsertion sort: \\(O(n^2)\\) (PEX1, HW1)\nSelection sort: \\(O(n^2)\\)\nMerge sort: \\(O(n \\log n)\\)\ncsort: \\(O(n)\\) (HW1)\n\nQuestion: Is \\(O(n \\log n)\\) the best we can do?\nOr is there some clever algorithm that sorts in \\(O(n)\\)?"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-scene",
-    "href": "slides/03_mon_invariants.html#the-scene",
-    "title": "The Invariant Detective",
-    "section": "The Scene",
-    "text": "The Scene\nAn algorithm was running, but we paused it mid-execution.\nYour job: figure out what it was doing and where it stopped.\n\n“Think of this like a crime scene investigation. The clues are in the state.”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#the-surprising-answer",
+    "href": "slides/04_wed_sorting_lowerbound.html#the-surprising-answer",
+    "title": "The Sorting Lower Bound",
+    "section": "The Surprising Answer",
+    "text": "The Surprising Answer\nTheorem: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nThis means:\n\nMerge sort is optimal\nNo comparison sort can do better\n\\(O(n \\log n)\\) is a fundamental barrier\n\n\n“This is one of the most beautiful results in CS: we can prove a lower bound on ALL possible algorithms, not just the ones we know about.”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-1-find-maximum-1",
-    "href": "slides/03_mon_invariants.html#puzzle-1-find-maximum-1",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 1: Find Maximum",
-    "text": "Puzzle 1: Find Maximum\n\n\ndef mystery1(arr):\n    result = arr[0]\n    for i in range(1, len(arr)):\n        if arr[i] &gt; result:\n            result = arr[i]\n    return result\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n7\n3\n9\n2\n5\n1\n8\n\n\n\nVariables: result = 9\n\nQ1: What iteration is i about to start?\nQ2: What does result represent?\n\n“Pause and think. What value of i would give us result = 9?”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#the-key-idea",
+    "href": "slides/04_wed_sorting_lowerbound.html#the-key-idea",
+    "title": "The Sorting Lower Bound",
+    "section": "The Key Idea",
+    "text": "The Key Idea\nEvery comparison-based sort makes decisions by comparing pairs of elements:\nif arr[i] &lt; arr[j]:\n    ...\nelse:\n    ...\nWe can model the algorithm as a binary tree of decisions."
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-solution",
-    "href": "slides/03_mon_invariants.html#the-solution",
-    "title": "The Invariant Detective",
-    "section": "The Solution",
-    "text": "The Solution\n\n\n\n\n\n\n\n\n\n\ni = 3 (about to examine index 3)\nresult = 9 = maximum of arr[0:3] = maximum of [7, 3, 9]\n\nThe Invariant: At iteration \\(i\\), result holds the maximum of arr[0:i]."
+    "objectID": "slides/04_wed_sorting_lowerbound.html#example-sorting-3-elements",
+    "href": "slides/04_wed_sorting_lowerbound.html#example-sorting-3-elements",
+    "title": "The Sorting Lower Bound",
+    "section": "Example: Sorting 3 Elements",
+    "text": "Example: Sorting 3 Elements\nSuppose we want to sort \\([v_1, v_2, v_3]\\).\n\n  \n  \n  v₁ &lt; v₂?\n\n  \n  \n  \n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  \n\n  \n  \n  \n\n  \n  \n  [__, __, __]\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  [__, __, __]\n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  \n  \n  \n\n  \n  \n  [__, __, __]\n\n  \n  [__, __, __]\n\n  \n  [__, __, __]\n\n  \n  [__, __, __]"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#why-this-works",
-    "href": "slides/03_mon_invariants.html#why-this-works",
-    "title": "The Invariant Detective",
-    "section": "Why This Works",
-    "text": "Why This Works\nThe invariant tells us:\n\nAt i = 1: result = max of arr[0:1] = max of [7] = 7 ✓\nAt i = 2: result = max of arr[0:2] = max of [7, 3] = 7 ✓\nAt i = 3: result = max of arr[0:3] = max of [7, 3, 9] = 9 ✓\n\nThe frozen state is consistent with the invariant at i = 3."
+    "objectID": "slides/04_wed_sorting_lowerbound.html#what-the-tree-represents",
+    "href": "slides/04_wed_sorting_lowerbound.html#what-the-tree-represents",
+    "title": "The Sorting Lower Bound",
+    "section": "What the Tree Represents",
+    "text": "What the Tree Represents\n\nInternal nodes: Comparisons\nEdges: Answers (yes/no, or \\(&lt;\\) / \\(\\geq\\))\nLeaves: sorted ordering of the elements\nHeight: running time of the algorithm\n\nNote:\n\nThere must be a leaf (endpoint) for each ordering of the elements\nthe tree itself is an encoding of an algorithm"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-2-counting-1",
-    "href": "slides/03_mon_invariants.html#puzzle-2-counting-1",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 2: Counting",
-    "text": "Puzzle 2: Counting\n\n\ndef mystery2(arr):\n    count = 0\n    for i in range(len(arr)):\n        if arr[i] &gt; 5:\n            count += 1\n    return count\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n4\n8\n2\n7\n1\n9\n3\n\n\n\nVariables: count = 2\n\nQ1: What iteration is i about to start?\nQ2: State the invariant.\n\n“Which elements &gt; 5 have we seen? 8 at index 1, 7 at index 3. That’s 2 elements. So i = 4.”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#counting-leaves",
+    "href": "slides/04_wed_sorting_lowerbound.html#counting-leaves",
+    "title": "The Sorting Lower Bound",
+    "section": "Counting Leaves",
+    "text": "Counting Leaves\nHow many different rearrangements are possible for an \\(n\\) element list?\nEach ordering needs its own leaf (otherwise we’d give the same answer for different inputs).\nThe decision tree must have at least ______ leaves!"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-solution-1",
-    "href": "slides/03_mon_invariants.html#the-solution-1",
-    "title": "The Invariant Detective",
-    "section": "The Solution",
-    "text": "The Solution\n\n\n\n\n\n\n\n\n\n\nElements &gt; 5 in arr[0:4] = [4, 8, 2, 7]: 8 and 7 → count = 2\ni = 4\n\nThe Invariant: At iteration \\(i\\), count equals the number of elements &gt; 5 in arr[0:i]."
+    "objectID": "slides/04_wed_sorting_lowerbound.html#a-question-for-later",
+    "href": "slides/04_wed_sorting_lowerbound.html#a-question-for-later",
+    "title": "The Sorting Lower Bound",
+    "section": "A Question for Later",
+    "text": "A Question for Later\nWhose answer we need now…\nA decision tree of height \\(h\\) has at most _______ leaves?"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-3-partitioning-1",
-    "href": "slides/03_mon_invariants.html#puzzle-3-partitioning-1",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 3: Partitioning",
-    "text": "Puzzle 3: Partitioning\n\n\ndef mystery3(arr):\n    pivot = arr[0]\n    left = 1\n    for right in range(1, len(arr)):\n        if arr[right] &lt; pivot:\n            arr[left], arr[right] = arr[right], arr[left]\n            left += 1\n    arr[0], arr[left - 1] = arr[left - 1], arr[0]\n    return left - 1\n\nOriginal: [5, 8, 2, 9, 1, 7, 3]\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n5\n2\n1\n9\n8\n7\n3\n\n\n\npivot = 5, left = 3\n\nQ1: What iteration is right about to start?\nQ2: Describe what’s in arr[1:left] and arr[left:right].\n\n“This is trickier. Notice: arr[1:3] = [2, 1] — both &lt; 5. arr[3:?] = ?”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#connecting-height-to-comparisons",
+    "href": "slides/04_wed_sorting_lowerbound.html#connecting-height-to-comparisons",
+    "title": "The Sorting Lower Bound",
+    "section": "Connecting Height to Comparisons",
+    "text": "Connecting Height to Comparisons\nRecall: The height of the decision tree is the maximum number of comparisons in the worst case.\nIf the tree has height \\(h\\), then:\n\nAt most \\(2^h\\) leaves\nWe need at least \\(n!\\) leaves\n\nTherefore: \\(2^h \\geq n!\\)\nTaking logarithms: \\(h \\geq \\log_2(n!)\\)"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-visualization",
-    "href": "slides/03_mon_invariants.html#the-visualization",
-    "title": "The Invariant Detective",
-    "section": "The Visualization",
-    "text": "The Visualization"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#but-how-big-is-logn",
+    "href": "slides/04_wed_sorting_lowerbound.html#but-how-big-is-logn",
+    "title": "The Sorting Lower Bound",
+    "section": "But How Big is \\(\\log(n!)\\)?",
+    "text": "But How Big is \\(\\log(n!)\\)?\nClaim: \\(\\log(n!) = \\Omega(n\\log n)\\)"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-solution-2",
-    "href": "slides/03_mon_invariants.html#the-solution-2",
-    "title": "The Invariant Detective",
-    "section": "The Solution",
-    "text": "The Solution\n\nright = 5 (about to examine index 5, which has value 7)\narr[1:left] = arr[1:3] = [2, 1] — all &lt; pivot (5)\narr[left:right] = arr[3:5] = [9, 8] — all &gt;= pivot (5)\n\nThe Invariant (at iteration right):\n\narr[1:left] contains elements &lt; pivot\narr[left:right] contains elements &gt;= pivot\narr[right:] is unexamined\n\n\n“This is the partition step from quicksort! The invariant maintains two regions.”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#the-result",
+    "href": "slides/04_wed_sorting_lowerbound.html#the-result",
+    "title": "The Sorting Lower Bound",
+    "section": "The Result",
+    "text": "The Result\nObservation: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nJustification:\n\nModel the algorithm as a decision tree\nThe tree needs at least \\(n!\\) leaves\nA tree with \\(\\geq n!\\) leaves has height \\(\\geq \\log_2(n!)\\)\n\\(\\log_2(n!) = \\Theta(n \\log n)\\)\nTherefore, worst-case comparisons \\(\\Omega(n \\log n)\\) ∎\n\n\n“This proof is remarkable: we didn’t analyze any specific algorithm. We proved a limit on ALL possible comparison-based sorting algorithms!”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#how-to-find-invariants",
-    "href": "slides/03_mon_invariants.html#how-to-find-invariants",
-    "title": "The Invariant Detective",
-    "section": "How to Find Invariants",
-    "text": "How to Find Invariants\n\nLook at the loop variable: What does i (or right, etc.) represent?\nLook at the accumulated state: What has result, count, left captured so far?\nState the relationship: “At iteration \\(i\\), [variable] holds [property of arr[0:i]]”\nVerify: Does the frozen state match your invariant?"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#what-this-means",
+    "href": "slides/04_wed_sorting_lowerbound.html#what-this-means",
+    "title": "The Sorting Lower Bound",
+    "section": "What This Means",
+    "text": "What This Means\n\n\n\nAlgorithm\nWorst Case\nOptimal?\n\n\n\n\nMerge Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nHeap Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nQuick Sort\n\\(O(n^2)\\)\nNo (but avg is optimal)\n\n\nInsertion Sort\n\\(O(n^2)\\)\nNo\n\n\nSelection Sort\n\\(O(n^2)\\)\nNo\n\n\n\nMerge sort achieves the theoretical limit."
   },
   {
-    "objectID": "slides/03_mon_invariants.html#common-invariant-patterns",
-    "href": "slides/03_mon_invariants.html#common-invariant-patterns",
-    "title": "The Invariant Detective",
-    "section": "Common Invariant Patterns",
-    "text": "Common Invariant Patterns\n\n\n\nPattern\nExample Invariant\n\n\n\n\nAccumulation\n“total = sum of arr[0:i]”\n\n\nExtremum\n“max_val = maximum of arr[0:i]”\n\n\nCounting\n“count = number of X in arr[0:i]”\n\n\nSearch\n“If target exists, it’s in arr[lo:hi+1]”\n\n\nPartition\n“arr[0:left] satisfies P, arr[left:i] doesn’t”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#a-loophole",
+    "href": "slides/04_wed_sorting_lowerbound.html#a-loophole",
+    "title": "The Sorting Lower Bound",
+    "section": "A Loophole",
+    "text": "A Loophole\nThe lower bound applies to comparison-based sorts.\nWhat if we don’t compare elements?"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-4",
-    "href": "slides/03_mon_invariants.html#puzzle-4",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 4",
-    "text": "Puzzle 4\n\n\ndef mystery4(arr):\n    total = 0\n    for i in range(len(arr)):\n        total += arr[i] * arr[i]\n    return total\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n\n\n\n\n2\n3\n1\n4\n5\n2\n3\n1\n\n\n\nVariables: total = 14\n\nQ1: What is i? Q2: State the invariant.\n\n“Think: 2² + 3² + 1² = 4 + 9 + 1 = 14. So i = 3.”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#counting-sort-when-elements-are-small-integers",
+    "href": "slides/04_wed_sorting_lowerbound.html#counting-sort-when-elements-are-small-integers",
+    "title": "The Sorting Lower Bound",
+    "section": "Counting Sort: When Elements are Small Integers",
+    "text": "Counting Sort: When Elements are Small Integers\nIdea: If elements are integers in range \\([0, k]\\), count occurrences!"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#solution-4",
-    "href": "slides/03_mon_invariants.html#solution-4",
-    "title": "The Invariant Detective",
-    "section": "Solution 4",
-    "text": "Solution 4\n\\(2^2 + 3^2 + 1^2 = 4 + 9 + 1 = 14\\)\nSo i = 3 (about to process index 3).\nInvariant: At iteration \\(i\\), total = sum of squares of arr[0:i]."
+    "objectID": "slides/04_wed_sorting_lowerbound.html#counting-sort-in-action",
+    "href": "slides/04_wed_sorting_lowerbound.html#counting-sort-in-action",
+    "title": "The Sorting Lower Bound",
+    "section": "Counting Sort in Action",
+    "text": "Counting Sort in Action\n\n\n\n\n\n\nRunning time: \\(O(n + k)\\)\nIf \\(k = O(n)\\), this is \\(O(n)\\)—linear time!"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#puzzle-5",
-    "href": "slides/03_mon_invariants.html#puzzle-5",
-    "title": "The Invariant Detective",
-    "section": "Puzzle 5",
-    "text": "Puzzle 5\ndef mystery5(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\nFrozen state: lo = 5, hi = 9, target = 72\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n95\n99\n103\n110\n125\n142\n\n\n\nQ1: What just happened? Q2: State the invariant."
+    "objectID": "slides/04_wed_sorting_lowerbound.html#the-catch",
+    "href": "slides/04_wed_sorting_lowerbound.html#the-catch",
+    "title": "The Sorting Lower Bound",
+    "section": "The Catch",
+    "text": "The Catch\nCounting sort requires:\n\nElements must be integers (or convertible to integers)\nRange \\(k\\) must be known and reasonable\nUses \\(O(k)\\) extra space\n\nNot a general-purpose sort—but incredibly useful when it applies!"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#solution-5",
-    "href": "slides/03_mon_invariants.html#solution-5",
-    "title": "The Invariant Detective",
-    "section": "Solution 5",
-    "text": "Solution 5\n\nWe’re searching for 72\nlo = 5, hi = 9 means we’re looking in arr[5:10] = [23, 38, 56, 72, 91]\nPrevious mid was 4 (value 16 &lt; 72), so we set lo = 5\n\nInvariant: If target is in arr, then target is in arr[lo:hi+1].\n\n“We narrowed from the full array to indices 5-9. The invariant says: if 72 exists, it’s in this range. (And it is — at index 8.)”"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#other-linear-time-sorts",
+    "href": "slides/04_wed_sorting_lowerbound.html#other-linear-time-sorts",
+    "title": "The Sorting Lower Bound",
+    "section": "Other Linear-Time Sorts",
+    "text": "Other Linear-Time Sorts\n\n\n\nAlgorithm\nConstraint\nTime\n\n\n\n\nCounting Sort\nIntegers in \\([0, k]\\)\n\\(O(n + k)\\)\n\n\nRadix Sort\nFixed-width integers\n\\(O(d \\cdot n)\\)\n\n\nBucket Sort\nUniformly distributed\n\\(O(n)\\) expected\n\n\n\nAll exploit extra structure in the input."
   },
   {
-    "objectID": "slides/03_mon_invariants.html#debugging-with-invariants",
-    "href": "slides/03_mon_invariants.html#debugging-with-invariants",
-    "title": "The Invariant Detective",
-    "section": "Debugging with Invariants",
-    "text": "Debugging with Invariants\nWhen your code doesn’t work:\n\nState your invariant (what should be true?)\nPrint the state at each iteration\nFind where the invariant breaks\n\nThe bug is where reality diverges from the invariant."
+    "objectID": "slides/04_wed_sorting_lowerbound.html#pythons-timsort",
+    "href": "slides/04_wed_sorting_lowerbound.html#pythons-timsort",
+    "title": "The Sorting Lower Bound",
+    "section": "Python’s Timsort",
+    "text": "Python’s Timsort\nPython’s built-in sorted() uses Timsort:\n\nHybrid of merge sort and insertion sort\nExploits “runs” of already-sorted data\n\\(O(n \\log n)\\) worst case\n\\(O(n)\\) on nearly-sorted data\nStable\n\nIn practice: Just use sorted()!\n\n“Timsort is named after Tim Peters, who designed it for Python in 2002. It’s now used in Java, Android, and many other systems.”"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#the-invariant-as-compass",
-    "href": "slides/03_mon_invariants.html#the-invariant-as-compass",
-    "title": "The Invariant Detective",
-    "section": "The Invariant as Compass",
-    "text": "The Invariant as Compass\n\n“When lost, check the invariant.”\n\n\nUnsure about an edge case? → Does it maintain the invariant?\nCode gives wrong answer? → Where does the invariant fail?\nWriting new code? → What invariant do I want to maintain?"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#why-this-matters",
+    "href": "slides/04_wed_sorting_lowerbound.html#why-this-matters",
+    "title": "The Sorting Lower Bound",
+    "section": "Why This Matters",
+    "text": "Why This Matters\n\nLower bounds tell us when to stop searching for better algorithms\nThe decision tree model appears again in:\n\nWeek 8: Binary search trees\nWeek 8: Wordle decision trees\n\nDivide-and-conquer analysis (recurrences) applies to:\n\nPA1: Closest pair\nLater: Quick sort, binary search"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#what-we-learned",
-    "href": "slides/03_mon_invariants.html#what-we-learned",
-    "title": "The Invariant Detective",
-    "section": "What We Learned",
-    "text": "What We Learned\n\nInvariants are discoverable from frozen states\nThe pattern: “At iteration \\(i\\), [variable] holds [property of data seen so far]”\nCommon types: accumulation, extremum, counting, search range, partition\nThe detective method: Look at loop variable, look at accumulated state, state the relationship"
+    "objectID": "slides/04_wed_sorting_lowerbound.html#what-we-learned-this-week",
+    "href": "slides/04_wed_sorting_lowerbound.html#what-we-learned-this-week",
+    "title": "The Sorting Lower Bound",
+    "section": "What We Learned This Week",
+    "text": "What We Learned This Week\nMonday: Merge Sort + Recurrence Forms\n\nDesigned merge sort, saw \\(T(n) = 2T(n/2) + O(n)\\)\nFive recurrence patterns and their solutions\nMatching algorithms to recurrences\n\nTuesday Video: Solving Recurrences\n\nExpansion method with formal proofs\nRecursion tree method\nProved merge sort is \\(O(n \\log n)\\)\n\nWednesday: Lower Bounds\n\n\\(\\Omega(n \\log n)\\) is optimal for comparison sorts\nDecision tree argument\nNon-comparison sorts can break the barrier"
   },
   {
-    "objectID": "slides/03_mon_invariants.html#next-time",
-    "href": "slides/03_mon_invariants.html#next-time",
-    "title": "The Invariant Detective",
-    "section": "Next Time",
-    "text": "Next Time\nRecursion: When the function calls itself.\nSpoiler: Recursion has invariants too — we call them recursive properties."
+    "objectID": "slides/04_wed_sorting_lowerbound.html#looking-ahead",
+    "href": "slides/04_wed_sorting_lowerbound.html#looking-ahead",
+    "title": "The Sorting Lower Bound",
+    "section": "Looking Ahead",
+    "text": "Looking Ahead\n\nPA1: Due Feb 8 — apply divide-and-conquer to closest pair\nEX1: This week — covers analysis, loop invariants\nNext week: The dictionary trick — \\(O(n^2) \\to O(n)\\) transformations"
+  },
+  {
+    "objectID": "slides/04_wed_sorting_lowerbound.html#questions",
+    "href": "slides/04_wed_sorting_lowerbound.html#questions",
+    "title": "The Sorting Lower Bound",
+    "section": "Questions?",
+    "text": "Questions?\n\nGood luck on EX1!"
+  },
+  {
+    "objectID": "slides/11_mon_buildheap.html#announcements",
+    "href": "slides/11_mon_buildheap.html#announcements",
+    "title": "(min)Heap: buildHeap",
+    "section": "Announcements",
+    "text": "Announcements\n\nPA3 due Week 12"
+  },
+  {
+    "objectID": "slides/11_mon_buildheap.html#review",
+    "href": "slides/11_mon_buildheap.html#review",
+    "title": "(min)Heap: buildHeap",
+    "section": "Review",
+    "text": "Review\n\nThis image reminds us of a _______________, which is one way we can implement ADT ___________________, whose functions include _____________ and _______________, with running times ____________________.\n\nHeap (or complete binary tree with heap-order property). Priority queue. insert and remove_min. O(log n) each."
+  },
+  {
+    "objectID": "slides/11_mon_buildheap.html#minheap-buildheap",
+    "href": "slides/11_mon_buildheap.html#minheap-buildheap",
+    "title": "(min)Heap: buildHeap",
+    "section": "(min)Heap: buildHeap",
+    "text": "(min)Heap: buildHeap\n\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  B\n  \n  \n  U\n  \n  I\n  \n  \n  L\n  \n  D\n  \n  H\n  \n  E\n  \n  \n  A\n  \n  P\n  \n  N\n  \n  O\n  \n  W\n\n  \n  \n  \n  W\n  0\n\n  \n  \n  B\n  1\n  \n  \n  U\n  2\n  \n  \n  I\n  3\n  \n  \n  L\n  4\n  \n  \n  D\n  5\n  \n  \n  H\n  6\n  \n  \n  E\n  7\n  \n  \n  A\n  8\n  \n  \n  P\n  9\n  \n  \n  N\n  10\n  \n  \n  O\n  11\n  \n  \n  \n  12\n\n\n\nThe array spells BUILD HEAP NOW. W is at index 0 to emphasize this comes to us as a plain array. This is NOT a heap — it’s just an arbitrary array stored in a complete binary tree shape. The question is: how do we turn this into a valid min-heap?"
+  },
+  {
+    "objectID": "slides/11_mon_buildheap.html#minheap-buildheap-3-alternatives",
+    "href": "slides/11_mon_buildheap.html#minheap-buildheap-3-alternatives",
+    "title": "(min)Heap: buildHeap",
+    "section": "(min)Heap: buildHeap — 3 alternatives",
+    "text": "(min)Heap: buildHeap — 3 alternatives\n\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  B\n  \n  \n  U\n  \n  I\n  \n  \n  L\n  \n  D\n  \n  H\n  \n  E\n  \n  \n  A\n  \n  P\n  \n  N\n  \n  O\n  \n  W\n\n  \n  \n  —\n  0\n\n  \n  \n  B\n  1\n  \n  \n  U\n  2\n  \n  I\n  3\n  \n  \n  L\n  4\n  \n  D\n  5\n  \n  H\n  6\n  \n  E\n  7\n  \n  \n  A\n  8\n  \n  P\n  9\n  \n  N\n  10\n  \n  O\n  11\n  \n  W\n  12\n\n\n1. Sort the array\n\n\n2.\ndef build_heap(self):\n    for i in range(2, self.size + 1):\n        self._heapify_up(i)\n\n3.\ndef build_heap(self):\n    for i in range(self._parent(self.size), 0, -1):\n        self._heapify_down(i)\n\n\nThree ways to build a heap from an arbitrary array. (1) Sort — gives a valid heap but costs O(n log n). (2) Repeated heapify_up from index 2 to size — also O(n log n). (3) Heapify_down from last parent down to root — this is O(n)! We’ll prove this next."
+  },
+  {
+    "objectID": "slides/11_mon_buildheap.html#minheap-buildheap-1",
+    "href": "slides/11_mon_buildheap.html#minheap-buildheap-1",
+    "title": "(min)Heap: buildHeap",
+    "section": "(min)Heap: buildHeap",
+    "text": "(min)Heap: buildHeap\n\n\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  A\n  \n  \n  B\n  \n  E\n  \n  \n  L\n  \n  D\n  \n  H\n  \n  I\n  \n  \n  U\n  \n  P\n  \n  N\n  \n  O\n  \n  W\n\n  \n  \n  —\n  0\n\n  \n  \n  A\n  1\n  \n  \n  B\n  2\n  \n  E\n  3\n  \n  \n  L\n  4\n  \n  D\n  5\n  \n  H\n  6\n  \n  I\n  7\n  \n  \n  U\n  8\n  \n  P\n  9\n  \n  N\n  10\n  \n  O\n  11\n  \n  W\n  12\n\n\nThm: The running time of buildHeap on an array of size \\(n\\) is ________.\n\nInstead of focusing specifically on running time, we observe that the time is proportional to the sum of the heights of all of the nodes, which we denote by \\(S(h)\\).\n\\(S(h) = \\underline{\\hspace{8em}}\\)\n\\(S(0) = \\underline{\\hspace{4em}}\\)\n\n\n\\(\\text{Soln } S(h) = \\underline{\\hspace{8em}}\\)"
+  },
+  {
+    "objectID": "slides/11_mon_buildheap.html#proof-of-solution-to-the-recurrence",
+    "href": "slides/11_mon_buildheap.html#proof-of-solution-to-the-recurrence",
+    "title": "(min)Heap: buildHeap",
+    "section": "Proof of solution to the recurrence:",
+    "text": "Proof of solution to the recurrence:\nGiven: \\(S(h) = 2S(h-1) + h, S(0) = 0\\)\nShow: \\(S(h) = 2^{(h+1)} - h - 2\\)\n \n \nBut running times are reported in terms of \\(n\\), the number of nodes…\n\nS(h) = 2·S(h-1) + h. S(0) = 0. Solution: S(h) = 2^(h+1) - h - 2. Proof by induction. Since n = 2^(h+1) - 1, S(h) = n - h - 1 = n - log(n+1) = O(n). Therefore buildHeap (approach 3) runs in O(n), not O(n log n)."
+  },
+  {
+    "objectID": "slides/11_mon_buildheap.html#minheap-heapsort",
+    "href": "slides/11_mon_buildheap.html#minheap-heapsort",
+    "title": "(min)Heap: buildHeap",
+    "section": "(min)Heap: heapSort",
+    "text": "(min)Heap: heapSort\n\n\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  A\n  \n  \n  B\n  \n  E\n  \n  \n  L\n  \n  D\n  \n  H\n  \n  I\n  \n  \n  U\n  \n  P\n  \n  N\n  \n  O\n  \n  W\n\n  \n  1\n  2\n  3\n\n  \n  \n  —\n  0\n\n  \n  \n  A\n  1\n  \n  \n  B\n  2\n  \n  E\n  3\n  \n  \n  L\n  4\n  \n  D\n  5\n  \n  H\n  6\n  \n  I\n  7\n  \n  \n  U\n  8\n  \n  P\n  9\n  \n  N\n  10\n  \n  O\n  11\n  \n  W\n  12\n\n\n\n\n\n\n\n\n\nRunning time?\n\n \n\n\n\nWhy do we need another sorting algorithm?\n\n \n\n\n\nHeapSort: (1) buildHeap — O(n). (2) Repeatedly remove_min, placing each min at the end of the array — n times O(log n). (3) Total: O(n log n). Why another sort? HeapSort is in-place (no extra array needed, unlike merge sort) and worst-case O(n log n) (unlike quicksort). Trade-off: poor cache performance compared to quicksort in practice."
   },
   {
     "objectID": "slides/10_wed_heaps.html#announcements",
@@ -1819,26 +1875,18 @@
     "text": "Set up testing framework within marimo\nSet up autograder for PL programming assignments"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "objectID": "memorymar18.html",
+    "href": "memorymar18.html",
+    "title": "Shape Angles Groups Notes",
     "section": "",
-    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
+    "text": "we were working on Kali, and had arrived at a list of symmetries that made sense in the context of the problem. There are working implementations, but many of them are broken. I wonder if our whole recent context is lost. It’s going to be difficult to reconstruct the next steps that you suggested. Let me check the memory files and the current working directories for context on the Kali project.\nGlobpattern: “**/*” Found 2 files Bash List contents of talks repo and KJ server directories IN ls /Users/cheeren/Repos/talks/ 2&gt;/dev/null && ls /tmp/KJ/server/ 2&gt;/dev/null && ls /private/tmp/KJ/server/ 2&gt;/dev/null\nOUT KJ kali references spiro spirograph wccce2026 wids2026 gizmoapp_server gizmoapp_server Bash List kali directory contents IN ls /Users/cheeren/Repos/talks/kali/ && echo “—” && ls /tmp/KJ/server/ 2&gt;/dev/null\nOUT images index.html sketch_kali.js slides.qmd theme.scss wildflowers.jpg — gizmoapp_server Read sketch_kali.js Good - I can see the full current state of the code. Let me also check the slides for context on what was being discussed.\nRead slides.qmd Read index.html there are no slides for this project. The previous conversation context is indeed gone. But I’ve read the current sketch_kali.js in full, so let me reconstruct an honest assessment of where things stand.\nCurrent state of the 6 groups:\nGroup n reflect slices Likely status p6m 6 true 12 (×30°) Probably working (the original) p6 6 false 6 (×60°) Probably working (same hex geometry) p4m 4 true 8 (×45°) Probably working (sq lattice, full coverage) p4 4 false 4 (×90°) Probably working (sq lattice, full coverage) p3m1 3 true 6 (×60°) Suspect — hex lattice spacing may be wrong for 3-fold period p3 3 false 3 (×120°) Suspect — same hex grid spacing issue The two specific things I’d flag without seeing it run:\nLattice period for p3/p3m1: the translation lattice for a 3-fold group is larger than for 6-fold. The hex grid uses the same dx = 1.5 * triSize for all hex groups — this is correct for p6/p6m but may produce visible gaps or wrong-scale tiling for p3/p3m1.\nUV flip logic for p3m1: the mirror = g.reflect && (k % 2 === 1) alternation may not produce the correct reflection symmetry for p3m1 (as opposed to p31m, which has reflections in different positions).\nCan you tell me:\nWhich specific groups look broken when you open it in a browser? What the visual artifact is (gaps? wrong pattern? seams)? That will let me quickly reconstruct the plan rather than guess at it. Alternatively, if you remember any of the groups we were adding (beyond the current 6), that would help too.\nGot it — the slides.qmd is just a placeholder. This is a standalone interactive demo, not a talk. Let me save that to memory.\nWrite kali.md 15 lines Edit MEMORY.md Edit failed Read MEMORY.md Edit MEMORY.md Added 7 lines Noted and saved. So — back to the question: do you want to open it in the browser and describe what looks wrong, or should I work through the code to identify the likely bugs in the broken groups?\nsketch_kali.js i think i can almost recreate the list of tilings i’d like you to recreate: 1) 60-60-60: p3, p31m, p3m1 2) 30-60-90: p6, p6m 3) 45-45-90: p4? p4m? idk 4) 120 - 30-30: center to 2 vertices of an equilateral triangle 5) kite: center to 2-medians and a vertex of an equilateral triangle.\nred triangle on the base image determines the colors of the tilings. This is a good foundation to reconstruct from. Let me map it out clearly:\nWhat you’re describing is 5 source triangle shapes, each producing different symmetry groups.\n\nShape Angles Groups Notes\n1 Equilateral 60-60-60 p3, p31m, p3m1 Current code has p3m1 but not p31m 2 Right 30-60-90 p6, p6m In code but wrong source triangle shape (currently 30-75-75 isoceles) 3 Right isoceles 45-45-90 p4, p4m Same issue — isoceles not right-angle 4 Obtuse isoceles 120-30-30 ??? Current p3 uses this fan angle — but which group did we assign? 5 Kite quadrilateral ??? Not in current code Two things I can confirm from the code:\np31m is missing — the GROUPS object has p3m1 but not p31m (they differ in which 3-fold centers lie on mirror lines) Source triangles are all isoceles — the code always uses texRadius for both P1 and P2, so the red triangle is always isoceles. For 30-60-90 and 45-45-90 you need P1 and P2 at different distances from texCenter The murkier ones are items 4 and 5. For item 4, did we decide that was p3 (pure 3-fold rotation, no mirrors, obtuse pie-slice source)? And for item 5 (the kite) — do you remember which wallpaper group or what the symmetry operation was? That one seems to require a fundamentally different tile-drawing approach.\nfor p3, why were we using the obtuse triangles at all? We weren’t — it’s an artifact of the fan implementation.\nThe fan approach always produces an isoceles source triangle with the apex at the tile center and apex angle = 360°/n. For p3, n=3, so 360°/3 = 120°. The code just mechanically does that, producing the obtuse 120-30-30 triangle.\nBut p3’s actual fundamental domain is equilateral (60-60-60). The obtuse version was never a deliberate choice — it fell out of reusing the same drawing code for all groups.\nSo the right fix for p3 (and p31m, p3m1) is to use a 60-60-60 equilateral source triangle, which means the tile center is not a vertex of the source triangle — it’s outside it. That breaks the current assumption where texCenter is always the apex of the fan. For those groups, the source triangle parameterization needs to change entirely.\nthe algorithm should always be to tile space using the chosen shape and symmetry, and then texture the shapes based on what’s in the red triangle. Yes — that’s the right way to think about it. It makes the algorithm clean and consistent:\nTile space with the chosen shape (equilateral, 30-60-90, etc.) using the symmetry group’s lattice and operations Texture each tile by mapping its vertices to the corresponding points of the red triangle in the source image The consequence: the red triangle’s shape should always match the tile shape. For p3/p31m/p3m1, the red triangle is equilateral. For p6/p6m it’s a 30-60-90 right triangle. For p4/p4m it’s a 45-45-90 right triangle.\nThe current code breaks this principle. It uses texCenter as a fan apex and texRadius for both P1 and P2 — so the red triangle is always isoceles regardless of group. That’s the root bug.\nThe fix is to reparameterize the source triangle as three independent control points (not apex + two equidistant radial points), where the shape of those three points matches the tile shape for the active group. Then UV mapping is just barycentric: canonical tile vertices → red triangle vertices.\nThis also resolves the grid spacing issue naturally — once you know the tile shape and size, the lattice vectors follow from geometry, not from the current one-size-fits-all triSize.\nShall I start with this rearchitecting? The most logical order would be:\nReparameterize the source triangle per group Fix drawTile() to use correct vertex UVs per group Fix grid spacing per group Add the missing p31m just an addendum: the 30/30/120 triangle and kite are also just tilings inside the equilateral grid. I don’t think we have too much freedom w symmetry there – they are all sort of like p3, right? Right — because the 120-30-30 and kite are both subdivisions of the equilateral triangle:\n1 equilateral = 3 × (120-30-30) — connect centroid to each vertex 1 equilateral = 6 × kites — connect centroid to each vertex AND each edge midpoint So they live on the same hexagonal lattice. The 120-30-30 tiles with 3-fold rotation (essentially p3 — the geometry doesn’t allow anything richer without mirrors). The kite has one axis of bilateral symmetry baked in, so it behaves like p3 with a single reflection — but the reflection is determined by the kite’s geometry, not a free choice.\nSo the full taxonomy collapses to something like:\nLattice Tile shape Modes Hex 60-60-60 equilateral p3, p31m, p3m1 Hex 120-30-30 (⅓ equilateral) p3 only Hex kite (⅙ equilateral) p3 + forced reflection Hex 30-60-90 p6, p6m Square 45-45-90 p4, p4m Items 4 and 5 don’t need separate group names — they’re just different source triangle shapes that happen to live on the hex grid with constrained symmetry.\nDoes that match your intuition? If so, the implementation plan is clear: 5 tile shapes, 9 modes total.\nyes, except i was imagining that the kite was a quadrilateral (which is what’s interesting) – center to median to vertex to median to center. Got it — the kite is:\nO → M₁ → V → M₂ → O Where O is the equilateral centroid, V is a vertex, M₁ and M₂ are the midpoints of the two sides meeting at V.\nThat’s what makes it interesting — it’s the only non-triangular tile in your set. Six kites fill the equilateral, and the kite has a built-in mirror axis (the O→V diagonal), so the two triangular halves of the kite are reflections of each other.\nFor implementation this means:\nThe red shape on the source image is a quadrilateral, not a triangle Drawing it requires splitting into 2 triangles (O, M₁, V) and (O, V, M₂) — but the UV mapping ties them together across the shared O→V edge so the reflection is seamless The tiling is still the same hex lattice, just with 6 kites per equilateral instead of 1 equilateral or 3 obtuse triangles So the updated taxonomy:\nTile shape Type Modes 60-60-60 equilateral triangle p3, p31m, p3m1 120-30-30 (⅓ equilateral) triangle p3-only kite (⅙ equilateral) quadrilateral p3 + forced mirror 30-60-90 triangle p6, p6m 45-45-90 triangle p4, p4m Ready to start implementing when you are.\n3 kites fill the equilateral You’re right, sorry. The equilateral has 3 vertices, each gives one kite (O, M₁, V, M₂), so 3 kites = 1 equilateral. Same area as the 120-30-30 triangle — just a different shape for the same ⅓ subdivision.\nUpdated:\nTile shape Fraction of equilateral Modes 60-60-60 equilateral 1 p3, p31m, p3m1 120-30-30 (centroid + 2 vertices) ⅓ p3-only kite (centroid + vertex + 2 edge midpoints) ⅓ p3 + forced mirror 30-60-90 — (different lattice scale) p6, p6m 45-45-90 — p4, p4m The 120-30-30 and kite are the same ⅓ subdivision of the equilateral, just cut differently — one along vertex-to-vertex lines, the other along vertex-to-midpoint lines.\nidk what you mean by “forced mirror” for the kite – the red shape will be a kite whose coloring is asymmetric Right — the kite is just the tile shape, not a constraint on the symmetry. The coloring is whatever the source image has in that kite region, no reflection applied. So it’s the same as the 120-30-30 case: pure 3-fold rotation, p3-only.\nSimplified:\nTile shape Symmetry Modes 60-60-60 equilateral hex p3, p31m, p3m1 120-30-30 triangle hex p3 kite hex p3 30-60-90 triangle hex p6, p6m 45-45-90 triangle square p4, p4m The only distinction between 120-30-30 and kite is the tile shape — both are p3, both are ⅓ of the equilateral. The kite is interesting purely because the quadrilateral source region samples the image differently.\nok, now i think i understand – for the kite and obtuse, we COULD use any of the p3 symmetries because they’re really just different ways of creating the original 60/60/60. SO, i’d like for the kite to be p3m1 and the obtuse to be p3. That makes sense — since all three (equilateral, kite, obtuse) reconstruct the same equilateral grid, you can freely assign which p3-family symmetry each uses. The final list:\nTile shape Symmetry 60-60-60 equilateral p3, p31m, p3m1 120-30-30 obtuse p3 kite p3m1 30-60-90 right p6, p6m 45-45-90 right isoceles p4, p4m 9 modes total across 5 tile shapes. Ready to start rewriting sketch_kali.js?\nYES! do we need to do that a little at a time so you don’t go over on tokens? yes please implement API Error: Claude’s response exceeded the 32000 output token maximum. To configure this behavior, set the CLAUDE_CODE_MAX_OUTPUT_TOKENS environment variable."
   },
   {
-    "objectID": "index.html#weekly-announcement",
-    "href": "index.html#weekly-announcement",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "Weekly announcement",
-    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\nHW3",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
+    "objectID": "posts/00_welcome/index.html",
+    "href": "posts/00_welcome/index.html",
+    "title": "Welcome to DSCI 221!",
+    "section": "",
+    "text": "Welcome to DSCI 221: Data Structures and Algorithms for Data Science!\nIn this course, we’ll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what’s the cheapest flight to Tokyo?), you’ll develop the algorithmic thinking that separates good programmers from great ones.\nGetting started:\n\nRead the syllabus for course policies and requirements\nCheck the schedule on the home page to see what’s coming up\nCome to class ready to think about puzzles!\n\nSee you in class!"
   },
   {
     "objectID": "syllabus.html",
@@ -1962,11 +2010,26 @@
     ]
   },
   {
-    "objectID": "posts/00_welcome/index.html",
-    "href": "posts/00_welcome/index.html",
-    "title": "Welcome to DSCI 221!",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
     "section": "",
-    "text": "Welcome to DSCI 221: Data Structures and Algorithms for Data Science!\nIn this course, we’ll explore how the right data structure can turn an impossible problem into a trivial one. From the magic of hash tables (how does Shazam identify a song in milliseconds?) to graph algorithms (what’s the cheapest flight to Tokyo?), you’ll develop the algorithmic thinking that separates good programmers from great ones.\nGetting started:\n\nRead the syllabus for course policies and requirements\nCheck the schedule on the home page to see what’s coming up\nCome to class ready to think about puzzles!\n\nSee you in class!"
+    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "index.html#weekly-announcement",
+    "href": "index.html#weekly-announcement",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "Weekly announcement",
+    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\nHW3",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
   },
   {
     "objectID": "LICENSE.html",
@@ -3533,193 +3596,256 @@
     "text": "Practice\n\nIs this tree AVL-balanced? (Check every node’s balance factor)\n\n        50\n       /  \\\n      30   70\n     /    /  \\\n    20   60   90\n   /\n  10\n\nIf not, which rotation(s) would fix it?\nAfter inserting 5, 3, 7, 2, 4, 6, 8 into an empty AVL tree, what does it look like?\n\n(Hint: Use the visualization tool to check!)"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#two-methods-of-speculating",
-    "href": "slides/04_wed_sorting_lowerbound.html#two-methods-of-speculating",
-    "title": "The Sorting Lower Bound",
-    "section": "Two Methods of Speculating",
-    "text": "Two Methods of Speculating\n\nExpansion method: Unroll the recurrence, find the pattern\nRecursion tree method: Visualize as a tree, sum the work\n\n\nThis is more of a sketch than a certainty\ncovered in enough detail in Tuesday video\n\nBoth give the same asymptotic answer. Choose whichever works for you!"
+    "objectID": "slides/03_mon_invariants.html#the-scene",
+    "href": "slides/03_mon_invariants.html#the-scene",
+    "title": "The Invariant Detective",
+    "section": "The Scene",
+    "text": "The Scene\nAn algorithm was running, but we paused it mid-execution.\nYour job: figure out what it was doing and where it stopped.\n\n“Think of this like a crime scene investigation. The clues are in the state.”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#the-idea",
-    "href": "slides/04_wed_sorting_lowerbound.html#the-idea",
-    "title": "The Sorting Lower Bound",
-    "section": "The Idea",
-    "text": "The Idea\nUnroll the recurrence step by step until you see a pattern.\nThen apply the pattern to the base case to terminate."
+    "objectID": "slides/03_mon_invariants.html#puzzle-1-find-maximum-1",
+    "href": "slides/03_mon_invariants.html#puzzle-1-find-maximum-1",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 1: Find Maximum",
+    "text": "Puzzle 1: Find Maximum\n\n\ndef mystery1(arr):\n    result = arr[0]\n    for i in range(1, len(arr)):\n        if arr[i] &gt; result:\n            result = arr[i]\n    return result\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n7\n3\n9\n2\n5\n1\n8\n\n\n\nVariables: result = 9\n\nQ1: What iteration is i about to start?\nQ2: What does result represent?\n\n“Pause and think. What value of i would give us result = 9?”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#example-1",
-    "href": "slides/04_wed_sorting_lowerbound.html#example-1",
-    "title": "The Sorting Lower Bound",
-    "section": "Example 1:",
-    "text": "Example 1:\n\\(T(n) = T(n-1) + c\\)"
+    "objectID": "slides/03_mon_invariants.html#the-solution",
+    "href": "slides/03_mon_invariants.html#the-solution",
+    "title": "The Invariant Detective",
+    "section": "The Solution",
+    "text": "The Solution\n\n\n\n\n\n\n\n\n\n\ni = 3 (about to examine index 3)\nresult = 9 = maximum of arr[0:3] = maximum of [7, 3, 9]\n\nThe Invariant: At iteration \\(i\\), result holds the maximum of arr[0:i]."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#example-2",
-    "href": "slides/04_wed_sorting_lowerbound.html#example-2",
-    "title": "The Sorting Lower Bound",
-    "section": "Example 2:",
-    "text": "Example 2:\n(assume \\(n = 2^k\\) for simplicity):\n\\(T(n) = T(n/2) + c\\)"
+    "objectID": "slides/03_mon_invariants.html#why-this-works",
+    "href": "slides/03_mon_invariants.html#why-this-works",
+    "title": "The Invariant Detective",
+    "section": "Why This Works",
+    "text": "Why This Works\nThe invariant tells us:\n\nAt i = 1: result = max of arr[0:1] = max of [7] = 7 ✓\nAt i = 2: result = max of arr[0:2] = max of [7, 3] = 7 ✓\nAt i = 3: result = max of arr[0:3] = max of [7, 3, 9] = 9 ✓\n\nThe frozen state is consistent with the invariant at i = 3."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#example-3",
-    "href": "slides/04_wed_sorting_lowerbound.html#example-3",
-    "title": "The Sorting Lower Bound",
-    "section": "Example 3:",
-    "text": "Example 3:\n(assume \\(n = 2^k\\) for simplicity)::\n\\(T(n) = 2T(n/2) + 1\\)"
+    "objectID": "slides/03_mon_invariants.html#puzzle-2-counting-1",
+    "href": "slides/03_mon_invariants.html#puzzle-2-counting-1",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 2: Counting",
+    "text": "Puzzle 2: Counting\n\n\ndef mystery2(arr):\n    count = 0\n    for i in range(len(arr)):\n        if arr[i] &gt; 5:\n            count += 1\n    return count\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n4\n8\n2\n7\n1\n9\n3\n\n\n\nVariables: count = 2\n\nQ1: What iteration is i about to start?\nQ2: State the invariant.\n\n“Which elements &gt; 5 have we seen? 8 at index 1, 7 at index 3. That’s 2 elements. So i = 4.”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#speculation-is-not-a-proof",
-    "href": "slides/04_wed_sorting_lowerbound.html#speculation-is-not-a-proof",
-    "title": "The Sorting Lower Bound",
-    "section": "Speculation is not a proof!!",
-    "text": "Speculation is not a proof!!\nClaim: The running time of merge-sort on data of size \\(n\\) is \\(T(n) = O(n\\log n)\\).\nProof: Prove that there is a constant \\(c\\) so that \\(T(n) \\leq cn\\log n\\) for sufficiently large \\(n\\).\n\\(T(n) = 2T(n/2) + n, n &gt; 1\\)\nBy IH, \\(T(n)\\leq 2\\cdot c(n/2)T(\\log n/2) + n\\)\n\\(=cn\\log n - cn + n\\)\n\\(\\leq cn\\log n\\) when ______"
+    "objectID": "slides/03_mon_invariants.html#the-solution-1",
+    "href": "slides/03_mon_invariants.html#the-solution-1",
+    "title": "The Invariant Detective",
+    "section": "The Solution",
+    "text": "The Solution\n\n\n\n\n\n\n\n\n\n\nElements &gt; 5 in arr[0:4] = [4, 8, 2, 7]: 8 and 7 → count = 2\ni = 4\n\nThe Invariant: At iteration \\(i\\), count equals the number of elements &gt; 5 in arr[0:i]."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#can-we-do-better",
-    "href": "slides/04_wed_sorting_lowerbound.html#can-we-do-better",
-    "title": "The Sorting Lower Bound",
-    "section": "Can We Do Better?",
-    "text": "Can We Do Better?\nWe’ve seen:\n\nInsertion sort: \\(O(n^2)\\) (PEX1, HW1)\nSelection sort: \\(O(n^2)\\)\nMerge sort: \\(O(n \\log n)\\)\ncsort: \\(O(n)\\) (HW1)\n\nQuestion: Is \\(O(n \\log n)\\) the best we can do?\nOr is there some clever algorithm that sorts in \\(O(n)\\)?"
+    "objectID": "slides/03_mon_invariants.html#puzzle-3-partitioning-1",
+    "href": "slides/03_mon_invariants.html#puzzle-3-partitioning-1",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 3: Partitioning",
+    "text": "Puzzle 3: Partitioning\n\n\ndef mystery3(arr):\n    pivot = arr[0]\n    left = 1\n    for right in range(1, len(arr)):\n        if arr[right] &lt; pivot:\n            arr[left], arr[right] = arr[right], arr[left]\n            left += 1\n    arr[0], arr[left - 1] = arr[left - 1], arr[0]\n    return left - 1\n\nOriginal: [5, 8, 2, 9, 1, 7, 3]\n\n\n\n0\n1\n2\n3\n4\n5\n6\n\n\n\n\n5\n2\n1\n9\n8\n7\n3\n\n\n\npivot = 5, left = 3\n\nQ1: What iteration is right about to start?\nQ2: Describe what’s in arr[1:left] and arr[left:right].\n\n“This is trickier. Notice: arr[1:3] = [2, 1] — both &lt; 5. arr[3:?] = ?”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#the-surprising-answer",
-    "href": "slides/04_wed_sorting_lowerbound.html#the-surprising-answer",
-    "title": "The Sorting Lower Bound",
-    "section": "The Surprising Answer",
-    "text": "The Surprising Answer\nTheorem: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nThis means:\n\nMerge sort is optimal\nNo comparison sort can do better\n\\(O(n \\log n)\\) is a fundamental barrier\n\n\n“This is one of the most beautiful results in CS: we can prove a lower bound on ALL possible algorithms, not just the ones we know about.”"
+    "objectID": "slides/03_mon_invariants.html#the-visualization",
+    "href": "slides/03_mon_invariants.html#the-visualization",
+    "title": "The Invariant Detective",
+    "section": "The Visualization",
+    "text": "The Visualization"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#the-key-idea",
-    "href": "slides/04_wed_sorting_lowerbound.html#the-key-idea",
-    "title": "The Sorting Lower Bound",
-    "section": "The Key Idea",
-    "text": "The Key Idea\nEvery comparison-based sort makes decisions by comparing pairs of elements:\nif arr[i] &lt; arr[j]:\n    ...\nelse:\n    ...\nWe can model the algorithm as a binary tree of decisions."
+    "objectID": "slides/03_mon_invariants.html#the-solution-2",
+    "href": "slides/03_mon_invariants.html#the-solution-2",
+    "title": "The Invariant Detective",
+    "section": "The Solution",
+    "text": "The Solution\n\nright = 5 (about to examine index 5, which has value 7)\narr[1:left] = arr[1:3] = [2, 1] — all &lt; pivot (5)\narr[left:right] = arr[3:5] = [9, 8] — all &gt;= pivot (5)\n\nThe Invariant (at iteration right):\n\narr[1:left] contains elements &lt; pivot\narr[left:right] contains elements &gt;= pivot\narr[right:] is unexamined\n\n\n“This is the partition step from quicksort! The invariant maintains two regions.”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#example-sorting-3-elements",
-    "href": "slides/04_wed_sorting_lowerbound.html#example-sorting-3-elements",
-    "title": "The Sorting Lower Bound",
-    "section": "Example: Sorting 3 Elements",
-    "text": "Example: Sorting 3 Elements\nSuppose we want to sort \\([v_1, v_2, v_3]\\).\n\n  \n  \n  v₁ &lt; v₂?\n\n  \n  \n  \n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  \n\n  \n  \n  \n\n  \n  \n  [__, __, __]\n\n  \n  \n  v₁ &lt; v₃?\n\n  \n  \n  [__, __, __]\n\n  \n  \n  v₂ &lt; v₃?\n\n  \n  \n  \n  \n  \n\n  \n  \n  [__, __, __]\n\n  \n  [__, __, __]\n\n  \n  [__, __, __]\n\n  \n  [__, __, __]"
+    "objectID": "slides/03_mon_invariants.html#how-to-find-invariants",
+    "href": "slides/03_mon_invariants.html#how-to-find-invariants",
+    "title": "The Invariant Detective",
+    "section": "How to Find Invariants",
+    "text": "How to Find Invariants\n\nLook at the loop variable: What does i (or right, etc.) represent?\nLook at the accumulated state: What has result, count, left captured so far?\nState the relationship: “At iteration \\(i\\), [variable] holds [property of arr[0:i]]”\nVerify: Does the frozen state match your invariant?"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#what-the-tree-represents",
-    "href": "slides/04_wed_sorting_lowerbound.html#what-the-tree-represents",
-    "title": "The Sorting Lower Bound",
-    "section": "What the Tree Represents",
-    "text": "What the Tree Represents\n\nInternal nodes: Comparisons\nEdges: Answers (yes/no, or \\(&lt;\\) / \\(\\geq\\))\nLeaves: sorted ordering of the elements\nHeight: running time of the algorithm\n\nNote:\n\nThere must be a leaf (endpoint) for each ordering of the elements\nthe tree itself is an encoding of an algorithm"
+    "objectID": "slides/03_mon_invariants.html#common-invariant-patterns",
+    "href": "slides/03_mon_invariants.html#common-invariant-patterns",
+    "title": "The Invariant Detective",
+    "section": "Common Invariant Patterns",
+    "text": "Common Invariant Patterns\n\n\n\nPattern\nExample Invariant\n\n\n\n\nAccumulation\n“total = sum of arr[0:i]”\n\n\nExtremum\n“max_val = maximum of arr[0:i]”\n\n\nCounting\n“count = number of X in arr[0:i]”\n\n\nSearch\n“If target exists, it’s in arr[lo:hi+1]”\n\n\nPartition\n“arr[0:left] satisfies P, arr[left:i] doesn’t”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#counting-leaves",
-    "href": "slides/04_wed_sorting_lowerbound.html#counting-leaves",
-    "title": "The Sorting Lower Bound",
-    "section": "Counting Leaves",
-    "text": "Counting Leaves\nHow many different rearrangements are possible for an \\(n\\) element list?\nEach ordering needs its own leaf (otherwise we’d give the same answer for different inputs).\nThe decision tree must have at least ______ leaves!"
+    "objectID": "slides/03_mon_invariants.html#puzzle-4",
+    "href": "slides/03_mon_invariants.html#puzzle-4",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 4",
+    "text": "Puzzle 4\n\n\ndef mystery4(arr):\n    total = 0\n    for i in range(len(arr)):\n        total += arr[i] * arr[i]\n    return total\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n\n\n\n\n2\n3\n1\n4\n5\n2\n3\n1\n\n\n\nVariables: total = 14\n\nQ1: What is i? Q2: State the invariant.\n\n“Think: 2² + 3² + 1² = 4 + 9 + 1 = 14. So i = 3.”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#a-question-for-later",
-    "href": "slides/04_wed_sorting_lowerbound.html#a-question-for-later",
-    "title": "The Sorting Lower Bound",
-    "section": "A Question for Later",
-    "text": "A Question for Later\nWhose answer we need now…\nA decision tree of height \\(h\\) has at most _______ leaves?"
+    "objectID": "slides/03_mon_invariants.html#solution-4",
+    "href": "slides/03_mon_invariants.html#solution-4",
+    "title": "The Invariant Detective",
+    "section": "Solution 4",
+    "text": "Solution 4\n\\(2^2 + 3^2 + 1^2 = 4 + 9 + 1 = 14\\)\nSo i = 3 (about to process index 3).\nInvariant: At iteration \\(i\\), total = sum of squares of arr[0:i]."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#connecting-height-to-comparisons",
-    "href": "slides/04_wed_sorting_lowerbound.html#connecting-height-to-comparisons",
-    "title": "The Sorting Lower Bound",
-    "section": "Connecting Height to Comparisons",
-    "text": "Connecting Height to Comparisons\nRecall: The height of the decision tree is the maximum number of comparisons in the worst case.\nIf the tree has height \\(h\\), then:\n\nAt most \\(2^h\\) leaves\nWe need at least \\(n!\\) leaves\n\nTherefore: \\(2^h \\geq n!\\)\nTaking logarithms: \\(h \\geq \\log_2(n!)\\)"
+    "objectID": "slides/03_mon_invariants.html#puzzle-5",
+    "href": "slides/03_mon_invariants.html#puzzle-5",
+    "title": "The Invariant Detective",
+    "section": "Puzzle 5",
+    "text": "Puzzle 5\ndef mystery5(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\nFrozen state: lo = 5, hi = 9, target = 72\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n\n\n\n\n2\n5\n8\n12\n16\n23\n38\n56\n72\n91\n95\n99\n103\n110\n125\n142\n\n\n\nQ1: What just happened? Q2: State the invariant."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#but-how-big-is-logn",
-    "href": "slides/04_wed_sorting_lowerbound.html#but-how-big-is-logn",
-    "title": "The Sorting Lower Bound",
-    "section": "But How Big is \\(\\log(n!)\\)?",
-    "text": "But How Big is \\(\\log(n!)\\)?\nClaim: \\(\\log(n!) = \\Omega(n\\log n)\\)"
+    "objectID": "slides/03_mon_invariants.html#solution-5",
+    "href": "slides/03_mon_invariants.html#solution-5",
+    "title": "The Invariant Detective",
+    "section": "Solution 5",
+    "text": "Solution 5\n\nWe’re searching for 72\nlo = 5, hi = 9 means we’re looking in arr[5:10] = [23, 38, 56, 72, 91]\nPrevious mid was 4 (value 16 &lt; 72), so we set lo = 5\n\nInvariant: If target is in arr, then target is in arr[lo:hi+1].\n\n“We narrowed from the full array to indices 5-9. The invariant says: if 72 exists, it’s in this range. (And it is — at index 8.)”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#the-result",
-    "href": "slides/04_wed_sorting_lowerbound.html#the-result",
-    "title": "The Sorting Lower Bound",
-    "section": "The Result",
-    "text": "The Result\nObservation: Any comparison-based sorting algorithm requires \\(\\Omega(n \\log n)\\) comparisons in the worst case.\nJustification:\n\nModel the algorithm as a decision tree\nThe tree needs at least \\(n!\\) leaves\nA tree with \\(\\geq n!\\) leaves has height \\(\\geq \\log_2(n!)\\)\n\\(\\log_2(n!) = \\Theta(n \\log n)\\)\nTherefore, worst-case comparisons \\(\\Omega(n \\log n)\\) ∎\n\n\n“This proof is remarkable: we didn’t analyze any specific algorithm. We proved a limit on ALL possible comparison-based sorting algorithms!”"
+    "objectID": "slides/03_mon_invariants.html#debugging-with-invariants",
+    "href": "slides/03_mon_invariants.html#debugging-with-invariants",
+    "title": "The Invariant Detective",
+    "section": "Debugging with Invariants",
+    "text": "Debugging with Invariants\nWhen your code doesn’t work:\n\nState your invariant (what should be true?)\nPrint the state at each iteration\nFind where the invariant breaks\n\nThe bug is where reality diverges from the invariant."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#what-this-means",
-    "href": "slides/04_wed_sorting_lowerbound.html#what-this-means",
-    "title": "The Sorting Lower Bound",
-    "section": "What This Means",
-    "text": "What This Means\n\n\n\nAlgorithm\nWorst Case\nOptimal?\n\n\n\n\nMerge Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nHeap Sort\n\\(O(n \\log n)\\)\nYes!\n\n\nQuick Sort\n\\(O(n^2)\\)\nNo (but avg is optimal)\n\n\nInsertion Sort\n\\(O(n^2)\\)\nNo\n\n\nSelection Sort\n\\(O(n^2)\\)\nNo\n\n\n\nMerge sort achieves the theoretical limit."
+    "objectID": "slides/03_mon_invariants.html#the-invariant-as-compass",
+    "href": "slides/03_mon_invariants.html#the-invariant-as-compass",
+    "title": "The Invariant Detective",
+    "section": "The Invariant as Compass",
+    "text": "The Invariant as Compass\n\n“When lost, check the invariant.”\n\n\nUnsure about an edge case? → Does it maintain the invariant?\nCode gives wrong answer? → Where does the invariant fail?\nWriting new code? → What invariant do I want to maintain?"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#a-loophole",
-    "href": "slides/04_wed_sorting_lowerbound.html#a-loophole",
-    "title": "The Sorting Lower Bound",
-    "section": "A Loophole",
-    "text": "A Loophole\nThe lower bound applies to comparison-based sorts.\nWhat if we don’t compare elements?"
+    "objectID": "slides/03_mon_invariants.html#what-we-learned",
+    "href": "slides/03_mon_invariants.html#what-we-learned",
+    "title": "The Invariant Detective",
+    "section": "What We Learned",
+    "text": "What We Learned\n\nInvariants are discoverable from frozen states\nThe pattern: “At iteration \\(i\\), [variable] holds [property of data seen so far]”\nCommon types: accumulation, extremum, counting, search range, partition\nThe detective method: Look at loop variable, look at accumulated state, state the relationship"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#counting-sort-when-elements-are-small-integers",
-    "href": "slides/04_wed_sorting_lowerbound.html#counting-sort-when-elements-are-small-integers",
-    "title": "The Sorting Lower Bound",
-    "section": "Counting Sort: When Elements are Small Integers",
-    "text": "Counting Sort: When Elements are Small Integers\nIdea: If elements are integers in range \\([0, k]\\), count occurrences!"
+    "objectID": "slides/03_mon_invariants.html#next-time",
+    "href": "slides/03_mon_invariants.html#next-time",
+    "title": "The Invariant Detective",
+    "section": "Next Time",
+    "text": "Next Time\nRecursion: When the function calls itself.\nSpoiler: Recursion has invariants too — we call them recursive properties."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#counting-sort-in-action",
-    "href": "slides/04_wed_sorting_lowerbound.html#counting-sort-in-action",
-    "title": "The Sorting Lower Bound",
-    "section": "Counting Sort in Action",
-    "text": "Counting Sort in Action\n\n\n\n\n\n\nRunning time: \\(O(n + k)\\)\nIf \\(k = O(n)\\), this is \\(O(n)\\)—linear time!"
+    "objectID": "slides/02_tue_invariants.html#from-monday",
+    "href": "slides/02_tue_invariants.html#from-monday",
+    "title": "Loop Invariants",
+    "section": "From Monday",
+    "text": "From Monday\nWe now have two pillars:\n\nEfficiency — How fast? (Big-\\(O\\))\nCorrectness — Does it work?"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#the-catch",
-    "href": "slides/04_wed_sorting_lowerbound.html#the-catch",
-    "title": "The Sorting Lower Bound",
-    "section": "The Catch",
-    "text": "The Catch\nCounting sort requires:\n\nElements must be integers (or convertible to integers)\nRange \\(k\\) must be known and reasonable\nUses \\(O(k)\\) extra space\n\nNot a general-purpose sort—but incredibly useful when it applies!"
+    "objectID": "slides/02_tue_invariants.html#what-big-o-actually-tells-us",
+    "href": "slides/02_tue_invariants.html#what-big-o-actually-tells-us",
+    "title": "Loop Invariants",
+    "section": "What Big-\\(O\\) Actually Tells Us",
+    "text": "What Big-\\(O\\) Actually Tells Us\nConsider \\(T(n) = 3n^2 + 5n + 7\\). What happens when \\(n\\) doubles?\n\n\n\n\n\n\n\nThe ratio approaches 4. Always. For ANY quadratic.\n“The constant 3, the +5n, the +7 — none of them matter. Doubling n → quadrupling T(n). That’s what \\(O(n^2)\\) means.”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#other-linear-time-sorts",
-    "href": "slides/04_wed_sorting_lowerbound.html#other-linear-time-sorts",
-    "title": "The Sorting Lower Bound",
-    "section": "Other Linear-Time Sorts",
-    "text": "Other Linear-Time Sorts\n\n\n\nAlgorithm\nConstraint\nTime\n\n\n\n\nCounting Sort\nIntegers in \\([0, k]\\)\n\\(O(n + k)\\)\n\n\nRadix Sort\nFixed-width integers\n\\(O(d \\cdot n)\\)\n\n\nBucket Sort\nUniformly distributed\n\\(O(n)\\) expected\n\n\n\nAll exploit extra structure in the input."
+    "objectID": "slides/02_tue_invariants.html#the-doubling-test",
+    "href": "slides/02_tue_invariants.html#the-doubling-test",
+    "title": "Loop Invariants",
+    "section": "The Doubling Test",
+    "text": "The Doubling Test\n\n\n\nClass\nWhen \\(n\\) doubles, time…\n\n\n\n\n\\(O(1)\\)\nstays the same\n\n\n\\(O(\\log n)\\)\nincreases by a constant\n\n\n\\(O(n)\\)\ndoubles\n\n\n\\(O(n \\log n)\\)\nslightly more than doubles\n\n\n\\(O(n^2)\\)\nquadruples\n\n\n\\(O(2^n)\\)\nsquares (!!)\n\n\n\n\n“This is what Big-O tells us: the SHAPE of growth, not the exact numbers.”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#pythons-timsort",
-    "href": "slides/04_wed_sorting_lowerbound.html#pythons-timsort",
-    "title": "The Sorting Lower Bound",
-    "section": "Python’s Timsort",
-    "text": "Python’s Timsort\nPython’s built-in sorted() uses Timsort:\n\nHybrid of merge sort and insertion sort\nExploits “runs” of already-sorted data\n\\(O(n \\log n)\\) worst case\n\\(O(n)\\) on nearly-sorted data\nStable\n\nIn practice: Just use sorted()!\n\n“Timsort is named after Tim Peters, who designed it for Python in 2002. It’s now used in Java, Android, and many other systems.”"
+    "objectID": "slides/02_tue_invariants.html#o1-constant",
+    "href": "slides/02_tue_invariants.html#o1-constant",
+    "title": "Loop Invariants",
+    "section": "\\(O(1)\\): Constant",
+    "text": "\\(O(1)\\): Constant\narr[0]\nd[key]\nstack.pop()\n“No matter how big the input, same time.”\n\nDictionary lookup, array access, stack operations."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#why-this-matters",
-    "href": "slides/04_wed_sorting_lowerbound.html#why-this-matters",
-    "title": "The Sorting Lower Bound",
-    "section": "Why This Matters",
-    "text": "Why This Matters\n\nLower bounds tell us when to stop searching for better algorithms\nThe decision tree model appears again in:\n\nWeek 8: Binary search trees\nWeek 8: Wordle decision trees\n\nDivide-and-conquer analysis (recurrences) applies to:\n\nPA1: Closest pair\nLater: Quick sort, binary search"
+    "objectID": "slides/02_tue_invariants.html#olog-n-logarithmic",
+    "href": "slides/02_tue_invariants.html#olog-n-logarithmic",
+    "title": "Loop Invariants",
+    "section": "\\(O(\\log n)\\): Logarithmic",
+    "text": "\\(O(\\log n)\\): Logarithmic\ndef binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo &lt;= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] &lt; target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\n\n“Halving at each step. \\(\\log_2(1 \\text{ billion}) \\approx 30\\).”\n“Worst case: target not in array. We halve until the range is empty → \\(\\Theta(\\log n)\\).”\nWe’ll prove this correct on Wednesday."
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#what-we-learned-this-week",
-    "href": "slides/04_wed_sorting_lowerbound.html#what-we-learned-this-week",
-    "title": "The Sorting Lower Bound",
-    "section": "What We Learned This Week",
-    "text": "What We Learned This Week\nMonday: Merge Sort + Recurrence Forms\n\nDesigned merge sort, saw \\(T(n) = 2T(n/2) + O(n)\\)\nFive recurrence patterns and their solutions\nMatching algorithms to recurrences\n\nTuesday Video: Solving Recurrences\n\nExpansion method with formal proofs\nRecursion tree method\nProved merge sort is \\(O(n \\log n)\\)\n\nWednesday: Lower Bounds\n\n\\(\\Omega(n \\log n)\\) is optimal for comparison sorts\nDecision tree argument\nNon-comparison sorts can break the barrier"
+    "objectID": "slides/02_tue_invariants.html#on-linear",
+    "href": "slides/02_tue_invariants.html#on-linear",
+    "title": "Loop Invariants",
+    "section": "\\(O(n)\\): Linear",
+    "text": "\\(O(n)\\): Linear\ndef find_max(arr):\n    max_val = arr[0]\n    for x in arr:\n        if x &gt; max_val:\n            max_val = x\n    return max_val\n\n“Must look at every element once.”\n“Worst case = every case: we always scan the whole array. \\(\\Theta(n)\\), tight.”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#looking-ahead",
-    "href": "slides/04_wed_sorting_lowerbound.html#looking-ahead",
-    "title": "The Sorting Lower Bound",
-    "section": "Looking Ahead",
-    "text": "Looking Ahead\n\nPA1: Due Feb 8 — apply divide-and-conquer to closest pair\nEX1: This week — covers analysis, loop invariants\nNext week: The dictionary trick — \\(O(n^2) \\to O(n)\\) transformations"
+    "objectID": "slides/02_tue_invariants.html#on-log-n-linearithmic",
+    "href": "slides/02_tue_invariants.html#on-log-n-linearithmic",
+    "title": "Loop Invariants",
+    "section": "\\(O(n \\log n)\\): Linearithmic",
+    "text": "\\(O(n \\log n)\\): Linearithmic\nsorted(arr)          # Python's built-in\ndf.sort_values()     # pandas\n\n“The sweet spot for sorting. We’ll see why in Week 6.”"
   },
   {
-    "objectID": "slides/04_wed_sorting_lowerbound.html#questions",
-    "href": "slides/04_wed_sorting_lowerbound.html#questions",
-    "title": "The Sorting Lower Bound",
-    "section": "Questions?",
-    "text": "Questions?\n\nGood luck on EX1!"
+    "objectID": "slides/02_tue_invariants.html#on2-quadratic",
+    "href": "slides/02_tue_invariants.html#on2-quadratic",
+    "title": "Loop Invariants",
+    "section": "\\(O(n^2)\\): Quadratic",
+    "text": "\\(O(n^2)\\): Quadratic\n\n\ndef has_duplicate(arr):\n    for i in range(len(arr)):\n        for j in range(i + 1, len(arr)):\n            if arr[i] == arr[j]:\n                return True\n    return False\n\n\n\n\n\n\n\n\n\n\n\n\nwhy not j in range(n)? “All pairs. Gets painful quickly.”\n“Worst case: no duplicates → check all \\(n(n-1)/2\\) pairs. \\(\\Theta(n^2)\\), tight.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#o2n-exponential",
+    "href": "slides/02_tue_invariants.html#o2n-exponential",
+    "title": "Loop Invariants",
+    "section": "\\(O(2^n)\\): Exponential",
+    "text": "\\(O(2^n)\\): Exponential\ndef all_subsets(arr):\n    if not arr:\n        return [[]]\n    rest = all_subsets(arr[1:])\n    return rest + [[arr[0]] + s for s in rest]\n\n\n\n\n\n\n\n“Doubles with each element.”\nn=50: more operations than atoms in a grain of sand. n=100: more operations than atoms in the observable universe.\nAt 1 billion ops/sec, n=100 would take \\(10^{21}\\) years — heat death of universe.\n“Often intractable. We’ll see NP-completeness in Week 12.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-setup",
+    "href": "slides/02_tue_invariants.html#the-setup",
+    "title": "Loop Invariants",
+    "section": "The Setup",
+    "text": "The Setup\n\n\n\n\n\n\n\n“Same problem, two approaches. Let’s race them.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-race",
+    "href": "slides/02_tue_invariants.html#the-race",
+    "title": "Loop Invariants",
+    "section": "The Race",
+    "text": "The Race\n\n\n\n\n\n\n\n“We’re testing worst case: no duplicates, so both algorithms scan everything.”\n“What do you notice?”\n\\(\\Theta(n^2)\\): 4× slower when n doubles — that’s quadratic! \\(\\Theta(n)\\): barely changes — that’s linear!\n“The set gives \\(O(1)\\) lookup — transforms \\(\\Theta(n^2)\\) into \\(\\Theta(n)\\).”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#what-happened",
+    "href": "slides/02_tue_invariants.html#what-happened",
+    "title": "Loop Invariants",
+    "section": "What Happened",
+    "text": "What Happened\nWorst case: \\(\\Theta(n^2) \\to \\Theta(n)\\)\nThe set provides \\(O(1)\\) lookup.\n\n“This is the power of data structures. We’ll learn how sets work in Week 5.”\n“Both bounds are tight. We’re not hedging — we analyzed the worst case and know exactly how it scales.”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-crossover",
+    "href": "slides/02_tue_invariants.html#the-crossover",
+    "title": "Loop Invariants",
+    "section": "The Crossover",
+    "text": "The Crossover\n\n\n\n\n\n\n\n“At small n, constants dominate. The ‘\\(O(1)\\)’ algorithm with 10ms overhead is slower!”\nLive demo: add larger n values (10000, 100000, 1000000) to show the crossover where linear catches up and passes."
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#the-lesson",
+    "href": "slides/02_tue_invariants.html#the-lesson",
+    "title": "Loop Invariants",
+    "section": "The Lesson",
+    "text": "The Lesson\nSmall data: write clear code.\nBig data: Big-O is destiny."
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#galactic-pizza",
+    "href": "slides/02_tue_invariants.html#galactic-pizza",
+    "title": "Loop Invariants",
+    "section": "Galactic Pizza",
+    "text": "Galactic Pizza"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#two-ways-to-compute-the-mean",
+    "href": "slides/02_tue_invariants.html#two-ways-to-compute-the-mean",
+    "title": "Loop Invariants",
+    "section": "Two Ways to Compute the Mean",
+    "text": "Two Ways to Compute the Mean\n\n\n\n\n\n\n\n“Both are \\(O(n)\\). Why the difference?”"
+  },
+  {
+    "objectID": "slides/02_tue_invariants.html#same-big-o-different-speed",
+    "href": "slides/02_tue_invariants.html#same-big-o-different-speed",
+    "title": "Loop Invariants",
+    "section": "Same Big-\\(O\\), Different Speed",
+    "text": "Same Big-\\(O\\), Different Speed\nBoth touch every row: \\(O(n)\\)\nBut:\n\nVectorized: tiny constants (compiled C)\nPython loop: large constants (interpreter overhead)\n\n\n“Big-O tells you SCALING, not SPEED.”\n“In pandas: prefer vectorized operations. But that’s about constants, not complexity class.”"
   },
   {
     "objectID": "slides/08_mon_trees.html#pacing-overview-80-min-total",

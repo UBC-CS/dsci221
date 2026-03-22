@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Announcements – DSCI 221: Data Structures and Algorithms for Data Science</title>
+<title>memorymar18 – DSCI 221: Data Structures and Algorithms for Data Science</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,8 +33,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -76,70 +74,14 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-subtitle','listing-description','listing-date','listing-image','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles/styles.css">
-<link rel="alternate" type="application/rss+xml" title="DSCI 221: Data Structures and Algorithms for Data Science" href="announcements.xml" data-external="1"><meta property="og:title" content="Announcements – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:title" content="DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Course website for DSCI 221 of the Department of Computer Science at the University of British Columbia">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="Announcements – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:title" content="DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Course website for DSCI 221 of the Department of Computer Science at the University of British Columbia">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -324,7 +266,7 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">Announcements</h1>
+          <h1 class="quarto-secondary-nav-title"></h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -362,7 +304,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./announcements.html" class="sidebar-item-text sidebar-link active">
+  <a href="./announcements.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Announcements</span></a>
   </div>
 </li>
@@ -439,66 +381,76 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="b3JpZW50YXRpb24=">orientation <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#shape-angles-groups-notes" id="toc-shape-angles-groups-notes" class="nav-link active" data-scroll-target="#shape-angles-groups-notes">Shape Angles Groups Notes</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/UBC-CS/dsci221/blob/main/memorymar18.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/UBC-CS/dsci221/edit/main/memorymar18.md" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/UBC-CS/dsci221/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title d-none d-lg-block">Announcements</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
 
+<p>we were working on Kali, and had arrived at a list of symmetries that made sense in the context of the problem. There are working implementations, but many of them are broken. I wonder if our whole recent context is lost. It’s going to be difficult to reconstruct the next steps that you suggested. Let me check the memory files and the current working directories for context on the Kali project.</p>
+<p>Globpattern: “**/*” Found 2 files Bash List contents of talks repo and KJ server directories IN ls /Users/cheeren/Repos/talks/ 2&gt;/dev/null &amp;&amp; ls /tmp/KJ/server/ 2&gt;/dev/null &amp;&amp; ls /private/tmp/KJ/server/ 2&gt;/dev/null</p>
+<p>OUT KJ kali references spiro spirograph wccce2026 wids2026 gizmoapp_server gizmoapp_server Bash List kali directory contents IN ls /Users/cheeren/Repos/talks/kali/ &amp;&amp; echo “—” &amp;&amp; ls /tmp/KJ/server/ 2&gt;/dev/null</p>
+<p>OUT images index.html sketch_kali.js slides.qmd theme.scss wildflowers.jpg — gizmoapp_server Read sketch_kali.js Good - I can see the full current state of the code. Let me also check the slides for context on what was being discussed.</p>
+<p>Read slides.qmd Read index.html there are no slides for this project. The previous conversation context is indeed gone. But I’ve read the current sketch_kali.js in full, so let me reconstruct an honest assessment of where things stand.</p>
+<p>Current state of the 6 groups:</p>
+<p>Group n reflect slices Likely status p6m 6 true 12 (×30°) Probably working (the original) p6 6 false 6 (×60°) Probably working (same hex geometry) p4m 4 true 8 (×45°) Probably working (sq lattice, full coverage) p4 4 false 4 (×90°) Probably working (sq lattice, full coverage) p3m1 3 true 6 (×60°) Suspect — hex lattice spacing may be wrong for 3-fold period p3 3 false 3 (×120°) Suspect — same hex grid spacing issue The two specific things I’d flag without seeing it run:</p>
+<p>Lattice period for p3/p3m1: the translation lattice for a 3-fold group is larger than for 6-fold. The hex grid uses the same dx = 1.5 * triSize for all hex groups — this is correct for p6/p6m but may produce visible gaps or wrong-scale tiling for p3/p3m1.</p>
+<p>UV flip logic for p3m1: the mirror = g.reflect &amp;&amp; (k % 2 === 1) alternation may not produce the correct reflection symmetry for p3m1 (as opposed to p31m, which has reflections in different positions).</p>
+<p>Can you tell me:</p>
+<p>Which specific groups look broken when you open it in a browser? What the visual artifact is (gaps? wrong pattern? seams)? That will let me quickly reconstruct the plan rather than guess at it. Alternatively, if you remember any of the groups we were adding (beyond the current 6), that would help too.</p>
+<p>Got it — the slides.qmd is just a placeholder. This is a standalone interactive demo, not a talk. Let me save that to memory.</p>
+<p>Write kali.md 15 lines Edit MEMORY.md Edit failed Read MEMORY.md Edit MEMORY.md Added 7 lines Noted and saved. So — back to the question: do you want to open it in the browser and describe what looks wrong, or should I work through the code to identify the likely bugs in the broken groups?</p>
+<p>sketch_kali.js i think i can almost recreate the list of tilings i’d like you to recreate: 1) 60-60-60: p3, p31m, p3m1 2) 30-60-90: p6, p6m 3) 45-45-90: p4? p4m? idk 4) 120 - 30-30: center to 2 vertices of an equilateral triangle 5) kite: center to 2-medians and a vertex of an equilateral triangle.</p>
+<p>red triangle on the base image determines the colors of the tilings. This is a good foundation to reconstruct from. Let me map it out clearly:</p>
+<p>What you’re describing is 5 source triangle shapes, each producing different symmetry groups.</p>
+<section id="shape-angles-groups-notes" class="level1">
+<h1>Shape Angles Groups Notes</h1>
+<p>1 Equilateral 60-60-60 p3, p31m, p3m1 Current code has p3m1 but not p31m 2 Right 30-60-90 p6, p6m In code but wrong source triangle shape (currently 30-75-75 isoceles) 3 Right isoceles 45-45-90 p4, p4m Same issue — isoceles not right-angle 4 Obtuse isoceles 120-30-30 ??? Current p3 uses this fan angle — but which group did we assign? 5 Kite quadrilateral ??? Not in current code Two things I can confirm from the code:</p>
+<p>p31m is missing — the GROUPS object has p3m1 but not p31m (they differ in which 3-fold centers lie on mirror lines) Source triangles are all isoceles — the code always uses texRadius for both P1 and P2, so the red triangle is always isoceles. For 30-60-90 and 45-45-90 you need P1 and P2 at different distances from texCenter The murkier ones are items 4 and 5. For item 4, did we decide that was p3 (pure 3-fold rotation, no mirrors, obtuse pie-slice source)? And for item 5 (the kite) — do you remember which wallpaper group or what the symmetry operation was? That one seems to require a fundamentally different tile-drawing approach.</p>
+<p>for p3, why were we using the obtuse triangles at all? We weren’t — it’s an artifact of the fan implementation.</p>
+<p>The fan approach always produces an isoceles source triangle with the apex at the tile center and apex angle = 360°/n.&nbsp;For p3, n=3, so 360°/3 = 120°. The code just mechanically does that, producing the obtuse 120-30-30 triangle.</p>
+<p>But p3’s actual fundamental domain is equilateral (60-60-60). The obtuse version was never a deliberate choice — it fell out of reusing the same drawing code for all groups.</p>
+<p>So the right fix for p3 (and p31m, p3m1) is to use a 60-60-60 equilateral source triangle, which means the tile center is not a vertex of the source triangle — it’s outside it. That breaks the current assumption where texCenter is always the apex of the fan. For those groups, the source triangle parameterization needs to change entirely.</p>
+<p>the algorithm should always be to tile space using the chosen shape and symmetry, and then texture the shapes based on what’s in the red triangle. Yes — that’s the right way to think about it. It makes the algorithm clean and consistent:</p>
+<p>Tile space with the chosen shape (equilateral, 30-60-90, etc.) using the symmetry group’s lattice and operations Texture each tile by mapping its vertices to the corresponding points of the red triangle in the source image The consequence: the red triangle’s shape should always match the tile shape. For p3/p31m/p3m1, the red triangle is equilateral. For p6/p6m it’s a 30-60-90 right triangle. For p4/p4m it’s a 45-45-90 right triangle.</p>
+<p>The current code breaks this principle. It uses texCenter as a fan apex and texRadius for both P1 and P2 — so the red triangle is always isoceles regardless of group. That’s the root bug.</p>
+<p>The fix is to reparameterize the source triangle as three independent control points (not apex + two equidistant radial points), where the shape of those three points matches the tile shape for the active group. Then UV mapping is just barycentric: canonical tile vertices → red triangle vertices.</p>
+<p>This also resolves the grid spacing issue naturally — once you know the tile shape and size, the lattice vectors follow from geometry, not from the current one-size-fits-all triSize.</p>
+<p>Shall I start with this rearchitecting? The most logical order would be:</p>
+<p>Reparameterize the source triangle per group Fix drawTile() to use correct vertex UVs per group Fix grid spacing per group Add the missing p31m just an addendum: the 30/30/120 triangle and kite are also just tilings inside the equilateral grid. I don’t think we have too much freedom w symmetry there – they are all sort of like p3, right? Right — because the 120-30-30 and kite are both subdivisions of the equilateral triangle:</p>
+<p>1 equilateral = 3 × (120-30-30) — connect centroid to each vertex 1 equilateral = 6 × kites — connect centroid to each vertex AND each edge midpoint So they live on the same hexagonal lattice. The 120-30-30 tiles with 3-fold rotation (essentially p3 — the geometry doesn’t allow anything richer without mirrors). The kite has one axis of bilateral symmetry baked in, so it behaves like p3 with a single reflection — but the reflection is determined by the kite’s geometry, not a free choice.</p>
+<p>So the full taxonomy collapses to something like:</p>
+<p>Lattice Tile shape Modes Hex 60-60-60 equilateral p3, p31m, p3m1 Hex 120-30-30 (⅓ equilateral) p3 only Hex kite (⅙ equilateral) p3 + forced reflection Hex 30-60-90 p6, p6m Square 45-45-90 p4, p4m Items 4 and 5 don’t need separate group names — they’re just different source triangle shapes that happen to live on the hex grid with constrained symmetry.</p>
+<p>Does that match your intuition? If so, the implementation plan is clear: 5 tile shapes, 9 modes total.</p>
+<p>yes, except i was imagining that the kite was a quadrilateral (which is what’s interesting) – center to median to vertex to median to center. Got it — the kite is:</p>
+<p>O → M₁ → V → M₂ → O Where O is the equilateral centroid, V is a vertex, M₁ and M₂ are the midpoints of the two sides meeting at V.</p>
+<p>That’s what makes it interesting — it’s the only non-triangular tile in your set. Six kites fill the equilateral, and the kite has a built-in mirror axis (the O→V diagonal), so the two triangular halves of the kite are reflections of each other.</p>
+<p>For implementation this means:</p>
+<p>The red shape on the source image is a quadrilateral, not a triangle Drawing it requires splitting into 2 triangles (O, M₁, V) and (O, V, M₂) — but the UV mapping ties them together across the shared O→V edge so the reflection is seamless The tiling is still the same hex lattice, just with 6 kites per equilateral instead of 1 equilateral or 3 obtuse triangles So the updated taxonomy:</p>
+<p>Tile shape Type Modes 60-60-60 equilateral triangle p3, p31m, p3m1 120-30-30 (⅓ equilateral) triangle p3-only kite (⅙ equilateral) quadrilateral p3 + forced mirror 30-60-90 triangle p6, p6m 45-45-90 triangle p4, p4m Ready to start implementing when you are.</p>
+<p>3 kites fill the equilateral You’re right, sorry. The equilateral has 3 vertices, each gives one kite (O, M₁, V, M₂), so 3 kites = 1 equilateral. Same area as the 120-30-30 triangle — just a different shape for the same ⅓ subdivision.</p>
+<p>Updated:</p>
+<p>Tile shape Fraction of equilateral Modes 60-60-60 equilateral 1 p3, p31m, p3m1 120-30-30 (centroid + 2 vertices) ⅓ p3-only kite (centroid + vertex + 2 edge midpoints) ⅓ p3 + forced mirror 30-60-90 — (different lattice scale) p6, p6m 45-45-90 — p4, p4m The 120-30-30 and kite are the same ⅓ subdivision of the equilateral, just cut differently — one along vertex-to-vertex lines, the other along vertex-to-midpoint lines.</p>
+<p>idk what you mean by “forced mirror” for the kite – the red shape will be a kite whose coloring is asymmetric Right — the kite is just the tile shape, not a constraint on the symmetry. The coloring is whatever the source image has in that kite region, no reflection applied. So it’s the same as the 120-30-30 case: pure 3-fold rotation, p3-only.</p>
+<p>Simplified:</p>
+<p>Tile shape Symmetry Modes 60-60-60 equilateral hex p3, p31m, p3m1 120-30-30 triangle hex p3 kite hex p3 30-60-90 triangle hex p6, p6m 45-45-90 triangle square p4, p4m The only distinction between 120-30-30 and kite is the tile shape — both are p3, both are ⅓ of the equilateral. The kite is interesting purely because the quadrilateral source region samples the image differently.</p>
+<p>ok, now i think i understand – for the kite and obtuse, we COULD use any of the p3 symmetries because they’re really just different ways of creating the original 60/60/60. SO, i’d like for the kite to be p3m1 and the obtuse to be p3. That makes sense — since all three (equilateral, kite, obtuse) reconstruct the same equilateral grid, you can freely assign which p3-family symmetry each uses. The final list:</p>
+<p>Tile shape Symmetry 60-60-60 equilateral p3, p31m, p3m1 120-30-30 obtuse p3 kite p3m1 30-60-90 right p6, p6m 45-45-90 right isoceles p4, p4m 9 modes total across 5 tile shapes. Ready to start rewriting sketch_kali.js?</p>
+<p>YES! do we need to do that a little at a time so you don’t go over on tokens? yes please implement API Error: Claude’s response exceeded the 32000 output token maximum. To configure this behavior, set the CLAUDE_CODE_MAX_OUTPUT_TOKENS environment variable.</p>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="b3JpZW50YXRpb24=" data-listing-date-sort="1767571200000" data-listing-file-modified-sort="1774204902410" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="98">
-<div class="thumbnail"><a href="./posts/00_welcome/index.html" class="no-external">
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</section>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/00_welcome/index.html" class="no-external">Welcome to DSCI 221!</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/00_welcome/index.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="./posts/00_welcome/index.html" class="no-external">
-<p>Data Structures for Data Science</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/00_welcome/index.html" class="no-external">
-<div class="listing-date">
-Jan 5, 2026
-</div>
-<div class="listing-reading-time">1 min</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -920,7 +872,7 @@ Jan 5, 2026
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/UBC-CS/dsci221/blob/main/announcements.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/UBC-CS/dsci221/edit/main/announcements.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/UBC-CS/dsci221/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/UBC-CS/dsci221/blob/main/memorymar18.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/UBC-CS/dsci221/edit/main/memorymar18.md" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/UBC-CS/dsci221/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>UBC’s Point Grey Campus is located on the traditional, ancestral, and unceded territory of the <a href="https://www.musqueam.bc.ca/">xʷməθkʷəy̓ə (Musqueam)</a> people.</p>
 </div>
