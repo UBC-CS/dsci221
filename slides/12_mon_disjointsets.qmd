@@ -1,0 +1,639 @@
+---
+title: "Disjoint Sets"
+subtitle: "Week 12, Monday"
+date: 2026-03-23
+---
+
+## Announcements
+
+- PA3 due Week 12
+- PEX5 this week!
+
+## A Disjoint Sets Example
+
+Let R be an equivalence relation on the set of students in this room, where (s, t) &in; R if s and t have the same favorite among {AC, FN, FB, TR, CC, CR, PMC, \_\_\_}.
+
+```{=html}
+<div style="text-align: center; margin-top: 30px;">
+<svg viewBox="0 0 800 100" xmlns="http://www.w3.org/2000/svg" style="max-width: 750px;">
+  <!-- Set {2,5,9} -->
+  <ellipse cx="110" cy="50" rx="80" ry="40" fill="#e8f4fd" stroke="#2c7bb6" stroke-width="2"/>
+  <text x="80" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">2</text>
+  <text x="110" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">5</text>
+  <text x="140" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">9</text>
+
+  <!-- Set {7} -->
+  <ellipse cx="280" cy="50" rx="40" ry="40" fill="#e8fde8" stroke="#1e8449" stroke-width="2"/>
+  <text x="280" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">7</text>
+
+  <!-- Set {0,1,4,8} -->
+  <ellipse cx="460" cy="50" rx="95" ry="40" fill="#fef9e7" stroke="#d68910" stroke-width="2"/>
+  <text x="415" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">0</text>
+  <text x="445" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">1</text>
+  <text x="475" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">4</text>
+  <text x="505" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">8</text>
+
+  <!-- Set {3,6} -->
+  <ellipse cx="660" cy="50" rx="60" ry="40" fill="#fdedec" stroke="#c0392b" stroke-width="2"/>
+  <text x="640" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">3</text>
+  <text x="680" y="56" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a3c5e">6</text>
+</svg>
+</div>
+```
+
+## Operations We'd Like to Facilitate
+
+1. `find(4)`
+2. `find(4) == find(8)`
+3. `if find(7) != find(2): union(find(7), find(2))`
+
+::: notes
+find(4) returns the representative of the set containing 4. find(4)==find(8) tests whether 4 and 8 are in the same set. The third operation merges two sets if they're different.
+:::
+
+## Disjoint Sets ADT {.smaller}
+
+We will implement a data structure in support of "Disjoint Sets":
+
+- Maintains a collection S = {s~0~, s~1~, ... s~k~} of disjoint sets.
+- Each set has a **representative** member.
+- Supports functions:
+
+&nbsp;
+
+`make_set(k)` — creates a new set containing only `k`
+
+`union(k1, k2)` — merges the sets containing `k1` and `k2`
+
+`find(k)` — returns the representative of the set containing `k`
+
+## A First Data Structure for Disjoint Sets {.smaller}
+
+```{=html}
+<div style="text-align: center;">
+<svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg" style="max-width: 600px;">
+  <!-- Set {0,1,4} -->
+  <ellipse cx="100" cy="40" rx="75" ry="32" fill="#e8f4fd" stroke="#2c7bb6" stroke-width="2"/>
+  <text x="70" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">0</text>
+  <text x="100" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">1</text>
+  <text x="130" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">4</text>
+
+  <!-- Set {2,7} -->
+  <ellipse cx="300" cy="40" rx="55" ry="32" fill="#e8fde8" stroke="#1e8449" stroke-width="2"/>
+  <text x="280" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">2</text>
+  <text x="320" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">7</text>
+
+  <!-- Set {3,5,6} -->
+  <ellipse cx="510" cy="40" rx="75" ry="32" fill="#fdedec" stroke="#c0392b" stroke-width="2"/>
+  <text x="480" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">3</text>
+  <text x="510" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">5</text>
+  <text x="540" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">6</text>
+</svg>
+</div>
+```
+
+```{=html}
+<div style="text-align: center; margin-top: 20px;">
+<svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg" style="max-width: 520px;">
+  <!-- Array: index row -->
+  <rect x="0" y="0" width="60" height="32" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="30" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#555">0</text>
+  <rect x="65" y="0" width="60" height="32" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="95" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#555">1</text>
+  <rect x="130" y="0" width="60" height="32" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="160" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#555">2</text>
+  <rect x="195" y="0" width="60" height="32" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="225" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#555">3</text>
+  <rect x="260" y="0" width="60" height="32" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="290" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#555">4</text>
+  <rect x="325" y="0" width="60" height="32" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="355" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#555">5</text>
+  <rect x="390" y="0" width="60" height="32" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="420" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#555">6</text>
+  <rect x="455" y="0" width="60" height="32" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="485" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#555">7</text>
+
+  <!-- Array: value row -->
+  <rect x="0" y="38" width="60" height="32" fill="#e8f4fd" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="30" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3c5e">0</text>
+  <rect x="65" y="38" width="60" height="32" fill="#e8f4fd" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="95" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3c5e">0</text>
+  <rect x="130" y="38" width="60" height="32" fill="#e8fde8" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="160" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3c5e">2</text>
+  <rect x="195" y="38" width="60" height="32" fill="#fdedec" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="225" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3c5e">3</text>
+  <rect x="260" y="38" width="60" height="32" fill="#e8f4fd" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="290" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3c5e">0</text>
+  <rect x="325" y="38" width="60" height="32" fill="#fdedec" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="355" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3c5e">3</text>
+  <rect x="390" y="38" width="60" height="32" fill="#fdedec" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="420" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3c5e">3</text>
+  <rect x="455" y="38" width="60" height="32" fill="#e8fde8" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="485" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3c5e">2</text>
+</svg>
+</div>
+```
+
+&nbsp;
+
+Find: \_\_\_\_\_\_\_\_\_\_
+
+Union: \_\_\_\_\_\_\_\_\_\_
+
+::: notes
+Find is O(1) — just look up the array. Union is O(n) — have to update all elements in one set to point to the new representative.
+:::
+
+## A Better Data Structure: UpTrees {.smaller}
+
+- If array value is **-1**, then we've found a root; otherwise value is the **index of the parent**.
+- x and y are in the same uptree iff they are in the same set.
+
+::: {.columns}
+::: {.column}
+
+```{=html}
+<div style="text-align: center; margin-top: 30px;">
+<svg viewBox="0 0 800 130" xmlns="http://www.w3.org/2000/svg" style="max-width: 700px;">
+  <!-- Left example: blank 4-element array + tree space -->
+
+  <!-- Empty tree space for annotation -->
+  <rect x="60" y="30" width="200" height="50" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Array -->
+  <rect x="60" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="85" y="130" text-anchor="middle" font-size="11" fill="#999">0</text>
+  <rect x="110" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="135" y="130" text-anchor="middle" font-size="11" fill="#999">1</text>
+  <rect x="160" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="185" y="130" text-anchor="middle" font-size="11" fill="#999">2</text>
+  <rect x="210" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="235" y="130" text-anchor="middle" font-size="11" fill="#999">3</text>
+
+  <!-- Right example: blank 4-element array + tree space -->
+  <rect x="420" y="30" width="200" height="50" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Array -->
+  <rect x="420" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="445" y="130" text-anchor="middle" font-size="11" fill="#999">0</text>
+  <rect x="470" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="495" y="130" text-anchor="middle" font-size="11" fill="#999">1</text>
+  <rect x="520" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="545" y="130" text-anchor="middle" font-size="11" fill="#999">2</text>
+  <rect x="570" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="595" y="130" text-anchor="middle" font-size="11" fill="#999">3</text>
+</svg>
+</div>
+```
+
+```{=html}
+<div style="text-align: center; margin-top: 30px;">
+<svg viewBox="0 0 800 130" xmlns="http://www.w3.org/2000/svg" style="max-width: 700px;">
+  <!-- Left example: blank 4-element array + tree space -->
+
+  <!-- Empty tree space for annotation -->
+  <rect x="60" y="30" width="200" height="50" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Array -->
+  <rect x="60" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="85" y="130" text-anchor="middle" font-size="11" fill="#999">0</text>
+  <rect x="110" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="135" y="130" text-anchor="middle" font-size="11" fill="#999">1</text>
+  <rect x="160" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="185" y="130" text-anchor="middle" font-size="11" fill="#999">2</text>
+  <rect x="210" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="235" y="130" text-anchor="middle" font-size="11" fill="#999">3</text>
+
+  <!-- Right example: blank 4-element array + tree space -->
+  <rect x="420" y="30" width="200" height="50" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Array -->
+  <rect x="420" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="445" y="130" text-anchor="middle" font-size="11" fill="#999">0</text>
+  <rect x="470" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="495" y="130" text-anchor="middle" font-size="11" fill="#999">1</text>
+  <rect x="520" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="545" y="130" text-anchor="middle" font-size="11" fill="#999">2</text>
+  <rect x="570" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="595" y="130" text-anchor="middle" font-size="11" fill="#999">3</text>
+</svg>
+</div>
+```
+
+:::
+::: {.column}
+```{=html}
+<div style="text-align: center; margin-top: 30px;">
+<svg viewBox="0 0 800 130" xmlns="http://www.w3.org/2000/svg" style="max-width: 700px;">
+  <!-- Left example: blank 4-element array + tree space -->
+
+  <!-- Empty tree space for annotation -->
+  <rect x="60" y="30" width="200" height="50" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Array -->
+  <rect x="60" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="85" y="130" text-anchor="middle" font-size="11" fill="#999">0</text>
+  <rect x="110" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="135" y="130" text-anchor="middle" font-size="11" fill="#999">1</text>
+  <rect x="160" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="185" y="130" text-anchor="middle" font-size="11" fill="#999">2</text>
+  <rect x="210" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="235" y="130" text-anchor="middle" font-size="11" fill="#999">3</text>
+
+  <!-- Right example: blank 4-element array + tree space -->
+  <rect x="420" y="30" width="200" height="50" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Array -->
+  <rect x="420" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="445" y="130" text-anchor="middle" font-size="11" fill="#999">0</text>
+  <rect x="470" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="495" y="130" text-anchor="middle" font-size="11" fill="#999">1</text>
+  <rect x="520" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="545" y="130" text-anchor="middle" font-size="11" fill="#999">2</text>
+  <rect x="570" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="595" y="130" text-anchor="middle" font-size="11" fill="#999">3</text>
+</svg>
+</div>
+```
+
+```{=html}
+<div style="text-align: center; margin-top: 30px;">
+<svg viewBox="0 0 800 130" xmlns="http://www.w3.org/2000/svg" style="max-width: 700px;">
+  <!-- Left example: blank 4-element array + tree space -->
+
+  <!-- Empty tree space for annotation -->
+  <rect x="60" y="30" width="200" height="50" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Array -->
+  <rect x="60" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="85" y="130" text-anchor="middle" font-size="11" fill="#999">0</text>
+  <rect x="110" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="135" y="130" text-anchor="middle" font-size="11" fill="#999">1</text>
+  <rect x="160" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="185" y="130" text-anchor="middle" font-size="11" fill="#999">2</text>
+  <rect x="210" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="235" y="130" text-anchor="middle" font-size="11" fill="#999">3</text>
+
+  <!-- Right example: blank 4-element array + tree space -->
+  <rect x="420" y="30" width="200" height="50" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Array -->
+  <rect x="420" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="445" y="130" text-anchor="middle" font-size="11" fill="#999">0</text>
+  <rect x="470" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="495" y="130" text-anchor="middle" font-size="11" fill="#999">1</text>
+  <rect x="520" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="545" y="130" text-anchor="middle" font-size="11" fill="#999">2</text>
+  <rect x="570" y="90" width="50" height="30" fill="#f5f8fc" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="595" y="130" text-anchor="middle" font-size="11" fill="#999">3</text>
+</svg>
+</div>
+```
+:::
+:::
+<!-- end columns -->
+
+
+
+::: notes
+Draw two examples on the board: (1) All singletons: [-1, -1, -1, -1]. Four separate roots. (2) After some unions, e.g., union(0,1) and union(2,3): [−1, 0, −1, 2]. Two trees of size 2.
+:::
+
+## Example: Partition of Elements into Disjoint Sets {.smaller}
+
+```{=html}
+<div style="text-align: center;">
+<svg viewBox="0 0 800 100" xmlns="http://www.w3.org/2000/svg" style="max-width: 700px;">
+  <!-- Set labels (same as earlier) -->
+  <ellipse cx="100" cy="50" rx="70" ry="35" fill="#e8f4fd" stroke="#2c7bb6" stroke-width="2"/>
+  <text x="70" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">2</text>
+  <text x="100" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">5</text>
+  <text x="130" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">9</text>
+
+  <ellipse cx="270" cy="50" rx="35" ry="35" fill="#e8fde8" stroke="#1e8449" stroke-width="2"/>
+  <text x="270" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">7</text>
+
+  <ellipse cx="440" cy="50" rx="85" ry="35" fill="#fef9e7" stroke="#d68910" stroke-width="2"/>
+  <text x="405" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">0</text>
+  <text x="430" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">1</text>
+  <text x="455" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">4</text>
+  <text x="480" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">8</text>
+
+  <ellipse cx="630" cy="50" rx="55" ry="35" fill="#fdedec" stroke="#c0392b" stroke-width="2"/>
+  <text x="613" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">3</text>
+  <text x="647" y="56" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a3c5e">6</text>
+</svg>
+</div>
+```
+
+```{=html}
+<div style="text-align: center; margin-top: 10px;">
+<svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg" style="max-width: 750px;">
+  <!-- ========== TREE 1: root 5, children 9, 2 ========== -->
+  <line x1="100" y1="30" x2="55" y2="90" stroke="#555" stroke-width="2"/>
+  <line x1="100" y1="30" x2="145" y2="90" stroke="#555" stroke-width="2"/>
+  <circle cx="100" cy="30" r="18" fill="#e8f4fd" stroke="#2c7bb6" stroke-width="2"/>
+  <text x="100" y="36" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">5</text>
+  <circle cx="55" cy="90" r="18" fill="#e8f4fd" stroke="#2c7bb6" stroke-width="2"/>
+  <text x="55" y="96" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">9</text>
+  <circle cx="145" cy="90" r="18" fill="#e8f4fd" stroke="#2c7bb6" stroke-width="2"/>
+  <text x="145" y="96" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">2</text>
+
+  <!-- ========== TREE 2: root 7 (singleton) ========== -->
+  <circle cx="270" cy="30" r="18" fill="#e8fde8" stroke="#1e8449" stroke-width="2"/>
+  <text x="270" y="36" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">7</text>
+
+  <!-- ========== TREE 3: root 4, children 0, 8; 8's child 1 ========== -->
+  <line x1="460" y1="30" x2="410" y2="90" stroke="#555" stroke-width="2"/>
+  <line x1="460" y1="30" x2="510" y2="90" stroke="#555" stroke-width="2"/>
+  <line x1="510" y1="90" x2="510" y2="150" stroke="#555" stroke-width="2"/>
+  <circle cx="460" cy="30" r="18" fill="#fef9e7" stroke="#d68910" stroke-width="2"/>
+  <text x="460" y="36" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">4</text>
+  <circle cx="410" cy="90" r="18" fill="#fef9e7" stroke="#d68910" stroke-width="2"/>
+  <text x="410" y="96" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">0</text>
+  <circle cx="510" cy="90" r="18" fill="#fef9e7" stroke="#d68910" stroke-width="2"/>
+  <text x="510" y="96" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">8</text>
+  <circle cx="510" cy="150" r="18" fill="#fef9e7" stroke="#d68910" stroke-width="2"/>
+  <text x="510" y="156" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">1</text>
+
+  <!-- ========== TREE 4: root 6, child 3 ========== -->
+  <line x1="670" y1="30" x2="670" y2="90" stroke="#555" stroke-width="2"/>
+  <circle cx="670" cy="30" r="18" fill="#fdedec" stroke="#c0392b" stroke-width="2"/>
+  <text x="670" y="36" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">3</text>
+  <circle cx="670" cy="90" r="18" fill="#fdedec" stroke="#c0392b" stroke-width="2"/>
+  <text x="670" y="96" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3c5e">6</text>
+
+  <!-- ========== ARRAY ========== -->
+  <!-- Index row -->
+  <text x="80" y="205" text-anchor="middle" font-size="12" fill="#999">0</text>
+  <text x="152" y="205" text-anchor="middle" font-size="12" fill="#999">1</text>
+  <text x="224" y="205" text-anchor="middle" font-size="12" fill="#999">2</text>
+  <text x="296" y="205" text-anchor="middle" font-size="12" fill="#999">3</text>
+  <text x="368" y="205" text-anchor="middle" font-size="12" fill="#999">4</text>
+  <text x="440" y="205" text-anchor="middle" font-size="12" fill="#999">5</text>
+  <text x="512" y="205" text-anchor="middle" font-size="12" fill="#999">6</text>
+  <text x="584" y="205" text-anchor="middle" font-size="12" fill="#999">7</text>
+  <text x="656" y="205" text-anchor="middle" font-size="12" fill="#999">8</text>
+  <text x="728" y="205" text-anchor="middle" font-size="12" fill="#999">9</text>
+
+  <!-- Value cells -->
+  <rect x="52" y="210" width="56" height="28" fill="#fef9e7" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="80" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">4</text>
+  <rect x="124" y="210" width="56" height="28" fill="#fef9e7" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="152" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">8</text>
+  <rect x="196" y="210" width="56" height="28" fill="#e8f4fd" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="224" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">5</text>
+  <rect x="268" y="210" width="56" height="28" fill="#fdedec" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="296" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">6</text>
+  <rect x="340" y="210" width="56" height="28" fill="#fef9e7" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="368" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">-1</text>
+  <rect x="412" y="210" width="56" height="28" fill="#e8f4fd" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="440" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">-1</text>
+  <rect x="484" y="210" width="56" height="28" fill="#fdedec" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="512" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">-1</text>
+  <rect x="556" y="210" width="56" height="28" fill="#e8fde8" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="584" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">-1</text>
+  <rect x="628" y="210" width="56" height="28" fill="#fef9e7" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="656" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">4</text>
+  <rect x="700" y="210" width="56" height="28" fill="#e8f4fd" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="728" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">5</text>
+</svg>
+</div>
+```
+
+::: notes
+Roots store -1. Non-roots store the index of their parent. find(1) → s[1]=8 → s[8]=4 → s[4]=-1 → return 4. find(3) → s[3]=6 → s[6]=-1 → return 6.
+:::
+
+## UpTree Implementation {.smaller}
+
+```python
+def find(self, i):
+    if self.s[i] < 0:
+        return i
+    else:
+        return self.find(self.s[i])
+```
+
+\
+
+Running time depends on \_\_\_\_\_\_\_\_\_\_\_.
+
+Worst case? \_\_\_\_\_\_\_\_\_\_\_
+
+What's an ideal tree? \_\_\_\_\_\_\_\_\_\_\_
+
+\
+
+```python
+def union(self, root1, root2):
+    self.s[root2] = root1
+```
+
+::: notes
+Running time of find depends on the height of the tree. Worst case is O(n) — a degenerate chain. Ideal tree is short and wide (star-shaped). Union as shown is naive — it can create tall trees.
+:::
+
+## Smart Unions {.smaller}
+
+```{=html}
+<div style="text-align: center; margin-top: 5px;">
+<svg viewBox="0 0 870 372" xmlns="http://www.w3.org/2000/svg" style="max-width: 840px; width: 100%;">
+  <defs>
+    <marker id="su-arr" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L7,3.5 z" fill="#444"/>
+    </marker>
+  </defs>
+
+  <!-- Gray background box -->
+  <rect x="85" y="8" width="570" height="248" fill="#eeeeee" rx="4"/>
+
+  <!-- ===== LEFT TREE (root=7, size=8, height=2) ===== -->
+  <!-- Up-exit arrow from root 7 -->
+  <line x1="235" y1="52" x2="235" y2="18" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+
+  <!-- Level 2 → Level 1 edges (child→parent, arrowhead at parent) -->
+  <line x1="129" y1="195" x2="156" y2="152" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+  <line x1="167" y1="192" x2="166" y2="154" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+  <line x1="207" y1="195" x2="174" y2="151" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+  <line x1="263" y1="192" x2="257" y2="154" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+
+  <!-- Level 1 → Root edges -->
+  <line x1="176" y1="127" x2="224" y2="79" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+  <line x1="251" y1="123" x2="239" y2="84" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+  <line x1="317" y1="129" x2="248" y2="78" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+
+  <!-- Left tree nodes -->
+  <circle cx="235" cy="68" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="235" y="73" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">7</text>
+
+  <circle cx="165" cy="138" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="165" y="143" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">6</text>
+  <circle cx="255" cy="138" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="255" y="143" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">8</text>
+  <circle cx="330" cy="138" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="330" y="143" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">9</text>
+
+  <circle cx="120" cy="208" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="120" y="213" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">0</text>
+  <circle cx="168" cy="208" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="168" y="213" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">1</text>
+  <circle cx="216" cy="208" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="216" y="213" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">2</text>
+  <circle cx="265" cy="208" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="265" y="213" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">3</text>
+
+  <!-- ===== RIGHT TREE (root=4, size=4, height=3) ===== -->
+  <!-- Up-exit arrow from root 4 -->
+  <line x1="560" y1="44" x2="560" y2="18" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+
+  <!-- Chain edges (child→parent) -->
+  <line x1="560" y1="102" x2="560" y2="76" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+  <line x1="560" y1="160" x2="560" y2="134" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+  <line x1="560" y1="218" x2="560" y2="192" stroke="#444" stroke-width="1.5" marker-end="url(#su-arr)"/>
+
+  <!-- Right tree nodes -->
+  <circle cx="560" cy="60" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="560" y="65" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">4</text>
+  <circle cx="560" cy="118" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="560" y="122" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a0010">10</text>
+  <circle cx="560" cy="176" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="560" y="181" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a0010">5</text>
+  <circle cx="560" cy="234" r="16" fill="#f9b8d4" stroke="#d4549a" stroke-width="1.5"/>
+  <text x="560" y="238" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a0010">11</text>
+
+  <!-- ===== UNION BY HEIGHT ARRAY ===== -->
+  <text x="5" y="292" font-size="12" fill="#2255cc" font-weight="bold">Union by ____________:</text>
+
+  <!-- Index row: y=264 h=20; Value row: y=284 h=22 -->
+  <rect x="152" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="172" y="278" text-anchor="middle" font-size="11" fill="#777">0</text>
+  <rect x="152" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="172" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">6</text>
+
+  <rect x="192" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="212" y="278" text-anchor="middle" font-size="11" fill="#777">1</text>
+  <rect x="192" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="212" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">6</text>
+
+  <rect x="232" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="252" y="278" text-anchor="middle" font-size="11" fill="#777">2</text>
+  <rect x="232" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="252" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">6</text>
+
+  <rect x="272" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="292" y="278" text-anchor="middle" font-size="11" fill="#777">3</text>
+  <rect x="272" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="292" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">8</text>
+
+  <rect x="312" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="332" y="278" text-anchor="middle" font-size="11" fill="#777">4</text>
+  <rect x="312" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/>
+
+  <rect x="352" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="372" y="278" text-anchor="middle" font-size="11" fill="#777">5</text>
+  <rect x="352" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="372" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">10</text>
+
+  <rect x="392" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="412" y="278" text-anchor="middle" font-size="11" fill="#777">6</text>
+  <rect x="392" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="412" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">7</text>
+
+  <rect x="432" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="452" y="278" text-anchor="middle" font-size="11" fill="#777">7</text>
+  <rect x="432" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/>
+
+  <rect x="472" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="492" y="278" text-anchor="middle" font-size="11" fill="#777">8</text>
+  <rect x="472" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="492" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">7</text>
+
+  <rect x="512" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="532" y="278" text-anchor="middle" font-size="11" fill="#777">9</text>
+  <rect x="512" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="532" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">7</text>
+
+  <rect x="552" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="572" y="278" text-anchor="middle" font-size="11" fill="#777">10</text>
+  <rect x="552" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="572" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">4</text>
+
+  <rect x="592" y="264" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="612" y="278" text-anchor="middle" font-size="11" fill="#777">11</text>
+  <rect x="592" y="284" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="612" y="299" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">5</text>
+
+  <!-- Description (blue italic) -->
+  <text x="645" y="282" font-size="12" fill="#2255cc" font-style="italic">Keeps overall height of</text>
+  <text x="645" y="298" font-size="12" fill="#2255cc" font-style="italic">tree as small as possible.</text>
+
+  <!-- ===== UNION BY SIZE ARRAY ===== -->
+  <text x="5" y="350" font-size="12" fill="#1a7a1a" font-weight="bold">Union by ____________:</text>
+
+  <!-- Index row: y=322 h=20; Value row: y=342 h=22 -->
+  <rect x="152" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="172" y="336" text-anchor="middle" font-size="11" fill="#777">0</text>
+  <rect x="152" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="172" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">6</text>
+
+  <rect x="192" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="212" y="336" text-anchor="middle" font-size="11" fill="#777">1</text>
+  <rect x="192" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="212" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">6</text>
+
+  <rect x="232" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="252" y="336" text-anchor="middle" font-size="11" fill="#777">2</text>
+  <rect x="232" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="252" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">6</text>
+
+  <rect x="272" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="292" y="336" text-anchor="middle" font-size="11" fill="#777">3</text>
+  <rect x="272" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="292" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">8</text>
+
+  <rect x="312" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="332" y="336" text-anchor="middle" font-size="11" fill="#777">4</text>
+  <rect x="312" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/>
+
+  <rect x="352" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="372" y="336" text-anchor="middle" font-size="11" fill="#777">5</text>
+  <rect x="352" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="372" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">10</text>
+
+  <rect x="392" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="412" y="336" text-anchor="middle" font-size="11" fill="#777">6</text>
+  <rect x="392" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="412" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">7</text>
+
+  <rect x="432" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="452" y="336" text-anchor="middle" font-size="11" fill="#777">7</text>
+  <rect x="432" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/>
+
+  <rect x="472" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="492" y="336" text-anchor="middle" font-size="11" fill="#777">8</text>
+  <rect x="472" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="492" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">7</text>
+
+  <rect x="512" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="532" y="336" text-anchor="middle" font-size="11" fill="#777">9</text>
+  <rect x="512" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="532" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">7</text>
+
+  <rect x="552" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="572" y="336" text-anchor="middle" font-size="11" fill="#777">10</text>
+  <rect x="552" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="572" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">4</text>
+
+  <rect x="592" y="322" width="40" height="20" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/><text x="612" y="336" text-anchor="middle" font-size="11" fill="#777">11</text>
+  <rect x="592" y="342" width="40" height="22" fill="#fce4f0" stroke="#999" stroke-width="0.8"/><text x="612" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">5</text>
+
+  <!-- Description (green italic) -->
+  <text x="645" y="340" font-size="12" fill="#1a7a1a" font-style="italic">Increases distance to</text>
+  <text x="645" y="356" font-size="12" fill="#1a7a1a" font-style="italic">root for fewest nodes.</text>
+
+</svg>
+</div>
+```
+
+Both of these schemes for Union guarantee the height of the tree is \_\_\_\_\_\_\_\_.
+
+::: notes
+Both guarantee O(log n) height. Union by height: attach shorter tree under taller tree's root. Union by size: attach smaller tree under larger tree's root. Both yield O(log n) for find.
+:::
+
+## Smart Unions: Implementation {.smaller}
+
+```python
+def find(self, i):
+    if self.s[i] < 0:
+        return i
+    else:
+        return self.find(self.s[i])
+```
+
+\
+
+```python
+def union_by_size(self, root1, root2):
+    new_size = self.s[root1] + self.s[root2]
+    if self.s[root1] <= self.s[root2]:   # root1 is bigger (more negative)
+        self.s[root2] = root1
+        self.s[root1] = new_size
+    else:
+        self.s[root1] = root2
+        self.s[root2] = new_size
+```
+
+::: notes
+Roots store the negative of the set size (e.g., -3 means 3 elements). When merging, the smaller tree becomes a child of the larger tree's root. The new root updates its size to the combined total.
+:::
+
+## Summary
+
+UpTree implementation of ADT Disjoint Sets with smart Union gives:
+
+- **Find**: $O(\log n)$
+- **Union**:  $O(1)$
+
+&nbsp;
+
+Can we do better?
