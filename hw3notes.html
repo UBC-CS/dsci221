@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Announcements – DSCI 221: Data Structures and Algorithms for Data Science</title>
+<title>hw3notes – DSCI 221: Data Structures and Algorithms for Data Science</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,8 +33,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -76,35 +74,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-subtitle','listing-description','listing-date','listing-image','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -137,9 +106,9 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles/styles.css">
-<link rel="alternate" type="application/rss+xml" title="DSCI 221: Data Structures and Algorithms for Data Science" href="announcements.xml" data-external="1"><meta property="og:title" content="Announcements – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:title" content="DSCI 221: Data Structures and Algorithms for Data Science">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="Announcements – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:title" content="DSCI 221: Data Structures and Algorithms for Data Science">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -324,7 +293,7 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">Announcements</h1>
+          <h1 class="quarto-secondary-nav-title"></h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -362,7 +331,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./announcements.html" class="sidebar-item-text sidebar-link active">
+  <a href="./announcements.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Announcements</span></a>
   </div>
 </li>
@@ -439,66 +408,175 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="b3JpZW50YXRpb24=">orientation <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#hw3-notes-parking-problem-path-compression" id="toc-hw3-notes-parking-problem-path-compression" class="nav-link active" data-scroll-target="#hw3-notes-parking-problem-path-compression">HW3 Notes: Parking Problem + Path Compression</a>
+  <ul class="collapse">
+  <li><a href="#status" id="toc-status" class="nav-link" data-scroll-target="#status">Status</a></li>
+  <li><a href="#context-existing-question" id="toc-context-existing-question" class="nav-link" data-scroll-target="#context-existing-question">Context: Existing Question</a></li>
+  <li><a href="#key-insight-why-smart-union-is-forever-off-limits" id="toc-key-insight-why-smart-union-is-forever-off-limits" class="nav-link" data-scroll-target="#key-insight-why-smart-union-is-forever-off-limits">Key Insight: Why Smart Union is Forever Off-Limits</a></li>
+  <li><a href="#the-runtime-argument" id="toc-the-runtime-argument" class="nav-link" data-scroll-target="#the-runtime-argument">The Runtime Argument</a>
+  <ul class="collapse">
+  <li><a href="#without-path-compression-θm-n²" id="toc-without-path-compression-θm-n²" class="nav-link" data-scroll-target="#without-path-compression-θm-n²">Without path compression: Θ(m + n²)</a></li>
+  <li><a href="#with-path-compression-θm-n" id="toc-with-path-compression-θm-n" class="nav-link" data-scroll-target="#with-path-compression-θm-n">With path compression: Θ(m + n)</a></li>
+  <li><a href="#the-amortized-argument-potential-function" id="toc-the-amortized-argument-potential-function" class="nav-link" data-scroll-target="#the-amortized-argument-potential-function">The amortized argument (potential function)</a></li>
+  </ul></li>
+  <li><a href="#concrete-trace-answer-key" id="toc-concrete-trace-answer-key" class="nav-link" data-scroll-target="#concrete-trace-answer-key">Concrete Trace (Answer Key)</a></li>
+  <li><a href="#planned-new-section-structure" id="toc-planned-new-section-structure" class="nav-link" data-scroll-target="#planned-new-section-structure">Planned New Section Structure</a></li>
+  <li><a href="#scaffolding-notes" id="toc-scaffolding-notes" class="nav-link" data-scroll-target="#scaffolding-notes">Scaffolding Notes</a></li>
+  <li><a href="#related-files" id="toc-related-files" class="nav-link" data-scroll-target="#related-files">Related Files</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/UBC-CS/dsci221/blob/main/hw3notes.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/UBC-CS/dsci221/edit/main/hw3notes.md" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/UBC-CS/dsci221/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title d-none d-lg-block">Announcements</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
 
+<section id="hw3-notes-parking-problem-path-compression" class="level1">
+<h1>HW3 Notes: Parking Problem + Path Compression</h1>
+<section id="status" class="level2">
+<h2 class="anchored" data-anchor-id="status">Status</h2>
+<p>Not started. Design-phase notes from conversation on 2026-03-22.</p>
+<hr>
+</section>
+<section id="context-existing-question" class="level2">
+<h2 class="anchored" data-anchor-id="context-existing-question">Context: Existing Question</h2>
+<p>The CPSC221 question (<code>hws/h3_2020W1_disjoint_sets/question.html</code>) already covers: 1. Best spot for first bus (answer: d_1, not 1 — parking as far as possible frees up nearby spots) 2. Reading the uptree: which spots are free? 3. Update rule: <code>simple_union(find(d-1), d)</code> after parking at d 4. Why <strong>simple_union</strong> (not size/rank): roots must be the minimum of their set (best available spot). Smart union would let an occupied node become root — breaking correctness. 5. Initialization: loop from A=0 to B=m 6. “No spot” sentinel: <code>find(d) == 0</code> 7. Runtime <strong>without</strong> path compression: Θ(m + n²)</p>
+<p>The question originally had a commented-out follow-up: &gt; “If you replaced all find operations with path-compression ones, what would the worst-case runtime be?” &gt; Answer key: <strong>Θ(m + n)</strong>. Note: “This last question is tricky. It’s a charging argument.”</p>
+<p><strong>Plan:</strong> Uncomment and heavily scaffold this follow-up as a new section.</p>
+<hr>
+</section>
+<section id="key-insight-why-smart-union-is-forever-off-limits" class="level2">
+<h2 class="anchored" data-anchor-id="key-insight-why-smart-union-is-forever-off-limits">Key Insight: Why Smart Union is Forever Off-Limits</h2>
+<p><code>simple_union(find(d-1), d)</code> always makes <code>find(d-1) &lt; d</code> the root — a still-available, lower-numbered spot. If we used size/rank union, the larger tree might win and make <code>d</code> (an occupied spot) the root. The key invariant breaks.</p>
+<p>Therefore: <strong>only path compression is available as an optimization.</strong> Smart union is not applicable.</p>
+<hr>
+</section>
+<section id="the-runtime-argument" class="level2">
+<h2 class="anchored" data-anchor-id="the-runtime-argument">The Runtime Argument</h2>
+<section id="without-path-compression-θm-n²" class="level3">
+<h3 class="anchored" data-anchor-id="without-path-compression-θm-n²">Without path compression: Θ(m + n²)</h3>
+<p>Worst case: all buses want spot m. After k buses, <code>find(m)</code> traverses a chain of length k. Find costs: 1, 2, 3, 4, …, n → total = n(n+1)/2 = Θ(n²). Plus Θ(m) initialization. Total: <strong>Θ(m + n²)</strong>.</p>
+</section>
+<section id="with-path-compression-θm-n" class="level3">
+<h3 class="anchored" data-anchor-id="with-path-compression-θm-n">With path compression: Θ(m + n)</h3>
+<p>Same worst case (all buses want spot m). Find costs: <strong>1, 2, 3, 3, 3, …, 3</strong>. Total = 1 + 2 + 3(n−2) = Θ(n).</p>
+<p><strong>Why it stabilizes at 3:</strong> After bus k’s find, path compression makes <code>m</code> point directly to the current root. The union then adds one hop (root → new root). So <code>m</code> is always exactly 2 hops from root after any union — the find cost never grows.</p>
+</section>
+<section id="the-amortized-argument-potential-function" class="level3">
+<h3 class="anchored" data-anchor-id="the-amortized-argument-potential-function">The amortized argument (potential function)</h3>
+<p>Let <strong>Φ = sum of depths of all nodes</strong> in the uptree.</p>
+<p><strong>Amortized cost of a find with path length k:</strong></p>
+<p>Nodes on the path (excluding root and its direct child) have depth ≥ 2. Path compression sets them all to depth 1.</p>
+<p><span class="math display">\[\Delta\Phi_{\text{find}} \leq -(k-2)\]</span></p>
+<p><span class="math display">\[\text{amortized cost} = k + \Delta\Phi \leq k - (k-2) = \mathbf{2}\]</span></p>
+<p>Every find has amortized cost ≤ 2, regardless of path length.</p>
+<p>Since Φ ≥ 0 always, total actual cost ≤ Σ amortized ≤ 2 × (# finds) + union costs. Union and initialization costs are Θ(m + n). <strong>Total: Θ(m + n).</strong></p>
+<p><strong>Note:</strong> The formal proof (accounting for Φ increases from unions) is subtle — both Σ(amortized) and Φ_final can be Θ(n²) in the worst case, but their <em>difference</em> is Θ(n). The CPSC221 key calls this “tricky — it’s a charging argument.” For students, the amortized-per-find argument captures the key insight; the full formal proof is beyond scope.</p>
+<hr>
+</section>
+</section>
+<section id="concrete-trace-answer-key" class="level2">
+<h2 class="anchored" data-anchor-id="concrete-trace-answer-key">Concrete Trace (Answer Key)</h2>
+<p>Setup: m = 7 (spots 0–7, spot 0 is sentinel). 6 buses, all wanting spot 7.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Bus</th>
+<th>find(7) path</th>
+<th>find cost</th>
+<th>PC result</th>
+<th>Union</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><code>7</code></td>
+<td>1</td>
+<td>—</td>
+<td>7→6</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>7→6</code></td>
+<td>2</td>
+<td>(7 stays at depth 1)</td>
+<td>6→5</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><code>7→6→5</code></td>
+<td>3</td>
+<td>7→5, 6→5</td>
+<td>5→4</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><code>7→5→4</code></td>
+<td>3</td>
+<td>7→4, 5→4</td>
+<td>4→3</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><code>7→4→3</code></td>
+<td>3</td>
+<td>7→3, 4→3</td>
+<td>3→2</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><code>7→3→2</code></td>
+<td>3</td>
+<td>7→2, 3→2</td>
+<td>2→1</td>
+</tr>
+</tbody>
+</table>
+<p>Without PC, costs would be: 1, 2, 3, 4, 5, 6 → Θ(n²) total. With PC: 1, 2, 3, 3, 3, 3 → Θ(n) total.</p>
+<p><strong>Note on node 6 (a subtlety worth showing students):</strong> After bus 3: 6→5→4. After bus 4’s find(7) path is <code>7→5→4</code>, node 6 is <em>not</em> on this path and is NOT compressed. After bus 4’s union (5→4→3): node 6 has depth 3 (6→5→4→3). If someone queried <code>find(6)</code> at this point, it would cost 4. This is fine — if no one queries 6, it never costs anything.</p>
+<hr>
+</section>
+<section id="planned-new-section-structure" class="level2">
+<h2 class="anchored" data-anchor-id="planned-new-section-structure">Planned New Section Structure</h2>
+<p><strong>Opening:</strong> “We now modify our algorithm: every <code>find</code> call uses <strong>path compression</strong> — after finding the root, every node on the path is updated to point directly to the root.”</p>
+<p><strong>Part A: Trace (heavily scaffolded)</strong> - Give the table above with rows 4–6 blank - Include uptree diagrams for buses 1–3 as worked examples (SVG or image) - Ask students to fill in rows 4–6 - Follow-up: “What do you notice about the find cost starting from bus 3?”</p>
+<p><strong>Part B: Contrast</strong> - “Without PC, what would the find cost be for bus k?” (answer: k) - “Fill in the total find cost for n buses, with and without PC” (n² vs Θ(n))</p>
+<p><strong>Part C: Why it stabilizes (conceptual)</strong> - “After bus 3 parks, node 7 points directly to the new root (5). Draw the uptree.” - “After bus 4’s union (5→4), what is the depth of node 7?” - “After bus 4’s find(7), what is the depth of node 7?” - “Explain in one sentence why find(7) always costs exactly 3 from bus 3 onward.”</p>
+<p><strong>Part D: Amortized argument (most scaffolded part)</strong> - Define Φ = sum of depths. Walk through Φ values for buses 1–4 step by step. - Give the formula: amortized cost = actual cost + ΔΦ. - Worked example: bus 3’s find, actual cost = 3, ΔΦ = −1, amortized = 2. - “Compute amortized cost for bus 4’s find.” - “For a find of path length k, the deepest k−2 nodes all get compressed from depth ≥ 2 to depth 1. What is ΔΦ? What is the amortized cost?” - “Since Φ ≥ 0 always, we know total actual ≤ Σ amortized ≤ <strong><em>. Conclude the total find cost is Θ(</em></strong>__).”</p>
+<p><strong>Part E: Final answer</strong> - Multiple choice: Θ(m+n), Θ(m+n log* n), Θ(m+n log n), Θ(m+n²), Θ(m log n) - Answer: <strong>Θ(m + n)</strong></p>
+<hr>
+</section>
+<section id="scaffolding-notes" class="level2">
+<h2 class="anchored" data-anchor-id="scaffolding-notes">Scaffolding Notes</h2>
+<ul>
+<li>“Just reading it will be hard for them” — every conceptual step needs to be broken into a fill-in or forced observation.</li>
+<li>Uptree diagrams are essential. Students need to <em>see</em> the tree flatten.</li>
+<li>The ΔΦ calculation should be a worked example before students are asked to compute it themselves.</li>
+<li>The leap from “amortized ≤ 2 per find” to “total is O(n)” needs to be spelled out: “there are Θ(n) total find calls, each costing ≤ 2 amortized, so total ≤ ___.”</li>
+<li>Optionally: include a note that the proof for arbitrary input sequences (not just all-want-m) uses the same amortized argument, but the formal accounting is more involved.</li>
+</ul>
+<hr>
+</section>
+<section id="related-files" class="level2">
+<h2 class="anchored" data-anchor-id="related-files">Related Files</h2>
+<ul>
+<li>Existing question: <code>pl-ubc-cpsc221/questions/hws/h3_2020W1_disjoint_sets/question.html</code></li>
+<li>Target assessment: <code>dsci221-prairielearn/courseInstances/2025W2/assessments/homework/hw_03/</code> (to be created)</li>
+</ul>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="b3JpZW50YXRpb24=" data-listing-date-sort="1767571200000" data-listing-file-modified-sort="1774327943405" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="98">
-<div class="thumbnail"><a href="./posts/00_welcome/index.html" class="no-external">
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</section>
+</section>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/00_welcome/index.html" class="no-external">Welcome to DSCI 221!</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/00_welcome/index.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="./posts/00_welcome/index.html" class="no-external">
-<p>Data Structures for Data Science</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/00_welcome/index.html" class="no-external">
-<div class="listing-date">
-Jan 5, 2026
-</div>
-<div class="listing-reading-time">1 min</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -920,7 +998,7 @@ Jan 5, 2026
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/UBC-CS/dsci221/blob/main/announcements.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/UBC-CS/dsci221/edit/main/announcements.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/UBC-CS/dsci221/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/UBC-CS/dsci221/blob/main/hw3notes.md" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/UBC-CS/dsci221/edit/main/hw3notes.md" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://github.com/UBC-CS/dsci221/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>UBC’s Point Grey Campus is located on the traditional, ancestral, and unceded territory of the <a href="https://www.musqueam.bc.ca/">xʷməθkʷəy̓ə (Musqueam)</a> people.</p>
 </div>
