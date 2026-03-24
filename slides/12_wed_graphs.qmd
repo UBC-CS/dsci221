@@ -1,0 +1,436 @@
+---
+title: "Graphs: Examples and Definitions"
+subtitle: "Week 12, Wednesday"
+date: 2026-03-25
+---
+
+## The internet!! (circa 2003)
+
+:::: {.columns}
+::: {.column width="56%"}
+![](/images/gr1.png){width="100%"}
+:::
+::: {.column width="44%"}
+**Graph (V,E):**
+
+&nbsp;&nbsp; V: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; E: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;
+
+**Subgraph:**
+
+[$G'=(V',E')$ is a subgraph of $G=(V,E)$ iff $V'\subseteq V$ and $E'\subseteq E$ and $(u,v)\in E'\to u\in V'$ and $v\in V'$.]{style="color:#3c78d8; font-style:italic; font-size:0.82em"}
+
+&nbsp;
+
+**Degree(v):** [*number of edges that touch vertex v.*]{style="color:#3c78d8; font-style:italic"}
+:::
+::::
+
+
+## Conflict Graph
+
+:::: {.columns}
+::: {.column width="56%"}
+![](/images/gr2.png){width="100%"}
+:::
+::: {.column width="44%"}
+**Graph (V,E):**
+
+&nbsp;&nbsp; V: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; E: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; Aux: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;
+
+**Adjacent Vertices, N(v):**
+[$\{u:(u,v)\in E\}$]{style="color:#3c78d8"}
+
+**Incident Edges, I(v):**
+[$\{(u,v)\in E\}$]{style="color:#3c78d8"}
+
+&nbsp;
+
+**Aside:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+:::
+::::
+
+
+## State Space Graph
+
+:::: {.columns}
+::: {.column width="50%"}
+![](/images/gr5rh.png){width="36%" style="vertical-align:top; margin-right:4%"}
+![](/images/gr5.png){width="56%" style="vertical-align:top"}
+:::
+::: {.column width="50%"}
+**Graph (V,E):**
+
+&nbsp;&nbsp; V: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; E: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;
+
+**Path:** [*sequence of vertices $\{u_0,u_1,\ldots u_n\}$ where $(u_i,u_{i+1})\in E,\;\forall i\in\{0\ldots n-1\}$*]{style="color:#3c78d8; font-style:italic; font-size:0.85em"}
+
+&nbsp;
+
+How do we find solution?
+:::
+::::
+
+
+## Surface Mesh
+
+:::: {.columns}
+::: {.column width="56%"}
+![](/images/gr7.png){width="100%"}
+:::
+::: {.column width="44%"}
+**Graph (V,E):**
+
+&nbsp;&nbsp; V: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; E: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; Aux: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;
+
+**Planar Graph:** [*a graph that can be drawn in the plane with no crossing edges.*]{style="color:#3c78d8; font-style:italic"}
+:::
+::::
+
+
+## Divisibility by 7 {.smaller}
+
+:::: {.columns}
+::: {.column width="52%"}
+This graph is used to calculate whether a given number is divisible by 7.
+
+1. Start at the circle node at the top.
+2. For each digit $d$, follow $d$ blue (solid) edges in succession. As you move from one digit to the next, follow 1 red (dashed) edge.
+3. If you end up back at the circle node, your number is divisible by 7.
+
+**3703**
+
+&nbsp;
+
+**Walk:** [*Sequence of vertices between which there are edges*]{style="color:#3c78d8; font-style:italic"}
+
+**Trail:** [*Walk with no repeated edges*]{style="color:#3c78d8; font-style:italic"}
+
+**Path(alt):** [*Walk with no repeated vertices*]{style="color:#3c78d8; font-style:italic"}
+
+**Circuit:** [*Trail that begins and ends in same place*]{style="color:#3c78d8; font-style:italic"}
+
+**Cycle:** [*Path that begins and ends in same place*]{style="color:#3c78d8; font-style:italic"}
+:::
+::: {.column width="48%"}
+![](/images/gr6.png){width="72%" fig-align="center"}
+:::
+::::
+
+
+## Conversation Analysis
+
+:::: {.columns}
+::: {.column width="56%"}
+![](/images/gr3.png){width="100%"}
+:::
+::: {.column width="44%"}
+**Graph (V,E):**
+
+&nbsp;&nbsp; V: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; E: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;
+
+**Complete Graph:**
+
+[*A graph $G=(V,E)$ is* complete *iff $\forall u,v\in V,\;(u,v)\in E$.*]{style="color:#3c78d8; font-style:italic"}
+:::
+::::
+
+
+## Social Network
+
+:::: {.columns}
+::: {.column width="56%"}
+![](/images/gr4.png){width="100%"}
+:::
+::: {.column width="44%"}
+**Graph (V,E):**
+
+&nbsp;&nbsp; V: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; E: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;
+
+**Connected (sub)graph:** [*a (sub)graph $G=(V,E)$ is connected if there is a path from $u$ to $v$ $\forall u,v\in V$.*]{style="color:#3c78d8; font-style:italic; font-size:0.85em"}
+
+**Connected Component:** [*a maximal connected subgraph.*]{style="color:#3c78d8; font-style:italic"}
+
+**Spanning Tree:** [*connected, acyclic subgraph, containing all the vertices in $V$.*]{style="color:#3c78d8; font-style:italic"}
+:::
+::::
+
+
+## Collaboration Graph
+
+:::: {.columns}
+::: {.column width="56%"}
+```{=html}
+<svg viewBox="0 0 360 290" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
+  <!-- edges -->
+  <g stroke="#aaa" stroke-width="1.5" fill="none">
+    <!-- large component -->
+    <line x1="55" y1="45" x2="115" y2="30"/>
+    <line x1="115" y1="30" x2="165" y2="55"/>
+    <line x1="165" y1="55" x2="155" y2="105"/>
+    <line x1="115" y1="30" x2="100" y2="80"/>
+    <line x1="100" y1="80" x2="155" y2="105"/>
+    <line x1="55" y1="45" x2="40" y2="100"/>
+    <line x1="40" y1="100" x2="100" y2="80"/>
+    <!-- small cluster top-right -->
+    <line x1="245" y1="25" x2="295" y2="40"/>
+    <line x1="295" y1="40" x2="320" y2="85"/>
+    <!-- small cluster mid-right -->
+    <line x1="265" y1="140" x2="315" y2="160"/>
+    <!-- small cluster bottom-left -->
+    <line x1="30" y1="195" x2="80" y2="210"/>
+    <line x1="80" y1="210" x2="60" y2="255"/>
+    <!-- small cluster bottom-center -->
+    <line x1="175" y1="220" x2="220" y2="235"/>
+  </g>
+  <!-- nodes: large component -->
+  <circle cx="55"  cy="45"  r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="115" cy="30"  r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="165" cy="55"  r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="100" cy="80"  r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="155" cy="105" r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="40"  cy="100" r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <!-- small cluster top-right -->
+  <circle cx="245" cy="25"  r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="295" cy="40"  r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="320" cy="85"  r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <!-- small cluster mid-right -->
+  <circle cx="265" cy="140" r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="315" cy="160" r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <!-- isolated nodes -->
+  <circle cx="190" cy="130" r="9" fill="#6fa8dc" stroke="#3d7ab5" stroke-width="1.5"/>
+  <circle cx="70"  cy="155" r="9" fill="#6fa8dc" stroke="#3d7ab5" stroke-width="1.5"/>
+  <!-- small cluster bottom-left -->
+  <circle cx="30"  cy="195" r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="80"  cy="210" r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="60"  cy="255" r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <!-- small cluster bottom-center -->
+  <circle cx="175" cy="220" r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <circle cx="220" cy="235" r="9" fill="#F4A225" stroke="#C07810" stroke-width="1.5"/>
+  <!-- isolated bottom-right -->
+  <circle cx="310" cy="250" r="9" fill="#6fa8dc" stroke="#3d7ab5" stroke-width="1.5"/>
+</svg>
+```
+:::
+::: {.column width="44%"}
+**Graph (V,E):**
+
+&nbsp;&nbsp; V: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; E: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;
+
+**Sparse Graph:**
+
+[$|E| = O(|V|)$]{style="color:#3c78d8; font-size:1.15em"}
+:::
+::::
+
+
+## Graph Vocabulary {.smaller}
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{=html}
+<div style="position:relative">
+<svg viewBox="0 0 475 500" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; font-family:sans-serif">
+  <!-- ===== LEFT COMPONENT ===== -->
+  <!-- K5 edges -->
+  <g stroke="#333" stroke-width="1.3" fill="none">
+    <line x1="65"  y1="65"  x2="135" y2="18"/>  <!-- a-b -->
+    <line x1="65"  y1="65"  x2="205" y2="65"/>  <!-- a-c -->
+    <line x1="65"  y1="65"  x2="180" y2="132"/> <!-- a-d -->
+    <line x1="65"  y1="65"  x2="90"  y2="132"/> <!-- a-e -->
+    <line x1="135" y1="18"  x2="205" y2="65"/>  <!-- b-c -->
+    <line x1="135" y1="18"  x2="180" y2="132"/> <!-- b-d -->
+    <line x1="135" y1="18"  x2="90"  y2="132"/> <!-- b-e -->
+    <line x1="205" y1="65"  x2="180" y2="132"/> <!-- c-d -->
+    <line x1="205" y1="65"  x2="90"  y2="132"/> <!-- c-e -->
+    <line x1="90"  y1="132" x2="180" y2="132"/> <!-- d-e -->
+    <!-- below K5 -->
+    <line x1="90"  y1="132" x2="60"  y2="188"/> <!-- e-g -->
+    <line x1="180" y1="132" x2="172" y2="188"/> <!-- d-f -->
+    <line x1="60"  y1="188" x2="172" y2="188"/> <!-- g-f -->
+    <!-- g-n, f-m -->
+    <line x1="60"  y1="188" x2="78"  y2="242"/> <!-- g-n -->
+    <line x1="172" y1="188" x2="158" y2="242"/> <!-- f-m -->
+    <!-- m-n -->
+    <line x1="78"  y1="242" x2="158" y2="242"/> <!-- m-n -->
+    <!-- n-o, n-k, m-l -->
+    <line x1="78"  y1="242" x2="38"  y2="292"/> <!-- n-o -->
+    <line x1="78"  y1="242" x2="78"  y2="292"/> <!-- n-k -->
+    <line x1="158" y1="242" x2="158" y2="292"/> <!-- m-l -->
+    <!-- k-j, l-j -->
+    <line x1="78"  y1="292" x2="118" y2="338"/> <!-- k-j -->
+    <line x1="158" y1="292" x2="118" y2="338"/> <!-- l-j -->
+    <!-- j-i -->
+    <line x1="118" y1="338" x2="158" y2="382"/> <!-- j-i -->
+    <!-- i-h -->
+    <line x1="158" y1="382" x2="158" y2="422"/> <!-- i-h -->
+    <!-- h-p, h-q -->
+    <line x1="158" y1="422" x2="98"  y2="465"/> <!-- h-p -->
+    <line x1="158" y1="422" x2="218" y2="465"/> <!-- h-q -->
+  </g>
+  <!-- K5 nodes -->
+  <circle cx="135" cy="18"  r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="135" y="23" text-anchor="middle" font-size="11" fill="#333">b</text>
+  <circle cx="65"  cy="65"  r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="65"  y="70" text-anchor="middle" font-size="11" fill="#333">a</text>
+  <circle cx="205" cy="65"  r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="205" y="70" text-anchor="middle" font-size="11" fill="#333">c</text>
+  <circle cx="90"  cy="132" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="90"  y="137" text-anchor="middle" font-size="11" fill="#333">e</text>
+  <circle cx="180" cy="132" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="180" y="137" text-anchor="middle" font-size="11" fill="#333">d</text>
+  <!-- g, f -->
+  <circle cx="60"  cy="188" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="60"  y="193" text-anchor="middle" font-size="11" fill="#333">g</text>
+  <circle cx="172" cy="188" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="172" y="193" text-anchor="middle" font-size="11" fill="#333">f</text>
+  <!-- n, m -->
+  <circle cx="78"  cy="242" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="78"  y="247" text-anchor="middle" font-size="11" fill="#333">n</text>
+  <circle cx="158" cy="242" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="158" y="247" text-anchor="middle" font-size="11" fill="#333">m</text>
+  <!-- o, k, l -->
+  <circle cx="38"  cy="292" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="38"  y="297" text-anchor="middle" font-size="11" fill="#333">o</text>
+  <circle cx="78"  cy="292" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="78"  y="297" text-anchor="middle" font-size="11" fill="#333">k</text>
+  <circle cx="158" cy="292" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="158" y="297" text-anchor="middle" font-size="11" fill="#333">l</text>
+  <!-- j -->
+  <circle cx="118" cy="338" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="118" y="343" text-anchor="middle" font-size="11" fill="#333">j</text>
+  <!-- i -->
+  <circle cx="158" cy="382" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="158" y="387" text-anchor="middle" font-size="11" fill="#333">i</text>
+  <!-- h -->
+  <circle cx="158" cy="422" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="158" y="427" text-anchor="middle" font-size="11" fill="#333">h</text>
+  <!-- p, q -->
+  <circle cx="98"  cy="465" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="98"  y="470" text-anchor="middle" font-size="11" fill="#333">p</text>
+  <circle cx="218" cy="465" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="218" y="470" text-anchor="middle" font-size="11" fill="#333">q</text>
+
+  <!-- ===== RIGHT COMPONENT: 2x5 grid ===== -->
+  <g stroke="#333" stroke-width="1.3" fill="none">
+    <!-- row edges -->
+    <line x1="305" y1="30"  x2="375" y2="30"/>  <!-- 8-9 -->
+    <line x1="305" y1="128" x2="375" y2="128"/> <!-- 6-7 -->
+    <line x1="305" y1="226" x2="375" y2="226"/> <!-- 4-5 -->
+    <line x1="305" y1="324" x2="375" y2="324"/> <!-- 2-3 -->
+    <line x1="305" y1="422" x2="375" y2="422"/> <!-- 0-1 -->
+    <!-- left col edges -->
+    <line x1="305" y1="30"  x2="305" y2="128"/> <!-- 8-6 -->
+    <line x1="305" y1="128" x2="305" y2="226"/> <!-- 6-4 -->
+    <line x1="305" y1="226" x2="305" y2="324"/> <!-- 4-2 -->
+    <line x1="305" y1="324" x2="305" y2="422"/> <!-- 2-0 -->
+    <!-- right col edges -->
+    <line x1="375" y1="30"  x2="375" y2="128"/> <!-- 9-7 -->
+    <line x1="375" y1="128" x2="375" y2="226"/> <!-- 7-5 -->
+    <line x1="375" y1="226" x2="375" y2="324"/> <!-- 5-3 -->
+    <line x1="375" y1="324" x2="375" y2="422"/> <!-- 3-1 -->
+  </g>
+  <circle cx="305" cy="30"  r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="305" y="35" text-anchor="middle" font-size="11" fill="#333">8</text>
+  <circle cx="375" cy="30"  r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="375" y="35" text-anchor="middle" font-size="11" fill="#333">9</text>
+  <circle cx="305" cy="128" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="305" y="133" text-anchor="middle" font-size="11" fill="#333">6</text>
+  <circle cx="375" cy="128" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="375" y="133" text-anchor="middle" font-size="11" fill="#333">7</text>
+  <circle cx="305" cy="226" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="305" y="231" text-anchor="middle" font-size="11" fill="#333">4</text>
+  <circle cx="375" cy="226" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="375" y="231" text-anchor="middle" font-size="11" fill="#333">5</text>
+  <circle cx="305" cy="324" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="305" y="329" text-anchor="middle" font-size="11" fill="#333">2</text>
+  <circle cx="375" cy="324" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="375" y="329" text-anchor="middle" font-size="11" fill="#333">3</text>
+  <circle cx="305" cy="422" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="305" y="427" text-anchor="middle" font-size="11" fill="#333">0</text>
+  <circle cx="375" cy="422" r="12" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="375" y="427" text-anchor="middle" font-size="11" fill="#333">1</text>
+
+  <!-- annotation -->
+  <text x="415" y="18"  font-size="13" fill="#3c78d8" font-weight="bold">G = (V,E)</text>
+  <text x="415" y="40"  font-size="13" fill="#3c78d8">|V| = n</text>
+  <text x="415" y="60"  font-size="13" fill="#3c78d8">|E| = m</text>
+</svg>
+</div>
+```
+:::
+::: {.column width="50%"}
+1. List the edges incident on vertex b:
+2. What is the degree of vertex h?
+3. List all vertices adjacent to vertex i:
+4. Describe a path from p to o:
+5. Describe a path from 6 to g:
+6. List the vertices in the largest complete subgraph in G:
+7. Describe the largest connected subgraph in G:
+8. Describe the connected components in G:
+9. How many edges in a spanning forest of G?
+10. How many paths from 0 to 9?
+11. Can you draw G with no crossing edges?
+:::
+::::
+
+
+## What's left?
+
+:::: {.columns}
+::: {.column width="55%"}
+```{=html}
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; max-width:100%">
+  <img src="/images/gr1.png"   style="width:100%; object-fit:cover; height:90px"/>
+  <img src="/images/gr2.png"   style="width:100%; object-fit:cover; height:90px"/>
+  <img src="/images/gr4.png"   style="width:100%; object-fit:cover; height:90px"/>
+  <img src="/images/gr7.png"   style="width:100%; object-fit:cover; height:90px"/>
+  <img src="/images/gr3.png"   style="width:100%; object-fit:cover; height:90px"/>
+  <img src="/images/gr8.png"   style="width:100%; object-fit:cover; height:90px"/>
+</div>
+```
+:::
+::: {.column width="45%"}
+How do we get from here to there? Need:
+
+[1. Common Vocabulary]{style="color:#3c78d8; font-style:italic; font-weight:bold"}
+
+[2. Graph implementation]{style="color:#3c78d8; font-style:italic; font-weight:bold"}
+
+[3. Traversal]{style="color:#3c78d8; font-style:italic; font-weight:bold"}
+
+[4. Algorithms.]{style="color:#3c78d8; font-style:italic; font-weight:bold"}
+:::
+::::
