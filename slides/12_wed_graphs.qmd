@@ -458,3 +458,43 @@ How do we get from here to there? Need:
 [4. Algorithms.]{style="color:#3c78d8; font-style:italic; font-weight:bold"}
 :::
 ::::
+
+
+## Review {.smaller}
+
+:::: {.columns}
+::: {.column width="54%"}
+![](/images/gr1.png){width="100%"}
+
+[$G = (V,E) \qquad |V| = n \qquad |E| = m$]{style="color:#3c78d8; font-style:italic"}
+:::
+::: {.column width="46%"}
+[*Running times are often reported in terms of $n$, the number of vertices, but they often depend on $m$, the number of edges.*]{style="color:#3c78d8; font-style:italic; font-size:0.9em"}
+
+&nbsp;
+
+Suppose $n = 100$ vertices...
+
+&nbsp;
+
+Give a lower bound on $|E|$: &emsp; \_\_\_\_\_\_
+
+&nbsp;
+
+Give an upper bound on $|E|$: &emsp; \_\_\_\_\_\_
+:::
+::::
+
+
+## Handshaking {.smaller}
+
+:::: {.columns}
+::: {.column width="58%"}
+![](/images/gr8.png){width="88%" fig-align="center"}
+
+[$G = (V,E) \qquad |V| = n \qquad |E| = m$]{style="color:#3c78d8; font-style:italic"}
+:::
+::: {.column width="42%"}
+How many edges?
+:::
+::::
