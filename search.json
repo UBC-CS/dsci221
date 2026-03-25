@@ -1638,11 +1638,11 @@
     "text": "Surface Mesh\n\n\n\n\nGraph (V,E):\n   V:   ___________________\n   E:   ___________________\n   Aux: _________________\n \nPlanar Graph: a graph that can be drawn in the plane with no crossing edges."
   },
   {
-    "objectID": "slides/12_wed_graphs.html#divisibility-by-7",
-    "href": "slides/12_wed_graphs.html#divisibility-by-7",
+    "objectID": "slides/12_wed_graphs.html#check-divisibility-by-7",
+    "href": "slides/12_wed_graphs.html#check-divisibility-by-7",
     "title": "Graphs: Examples and Definitions",
-    "section": "Divisibility by 7",
-    "text": "Divisibility by 7\n\n\nThis graph is used to calculate whether a given number is divisible by 7.\n\nStart at the circle node at the top.\nFor each digit \\(d\\), follow \\(d\\) blue (solid) edges in succession. As you move from one digit to the next, follow 1 red (dashed) edge.\nIf you end up back at the circle node, your number is divisible by 7.\n\n3703\n \nWalk: Sequence of vertices between which there are edges\nTrail: Walk with no repeated edges\nPath(alt): Walk with no repeated vertices\nCircuit: Trail that begins and ends in same place\nCycle: Path that begins and ends in same place"
+    "section": "Check Divisibility by 7",
+    "text": "Check Divisibility by 7\n\n\n\nStart at the circle node at the top.\nFor each digit \\(d\\), follow \\(d\\) blue (solid) edges, followed by 1 red (dashed) edge.\nIf you end up at the circle node, your number is divisible by 7.\n\n\nExample: 3703\n\nWalk: Sequence of vertices between which there are edges\nTrail: Walk with no repeated edges\nPath(alt): Walk with no repeated vertices\nCircuit: Trail that begins and ends in same place\nCycle: Path that begins and ends in same place"
   },
   {
     "objectID": "slides/12_wed_graphs.html#conversation-analysis",
@@ -1664,6 +1664,13 @@
     "title": "Graphs: Examples and Definitions",
     "section": "Collaboration Graph",
     "text": "Collaboration Graph\n\n\n\n  \n  \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n\nGraph (V,E):\n   V:   ___________________\n   E:   ___________________\n \nSparse Graph:\n\\(|E| = O(|V|)\\)"
+  },
+  {
+    "objectID": "slides/12_wed_graphs.html#downtown-vancouver",
+    "href": "slides/12_wed_graphs.html#downtown-vancouver",
+    "title": "Graphs: Examples and Definitions",
+    "section": "Downtown Vancouver",
+    "text": "Downtown Vancouver\n\n\n\n\nGraph (V,E):\n   V:   ___________________\n   E:   ___________________\n \nDirected Graph: each edge \\((u,v)\\) is ordered — \\((u,v) \\neq (v,u)\\). Streets like Howe (↓) and Seymour (↑) make this directed.\nWeighted Graph: each edge carries a weight \\(w(u,v)\\) — here, travel time in minutes.\nIn/Out-degree(v): # edges directed into / out of \\(v\\). A one-way intersection has in-degree \\(\\neq\\) out-degree.\n \nFastest route: Seymour & Georgia → Burrard & Helmcken?"
   },
   {
     "objectID": "slides/12_wed_graphs.html#graph-vocabulary",

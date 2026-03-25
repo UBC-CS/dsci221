@@ -152,7 +152,7 @@
 
   <p class="date">March 25, 2026</p>
 </section>
-<section id="the-internet-circa-2003" class="slide level2">
+<section id="the-internet-circa-2003" class="slide level2 smaller">
 <h2>The internet!! (circa 2003)</h2>
 <div class="columns">
 <div class="column" style="width:56%;">
@@ -168,7 +168,7 @@
 <p><strong>Degree(v):</strong> <span style="color:#3c78d8; font-style:italic"><em>number of edges that touch vertex v.</em></span></p>
 </div></div>
 </section>
-<section id="conflict-graph" class="slide level2">
+<section id="conflict-graph" class="slide level2 smaller">
 <h2>Conflict Graph</h2>
 <div class="columns">
 <div class="column" style="width:56%;">
@@ -185,7 +185,7 @@
 <p><strong>Aside:</strong> _________________________</p>
 </div></div>
 </section>
-<section id="state-space-graph" class="slide level2">
+<section id="state-space-graph" class="slide level2 smaller">
 <h2>State Space Graph</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -200,7 +200,7 @@
 <p>How do we find solution?</p>
 </div></div>
 </section>
-<section id="surface-mesh" class="slide level2">
+<section id="surface-mesh" class="slide level2 smaller">
 <h2>Surface Mesh</h2>
 <div class="columns">
 <div class="column" style="width:56%;">
@@ -214,24 +214,24 @@
 <p><strong>Planar Graph:</strong> <span style="color:#3c78d8; font-style:italic"><em>a graph that can be drawn in the plane with no crossing edges.</em></span></p>
 </div></div>
 </section>
-<section id="divisibility-by-7" class="slide level2 smaller">
-<h2>Divisibility by 7</h2>
+<section id="check-divisibility-by-7" class="slide level2 smaller">
+<h2>Check Divisibility by 7</h2>
 <div class="columns">
-<div class="column" style="width:52%;">
-<p>This graph is used to calculate whether a given number is divisible by 7.</p>
+<div class="column" style="width:70%;">
 <ol type="1">
 <li>Start at the circle node at the top.</li>
-<li>For each digit <span class="math inline">\(d\)</span>, follow <span class="math inline">\(d\)</span> blue (solid) edges in succession. As you move from one digit to the next, follow 1 red (dashed) edge.</li>
-<li>If you end up back at the circle node, your number is divisible by 7.</li>
+<li>For each digit <span class="math inline">\(d\)</span>, follow <span class="math inline">\(d\)</span> blue (solid) edges, followed by 1 red (dashed) edge.</li>
+<li>If you end up at the circle node, your number is divisible by 7.</li>
 </ol>
-<p><strong>3703</strong></p>
-<p>&nbsp;</p>
+<blockquote>
+<p>Example: <strong>3703</strong></p>
+</blockquote>
 <p><strong>Walk:</strong> <span style="color:#3c78d8; font-style:italic"><em>Sequence of vertices between which there are edges</em></span></p>
 <p><strong>Trail:</strong> <span style="color:#3c78d8; font-style:italic"><em>Walk with no repeated edges</em></span></p>
 <p><strong>Path(alt):</strong> <span style="color:#3c78d8; font-style:italic"><em>Walk with no repeated vertices</em></span></p>
 <p><strong>Circuit:</strong> <span style="color:#3c78d8; font-style:italic"><em>Trail that begins and ends in same place</em></span></p>
 <p><strong>Cycle:</strong> <span style="color:#3c78d8; font-style:italic"><em>Path that begins and ends in same place</em></span></p>
-</div><div class="column" style="width:48%;">
+</div><div class="column" style="width:30%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="../images/gr6.png" class="quarto-figure quarto-figure-center" style="width:72.0%"></p>
@@ -239,7 +239,7 @@
 </div>
 </div></div>
 </section>
-<section id="conversation-analysis" class="slide level2">
+<section id="conversation-analysis" class="slide level2 smaller">
 <h2>Conversation Analysis</h2>
 <div class="columns">
 <div class="column" style="width:56%;">
@@ -253,7 +253,7 @@
 <p><span style="color:#3c78d8; font-style:italic"><em>A graph <span class="math inline">\(G=(V,E)\)</span> is</em> complete <em>iff <span class="math inline">\(\forall u,v\in V,\;(u,v)\in E\)</span>.</em></span></p>
 </div></div>
 </section>
-<section id="social-network" class="slide level2">
+<section id="social-network" class="slide level2 smaller">
 <h2>Social Network</h2>
 <div class="columns">
 <div class="column" style="width:56%;">
@@ -268,7 +268,7 @@
 <p><strong>Spanning Tree:</strong> <span style="color:#3c78d8; font-style:italic"><em>connected, acyclic subgraph, containing all the vertices in <span class="math inline">\(V\)</span>.</em></span></p>
 </div></div>
 </section>
-<section id="collaboration-graph" class="slide level2">
+<section id="collaboration-graph" class="slide level2 smaller">
 <h2>Collaboration Graph</h2>
 <div class="columns">
 <div class="column" style="width:56%;">
@@ -328,6 +328,23 @@
 <p>&nbsp;</p>
 <p><strong>Sparse Graph:</strong></p>
 <p><span style="color:#3c78d8; font-size:1.15em"><span class="math inline">\(|E| = O(|V|)\)</span></span></p>
+</div></div>
+</section>
+<section id="downtown-vancouver" class="slide level2 smaller">
+<h2>Downtown Vancouver</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<p><img data-src="../images/downtownvan.png" style="width:100.0%"></p>
+</div><div class="column" style="width:42%;">
+<p><strong>Graph (V,E):</strong></p>
+<p>&nbsp;&nbsp; V:   ___________________</p>
+<p>&nbsp;&nbsp; E:   ___________________</p>
+<p>&nbsp;</p>
+<p><strong>Directed Graph:</strong> <span style="color:#3c78d8; font-style:italic; font-size:0.82em"><em>each edge <span class="math inline">\((u,v)\)</span> is ordered — <span class="math inline">\((u,v) \neq (v,u)\)</span>. Streets like Howe (↓) and Seymour (↑) make this directed.</em></span></p>
+<p><strong>Weighted Graph:</strong> <span style="color:#3c78d8; font-style:italic; font-size:0.82em"><em>each edge carries a weight <span class="math inline">\(w(u,v)\)</span> — here, travel time in minutes.</em></span></p>
+<p><strong>In/Out-degree(v):</strong> <span style="color:#3c78d8; font-style:italic; font-size:0.82em"><em># edges directed into / out of <span class="math inline">\(v\)</span>. A one-way intersection has in-degree <span class="math inline">\(\neq\)</span> out-degree.</em></span></p>
+<p>&nbsp;</p>
+<p><em>Fastest route: Seymour &amp; Georgia → Burrard &amp; Helmcken?</em></p>
 </div></div>
 </section>
 <section id="graph-vocabulary" class="slide level2 smaller">
