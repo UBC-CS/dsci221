@@ -1663,7 +1663,7 @@
     "href": "slides/12_wed_graphs.html#collaboration-graph",
     "title": "Graphs: Examples and Definitions",
     "section": "Collaboration Graph",
-    "text": "Collaboration Graph\n\n\n\n  \n  \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n\nGraph (V,E):\n   V:   ___________________\n   E:   ___________________\n \nSparse Graph:\n\\(|E| = O(|V|)\\)"
+    "text": "Collaboration Graph\n\n\n\n\n\n\n\n\nGraph (V,E):\n   V:   ___________________\n   E:   ___________________\n \nSparse Graph:\n\\(|E| = O(|V|)\\)"
   },
   {
     "objectID": "slides/12_wed_graphs.html#downtown-vancouver",
@@ -1680,18 +1680,11 @@
     "text": "Graph Vocabulary\n\n\n\n\n  \n  \n  \n      \n      \n     \n     \n      \n     \n     \n     \n     \n     \n    \n     \n     \n     \n    \n     \n     \n    \n     \n    \n     \n     \n     \n    \n     \n     \n    \n     \n    \n     \n    \n     \n     \n  \n  \n  \n  b\n  \n  a\n  \n  c\n  \n  e\n  \n  d\n  \n  \n  g\n  \n  f\n  \n  \n  n\n  \n  m\n  \n  \n  o\n  \n  k\n  \n  l\n  \n  \n  j\n  \n  \n  i\n  \n  \n  h\n  \n  \n  p\n  \n  q\n\n  \n  \n    \n      \n     \n     \n     \n     \n    \n     \n     \n     \n     \n    \n     \n     \n     \n     \n  \n  \n  8\n  \n  9\n  \n  6\n  \n  7\n  \n  4\n  \n  5\n  \n  2\n  \n  3\n  \n  0\n  \n  1\n\n  \n  G = (V,E)\n  |V| = n\n  |E| = m\n\n\n\n\nList the edges incident on vertex b:\nWhat is the degree of vertex h?\nList all vertices adjacent to vertex i:\nDescribe a path from p to o:\nDescribe a path from 6 to g:\nList the vertices in the largest complete subgraph in G:\nDescribe the largest connected subgraph in G:\nDescribe the connected components in G:\nHow many edges in a spanning forest of G?\nHow many paths from 0 to 9?\nCan you draw G with no crossing edges?"
   },
   {
-    "objectID": "slides/12_wed_graphs.html#whats-left",
-    "href": "slides/12_wed_graphs.html#whats-left",
+    "objectID": "slides/12_wed_graphs.html#bounds",
+    "href": "slides/12_wed_graphs.html#bounds",
     "title": "Graphs: Examples and Definitions",
-    "section": "What’s left?",
-    "text": "What’s left?\n\n\n\n  \n  \n  \n  \n  \n  \n\n\nHow do we get from here to there? Need:\n1. Common Vocabulary\n2. Graph implementation\n3. Traversal\n4. Algorithms."
-  },
-  {
-    "objectID": "slides/12_wed_graphs.html#review",
-    "href": "slides/12_wed_graphs.html#review",
-    "title": "Graphs: Examples and Definitions",
-    "section": "Review",
-    "text": "Review\n\n\n\n\\(G = (V,E) \\qquad |V| = n \\qquad |E| = m\\)\n\nRunning times are often reported in terms of \\(n\\), the number of vertices, but they often depend on \\(m\\), the number of edges.\n \nSuppose \\(n = 100\\) vertices…\n \nGive a lower bound on \\(|E|\\):   ______\n \nGive an upper bound on \\(|E|\\):   ______"
+    "section": "Bounds",
+    "text": "Bounds\n\n\n\n\\(G = (V,E) \\qquad |V| = n \\qquad |E| = m\\)\n\nRunning times are often reported in terms of \\(n\\), the number of vertices, but they often depend on \\(m\\), the number of edges.\n \nSuppose \\(n = 100\\) vertices…\n \nGive a lower bound on \\(|E|\\):   ______\n \nGive an upper bound on \\(|E|\\):   ______"
   },
   {
     "objectID": "slides/12_wed_graphs.html#handshaking",
@@ -1701,11 +1694,18 @@
     "text": "Handshaking\n\n\n\n\n\n\n\n\\(G = (V,E) \\qquad |V| = n \\qquad |E| = m\\)\n\nHow many edges?"
   },
   {
-    "objectID": "slides/12_wed_graphs.html#activity-can-you-trace-it",
-    "href": "slides/12_wed_graphs.html#activity-can-you-trace-it",
+    "objectID": "slides/12_wed_graphs.html#activity-pencil-puzzles",
+    "href": "slides/12_wed_graphs.html#activity-pencil-puzzles",
     "title": "Graphs: Examples and Definitions",
-    "section": "Activity: Can You Trace It?",
-    "text": "Activity: Can You Trace It?\nYou each have a graph. Do these three things:\n \n1. Try to trace every edge exactly once without lifting your pencil.   ✓ or ✗?\n \n2. Fill in the degree of every vertex on your card.\n \n3. Count how many vertices have odd degree.\n \nThen find a neighbor whose answer to (1) differs from yours.\n \nWhat’s different about your two graphs?"
+    "section": "Activity: Pencil Puzzles",
+    "text": "Activity: Pencil Puzzles\n\n\nYou each have a graph. Do these three things:\n\nTry to trace every edge exactly once without lifting your pencil.\nCome up with a rule that you can use to determine if a trace is possible.\nDevise an algorithm that will find a trace if it exists."
+  },
+  {
+    "objectID": "slides/12_wed_graphs.html#whats-left",
+    "href": "slides/12_wed_graphs.html#whats-left",
+    "title": "Graphs: Examples and Definitions",
+    "section": "What’s left?",
+    "text": "What’s left?\n\n\n\n  \n  \n  \n  \n  \n  \n\n\nHow do we get from here to there? Need:\n1. Common Vocabulary\n2. Graph implementation\n3. Traversal\n4. Algorithms."
   },
   {
     "objectID": "about.html",
