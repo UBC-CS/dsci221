@@ -1687,6 +1687,20 @@
     "text": "What’s left?\n\n\n\n  \n  \n  \n  \n  \n  \n\n\nHow do we get from here to there? Need:\n1. Common Vocabulary\n2. Graph implementation\n3. Traversal\n4. Algorithms."
   },
   {
+    "objectID": "slides/12_wed_graphs.html#review",
+    "href": "slides/12_wed_graphs.html#review",
+    "title": "Graphs: Examples and Definitions",
+    "section": "Review",
+    "text": "Review\n\n\n\n\\(G = (V,E) \\qquad |V| = n \\qquad |E| = m\\)\n\nRunning times are often reported in terms of \\(n\\), the number of vertices, but they often depend on \\(m\\), the number of edges.\n \nSuppose \\(n = 100\\) vertices…\n \nGive a lower bound on \\(|E|\\):   ______\n \nGive an upper bound on \\(|E|\\):   ______"
+  },
+  {
+    "objectID": "slides/12_wed_graphs.html#handshaking",
+    "href": "slides/12_wed_graphs.html#handshaking",
+    "title": "Graphs: Examples and Definitions",
+    "section": "Handshaking",
+    "text": "Handshaking\n\n\n\n\n\n\n\n\\(G = (V,E) \\qquad |V| = n \\qquad |E| = m\\)\n\nHow many edges?"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "DSCI 221: Data Structures and Algorithms for Data Science",
