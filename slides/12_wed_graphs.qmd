@@ -4,7 +4,7 @@ subtitle: "Week 12, Wednesday"
 date: 2026-03-25
 ---
 
-## The internet!! (circa 2003)
+## The internet!! (circa 2003) {.smaller}
 
 :::: {.columns}
 ::: {.column width="56%"}
@@ -30,7 +30,7 @@ date: 2026-03-25
 ::::
 
 
-## Conflict Graph
+## Conflict Graph {.smaller}
 
 :::: {.columns}
 ::: {.column width="56%"}
@@ -60,7 +60,7 @@ date: 2026-03-25
 ::::
 
 
-## State Space Graph
+## State Space Graph {.smaller}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -85,7 +85,7 @@ How do we find solution?
 ::::
 
 
-## Surface Mesh
+## Surface Mesh {.smaller}
 
 :::: {.columns}
 ::: {.column width="56%"}
@@ -107,19 +107,15 @@ How do we find solution?
 ::::
 
 
-## Divisibility by 7 {.smaller}
+## Check Divisibility by 7 {.smaller}
 
 :::: {.columns}
-::: {.column width="52%"}
-This graph is used to calculate whether a given number is divisible by 7.
-
+::: {.column width="70%"}
 1. Start at the circle node at the top.
-2. For each digit $d$, follow $d$ blue (solid) edges in succession. As you move from one digit to the next, follow 1 red (dashed) edge.
-3. If you end up back at the circle node, your number is divisible by 7.
+2. For each digit $d$, follow $d$ blue (solid) edges, followed by 1 red (dashed) edge.
+3. If you end up at the circle node, your number is divisible by 7.
 
-**3703**
-
-&nbsp;
+> Example: **3703**
 
 **Walk:** [*Sequence of vertices between which there are edges*]{style="color:#3c78d8; font-style:italic"}
 
@@ -131,13 +127,13 @@ This graph is used to calculate whether a given number is divisible by 7.
 
 **Cycle:** [*Path that begins and ends in same place*]{style="color:#3c78d8; font-style:italic"}
 :::
-::: {.column width="48%"}
+::: {.column width="30%"}
 ![](/images/gr6.png){width="72%" fig-align="center"}
 :::
 ::::
 
 
-## Conversation Analysis
+## Conversation Analysis {.smaller}
 
 :::: {.columns}
 ::: {.column width="56%"}
@@ -159,7 +155,7 @@ This graph is used to calculate whether a given number is divisible by 7.
 ::::
 
 
-## Social Network
+## Social Network {.smaller}
 
 :::: {.columns}
 ::: {.column width="56%"}
@@ -183,7 +179,7 @@ This graph is used to calculate whether a given number is divisible by 7.
 ::::
 
 
-## Collaboration Graph
+## Collaboration Graph {.smaller}
 
 :::: {.columns}
 ::: {.column width="56%"}
@@ -251,6 +247,34 @@ This graph is used to calculate whether a given number is divisible by 7.
 **Sparse Graph:**
 
 [$|E| = O(|V|)$]{style="color:#3c78d8; font-size:1.15em"}
+:::
+::::
+
+
+## Downtown Vancouver {.smaller}
+
+:::: {.columns}
+::: {.column width="58%"}
+![](/images/downtownvan.png){width="100%"}
+:::
+::: {.column width="42%"}
+**Graph (V,E):**
+
+&nbsp;&nbsp; V: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;&nbsp; E: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+&nbsp;
+
+**Directed Graph:** [*each edge $(u,v)$ is ordered — $(u,v) \neq (v,u)$. Streets like Howe (↓) and Seymour (↑) make this directed.*]{style="color:#3c78d8; font-style:italic; font-size:0.82em"}
+
+**Weighted Graph:** [*each edge carries a weight $w(u,v)$ — here, travel time in minutes.*]{style="color:#3c78d8; font-style:italic; font-size:0.82em"}
+
+**In/Out-degree(v):** [*\# edges directed into / out of $v$. A one-way intersection has in-degree $\neq$ out-degree.*]{style="color:#3c78d8; font-style:italic; font-size:0.82em"}
+
+&nbsp;
+
+*Fastest route: Seymour & Georgia → Burrard & Helmcken?*
 :::
 ::::
 
