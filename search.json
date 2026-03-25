@@ -1701,6 +1701,13 @@
     "text": "Handshaking\n\n\n\n\n\n\n\n\\(G = (V,E) \\qquad |V| = n \\qquad |E| = m\\)\n\nHow many edges?"
   },
   {
+    "objectID": "slides/12_wed_graphs.html#activity-can-you-trace-it",
+    "href": "slides/12_wed_graphs.html#activity-can-you-trace-it",
+    "title": "Graphs: Examples and Definitions",
+    "section": "Activity: Can You Trace It?",
+    "text": "Activity: Can You Trace It?\nYou each have a graph. Do these three things:\n \n1. Try to trace every edge exactly once without lifting your pencil.   ✓ or ✗?\n \n2. Fill in the degree of every vertex on your card.\n \n3. Count how many vertices have odd degree.\n \nThen find a neighbor whose answer to (1) differs from yours.\n \nWhat’s different about your two graphs?"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "DSCI 221: Data Structures and Algorithms for Data Science",
