@@ -136,10 +136,10 @@ How do we find solution?
 ## Conversation Analysis {.smaller}
 
 :::: {.columns}
-::: {.column width="56%"}
-![](/images/gr3.png){width="100%"}
+::: {.column width="40%"}
+![](/images/gr3.png){width="70%"}
 :::
-::: {.column width="44%"}
+::: {.column width="60%"}
 **Graph (V,E):**
 
 &nbsp;&nbsp; V: &emsp; \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
@@ -183,7 +183,7 @@ How do we find solution?
 
 :::: {.columns}
 ::: {.column width="56%"}
-![](/images/gr_collab.png){width="100%"}
+![](/images/gr_collab.png){width="88%" fig-align="center"}
 :::
 ::: {.column width="44%"}
 **Graph (V,E):**
@@ -422,27 +422,25 @@ How many edges?
 
 ## Activity: Pencil Puzzles {.smaller}
 
-You each have a graph. Do these three things:
 
-&nbsp;
+::::: {.columns}
+::: {.column}
+You each have a graph. Do these three things:
 
 1. Try to trace every edge exactly once without lifting your pencil. 
 
-&nbsp;
-
 2. Come up with a rule that you can use to determine if a trace is possible.
 
-&nbsp;
+3. Devise an algorithm that will find a trace if it exists.
 
-3. Devise an algorithm that will find 
+:::
+::: {.column}
+![](/images/gr10.png){width="70%"}
+:::
+:::::
 
-&nbsp;
 
-Then find a neighbor whose answer to **(1)** differs from yours.
 
-&nbsp;
-
-[*What's different about your two graphs?*]{style="color:#3c78d8; font-style:italic; font-size:1.1em"}
 
 ## What's left?
 

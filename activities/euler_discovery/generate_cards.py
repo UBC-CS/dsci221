@@ -42,22 +42,30 @@ def euler_type(G):
 # ── Graph generators ──────────────────────────────────────────────────────────
 
 def gen_circuit(n, seed):
-    """Connected graph where every vertex has even degree."""
+    """Connected graph where every vertex has even degree — varied and dense."""
     r = random.Random(seed)
     for _ in range(2000):
         G = nx.Graph()
         G.add_nodes_from(range(n))
-        # Random Hamiltonian cycle → all degree 2 (even)
+        # Hamiltonian cycle backbone (ensures connectivity)
         perm = list(range(n))
         r.shuffle(perm)
         for i in range(n):
             G.add_edge(perm[i], perm[(i + 1) % n])
-        # Optionally add extra edge-disjoint triangles (each adds 2 to three degrees → stays even)
-        for _ in range(r.randint(1, 3)):
-            a, b, c = r.sample(range(n), 3)
-            if not G.has_edge(a, b) and not G.has_edge(b, c) and not G.has_edge(a, c):
-                G.add_edges_from([(a, b), (b, c), (a, c)])
-        if nx.is_eulerian(G):   # is_eulerian checks connected + all-even
+        # XOR with 2–4 random cycles of length 3–5.
+        # XOR-ing a cycle toggles each of its edges (add if absent, remove if present)
+        # and preserves all-even degrees, so the graph stays Eulerian-eligible.
+        for _ in range(r.randint(2, 4)):
+            k = r.randint(3, min(5, n))
+            nodes = r.sample(range(n), k)
+            for i in range(k):
+                u, v = nodes[i], nodes[(i + 1) % k]
+                if G.has_edge(u, v):
+                    G.remove_edge(u, v)
+                else:
+                    G.add_edge(u, v)
+        # Require density beyond a bare cycle and full Eulerian conditions
+        if nx.is_eulerian(G) and G.number_of_edges() >= n + 3:
             return relabel(G)
     return None
 
@@ -79,14 +87,18 @@ def gen_path_only(n, seed):
     return None
 
 
-def gen_neither(n, seed):
-    """Connected graph with ≥ 4 odd-degree vertices."""
+def gen_neither(n, seed, pairs=2):
+    """Connected graph with exactly 2*pairs odd-degree vertices (pairs ≥ 2).
+
+    Add `pairs` vertex-disjoint non-edges to a circuit base.  Each added edge
+    flips two previously-even vertices to odd, so the result has exactly
+    2*pairs odd-degree vertices.  Use pairs=n//2 on even n for all-odd.
+    """
     r = random.Random(seed)
     for _ in range(2000):
         G = gen_circuit(n, r.randint(0, 999_999))
         if G is None:
             continue
-        # Add two vertex-disjoint non-edges → 4 distinct vertices become odd
         non_edges = [(u, v) for u in G for v in G if u < v and not G.has_edge(u, v)]
         r.shuffle(non_edges)
         G2, added, used = G.copy(), 0, set()
@@ -95,9 +107,10 @@ def gen_neither(n, seed):
                 G2.add_edge(u, v)
                 used |= {u, v}
                 added += 1
-            if added == 2:
+            if added == pairs:
                 break
-        if euler_type(G2) == "Neither":
+        actual_odd = sum(1 for v in G2 if G2.degree(v) % 2 == 1)
+        if actual_odd == 2 * pairs and nx.is_connected(G2):
             return G2
     return None
 
@@ -105,13 +118,32 @@ def gen_neither(n, seed):
 # ── Generate all 30 graphs ────────────────────────────────────────────────────
 print("Generating graphs…")
 
+# Distribution:
+#   10 × Euler circuit  (0 odd-degree vertices)
+#   10 × Euler path     (exactly 2 odd-degree vertices)
+#    4 × Neither, 4 odd (pairs=2)
+#    4 × Neither, 6 odd (pairs=3, n≥7 so not all-odd)
+#    2 × Neither, all odd (pairs=n//2, n=6 → 6 odd; n=8 → 8 odd)
 specs = (
-    [("circuit", gen_circuit,   n, 1000+i) for i,n in enumerate([6,7,7,8,6,7,8,6,7,8])] +
-    [("path",    gen_path_only, n, 2000+i) for i,n in enumerate([7,6,8,7,6,8,7,6,8,7])] +
-    [("neither", gen_neither,   n, 3000+i) for i,n in enumerate([7,6,8,7,6,8,7,6,8,7])]
+    [("circuit", gen_circuit,                                 n, 1000+i)
+        for i, n in enumerate([6,7,7,8,6,7,8,6,7,8])] +
+    [("path",    gen_path_only,                               n, 2000+i)
+        for i, n in enumerate([7,6,8,7,6,8,7,6,8,7])] +
+    [("4odd",    lambda n, s: gen_neither(n, s, pairs=2),     n, 3000+i)
+        for i, n in enumerate([7,6,8,7])] +
+    [("6odd",    lambda n, s: gen_neither(n, s, pairs=3),     n, 4000+i)
+        for i, n in enumerate([7,8,7,8])] +
+    [("allOdd",  lambda n, s: gen_neither(n, s, pairs=n//2),  n, 5000+i)
+        for i, n in enumerate([6,8])]
 )
 
-EXPECTED = {"circuit": "Euler circuit", "path": "Euler path only", "neither": "Neither"}
+EXPECTED = {
+    "circuit": "Euler circuit",
+    "path":    "Euler path only",
+    "4odd":    "Neither",
+    "6odd":    "Neither",
+    "allOdd":  "Neither",
+}
 
 pool = []
 for kind, fn, n, seed in specs:
@@ -154,34 +186,17 @@ LABEL_KW = dict(font_size=13, font_weight="bold", font_color="#111")
 
 
 def draw_graph(ax, G, label, seed):
-    pos = nx.spring_layout(G, seed=seed, k=1.8)
+    # Planar layout has zero edge crossings for planar graphs; fall back to
+    # Kamada-Kawai which minimises crossings far better than spring layout.
+    if nx.is_planar(G):
+        pos = nx.planar_layout(G, scale=1.5)
+    else:
+        pos = nx.kamada_kawai_layout(G, scale=1.5)
     nx.draw_networkx_edges(G, pos, ax=ax, **EDGE_KW)
     nx.draw_networkx_nodes(G, pos, ax=ax, **NODE_KW)
     nx.draw_networkx_labels(G, pos, ax=ax, **LABEL_KW)
     ax.set_title(label, fontsize=15, fontweight="bold", pad=10)
     ax.axis("off")
-
-
-def annotate(ax, G):
-    """Degree table and checkboxes below the graph axes."""
-    verts   = sorted(G.nodes())
-    deg_str = "   ".join(f"{v}: ___" for v in verts)
-    kw = dict(ha="center", va="top", transform=ax.transAxes, clip_on=False)
-
-    ax.text(0.5, -0.05,
-            "Try to trace every edge exactly once without lifting your pencil.",
-            fontsize=9, color="#444", style="italic", **kw)
-    ax.text(0.5, -0.14,
-            "Degree of each vertex:",
-            fontsize=9, color="#555", style="italic", **kw)
-    ax.text(0.5, -0.23, deg_str,
-            fontsize=10, family="monospace", **kw)
-    ax.text(0.5, -0.34,
-            "# of odd-degree vertices: _______",
-            fontsize=10, **kw)
-    ax.text(0.5, -0.45,
-            "[ ] Euler circuit     [ ] Euler path (not circuit)     [ ] Neither",
-            fontsize=9, **kw)
 
 
 # ── Render PDF ────────────────────────────────────────────────────────────────
@@ -191,7 +206,7 @@ print(f"\nRendering {PDF}…")
 with PdfPages(PDF) as pdf:
     for i in range(0, 30, 2):
         fig, axes = plt.subplots(1, 2, figsize=(11, 8.5))
-        fig.subplots_adjust(left=0.04, right=0.96, top=0.93, bottom=0.42, wspace=0.18)
+        fig.subplots_adjust(left=0.04, right=0.96, top=0.93, bottom=0.05, wspace=0.18)
 
         for slot, ax in enumerate(axes):
             ci = i + slot
@@ -200,7 +215,6 @@ with PdfPages(PDF) as pdf:
                 continue
             G, label, _ = cards[ci]
             draw_graph(ax, G, label, seed=ci * 7 + 13)
-            annotate(ax, G)
 
         # Dashed cut line between cards
         fig.add_artist(plt.Line2D([0.5, 0.5], [0.02, 0.98],

@@ -3,33 +3,33 @@ EULER PATH DISCOVERY — ANSWER KEY
 
 Card        Type                    Odd-degree vertices
 -------------------------------------------------------
-Card 01     Euler path only         ['B', 'E']
+Card 01     Euler path only         ['C', 'E']
 Card 02     Euler circuit           (none)
-Card 03     Neither                 ['C', 'F', 'G', 'H']
-Card 04     Neither                 ['B', 'C', 'F', 'G']
-Card 05     Neither                 ['A', 'B', 'F', 'G']
+Card 03     Neither                 ['A', 'B', 'C', 'D', 'E', 'F']
+Card 04     Neither                 ['A', 'C', 'D', 'G']
+Card 05     Neither                 ['A', 'B', 'D', 'F']
 Card 06     Euler path only         ['A', 'B']
 Card 07     Euler circuit           (none)
 Card 08     Euler circuit           (none)
-Card 09     Neither                 ['A', 'B', 'C', 'F']
+Card 09     Neither                 ['B', 'C', 'D', 'F']
 Card 10     Euler circuit           (none)
-Card 11     Neither                 ['A', 'B', 'C', 'E']
+Card 11     Neither                 ['A', 'C', 'D', 'E']
 Card 12     Euler circuit           (none)
-Card 13     Neither                 ['B', 'C', 'D', 'F']
-Card 14     Euler path only         ['A', 'D']
+Card 13     Neither                 ['A', 'B', 'C', 'D', 'E', 'G']
+Card 14     Euler path only         ['A', 'B']
 Card 15     Euler circuit           (none)
 Card 16     Euler path only         ['A', 'H']
-Card 17     Neither                 ['D', 'E', 'G', 'H']
+Card 17     Neither                 ['A', 'B', 'C', 'E', 'F', 'G']
 Card 18     Euler circuit           (none)
-Card 19     Neither                 ['A', 'D', 'E', 'F']
-Card 20     Euler path only         ['F', 'G']
+Card 19     Neither                 ['B', 'C', 'D', 'F', 'G', 'H']
+Card 20     Euler path only         ['A', 'F']
 Card 21     Euler path only         ['A', 'B']
-Card 22     Neither                 ['A', 'C', 'D', 'E']
-Card 23     Euler path only         ['A', 'B']
-Card 24     Neither                 ['C', 'D', 'E', 'F']
-Card 25     Euler path only         ['A', 'C']
+Card 22     Neither                 ['A', 'B', 'C', 'D', 'E', 'G']
+Card 23     Euler path only         ['A', 'E']
+Card 24     Neither                 ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+Card 25     Euler path only         ['A', 'F']
 Card 26     Euler circuit           (none)
 Card 27     Euler path only         ['A', 'B']
 Card 28     Euler circuit           (none)
-Card 29     Euler path only         ['D', 'F']
+Card 29     Euler path only         ['E', 'G']
 Card 30     Euler circuit           (none)
