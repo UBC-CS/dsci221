@@ -498,3 +498,28 @@ Give an upper bound on $|E|$: &emsp; \_\_\_\_\_\_
 How many edges?
 :::
 ::::
+
+
+## Activity: Can You Trace It?
+
+You each have a graph. Do these three things:
+
+&nbsp;
+
+**1. Try to trace** every edge exactly once without lifting your pencil. &emsp; ✓ or ✗?
+
+&nbsp;
+
+**2. Fill in** the degree of every vertex on your card.
+
+&nbsp;
+
+**3. Count** how many vertices have **odd** degree.
+
+&nbsp;
+
+Then find a neighbor whose answer to **(1)** differs from yours.
+
+&nbsp;
+
+[*What's different about your two graphs?*]{style="color:#3c78d8; font-style:italic; font-size:1.1em"}
