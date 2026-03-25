@@ -180,23 +180,31 @@ with open(KEY, "w") as f:
 print(f"\nAnswer key → {KEY}")
 
 # ── Drawing ───────────────────────────────────────────────────────────────────
-EDGE_KW  = dict(edge_color="#333", width=2.5, alpha=0.9)
-NODE_KW  = dict(node_color="white", node_size=900, edgecolors="#222", linewidths=2.5)
-LABEL_KW = dict(font_size=13, font_weight="bold", font_color="#111")
 
-
-def draw_graph(ax, G, label, seed):
-    # Planar layout has zero edge crossings for planar graphs; fall back to
-    # Kamada-Kawai which minimises crossings far better than spring layout.
-    if nx.is_planar(G):
-        pos = nx.planar_layout(G, scale=1.5)
-    else:
-        pos = nx.kamada_kawai_layout(G, scale=1.5)
-    nx.draw_networkx_edges(G, pos, ax=ax, **EDGE_KW)
-    nx.draw_networkx_nodes(G, pos, ax=ax, **NODE_KW)
-    nx.draw_networkx_labels(G, pos, ax=ax, **LABEL_KW)
-    ax.set_title(label, fontsize=15, fontweight="bold", pad=10)
+def draw_card(ax, G, label):
+    """Render an adjacency-list table: vertex | neighbors."""
     ax.axis("off")
+    ax.set_title(label, fontsize=15, fontweight="bold", pad=10)
+
+    verts = sorted(G.nodes())
+    table_data = [[v, ", ".join(sorted(G.neighbors(v)))] for v in verts]
+
+    tbl = ax.table(
+        cellText=table_data,
+        colLabels=["Vertex", "Neighbors"],
+        loc="center",
+        cellLoc="left",
+    )
+    tbl.auto_set_font_size(False)
+    tbl.set_fontsize(13)
+    tbl.scale(0.9, 2.2)
+
+    # Style header row
+    for col in range(2):
+        tbl[0, col].set_facecolor("#dde8f0")
+        tbl[0, col].set_text_props(fontweight="bold")
+    # Widen the Neighbors column relative to Vertex column
+    tbl.auto_set_column_width([0, 1])
 
 
 # ── Render PDF ────────────────────────────────────────────────────────────────
@@ -205,16 +213,35 @@ print(f"\nRendering {PDF}…")
 
 with PdfPages(PDF) as pdf:
     for i in range(0, 30, 2):
-        fig, axes = plt.subplots(1, 2, figsize=(11, 8.5))
-        fig.subplots_adjust(left=0.04, right=0.96, top=0.93, bottom=0.05, wspace=0.18)
+        fig = plt.figure(figsize=(11, 8.5))
+        # 2 columns (cards), 2 rows: table on top, drawing box on bottom
+        gs = fig.add_gridspec(2, 2,
+                              height_ratios=[1, 1.6],
+                              left=0.04, right=0.96,
+                              top=0.93, bottom=0.04,
+                              wspace=0.18, hspace=0.25)
 
-        for slot, ax in enumerate(axes):
+        for slot in range(2):
             ci = i + slot
+            ax_table = fig.add_subplot(gs[0, slot])
+            ax_draw  = fig.add_subplot(gs[1, slot])
+
             if ci >= 30:
-                ax.axis("off")
+                ax_table.axis("off")
+                ax_draw.axis("off")
                 continue
+
             G, label, _ = cards[ci]
-            draw_graph(ax, G, label, seed=ci * 7 + 13)
+            draw_card(ax_table, G, label)
+
+            # Blank drawing area with a light border
+            ax_draw.set_xlim(0, 1)
+            ax_draw.set_ylim(0, 1)
+            ax_draw.set_xticks([])
+            ax_draw.set_yticks([])
+            for spine in ax_draw.spines.values():
+                spine.set_edgecolor("#aaa")
+                spine.set_linewidth(1)
 
         # Dashed cut line between cards
         fig.add_artist(plt.Line2D([0.5, 0.5], [0.02, 0.98],
