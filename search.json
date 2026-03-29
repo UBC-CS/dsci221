@@ -3671,7 +3671,7 @@
     "href": "slides/13_tue_euler.html#a-different-graph",
     "title": "Reading the Book of Life",
     "section": "A Different Graph",
-    "text": "A Different Graph\nInstead of nodes = k-mers, let nodes = (k−1)-mers and edges = k-mers.\n\n\n\nk-mer\nprefix (k−1)\nsuffix (k−1)\nedge\n\n\n\n\nATG\nAT\nTG\nAT → TG\n\n\nTGA\nTG\nGA\nTG → GA\n\n\nGAT\nGA\nAT\nGA → AT\n\n\nATC\nAT\nTC\nAT → TC\n\n\nTCA\nTC\nCA\nTC → CA\n\n\nCAT\nCA\nAT\nCA → AT\n\n\nATG\nAT\nTG\nAT → TG (again!)\n\n\n\nThe repeat k-mer ATG just adds a second edge AT → TG. No special case needed.\n\nThis is why de Bruijn graphs handle repeats elegantly: a repeated k-mer is simply a multi-edge (two edges between the same pair of nodes). The algorithm doesn’t need to treat it differently."
+    "text": "A Different Graph\nInstead of nodes = k-mers, let nodes = (k−1)-mers and edges = k-mers.\n\n\n\nk-mer\nprefix (k−1)\nsuffix (k−1)\nedge\n\n\n\n\nATG\nAT\nTG\nAT → TG\n\n\nTGA\nTG\nGA\nTG → GA\n\n\nGAT\nGA\nAT\nGA → AT\n\n\nATC\nAT\nTC\nAT → TC\n\n\nTCA\nTC\nCA\nTC → CA\n\n\nCAT\nCA\nAT\nCA → AT\n\n\nATG\nAT\nTG\nAT → TG (again!)\n\n\n\nThe repeat k-mer ATG just adds a second edge AT → TG. No special case needed.\n\n\n\n\n\n\n\nThis is why de Bruijn graphs handle repeats elegantly: a repeated k-mer is simply a multi-edge (two edges between the same pair of nodes). The algorithm doesn’t need to treat it differently."
   },
   {
     "objectID": "slides/13_tue_euler.html#the-de-bruijn-graph",
@@ -3699,14 +3699,14 @@
     "href": "slides/13_tue_euler.html#when-does-an-euler-path-exist",
     "title": "Reading the Book of Life",
     "section": "When Does an Euler Path Exist?",
-    "text": "When Does an Euler Path Exist?\nEuler’s theorem: An Euler path exists iff exactly two nodes are unbalanced — one with out − in = 1 (start), one with in − out = 1 (end).\nCheck our graph:\n\n\n\nNode\nOut\nIn\nOut − In\nRole\n\n\n\n\nAT\n3\n2\n+1\nstart\n\n\nTG\n1\n2\n−1\nend\n\n\nGA\n1\n1\n0\n✓\n\n\nTC\n1\n1\n0\n✓\n\n\nCA\n1\n1\n0\n✓\n\n\n\nAssembly is possible — and we know exactly where to start.\n\nThis degree check is O(E) and runs before any assembly algorithm. If the condition fails (more than two unbalanced nodes, or the wrong counts), the reads can’t be assembled into a single sequence — there are gaps or errors. This is a powerful diagnostic."
+    "text": "When Does an Euler Path Exist?\nEuler’s theorem: An Euler path exists iff exactly two nodes are unbalanced — one with out − in = 1 (start), one with in − out = 1 (end).\nCheck our graph:\n\n\n\nNode\nOut\nIn\nOut − In\nRole\n\n\n\n\nAT\n3\n2\n+1\nstart\n\n\nTG\n1\n2\n−1\nend\n\n\nGA\n1\n1\n0\n✓\n\n\nTC\n1\n1\n0\n✓\n\n\nCA\n1\n1\n0\n✓\n\n\n\nAssembly is possible — and we know exactly where to start.\n\n\n\n\n\n\n\nThis degree check is O(E) and runs before any assembly algorithm. If the condition fails (more than two unbalanced nodes, or the wrong counts), the reads can’t be assembled into a single sequence — there are gaps or errors. This is a powerful diagnostic."
   },
   {
     "objectID": "slides/13_tue_euler.html#assembly-isnt-always-unique",
     "href": "slides/13_tue_euler.html#assembly-isnt-always-unique",
     "title": "Reading the Book of Life",
     "section": "Assembly Isn’t Always Unique",
-    "text": "Assembly Isn’t Always Unique\nFrom AT we can take edges in two different orders:\n\n\nPath 1 — AT→TG first\nAT→TG→GA→AT→TC→CA→AT→TG\nAssembles to: ATGATCATG\n\nPath 2 — AT→TC first\nAT→TC→CA→AT→TG→GA→AT→TG\nAssembles to: ATCATGATG\n\n\nBoth paths use every edge exactly once. Both are valid Euler paths. And both sequences produce the identical k-mer multiset.\nThe k-mers alone cannot tell you which genome is real.\n\nThis is the repeat ambiguity problem — the central challenge of genome assembly. The Euler path formulation doesn’t “fail” here; it correctly identifies all assemblies consistent with the data. The ambiguity is in the data itself."
+    "text": "Assembly Isn’t Always Unique\nFrom AT we can take edges in two different orders:\n\n\nPath 1 — AT→TG first\nAT→TG→GA→AT→TC→CA→AT→TG\nAssembles to: ATGATCATG\n\nPath 2 — AT→TC first\nAT→TC→CA→AT→TG→GA→AT→TG\nAssembles to: ATCATGATG\n\n\nBoth paths use every edge exactly once. Both are valid Euler paths. And both sequences produce the identical k-mer multiset:\n\n\n\n\n\n\nThe k-mers alone cannot tell you which genome is real.\n\nThis is the repeat ambiguity problem — the central challenge of genome assembly. The Euler path formulation doesn’t “fail” here; it correctly identifies all assemblies consistent with the data. The ambiguity is in the data itself."
   },
   {
     "objectID": "slides/13_tue_euler.html#how-real-assemblers-resolve-it",
@@ -3727,7 +3727,7 @@
     "href": "slides/13_tue_euler.html#from-euler-to-code",
     "title": "Reading the Book of Life",
     "section": "From Euler to Code",
-    "text": "From Euler to Code\nWe know DFS from week 6. Here is the classic version:\ndef dfs(graph, v, visited, path):\n    visited.add(v)\n    path.append(v)          # pre-order: record on arrival\n    for w in graph[v]:\n        if w not in visited:\n            dfs(graph, w, visited, path)\nThis visits each node once. We need to visit each edge once.\nTwo things must change — and the second one is subtle.\n\nDon’t reveal the answer yet — this is the bridge to the code task. The two changes: 1. Track consumed edges (pop from adjacency list) instead of visited nodes 2. Move path.append to AFTER recursion (post-order) The second change is what makes the “splicing” work."
+    "text": "From Euler to Code\nWe know DFS from week 6. Here is the classic version:\n\n\n\n\n\n\nThis visits each node once — and gets stuck. We need to visit each edge once.\nTwo things must change — and the second one is subtle.\n\nDon’t reveal the answer yet — this is the bridge to the code task. The two changes: 1. Track consumed edges (pop from adjacency list) instead of visited nodes 2. Move path.append to AFTER recursion (post-order) The second change is what makes the “splicing” work."
   },
   {
     "objectID": "slides/13_tue_euler.html#the-code-task",
