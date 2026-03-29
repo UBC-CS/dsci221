@@ -3643,7 +3643,7 @@
     "href": "slides/13_tue_euler.html#the-fragments-arrive-as-data",
     "title": "Reading the Book of Life",
     "section": "The Fragments Arrive as Data",
-    "text": "The Fragments Arrive as Data\nEach fragment is a short string of bases — a k-mer.\nFor a toy genome and k=3:\nimport pandas as pd\n\ngenome = \"ATGATCATG\"\nk = 3\n\nkmers = [genome[i:i+k] for i in range(len(genome) - k + 1)]\ndf = pd.DataFrame({'kmer': kmers})\n   kmer\n0   ATG\n1   TGA\n2   GAT\n3   ATC\n4   TCA\n5   CAT\n6   ATG    ← appears again!\nIn real sequencing: millions of rows, k ≈ 100–300.\n\nRepeats — subsequences that appear more than once — are ubiquitous in real genomes. “ATG” appearing twice here is a tiny example of the repeat problem that makes genome assembly genuinely hard."
+    "text": "The Fragments Arrive as Data\nEach fragment is a short string of bases — a k-mer.\nFor a toy genome and k=3:\n\n\n\n\n\n\nIn real sequencing: millions of rows, k ≈ 100–300.\n\nRepeats — subsequences that appear more than once — are ubiquitous in real genomes. “ATG” appearing twice here is a tiny example of the repeat problem that makes genome assembly genuinely hard."
   },
   {
     "objectID": "slides/13_tue_euler.html#can-you-reassemble-it",
