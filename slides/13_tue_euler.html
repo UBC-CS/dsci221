@@ -244,19 +244,22 @@
 <p>For a toy genome and k=3:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a></a></span>
-<span id="cb1-3"><a></a>genome <span class="op">=</span> <span class="st">"ATGCAT"</span>   <span class="co"># pretend it's circular</span></span>
+<span id="cb1-3"><a></a>genome <span class="op">=</span> <span class="st">"ATGATCATG"</span></span>
 <span id="cb1-4"><a></a>k <span class="op">=</span> <span class="dv">3</span></span>
 <span id="cb1-5"><a></a></span>
-<span id="cb1-6"><a></a>kmers <span class="op">=</span> [genome[i:i<span class="op">+</span>k] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(genome))]</span>
+<span id="cb1-6"><a></a>kmers <span class="op">=</span> [genome[i:i<span class="op">+</span>k] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(genome) <span class="op">-</span> k <span class="op">+</span> <span class="dv">1</span>)]</span>
 <span id="cb1-7"><a></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'kmer'</span>: kmers})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>   kmer
 0   ATG
-1   TGC
-2   GCA
-3   CAT</code></pre>
+1   TGA
+2   GAT
+3   ATC
+4   TCA
+5   CAT
+6   ATG    ← appears again!</code></pre>
 <p>In real sequencing: millions of rows, k ≈ 100–300.</p>
 <aside class="notes">
-<p>The genome is circular in many organisms (bacteria especially). For simplicity we start with a circular example — it produces an Euler <em>circuit</em> rather than a path, which is the cleanest case.</p>
+<p>Repeats — subsequences that appear more than once — are ubiquitous in real genomes. “ATG” appearing twice here is a tiny example of the repeat problem that makes genome assembly genuinely hard.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -272,12 +275,12 @@
 <section id="can-you-reassemble-it" class="slide level2">
 <h2>Can You Reassemble It?</h2>
 <p>Given only this bag of 3-mers — no positions, no order:</p>
-<pre><code>ATG    TGC    GCA    CAT</code></pre>
+<pre><code>ATG  TGA  GAT  ATC  TCA  CAT  ATG</code></pre>
 <p>Can you recover the original sequence?</p>
 <div class="fragment">
-<p><em>Try it. What do you notice about the fragments?</em></p>
+<p><em>Try it. Notice anything tricky?</em></p>
 <aside class="notes">
-<p>Give students 30 seconds. They’ll notice each fragment overlaps with the next by k-1 = 2 characters. ATG ends in TG, TGC starts with TG. And so on. This overlap structure is the key.</p>
+<p>Give students 30 seconds. They’ll notice ATG appears twice and creates ambiguity — after reading ATG, which next fragment do you pick: TGA or TCA? The overlap structure is clear but the repeat makes it non-trivial.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -291,22 +294,20 @@
       }</style></aside>
 </div>
 </section>
-<section id="the-overlap-structure" class="slide level2">
-<h2>The Overlap Structure</h2>
-<p>Each k-mer overlaps its neighbours by <strong>k−1</strong> characters.</p>
-<pre><code>ATG
- TGC
-  GCA
-   CAT
-    AT...</code></pre>
-<p>The fragments chain together. But with millions of fragments — many of them identical — you can’t just line them up by eye.</p>
-<p>We need a systematic approach.</p>
+<section id="the-repeat-problem" class="slide level2">
+<h2>The Repeat Problem</h2>
+<p>Each k-mer overlaps the next by k−1 characters. But ATG appears <strong>twice</strong>:</p>
+<pre><code>ATG → TGA → GAT → ...
+ATG → ?</code></pre>
+<p>Which copy of ATG connects to which? You can’t tell from the fragments alone.</p>
+<p>This ambiguity is why assembly is hard — and why we need a systematic approach.</p>
 </section>
 <section id="naïve-idea-overlap-graph" class="slide level2">
 <h2>Naïve Idea: Overlap Graph</h2>
-<p>Draw a node for each fragment. Draw an edge when two fragments overlap.</p>
-<pre><code>ATG ──► TGC ──► GCA ──► CAT ──► ATG ...</code></pre>
-<p>This works! But checking every pair of fragments for overlap costs <span class="math inline">\(O(n^2)\)</span> comparisons. For millions of fragments, that’s trillions of checks.</p>
+<p>Draw a node for each <strong>fragment</strong>, an edge when two fragments overlap.</p>
+<pre><code>ATG ──► TGA ──► GAT ──► ATC ──► TCA ──► CAT ──► ATG
+ ↑_______________________________________________|</code></pre>
+<p>The repeat creates a branching structure. And checking every pair for overlap costs <span class="math inline">\(O(n^2)\)</span> — trillions of checks for a real genome.</p>
 <p>We need a smarter graph.</p>
 </section>
 <section id="a-different-graph" class="slide level2 smaller">
@@ -329,16 +330,28 @@
 <td>AT → TG</td>
 </tr>
 <tr class="even">
-<td>TGC</td>
+<td>TGA</td>
 <td>TG</td>
-<td>GC</td>
-<td>TG → GC</td>
+<td>GA</td>
+<td>TG → GA</td>
 </tr>
 <tr class="odd">
-<td>GCA</td>
-<td>GC</td>
+<td>GAT</td>
+<td>GA</td>
+<td>AT</td>
+<td>GA → AT</td>
+</tr>
+<tr class="even">
+<td>ATC</td>
+<td>AT</td>
+<td>TC</td>
+<td>AT → TC</td>
+</tr>
+<tr class="odd">
+<td>TCA</td>
+<td>TC</td>
 <td>CA</td>
-<td>GC → CA</td>
+<td>TC → CA</td>
 </tr>
 <tr class="even">
 <td>CAT</td>
@@ -346,11 +359,17 @@
 <td>AT</td>
 <td>CA → AT</td>
 </tr>
+<tr class="odd">
+<td>ATG</td>
+<td>AT</td>
+<td>TG</td>
+<td>AT → TG (again!)</td>
+</tr>
 </tbody>
 </table>
-<p>Each fragment becomes an <strong>edge</strong> between its prefix and suffix.</p>
+<p>The repeat k-mer ATG just adds a <strong>second edge</strong> AT → TG. No special case needed.</p>
 <aside class="notes">
-<p>This is the de Bruijn graph construction. Named after Nicolaas de Bruijn. The key insight: the overlap structure is captured by the shared (k-1)-mer between consecutive edges.</p>
+<p>This is why de Bruijn graphs handle repeats elegantly: a repeated k-mer is simply a multi-edge (two edges between the same pair of nodes). The algorithm doesn’t need to treat it differently.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -365,95 +384,93 @@
 </section>
 <section id="the-de-bruijn-graph" class="slide level2">
 <h2>The de Bruijn Graph</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>k-mer</th>
-<th>edge</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ATG</td>
-<td>AT → TG</td>
-</tr>
-<tr class="even">
-<td>TGC</td>
-<td>TG → GC</td>
-</tr>
-<tr class="odd">
-<td>GCA</td>
-<td>GC → CA</td>
-</tr>
-<tr class="even">
-<td>CAT</td>
-<td>CA → AT</td>
-</tr>
-</tbody>
-</table>
-</div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<svg width="960" height="480" viewbox="0.00 0.00 375.12 85.39" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 81.39)">
+<svg width="960" height="480" viewbox="0.00 0.00 275.21 224.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 220)">
 <title>G</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-81.39 371.12,-81.39 371.12,4 -4,4"></polygon>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-220 271.21,-220 271.21,4 -4,4"></polygon>
 <!-- AT -->
 <g id="node1" class="node">
 <title>AT</title>
-<ellipse fill="#4a90d9" stroke="black" cx="21.5" cy="-21.7" rx="21.5" ry="21.5"></ellipse>
-<text text-anchor="middle" x="21.5" y="-17.5" font-family="Times,serif" font-size="14.00" fill="white">AT</text>
+<ellipse fill="#4a90d9" stroke="black" cx="25" cy="-135" rx="25" ry="25"></ellipse>
+<text text-anchor="middle" x="25" y="-130.8" font-family="Times,serif" font-size="14.00" fill="white">AT</text>
 </g>
 <!-- TG -->
 <g id="node2" class="node">
 <title>TG</title>
-<ellipse fill="#4a90d9" stroke="black" cx="129.27" cy="-55.7" rx="21.5" ry="21.5"></ellipse>
-<text text-anchor="middle" x="129.27" y="-51.5" font-family="Times,serif" font-size="14.00" fill="white">TG</text>
+<ellipse fill="#4a90d9" stroke="black" cx="133.61" cy="-191" rx="25" ry="25"></ellipse>
+<text text-anchor="middle" x="133.61" y="-186.8" font-family="Times,serif" font-size="14.00" fill="white">TG</text>
 </g>
 <!-- AT&#45;&gt;TG -->
 <g id="edge1" class="edge">
 <title>AT-&gt;TG</title>
-<path fill="none" stroke="black" d="M42.39,-28.09C58.28,-33.2 80.77,-40.43 98.75,-46.21"></path>
-<polygon fill="black" stroke="black" points="97.88,-49.6 108.47,-49.33 100.02,-42.94 97.88,-49.6"></polygon>
-<text text-anchor="middle" x="75.39" y="-46.9" font-family="Times,serif" font-size="14.00">ATG</text>
+<path fill="none" stroke="black" stroke-width="2" d="M47.55,-146.24C60.11,-152.81 76.27,-161.26 90.61,-168.8 94.38,-170.79 98.35,-172.88 102.28,-174.95"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="100.77,-178.11 111.25,-179.69 104.04,-171.92 100.77,-178.11"></polygon>
+<text text-anchor="middle" x="79.3" y="-171.3" font-family="Times,serif" font-size="11.00">ATG</text>
 </g>
-<!-- GC -->
-<g id="node3" class="node">
-<title>GC</title>
-<ellipse fill="#4a90d9" stroke="black" cx="236.47" cy="-55.7" rx="21.89" ry="21.89"></ellipse>
-<text text-anchor="middle" x="236.47" y="-51.5" font-family="Times,serif" font-size="14.00" fill="white">GC</text>
-</g>
-<!-- TG&#45;&gt;GC -->
+<!-- AT&#45;&gt;TG -->
 <g id="edge2" class="edge">
-<title>TG-&gt;GC</title>
-<path fill="none" stroke="black" d="M150.81,-55.7C166.06,-55.7 187.12,-55.7 204.43,-55.7"></path>
-<polygon fill="black" stroke="black" points="204.63,-59.2 214.63,-55.7 204.63,-52.2 204.63,-59.2"></polygon>
-<text text-anchor="middle" x="182.77" y="-59.9" font-family="Times,serif" font-size="14.00">TGC</text>
+<title>AT-&gt;TG</title>
+<path fill="none" stroke="#e74c3c" stroke-width="2" d="M39.52,-155.95C46.79,-165.46 56.61,-175.92 68,-182 77.12,-186.87 87.95,-189.4 98.12,-190.66"></path>
+<polygon fill="#e74c3c" stroke="#e74c3c" stroke-width="2" points="98.1,-194.17 108.36,-191.54 98.7,-187.2 98.1,-194.17"></polygon>
+<text text-anchor="middle" x="79.3" y="-192.3" font-family="Times,serif" font-size="11.00">ATG</text>
+</g>
+<!-- TC -->
+<g id="node3" class="node">
+<title>TC</title>
+<ellipse fill="#4a90d9" stroke="black" cx="133.61" cy="-25" rx="25" ry="25"></ellipse>
+<text text-anchor="middle" x="133.61" y="-20.8" font-family="Times,serif" font-size="14.00" fill="white">TC</text>
+</g>
+<!-- AT&#45;&gt;TC -->
+<g id="edge3" class="edge">
+<title>AT-&gt;TC</title>
+<path fill="none" stroke="black" d="M34.6,-111.7C41.58,-95.3 52.78,-73.7 68,-58.8 77.26,-49.74 89.44,-42.52 100.73,-37.12"></path>
+<polygon fill="black" stroke="black" points="102.22,-40.29 109.92,-33.01 99.36,-33.9 102.22,-40.29"></polygon>
+<text text-anchor="middle" x="79.3" y="-61.3" font-family="Times,serif" font-size="11.00">ATC</text>
+</g>
+<!-- GA -->
+<g id="node4" class="node">
+<title>GA</title>
+<ellipse fill="#4a90d9" stroke="black" cx="242.21" cy="-146" rx="25" ry="25"></ellipse>
+<text text-anchor="middle" x="242.21" y="-141.8" font-family="Times,serif" font-size="14.00" fill="white">GA</text>
+</g>
+<!-- TG&#45;&gt;GA -->
+<g id="edge4" class="edge">
+<title>TG-&gt;GA</title>
+<path fill="none" stroke="black" d="M156.96,-181.57C172.16,-175.15 192.52,-166.55 209.41,-159.42"></path>
+<polygon fill="black" stroke="black" points="211.04,-162.53 218.89,-155.42 208.32,-156.09 211.04,-162.53"></polygon>
+<text text-anchor="middle" x="187.91" y="-175.3" font-family="Times,serif" font-size="11.00">TGA</text>
 </g>
 <!-- CA -->
-<g id="node4" class="node">
+<g id="node5" class="node">
 <title>CA</title>
-<ellipse fill="#4a90d9" stroke="black" cx="345.42" cy="-21.7" rx="21.89" ry="21.89"></ellipse>
-<text text-anchor="middle" x="345.42" y="-17.5" font-family="Times,serif" font-size="14.00" fill="white">CA</text>
+<ellipse fill="#4a90d9" stroke="black" cx="242.21" cy="-74" rx="25" ry="25"></ellipse>
+<text text-anchor="middle" x="242.21" y="-69.8" font-family="Times,serif" font-size="14.00" fill="white">CA</text>
 </g>
-<!-- GC&#45;&gt;CA -->
-<g id="edge3" class="edge">
-<title>GC-&gt;CA</title>
-<path fill="none" stroke="black" d="M257.33,-49.38C273.44,-44.26 296.39,-36.97 314.68,-31.15"></path>
-<polygon fill="black" stroke="black" points="315.83,-34.46 324.3,-28.09 313.71,-27.79 315.83,-34.46"></polygon>
-<text text-anchor="middle" x="290.94" y="-46.9" font-family="Times,serif" font-size="14.00">GCA</text>
+<!-- TC&#45;&gt;CA -->
+<g id="edge6" class="edge">
+<title>TC-&gt;CA</title>
+<path fill="none" stroke="black" d="M156.7,-35.15C171.99,-42.18 192.58,-51.65 209.61,-59.47"></path>
+<polygon fill="black" stroke="black" points="208.61,-62.86 219.15,-63.86 211.53,-56.5 208.61,-62.86"></polygon>
+<text text-anchor="middle" x="187.91" y="-57.3" font-family="Times,serif" font-size="11.00">TCA</text>
+</g>
+<!-- GA&#45;&gt;AT -->
+<g id="edge5" class="edge">
+<title>GA-&gt;AT</title>
+<path fill="none" stroke="black" d="M217.03,-144.76C178.8,-142.81 104.25,-139 60.44,-136.76"></path>
+<polygon fill="black" stroke="black" points="60.44,-133.26 50.27,-136.24 60.08,-140.25 60.44,-133.26"></polygon>
+<text text-anchor="middle" x="133.61" y="-144.3" font-family="Times,serif" font-size="11.00">GAT</text>
 </g>
 <!-- CA&#45;&gt;AT -->
-<g id="edge4" class="edge">
+<g id="edge7" class="edge">
 <title>CA-&gt;AT</title>
-<path fill="none" stroke="black" d="M323.55,-21.7C268.32,-21.7 118.15,-21.7 53.16,-21.7"></path>
-<polygon fill="black" stroke="black" points="53.13,-18.2 43.13,-21.7 53.13,-25.2 53.13,-18.2"></polygon>
-<text text-anchor="middle" x="182.77" y="-25.9" font-family="Times,serif" font-size="14.00">CAT</text>
+<path fill="none" stroke="black" d="M217.8,-80.64C179.41,-91.52 102.98,-113.18 59.08,-125.63"></path>
+<polygon fill="black" stroke="black" points="58.11,-122.26 49.44,-128.36 60.02,-129 58.11,-122.26"></polygon>
+<text text-anchor="middle" x="133.61" y="-114.3" font-family="Times,serif" font-size="11.00">CAT</text>
 </g>
 </g>
 </svg>
@@ -462,31 +479,30 @@
 </div>
 </div>
 </div>
-</div></div>
-<p>Nodes are 2-mers. Edges are 3-mers (our reads).</p>
+<p>AT has <strong>3 out-edges</strong> (two to TG, one to TC). TG has <strong>2 in-edges</strong>. Not all degrees are equal — this is a linear genome with a repeat.</p>
 <p><strong>The genome is hidden in this graph — but how do we read it out?</strong></p>
 </section>
 <section id="what-does-traversal-mean-here" class="slide level2">
 <h2>What Does Traversal Mean Here?</h2>
-<p>Assembling the genome = spelling out all four reads <strong>in order</strong>.</p>
+<p>Assembling the genome = spelling out all seven reads <strong>in order</strong>.</p>
 <p>That means visiting every <strong>edge</strong> exactly once.</p>
 <div class="fragment">
 <p><em>What kind of graph traversal visits every edge exactly once?</em></p>
 </div>
 </section>
-<section id="eulers-circuit" class="slide level2" data-background-color="#1a1a2e">
-<h2>Euler’s Circuit</h2>
+<section id="eulers-path" class="slide level2" data-background-color="#1a1a2e">
+<h2>Euler’s Path</h2>
 <div style="text-align:center; font-size:1.4em; margin-top: 1.5em">
-<p><strong>An Euler circuit visits every edge exactly once.</strong></p>
+<p><strong>An Euler path visits every edge exactly once.</strong></p>
 </div>
 <div style="text-align:center; margin-top: 1em; color: #aad4f5">
 <p>Leonhard Euler, 1736 — the Königsberg bridge problem.</p>
 </div>
 <div style="text-align:center; margin-top: 1.5em; font-size:1.1em">
-<p>Genome assembly <strong>is</strong> finding an Euler circuit in the de Bruijn graph.</p>
+<p>Genome assembly <strong>is</strong> finding an Euler path in the de Bruijn graph.</p>
 </div>
 <aside class="notes">
-<p>Euler proved in 1736 that the Königsberg bridge problem (can you cross each of 7 bridges exactly once?) had no solution, by analysing the degree of each landmass. That paper is widely considered the birth of graph theory. 290 years later, the same idea assembles genomes.</p>
+<p>Euler proved in 1736 that the Königsberg bridge problem (can you cross each of 7 bridges exactly once?) had no solution, by analysing the degree of each landmass. That paper is widely considered the birth of graph theory. 290 years later, the same idea assembles genomes. A circuit is the special case where start = end (circular genome). A path has two unbalanced nodes — one with excess out-degree (start) and one with excess in-degree (end).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -499,9 +515,9 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="when-does-an-euler-circuit-exist" class="slide level2">
-<h2>When Does an Euler Circuit Exist?</h2>
-<p><strong>Euler’s theorem</strong>: A connected directed graph has an Euler circuit if and only if every node has equal in-degree and out-degree.</p>
+<section id="when-does-an-euler-path-exist" class="slide level2">
+<h2>When Does an Euler Path Exist?</h2>
+<p><strong>Euler’s theorem</strong>: An Euler path exists iff exactly two nodes are unbalanced — one with out − in = 1 (start), one with in − out = 1 (end).</p>
 <p>Check our graph:</p>
 <table class="caption-top">
 <thead>
@@ -509,39 +525,51 @@
 <th>Node</th>
 <th>Out</th>
 <th>In</th>
-<th>Balanced?</th>
+<th>Out − In</th>
+<th>Role</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>AT</td>
-<td>1</td>
-<td>1</td>
-<td>✓</td>
+<td>3</td>
+<td>2</td>
+<td><strong>+1</strong></td>
+<td>start</td>
 </tr>
 <tr class="even">
 <td>TG</td>
 <td>1</td>
-<td>1</td>
-<td>✓</td>
+<td>2</td>
+<td><strong>−1</strong></td>
+<td>end</td>
 </tr>
 <tr class="odd">
-<td>GC</td>
+<td>GA</td>
 <td>1</td>
 <td>1</td>
+<td>0</td>
 <td>✓</td>
 </tr>
 <tr class="even">
+<td>TC</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>✓</td>
+</tr>
+<tr class="odd">
 <td>CA</td>
 <td>1</td>
 <td>1</td>
+<td>0</td>
 <td>✓</td>
 </tr>
 </tbody>
 </table>
-<p>Assembly is possible.</p>
+<p>Assembly is possible — and we know exactly where to start.</p>
 <aside class="notes">
-<p>For a linear genome (Euler PATH rather than circuit): exactly one node has out − in = 1 (start), exactly one has in − out = 1 (end), all others balanced. Real genomes are linear, so we look for an Euler path. Checking degrees tells you immediately whether assembly is even possible — before you run any algorithm.</p>
+<p>This degree check is O(E) and runs before any assembly algorithm. If the condition fails (more than two unbalanced nodes, or the wrong counts), the reads can’t be assembled into a single sequence — there are gaps or errors. This is a powerful diagnostic.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -560,42 +588,30 @@
 <thead>
 <tr class="header">
 <th></th>
-<th>Circuit</th>
 <th>Path</th>
+<th>Circuit</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Start = End?</td>
-<td>Yes</td>
 <td>No</td>
+<td>Yes</td>
 </tr>
 <tr class="even">
-<td>Degree condition</td>
-<td>All nodes balanced</td>
-<td>Exactly two unbalanced nodes</td>
+<td>Unbalanced nodes</td>
+<td>Exactly 2</td>
+<td>None</td>
 </tr>
 <tr class="odd">
 <td>Genome type</td>
-<td>Circular (bacteria)</td>
 <td>Linear (humans)</td>
+<td>Circular (bacteria)</td>
 </tr>
 </tbody>
 </table>
-<p>For a linear genome: find the unique node with <span class="math inline">\(\text{out} - \text{in} = 1\)</span>. That’s your start.</p>
-<aside class="notes">
-<p>This is a beautiful pre-check: before running any algorithm, just compute in-degrees and out-degrees. O(E). If the condition fails, assembly from these reads is impossible (there are gaps or errors in your data).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>Our example is a <strong>path</strong>: start at AT (out − in = +1), end at TG (in − out = +1).</p>
+<p>A circuit is just a path where the start and end happen to be the same node.</p>
 </section>
 <section id="from-euler-to-code" class="slide level2">
 <h2>From Euler to Code</h2>
@@ -633,7 +649,7 @@
 <p><strong>Your task</strong>: modify the DFS to find an Euler path, then read off the assembled sequence.</p>
 <p><em>The genome is a real piece of DNA — can you figure out what organism it’s from?</em></p>
 <aside class="notes">
-<p>The mystery genome is a short fragment of bacteriophage lambda DNA, chosen because it’s well-known, circular, and short enough to assemble quickly. Students can BLAST the assembled sequence on NCBI to confirm.</p>
+<p>The mystery genome is the opening 28 bases of bacteriophage phi X174 — the first genome ever fully sequenced (Sanger, 1977, Nobel Prize). Students can BLAST the assembled sequence on NCBI to confirm.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

@@ -3643,70 +3643,70 @@
     "href": "slides/13_tue_euler.html#the-fragments-arrive-as-data",
     "title": "Reading the Book of Life",
     "section": "The Fragments Arrive as Data",
-    "text": "The Fragments Arrive as Data\nEach fragment is a short string of bases — a k-mer.\nFor a toy genome and k=3:\nimport pandas as pd\n\ngenome = \"ATGCAT\"   # pretend it's circular\nk = 3\n\nkmers = [genome[i:i+k] for i in range(len(genome))]\ndf = pd.DataFrame({'kmer': kmers})\n   kmer\n0   ATG\n1   TGC\n2   GCA\n3   CAT\nIn real sequencing: millions of rows, k ≈ 100–300.\n\nThe genome is circular in many organisms (bacteria especially). For simplicity we start with a circular example — it produces an Euler circuit rather than a path, which is the cleanest case."
+    "text": "The Fragments Arrive as Data\nEach fragment is a short string of bases — a k-mer.\nFor a toy genome and k=3:\nimport pandas as pd\n\ngenome = \"ATGATCATG\"\nk = 3\n\nkmers = [genome[i:i+k] for i in range(len(genome) - k + 1)]\ndf = pd.DataFrame({'kmer': kmers})\n   kmer\n0   ATG\n1   TGA\n2   GAT\n3   ATC\n4   TCA\n5   CAT\n6   ATG    ← appears again!\nIn real sequencing: millions of rows, k ≈ 100–300.\n\nRepeats — subsequences that appear more than once — are ubiquitous in real genomes. “ATG” appearing twice here is a tiny example of the repeat problem that makes genome assembly genuinely hard."
   },
   {
     "objectID": "slides/13_tue_euler.html#can-you-reassemble-it",
     "href": "slides/13_tue_euler.html#can-you-reassemble-it",
     "title": "Reading the Book of Life",
     "section": "Can You Reassemble It?",
-    "text": "Can You Reassemble It?\nGiven only this bag of 3-mers — no positions, no order:\nATG    TGC    GCA    CAT\nCan you recover the original sequence?\n\nTry it. What do you notice about the fragments?\n\nGive students 30 seconds. They’ll notice each fragment overlaps with the next by k-1 = 2 characters. ATG ends in TG, TGC starts with TG. And so on. This overlap structure is the key."
+    "text": "Can You Reassemble It?\nGiven only this bag of 3-mers — no positions, no order:\nATG  TGA  GAT  ATC  TCA  CAT  ATG\nCan you recover the original sequence?\n\nTry it. Notice anything tricky?\n\nGive students 30 seconds. They’ll notice ATG appears twice and creates ambiguity — after reading ATG, which next fragment do you pick: TGA or TCA? The overlap structure is clear but the repeat makes it non-trivial."
   },
   {
-    "objectID": "slides/13_tue_euler.html#the-overlap-structure",
-    "href": "slides/13_tue_euler.html#the-overlap-structure",
+    "objectID": "slides/13_tue_euler.html#the-repeat-problem",
+    "href": "slides/13_tue_euler.html#the-repeat-problem",
     "title": "Reading the Book of Life",
-    "section": "The Overlap Structure",
-    "text": "The Overlap Structure\nEach k-mer overlaps its neighbours by k−1 characters.\nATG\n TGC\n  GCA\n   CAT\n    AT...\nThe fragments chain together. But with millions of fragments — many of them identical — you can’t just line them up by eye.\nWe need a systematic approach."
+    "section": "The Repeat Problem",
+    "text": "The Repeat Problem\nEach k-mer overlaps the next by k−1 characters. But ATG appears twice:\nATG → TGA → GAT → ...\nATG → ?\nWhich copy of ATG connects to which? You can’t tell from the fragments alone.\nThis ambiguity is why assembly is hard — and why we need a systematic approach."
   },
   {
     "objectID": "slides/13_tue_euler.html#naïve-idea-overlap-graph",
     "href": "slides/13_tue_euler.html#naïve-idea-overlap-graph",
     "title": "Reading the Book of Life",
     "section": "Naïve Idea: Overlap Graph",
-    "text": "Naïve Idea: Overlap Graph\nDraw a node for each fragment. Draw an edge when two fragments overlap.\nATG ──► TGC ──► GCA ──► CAT ──► ATG ...\nThis works! But checking every pair of fragments for overlap costs \\(O(n^2)\\) comparisons. For millions of fragments, that’s trillions of checks.\nWe need a smarter graph."
+    "text": "Naïve Idea: Overlap Graph\nDraw a node for each fragment, an edge when two fragments overlap.\nATG ──► TGA ──► GAT ──► ATC ──► TCA ──► CAT ──► ATG\n ↑_______________________________________________|\nThe repeat creates a branching structure. And checking every pair for overlap costs \\(O(n^2)\\) — trillions of checks for a real genome.\nWe need a smarter graph."
   },
   {
     "objectID": "slides/13_tue_euler.html#a-different-graph",
     "href": "slides/13_tue_euler.html#a-different-graph",
     "title": "Reading the Book of Life",
     "section": "A Different Graph",
-    "text": "A Different Graph\nInstead of nodes = k-mers, let nodes = (k−1)-mers and edges = k-mers.\n\n\n\nk-mer\nprefix (k−1)\nsuffix (k−1)\nedge\n\n\n\n\nATG\nAT\nTG\nAT → TG\n\n\nTGC\nTG\nGC\nTG → GC\n\n\nGCA\nGC\nCA\nGC → CA\n\n\nCAT\nCA\nAT\nCA → AT\n\n\n\nEach fragment becomes an edge between its prefix and suffix.\n\nThis is the de Bruijn graph construction. Named after Nicolaas de Bruijn. The key insight: the overlap structure is captured by the shared (k-1)-mer between consecutive edges."
+    "text": "A Different Graph\nInstead of nodes = k-mers, let nodes = (k−1)-mers and edges = k-mers.\n\n\n\nk-mer\nprefix (k−1)\nsuffix (k−1)\nedge\n\n\n\n\nATG\nAT\nTG\nAT → TG\n\n\nTGA\nTG\nGA\nTG → GA\n\n\nGAT\nGA\nAT\nGA → AT\n\n\nATC\nAT\nTC\nAT → TC\n\n\nTCA\nTC\nCA\nTC → CA\n\n\nCAT\nCA\nAT\nCA → AT\n\n\nATG\nAT\nTG\nAT → TG (again!)\n\n\n\nThe repeat k-mer ATG just adds a second edge AT → TG. No special case needed.\n\nThis is why de Bruijn graphs handle repeats elegantly: a repeated k-mer is simply a multi-edge (two edges between the same pair of nodes). The algorithm doesn’t need to treat it differently."
   },
   {
     "objectID": "slides/13_tue_euler.html#the-de-bruijn-graph",
     "href": "slides/13_tue_euler.html#the-de-bruijn-graph",
     "title": "Reading the Book of Life",
     "section": "The de Bruijn Graph",
-    "text": "The de Bruijn Graph\n\n\n\n\n\nk-mer\nedge\n\n\n\n\nATG\nAT → TG\n\n\nTGC\nTG → GC\n\n\nGCA\nGC → CA\n\n\nCAT\nCA → AT\n\n\n\n\n\n\n\n\n\n\n\nG\n\n\n\nAT\n\nAT\n\n\n\nTG\n\nTG\n\n\n\nAT-&gt;TG\n\n\nATG\n\n\n\nGC\n\nGC\n\n\n\nTG-&gt;GC\n\n\nTGC\n\n\n\nCA\n\nCA\n\n\n\nGC-&gt;CA\n\n\nGCA\n\n\n\nCA-&gt;AT\n\n\nCAT\n\n\n\n\n\n\n\n\n\nNodes are 2-mers. Edges are 3-mers (our reads).\nThe genome is hidden in this graph — but how do we read it out?"
+    "text": "The de Bruijn Graph\n\n\n\n\n\n\n\nG\n\n\n\nAT\n\nAT\n\n\n\nTG\n\nTG\n\n\n\nAT-&gt;TG\n\n\nATG\n\n\n\nAT-&gt;TG\n\n\nATG\n\n\n\nTC\n\nTC\n\n\n\nAT-&gt;TC\n\n\nATC\n\n\n\nGA\n\nGA\n\n\n\nTG-&gt;GA\n\n\nTGA\n\n\n\nCA\n\nCA\n\n\n\nTC-&gt;CA\n\n\nTCA\n\n\n\nGA-&gt;AT\n\n\nGAT\n\n\n\nCA-&gt;AT\n\n\nCAT\n\n\n\n\n\n\n\n\nAT has 3 out-edges (two to TG, one to TC). TG has 2 in-edges. Not all degrees are equal — this is a linear genome with a repeat.\nThe genome is hidden in this graph — but how do we read it out?"
   },
   {
     "objectID": "slides/13_tue_euler.html#what-does-traversal-mean-here",
     "href": "slides/13_tue_euler.html#what-does-traversal-mean-here",
     "title": "Reading the Book of Life",
     "section": "What Does Traversal Mean Here?",
-    "text": "What Does Traversal Mean Here?\nAssembling the genome = spelling out all four reads in order.\nThat means visiting every edge exactly once.\n\nWhat kind of graph traversal visits every edge exactly once?"
+    "text": "What Does Traversal Mean Here?\nAssembling the genome = spelling out all seven reads in order.\nThat means visiting every edge exactly once.\n\nWhat kind of graph traversal visits every edge exactly once?"
   },
   {
-    "objectID": "slides/13_tue_euler.html#eulers-circuit",
-    "href": "slides/13_tue_euler.html#eulers-circuit",
+    "objectID": "slides/13_tue_euler.html#eulers-path",
+    "href": "slides/13_tue_euler.html#eulers-path",
     "title": "Reading the Book of Life",
-    "section": "Euler’s Circuit",
-    "text": "Euler’s Circuit\n\nAn Euler circuit visits every edge exactly once.\n\n\nLeonhard Euler, 1736 — the Königsberg bridge problem.\n\n\nGenome assembly is finding an Euler circuit in the de Bruijn graph.\n\n\nEuler proved in 1736 that the Königsberg bridge problem (can you cross each of 7 bridges exactly once?) had no solution, by analysing the degree of each landmass. That paper is widely considered the birth of graph theory. 290 years later, the same idea assembles genomes."
+    "section": "Euler’s Path",
+    "text": "Euler’s Path\n\nAn Euler path visits every edge exactly once.\n\n\nLeonhard Euler, 1736 — the Königsberg bridge problem.\n\n\nGenome assembly is finding an Euler path in the de Bruijn graph.\n\n\nEuler proved in 1736 that the Königsberg bridge problem (can you cross each of 7 bridges exactly once?) had no solution, by analysing the degree of each landmass. That paper is widely considered the birth of graph theory. 290 years later, the same idea assembles genomes. A circuit is the special case where start = end (circular genome). A path has two unbalanced nodes — one with excess out-degree (start) and one with excess in-degree (end)."
   },
   {
-    "objectID": "slides/13_tue_euler.html#when-does-an-euler-circuit-exist",
-    "href": "slides/13_tue_euler.html#when-does-an-euler-circuit-exist",
+    "objectID": "slides/13_tue_euler.html#when-does-an-euler-path-exist",
+    "href": "slides/13_tue_euler.html#when-does-an-euler-path-exist",
     "title": "Reading the Book of Life",
-    "section": "When Does an Euler Circuit Exist?",
-    "text": "When Does an Euler Circuit Exist?\nEuler’s theorem: A connected directed graph has an Euler circuit if and only if every node has equal in-degree and out-degree.\nCheck our graph:\n\n\n\nNode\nOut\nIn\nBalanced?\n\n\n\n\nAT\n1\n1\n✓\n\n\nTG\n1\n1\n✓\n\n\nGC\n1\n1\n✓\n\n\nCA\n1\n1\n✓\n\n\n\nAssembly is possible.\n\nFor a linear genome (Euler PATH rather than circuit): exactly one node has out − in = 1 (start), exactly one has in − out = 1 (end), all others balanced. Real genomes are linear, so we look for an Euler path. Checking degrees tells you immediately whether assembly is even possible — before you run any algorithm."
+    "section": "When Does an Euler Path Exist?",
+    "text": "When Does an Euler Path Exist?\nEuler’s theorem: An Euler path exists iff exactly two nodes are unbalanced — one with out − in = 1 (start), one with in − out = 1 (end).\nCheck our graph:\n\n\n\nNode\nOut\nIn\nOut − In\nRole\n\n\n\n\nAT\n3\n2\n+1\nstart\n\n\nTG\n1\n2\n−1\nend\n\n\nGA\n1\n1\n0\n✓\n\n\nTC\n1\n1\n0\n✓\n\n\nCA\n1\n1\n0\n✓\n\n\n\nAssembly is possible — and we know exactly where to start.\n\nThis degree check is O(E) and runs before any assembly algorithm. If the condition fails (more than two unbalanced nodes, or the wrong counts), the reads can’t be assembled into a single sequence — there are gaps or errors. This is a powerful diagnostic."
   },
   {
     "objectID": "slides/13_tue_euler.html#euler-path-vs.-euler-circuit",
     "href": "slides/13_tue_euler.html#euler-path-vs.-euler-circuit",
     "title": "Reading the Book of Life",
     "section": "Euler Path vs. Euler Circuit",
-    "text": "Euler Path vs. Euler Circuit\n\n\n\n\nCircuit\nPath\n\n\n\n\nStart = End?\nYes\nNo\n\n\nDegree condition\nAll nodes balanced\nExactly two unbalanced nodes\n\n\nGenome type\nCircular (bacteria)\nLinear (humans)\n\n\n\nFor a linear genome: find the unique node with \\(\\text{out} - \\text{in} = 1\\). That’s your start.\n\nThis is a beautiful pre-check: before running any algorithm, just compute in-degrees and out-degrees. O(E). If the condition fails, assembly from these reads is impossible (there are gaps or errors in your data)."
+    "text": "Euler Path vs. Euler Circuit\n\n\n\n\nPath\nCircuit\n\n\n\n\nStart = End?\nNo\nYes\n\n\nUnbalanced nodes\nExactly 2\nNone\n\n\nGenome type\nLinear (humans)\nCircular (bacteria)\n\n\n\nOur example is a path: start at AT (out − in = +1), end at TG (in − out = +1).\nA circuit is just a path where the start and end happen to be the same node."
   },
   {
     "objectID": "slides/13_tue_euler.html#from-euler-to-code",
@@ -3720,7 +3720,7 @@
     "href": "slides/13_tue_euler.html#the-code-task",
     "title": "Reading the Book of Life",
     "section": "The Code Task",
-    "text": "The Code Task\nIn the PrairieLearn workspace you’ll find:\n\nkmers.csv — reads from a short mystery genome\ndebruijn.py — builds the de Bruijn graph from the k-mers\ndfs_skeleton.py — the classic DFS above, ready to modify\n\nYour task: modify the DFS to find an Euler path, then read off the assembled sequence.\nThe genome is a real piece of DNA — can you figure out what organism it’s from?\n\nThe mystery genome is a short fragment of bacteriophage lambda DNA, chosen because it’s well-known, circular, and short enough to assemble quickly. Students can BLAST the assembled sequence on NCBI to confirm."
+    "text": "The Code Task\nIn the PrairieLearn workspace you’ll find:\n\nkmers.csv — reads from a short mystery genome\ndebruijn.py — builds the de Bruijn graph from the k-mers\ndfs_skeleton.py — the classic DFS above, ready to modify\n\nYour task: modify the DFS to find an Euler path, then read off the assembled sequence.\nThe genome is a real piece of DNA — can you figure out what organism it’s from?\n\nThe mystery genome is the opening 28 bases of bacteriophage phi X174 — the first genome ever fully sequenced (Sanger, 1977, Nobel Prize). Students can BLAST the assembled sequence on NCBI to confirm."
   },
   {
     "objectID": "slides/05_wed_queues.html#recap-stack-adt",
