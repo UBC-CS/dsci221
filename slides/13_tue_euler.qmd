@@ -30,27 +30,30 @@ For a toy genome and k=3:
 ```python
 import pandas as pd
 
-genome = "ATGCAT"   # pretend it's circular
+genome = "ATGATCATG"
 k = 3
 
-kmers = [genome[i:i+k] for i in range(len(genome))]
+kmers = [genome[i:i+k] for i in range(len(genome) - k + 1)]
 df = pd.DataFrame({'kmer': kmers})
 ```
 
 ```
    kmer
 0   ATG
-1   TGC
-2   GCA
-3   CAT
+1   TGA
+2   GAT
+3   ATC
+4   TCA
+5   CAT
+6   ATG    ← appears again!
 ```
 
 In real sequencing: millions of rows, k ≈ 100–300.
 
 ::: notes
-The genome is circular in many organisms (bacteria especially). For simplicity
-we start with a circular example — it produces an Euler *circuit* rather than
-a path, which is the cleanest case.
+Repeats — subsequences that appear more than once — are ubiquitous in real
+genomes. "ATG" appearing twice here is a tiny example of the repeat problem
+that makes genome assembly genuinely hard.
 :::
 
 ## Can You Reassemble It?
@@ -58,48 +61,45 @@ a path, which is the cleanest case.
 Given only this bag of 3-mers — no positions, no order:
 
 ```
-ATG    TGC    GCA    CAT
+ATG  TGA  GAT  ATC  TCA  CAT  ATG
 ```
 
 Can you recover the original sequence?
 
 . . .
 
-*Try it. What do you notice about the fragments?*
+*Try it. Notice anything tricky?*
 
 ::: notes
-Give students 30 seconds. They'll notice each fragment overlaps with the next
-by k-1 = 2 characters. ATG ends in TG, TGC starts with TG. And so on.
-This overlap structure is the key.
+Give students 30 seconds. They'll notice ATG appears twice and creates
+ambiguity — after reading ATG, which next fragment do you pick: TGA or TCA?
+The overlap structure is clear but the repeat makes it non-trivial.
 :::
 
-## The Overlap Structure
+## The Repeat Problem
 
-Each k-mer overlaps its neighbours by **k−1** characters.
+Each k-mer overlaps the next by k−1 characters. But ATG appears **twice**:
 
 ```
-ATG
- TGC
-  GCA
-   CAT
-    AT...
+ATG → TGA → GAT → ...
+ATG → ?
 ```
 
-The fragments chain together. But with millions of fragments — many of them
-identical — you can't just line them up by eye.
+Which copy of ATG connects to which? You can't tell from the fragments alone.
 
-We need a systematic approach.
+This ambiguity is why assembly is hard — and why we need a systematic approach.
 
 ## Naïve Idea: Overlap Graph
 
-Draw a node for each fragment. Draw an edge when two fragments overlap.
+Draw a node for each **fragment**, an edge when two fragments overlap.
 
 ```
-ATG ──► TGC ──► GCA ──► CAT ──► ATG ...
+ATG ──► TGA ──► GAT ──► ATC ──► TCA ──► CAT ──► ATG
+ ↑_______________________________________________|
 ```
 
-This works! But checking every pair of fragments for overlap costs $O(n^2)$
-comparisons. For millions of fragments, that's trillions of checks.
+The repeat creates a branching structure. And checking every pair for
+overlap costs $O(n^2)$ — trillions of checks for a real genome.
 
 We need a smarter graph.
 
@@ -110,50 +110,46 @@ Instead of nodes = k-mers, let **nodes = (k−1)-mers** and **edges = k-mers**.
 | k-mer | prefix (k−1) | suffix (k−1) | edge |
 |-------|-------------|-------------|------|
 | ATG   | AT          | TG          | AT → TG |
-| TGC   | TG          | GC          | TG → GC |
-| GCA   | GC          | CA          | GC → CA |
+| TGA   | TG          | GA          | TG → GA |
+| GAT   | GA          | AT          | GA → AT |
+| ATC   | AT          | TC          | AT → TC |
+| TCA   | TC          | CA          | TC → CA |
 | CAT   | CA          | AT          | CA → AT |
+| ATG   | AT          | TG          | AT → TG (again!) |
 
-Each fragment becomes an **edge** between its prefix and suffix.
+The repeat k-mer ATG just adds a **second edge** AT → TG. No special case needed.
 
 ::: notes
-This is the de Bruijn graph construction. Named after Nicolaas de Bruijn.
-The key insight: the overlap structure is captured by the shared (k-1)-mer
-between consecutive edges.
+This is why de Bruijn graphs handle repeats elegantly: a repeated k-mer is
+simply a multi-edge (two edges between the same pair of nodes). The algorithm
+doesn't need to treat it differently.
 :::
 
 ## The de Bruijn Graph
 
-::::: {.columns}
-::: {.column width="50%"}
-| k-mer | edge |
-|-------|------|
-| ATG   | AT → TG |
-| TGC   | TG → GC |
-| GCA   | GC → CA |
-| CAT   | CA → AT |
-:::
-::: {.column width="50%"}
 ```{dot}
 digraph G {
   rankdir=LR
-  node [shape=circle style=filled fillcolor="#4a90d9" fontcolor=white fontsize=14 width=0.6]
-  AT -> TG [label="ATG"]
-  TG -> GC [label="TGC"]
-  GC -> CA [label="GCA"]
+  node [shape=circle style=filled fillcolor="#4a90d9" fontcolor=white fontsize=14 width=0.7]
+  edge [fontsize=11]
+  AT -> TG [label="ATG" style=bold]
+  AT -> TG [label="ATG" style=bold color="#e74c3c"]
+  AT -> TC [label="ATC"]
+  TG -> GA [label="TGA"]
+  GA -> AT [label="GAT"]
+  TC -> CA [label="TCA"]
   CA -> AT [label="CAT"]
 }
 ```
-:::
-:::::
 
-Nodes are 2-mers. Edges are 3-mers (our reads).
+AT has **3 out-edges** (two to TG, one to TC). TG has **2 in-edges**.
+Not all degrees are equal — this is a linear genome with a repeat.
 
 **The genome is hidden in this graph — but how do we read it out?**
 
 ## What Does Traversal Mean Here?
 
-Assembling the genome = spelling out all four reads **in order**.
+Assembling the genome = spelling out all seven reads **in order**.
 
 That means visiting every **edge** exactly once.
 
@@ -163,10 +159,10 @@ That means visiting every **edge** exactly once.
 
 . . .
 
-## Euler's Circuit {background-color="#1a1a2e"}
+## Euler's Path {background-color="#1a1a2e"}
 
 ::: {style="text-align:center; font-size:1.4em; margin-top: 1.5em"}
-**An Euler circuit visits every edge exactly once.**
+**An Euler path visits every edge exactly once.**
 :::
 
 ::: {style="text-align:center; margin-top: 1em; color: #aad4f5"}
@@ -174,7 +170,7 @@ Leonhard Euler, 1736 — the Königsberg bridge problem.
 :::
 
 ::: {style="text-align:center; margin-top: 1.5em; font-size:1.1em"}
-Genome assembly **is** finding an Euler circuit in the de Bruijn graph.
+Genome assembly **is** finding an Euler path in the de Bruijn graph.
 :::
 
 ::: notes
@@ -182,46 +178,46 @@ Euler proved in 1736 that the Königsberg bridge problem (can you cross each of
 7 bridges exactly once?) had no solution, by analysing the degree of each
 landmass. That paper is widely considered the birth of graph theory.
 290 years later, the same idea assembles genomes.
+A circuit is the special case where start = end (circular genome). A path
+has two unbalanced nodes — one with excess out-degree (start) and one with
+excess in-degree (end).
 :::
 
-## When Does an Euler Circuit Exist?
+## When Does an Euler Path Exist?
 
-**Euler's theorem**: A connected directed graph has an Euler circuit if and only if
-every node has equal in-degree and out-degree.
+**Euler's theorem**: An Euler path exists iff exactly two nodes are unbalanced —
+one with out − in = 1 (start), one with in − out = 1 (end).
 
 Check our graph:
 
-| Node | Out | In | Balanced? |
-|------|-----|----|-----------|
-| AT   | 1   | 1  | ✓ |
-| TG   | 1   | 1  | ✓ |
-| GC   | 1   | 1  | ✓ |
-| CA   | 1   | 1  | ✓ |
+| Node | Out | In | Out − In | Role |
+|------|-----|----|----------|------|
+| AT   | 3   | 2  | **+1**   | start |
+| TG   | 1   | 2  | **−1**   | end |
+| GA   | 1   | 1  | 0        | ✓ |
+| TC   | 1   | 1  | 0        | ✓ |
+| CA   | 1   | 1  | 0        | ✓ |
 
-Assembly is possible.
+Assembly is possible — and we know exactly where to start.
 
 ::: notes
-For a linear genome (Euler PATH rather than circuit): exactly one node has
-out − in = 1 (start), exactly one has in − out = 1 (end), all others balanced.
-Real genomes are linear, so we look for an Euler path. Checking degrees tells
-you immediately whether assembly is even possible — before you run any algorithm.
+This degree check is O(E) and runs before any assembly algorithm.
+If the condition fails (more than two unbalanced nodes, or the wrong counts),
+the reads can't be assembled into a single sequence — there are gaps or errors.
+This is a powerful diagnostic.
 :::
 
 ## Euler Path vs. Euler Circuit
 
-| | Circuit | Path |
+| | Path | Circuit |
 |---|---|---|
-| Start = End? | Yes | No |
-| Degree condition | All nodes balanced | Exactly two unbalanced nodes |
-| Genome type | Circular (bacteria) | Linear (humans) |
+| Start = End? | No | Yes |
+| Unbalanced nodes | Exactly 2 | None |
+| Genome type | Linear (humans) | Circular (bacteria) |
 
-For a linear genome: find the unique node with $\text{out} - \text{in} = 1$. That's your start.
+Our example is a **path**: start at AT (out − in = +1), end at TG (in − out = +1).
 
-::: notes
-This is a beautiful pre-check: before running any algorithm, just compute
-in-degrees and out-degrees. O(E). If the condition fails, assembly from these
-reads is impossible (there are gaps or errors in your data).
-:::
+A circuit is just a path where the start and end happen to be the same node.
 
 ## From Euler to Code
 
@@ -261,7 +257,7 @@ In the PrairieLearn workspace you'll find:
 *The genome is a real piece of DNA — can you figure out what organism it's from?*
 
 ::: notes
-The mystery genome is a short fragment of bacteriophage lambda DNA, chosen
-because it's well-known, circular, and short enough to assemble quickly.
+The mystery genome is the opening 28 bases of bacteriophage phi X174 —
+the first genome ever fully sequenced (Sanger, 1977, Nobel Prize).
 Students can BLAST the assembled sequence on NCBI to confirm.
 :::
