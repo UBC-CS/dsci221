@@ -107,6 +107,18 @@ Instead of nodes = k-mers, let **nodes = (k−1)-mers** and **edges = k-mers**.
 
 The repeat k-mer ATG just adds a **second edge** AT → TG. No special case needed.
 
+```{pyodide}
+from collections import defaultdict
+
+kmers = ["ATG", "TGA", "GAT", "ATC", "TCA", "CAT", "ATG"]
+graph = defaultdict(list)
+for kmer in kmers:
+    graph[kmer[:-1]].append(kmer[1:])
+
+for v, ws in sorted(graph.items()):
+    print(f"{v}  →  {ws}")
+```
+
 ::: notes
 This is why de Bruijn graphs handle repeats elegantly: a repeated k-mer is
 simply a multi-edge (two edges between the same pair of nodes). The algorithm
@@ -188,6 +200,27 @@ Check our graph:
 
 Assembly is possible — and we know exactly where to start.
 
+```{pyodide}
+from collections import defaultdict
+
+kmers = ["ATG", "TGA", "GAT", "ATC", "TCA", "CAT", "ATG"]
+graph = defaultdict(list)
+for kmer in kmers:
+    graph[kmer[:-1]].append(kmer[1:])
+
+in_deg = defaultdict(int)
+out_deg = defaultdict(int)
+for v in graph:
+    out_deg[v] += len(graph[v])
+    for w in graph[v]:
+        in_deg[w] += 1
+
+for v in sorted(set(list(out_deg) + list(in_deg))):
+    diff = out_deg[v] - in_deg[v]
+    role = " ← START" if diff == 1 else (" ← END" if diff == -1 else "")
+    print(f"{v}:  out={out_deg[v]}  in={in_deg[v]}  diff={diff:+}{role}")
+```
+
 ::: notes
 This degree check is O(E) and runs before any assembly algorithm.
 If the condition fails (more than two unbalanced nodes, or the wrong counts),
@@ -221,7 +254,17 @@ Assembles to: `ATCATGATG`
 . . .
 
 Both paths use every edge exactly once. Both are valid Euler paths.
-And both sequences produce the **identical k-mer multiset**.
+And both sequences produce the **identical k-mer multiset**:
+
+```{pyodide}
+def kmers_of(seq, k):
+    return sorted([seq[i:i+k] for i in range(len(seq) - k + 1)])
+
+s1, s2 = "ATGATCATG", "ATCATGATG"
+print("ATGATCATG k-mers:", kmers_of(s1, 3))
+print("ATCATGATG k-mers:", kmers_of(s2, 3))
+print("Identical?", kmers_of(s1, 3) == kmers_of(s2, 3))
+```
 
 The k-mers alone cannot tell you which genome is real.
 
@@ -274,16 +317,29 @@ A circuit is just a path where the start and end happen to be the same node.
 
 We know **DFS** from week 6. Here is the classic version:
 
-```python
+```{pyodide}
+from collections import defaultdict
+
 def dfs(graph, v, visited, path):
     visited.add(v)
     path.append(v)          # pre-order: record on arrival
     for w in graph[v]:
         if w not in visited:
             dfs(graph, w, visited, path)
+
+kmers = ["ATG", "TGA", "GAT", "ATC", "TCA", "CAT", "ATG"]
+graph = defaultdict(list)
+for kmer in kmers:
+    graph[kmer[:-1]].append(kmer[1:])
+
+path, visited = [], set()
+dfs(graph, "AT", visited, path)
+print("Path:         ", " → ".join(path))
+print(f"Nodes visited: {len(path)}  (need 8 to cover all 7 edges)")
+print("Edges missed: ", 7 - (len(path) - 1))
 ```
 
-This visits each **node** once. We need to visit each **edge** once.
+This visits each **node** once — and gets stuck. We need to visit each **edge** once.
 
 Two things must change — and the second one is subtle.
 
