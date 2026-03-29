@@ -1,0 +1,267 @@
+---
+title: "Reading the Book of Life"
+subtitle: "Week 13, Tuesday — Euler Paths & Genome Assembly"
+date: 2026-03-31
+---
+
+## The Problem
+
+Your genome has **3 billion base pairs** — a sequence of A, T, G, C.
+
+No machine can read it all at once.
+
+Instead: shred many copies of the genome into millions of short fragments,
+read each fragment, and **reassemble**.
+
+This is called **shotgun sequencing**.
+
+::: notes
+Shotgun sequencing is the dominant method since the Human Genome Project (2003).
+The "shotgun" metaphor: randomly blast the genome into tiny pieces, then figure
+out how they fit back together from the overlaps.
+:::
+
+## The Fragments Arrive as Data {.smaller}
+
+Each fragment is a short string of bases — a **k-mer**.
+
+For a toy genome and k=3:
+
+```python
+import pandas as pd
+
+genome = "ATGCAT"   # pretend it's circular
+k = 3
+
+kmers = [genome[i:i+k] for i in range(len(genome))]
+df = pd.DataFrame({'kmer': kmers})
+```
+
+```
+   kmer
+0   ATG
+1   TGC
+2   GCA
+3   CAT
+```
+
+In real sequencing: millions of rows, k ≈ 100–300.
+
+::: notes
+The genome is circular in many organisms (bacteria especially). For simplicity
+we start with a circular example — it produces an Euler *circuit* rather than
+a path, which is the cleanest case.
+:::
+
+## Can You Reassemble It?
+
+Given only this bag of 3-mers — no positions, no order:
+
+```
+ATG    TGC    GCA    CAT
+```
+
+Can you recover the original sequence?
+
+. . .
+
+*Try it. What do you notice about the fragments?*
+
+::: notes
+Give students 30 seconds. They'll notice each fragment overlaps with the next
+by k-1 = 2 characters. ATG ends in TG, TGC starts with TG. And so on.
+This overlap structure is the key.
+:::
+
+## The Overlap Structure
+
+Each k-mer overlaps its neighbours by **k−1** characters.
+
+```
+ATG
+ TGC
+  GCA
+   CAT
+    AT...
+```
+
+The fragments chain together. But with millions of fragments — many of them
+identical — you can't just line them up by eye.
+
+We need a systematic approach.
+
+## Naïve Idea: Overlap Graph
+
+Draw a node for each fragment. Draw an edge when two fragments overlap.
+
+```
+ATG ──► TGC ──► GCA ──► CAT ──► ATG ...
+```
+
+This works! But checking every pair of fragments for overlap costs $O(n^2)$
+comparisons. For millions of fragments, that's trillions of checks.
+
+We need a smarter graph.
+
+## A Different Graph {.smaller}
+
+Instead of nodes = k-mers, let **nodes = (k−1)-mers** and **edges = k-mers**.
+
+| k-mer | prefix (k−1) | suffix (k−1) | edge |
+|-------|-------------|-------------|------|
+| ATG   | AT          | TG          | AT → TG |
+| TGC   | TG          | GC          | TG → GC |
+| GCA   | GC          | CA          | GC → CA |
+| CAT   | CA          | AT          | CA → AT |
+
+Each fragment becomes an **edge** between its prefix and suffix.
+
+::: notes
+This is the de Bruijn graph construction. Named after Nicolaas de Bruijn.
+The key insight: the overlap structure is captured by the shared (k-1)-mer
+between consecutive edges.
+:::
+
+## The de Bruijn Graph
+
+::::: {.columns}
+::: {.column width="50%"}
+| k-mer | edge |
+|-------|------|
+| ATG   | AT → TG |
+| TGC   | TG → GC |
+| GCA   | GC → CA |
+| CAT   | CA → AT |
+:::
+::: {.column width="50%"}
+```{dot}
+digraph G {
+  rankdir=LR
+  node [shape=circle style=filled fillcolor="#4a90d9" fontcolor=white fontsize=14 width=0.6]
+  AT -> TG [label="ATG"]
+  TG -> GC [label="TGC"]
+  GC -> CA [label="GCA"]
+  CA -> AT [label="CAT"]
+}
+```
+:::
+:::::
+
+Nodes are 2-mers. Edges are 3-mers (our reads).
+
+**The genome is hidden in this graph — but how do we read it out?**
+
+## What Does Traversal Mean Here?
+
+Assembling the genome = spelling out all four reads **in order**.
+
+That means visiting every **edge** exactly once.
+
+. . .
+
+*What kind of graph traversal visits every edge exactly once?*
+
+. . .
+
+## Euler's Circuit {background-color="#1a1a2e"}
+
+::: {style="text-align:center; font-size:1.4em; margin-top: 1.5em"}
+**An Euler circuit visits every edge exactly once.**
+:::
+
+::: {style="text-align:center; margin-top: 1em; color: #aad4f5"}
+Leonhard Euler, 1736 — the Königsberg bridge problem.
+:::
+
+::: {style="text-align:center; margin-top: 1.5em; font-size:1.1em"}
+Genome assembly **is** finding an Euler circuit in the de Bruijn graph.
+:::
+
+::: notes
+Euler proved in 1736 that the Königsberg bridge problem (can you cross each of
+7 bridges exactly once?) had no solution, by analysing the degree of each
+landmass. That paper is widely considered the birth of graph theory.
+290 years later, the same idea assembles genomes.
+:::
+
+## When Does an Euler Circuit Exist?
+
+**Euler's theorem**: A connected directed graph has an Euler circuit if and only if
+every node has equal in-degree and out-degree.
+
+Check our graph:
+
+| Node | Out | In | Balanced? |
+|------|-----|----|-----------|
+| AT   | 1   | 1  | ✓ |
+| TG   | 1   | 1  | ✓ |
+| GC   | 1   | 1  | ✓ |
+| CA   | 1   | 1  | ✓ |
+
+Assembly is possible.
+
+::: notes
+For a linear genome (Euler PATH rather than circuit): exactly one node has
+out − in = 1 (start), exactly one has in − out = 1 (end), all others balanced.
+Real genomes are linear, so we look for an Euler path. Checking degrees tells
+you immediately whether assembly is even possible — before you run any algorithm.
+:::
+
+## Euler Path vs. Euler Circuit
+
+| | Circuit | Path |
+|---|---|---|
+| Start = End? | Yes | No |
+| Degree condition | All nodes balanced | Exactly two unbalanced nodes |
+| Genome type | Circular (bacteria) | Linear (humans) |
+
+For a linear genome: find the unique node with $\text{out} - \text{in} = 1$. That's your start.
+
+::: notes
+This is a beautiful pre-check: before running any algorithm, just compute
+in-degrees and out-degrees. O(E). If the condition fails, assembly from these
+reads is impossible (there are gaps or errors in your data).
+:::
+
+## From Euler to Code
+
+We know **DFS** from week 6. Here is the classic version:
+
+```python
+def dfs(graph, v, visited, path):
+    visited.add(v)
+    path.append(v)          # pre-order: record on arrival
+    for w in graph[v]:
+        if w not in visited:
+            dfs(graph, w, visited, path)
+```
+
+This visits each **node** once. We need to visit each **edge** once.
+
+Two things must change — and the second one is subtle.
+
+::: notes
+Don't reveal the answer yet — this is the bridge to the code task.
+The two changes:
+1. Track consumed edges (pop from adjacency list) instead of visited nodes
+2. Move path.append to AFTER recursion (post-order)
+The second change is what makes the "splicing" work.
+:::
+
+## The Code Task
+
+In the PrairieLearn workspace you'll find:
+
+- `kmers.csv` — reads from a short mystery genome
+- `debruijn.py` — builds the de Bruijn graph from the k-mers
+- `dfs_skeleton.py` — the classic DFS above, ready to modify
+
+**Your task**: modify the DFS to find an Euler path, then read off the assembled sequence.
+
+*The genome is a real piece of DNA — can you figure out what organism it's from?*
+
+::: notes
+The mystery genome is a short fragment of bacteriophage lambda DNA, chosen
+because it's well-known, circular, and short enough to assemble quickly.
+Students can BLAST the assembled sequence on NCBI to confirm.
+:::
