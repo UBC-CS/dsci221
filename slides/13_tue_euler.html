@@ -582,6 +582,78 @@ ATG → ?</code></pre>
           display:block!important;
       }</style></aside>
 </section>
+<section id="assembly-isnt-always-unique" class="slide level2">
+<h2>Assembly Isn’t Always Unique</h2>
+<p>From AT we can take edges in two different orders:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Path 1</strong> — AT→TG first</p>
+<pre><code>AT→TG→GA→AT→TC→CA→AT→TG</code></pre>
+<p>Assembles to: <code>ATGATCATG</code></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Path 2</strong> — AT→TC first</p>
+<pre><code>AT→TC→CA→AT→TG→GA→AT→TG</code></pre>
+<p>Assembles to: <code>ATCATGATG</code></p>
+</div></div>
+<div class="fragment">
+<p>Both paths use every edge exactly once. Both are valid Euler paths. And both sequences produce the <strong>identical k-mer multiset</strong>.</p>
+<p>The k-mers alone cannot tell you which genome is real.</p>
+<aside class="notes">
+<p>This is the repeat ambiguity problem — the central challenge of genome assembly. The Euler path formulation doesn’t “fail” here; it correctly identifies all assemblies consistent with the data. The ambiguity is in the data itself.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="how-real-assemblers-resolve-it" class="slide level2">
+<h2>How Real Assemblers Resolve It</h2>
+<p>The ambiguity comes from repeats fitting inside a k-mer.</p>
+<p><strong>Use longer k</strong>: if k &gt; repeat length, the repeat no longer creates a branch.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>k</th>
+<th>repeat “ATG” fits in k-mer?</th>
+<th>ambiguity?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3</td>
+<td>yes</td>
+<td>✓ two valid assemblies</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>no — “ATGA” ≠ “ATCA”</td>
+<td>single assembly</td>
+</tr>
+</tbody>
+</table>
+<p>Trade-off: longer k requires longer reads, and longer reads are harder and more expensive to sequence.</p>
+<p><em>This is why sequencing technology and assembly algorithms co-evolved.</em></p>
+<aside class="notes">
+<p>With k=4 on ATGATCATG: k-mers are ATGA, TGAT, GATC, ATCA, TCATG… wait, let me check: ATGATCATG with k=4 → ATGA, TGAT, GATC, ATCA, TCAT, CATG, ATGA (repeat). The last k-mer ATGA appears twice — ambiguity persists. With k=5: ATGAT, TGATC, GATCA, ATCAT, TCATG, CATGA, ATGAT (still repeated!). The repeat is length 3 so we need k &gt; 3+context to fully disambiguate. In practice: paired-end reads (sequence both ends of a ~500bp fragment) provide the long-range constraints that resolve repeat ambiguity without requiring k-mers as long as the repeat.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="euler-path-vs.-euler-circuit" class="slide level2">
 <h2>Euler Path vs.&nbsp;Euler Circuit</h2>
 <table class="caption-top">
@@ -616,12 +688,12 @@ ATG → ?</code></pre>
 <section id="from-euler-to-code" class="slide level2">
 <h2>From Euler to Code</h2>
 <p>We know <strong>DFS</strong> from week 6. Here is the classic version:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> dfs(graph, v, visited, path):</span>
-<span id="cb6-2"><a></a>    visited.add(v)</span>
-<span id="cb6-3"><a></a>    path.append(v)          <span class="co"># pre-order: record on arrival</span></span>
-<span id="cb6-4"><a></a>    <span class="cf">for</span> w <span class="kw">in</span> graph[v]:</span>
-<span id="cb6-5"><a></a>        <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> visited:</span>
-<span id="cb6-6"><a></a>            dfs(graph, w, visited, path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> dfs(graph, v, visited, path):</span>
+<span id="cb8-2"><a></a>    visited.add(v)</span>
+<span id="cb8-3"><a></a>    path.append(v)          <span class="co"># pre-order: record on arrival</span></span>
+<span id="cb8-4"><a></a>    <span class="cf">for</span> w <span class="kw">in</span> graph[v]:</span>
+<span id="cb8-5"><a></a>        <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="cb8-6"><a></a>            dfs(graph, w, visited, path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This visits each <strong>node</strong> once. We need to visit each <strong>edge</strong> once.</p>
 <p>Two things must change — and the second one is subtle.</p>
 <aside class="notes">
