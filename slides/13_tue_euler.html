@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.36">
 
-  <meta name="dcterms.date" content="2026-01-19">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Invariant Detective</title>
+  <meta name="dcterms.date" content="2026-03-31">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Reading the Book of Life</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -198,11 +198,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="The Invariant Detective – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 3, Monday">
+<meta property="og:title" content="Reading the Book of Life – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 13, Tuesday — Euler Paths &amp; Genome Assembly">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="The Invariant Detective – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 3, Monday">
+<meta name="twitter:title" content="Reading the Book of Life – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 13, Tuesday — Euler Paths &amp; Genome Assembly">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -210,25 +210,22 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The Invariant Detective</h1>
-  <p class="subtitle">Week 3, Monday</p>
+  <h1 class="title">Reading the Book of Life</h1>
+  <p class="subtitle">Week 13, Tuesday — Euler Paths &amp; Genome Assembly</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 19, 2026</p>
+  <p class="date">March 31, 2026</p>
 </section>
-<section>
-<section id="warm-up-a-frozen-algorithm" class="title-slide slide level1 center">
-<h1>Warm-up: A Frozen Algorithm</h1>
-
-</section>
-<section id="the-scene" class="slide level2">
-<h2>The Scene</h2>
-<p>An algorithm was running, but we paused it mid-execution.</p>
-<p>Your job: <strong>figure out what it was doing</strong> and <strong>where it stopped</strong>.</p>
+<section id="the-problem" class="slide level2">
+<h2>The Problem</h2>
+<p>Your genome has <strong>3 billion base pairs</strong> — a sequence of A, T, G, C.</p>
+<p>No machine can read it all at once.</p>
+<p>Instead: shred many copies of the genome into millions of short fragments, read each fragment, and <strong>reassemble</strong>.</p>
+<p>This is called <strong>shotgun sequencing</strong>.</p>
 <aside class="notes">
-<p>“Think of this like a crime scene investigation. The clues are in the state.”</p>
+<p>Shotgun sequencing is the dominant method since the Human Genome Project (2003). The “shotgun” metaphor: randomly blast the genome into tiny pieces, then figure out how they fit back together from the overlaps.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -240,361 +237,256 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section></section>
-<section>
-<section id="puzzle-1-find-maximum" class="title-slide slide level1 center">
-<h1>Puzzle 1: Find Maximum</h1>
-
 </section>
-<section id="puzzle-1-find-maximum-1" class="slide level2 smaller">
-<h2>Puzzle 1: Find Maximum</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> mystery1(arr):</span>
-<span id="cb1-2"><a></a>    result <span class="op">=</span> arr[<span class="dv">0</span>]</span>
-<span id="cb1-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb1-4"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&gt;</span> result:</span>
-<span id="cb1-5"><a></a>            result <span class="op">=</span> arr[i]</span>
-<span id="cb1-6"><a></a>    <span class="cf">return</span> result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
+<section id="the-fragments-arrive-as-data" class="slide level2 smaller">
+<h2>The Fragments Arrive as Data</h2>
+<p>Each fragment is a short string of bases — a <strong>k-mer</strong>.</p>
+<p>For a toy genome and k=3:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a></a></span>
+<span id="cb1-3"><a></a>genome <span class="op">=</span> <span class="st">"ATGCAT"</span>   <span class="co"># pretend it's circular</span></span>
+<span id="cb1-4"><a></a>k <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb1-5"><a></a></span>
+<span id="cb1-6"><a></a>kmers <span class="op">=</span> [genome[i:i<span class="op">+</span>k] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(genome))]</span>
+<span id="cb1-7"><a></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'kmer'</span>: kmers})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>   kmer
+0   ATG
+1   TGC
+2   GCA
+3   CAT</code></pre>
+<p>In real sequencing: millions of rows, k ≈ 100–300.</p>
+<aside class="notes">
+<p>The genome is circular in many organisms (bacteria especially). For simplicity we start with a circular example — it produces an Euler <em>circuit</em> rather than a path, which is the cleanest case.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="can-you-reassemble-it" class="slide level2">
+<h2>Can You Reassemble It?</h2>
+<p>Given only this bag of 3-mers — no positions, no order:</p>
+<pre><code>ATG    TGC    GCA    CAT</code></pre>
+<p>Can you recover the original sequence?</p>
+<div class="fragment">
+<p><em>Try it. What do you notice about the fragments?</em></p>
+<aside class="notes">
+<p>Give students 30 seconds. They’ll notice each fragment overlaps with the next by k-1 = 2 characters. ATG ends in TG, TGC starts with TG. And so on. This overlap structure is the key.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="the-overlap-structure" class="slide level2">
+<h2>The Overlap Structure</h2>
+<p>Each k-mer overlaps its neighbours by <strong>k−1</strong> characters.</p>
+<pre><code>ATG
+ TGC
+  GCA
+   CAT
+    AT...</code></pre>
+<p>The fragments chain together. But with millions of fragments — many of them identical — you can’t just line them up by eye.</p>
+<p>We need a systematic approach.</p>
+</section>
+<section id="naïve-idea-overlap-graph" class="slide level2">
+<h2>Naïve Idea: Overlap Graph</h2>
+<p>Draw a node for each fragment. Draw an edge when two fragments overlap.</p>
+<pre><code>ATG ──► TGC ──► GCA ──► CAT ──► ATG ...</code></pre>
+<p>This works! But checking every pair of fragments for overlap costs <span class="math inline">\(O(n^2)\)</span> comparisons. For millions of fragments, that’s trillions of checks.</p>
+<p>We need a smarter graph.</p>
+</section>
+<section id="a-different-graph" class="slide level2 smaller">
+<h2>A Different Graph</h2>
+<p>Instead of nodes = k-mers, let <strong>nodes = (k−1)-mers</strong> and <strong>edges = k-mers</strong>.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
+<th>k-mer</th>
+<th>prefix (k−1)</th>
+<th>suffix (k−1)</th>
+<th>edge</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">8</td>
-</tr>
-</tbody>
-</table>
-<p>Variables: <code>result = 9</code></p>
-</div></div>
-<p><strong>Q1</strong>: What iteration is <code>i</code> about to start?</p>
-<p><strong>Q2</strong>: What does <code>result</code> represent?</p>
-<aside class="notes">
-<p>“Pause and think. What value of i would give us result = 9?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-solution" class="slide level2">
-<h2>The Solution</h2>
-<div id="3790e0f1" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_mon_invariants_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="756" height="230"></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li><code>i = 3</code> (about to examine index 3)</li>
-<li><code>result = 9</code> = maximum of <code>arr[0:3]</code> = maximum of <code>[7, 3, 9]</code></li>
-</ul>
-<p><strong>The Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, <code>result</code> holds the maximum of <code>arr[0:i]</code>.</p>
-</section>
-<section id="why-this-works" class="slide level2">
-<h2>Why This Works</h2>
-<p>The invariant tells us:</p>
-<ul>
-<li><strong>At i = 1</strong>: <code>result</code> = max of <code>arr[0:1]</code> = max of <code>[7]</code> = 7 ✓</li>
-<li><strong>At i = 2</strong>: <code>result</code> = max of <code>arr[0:2]</code> = max of <code>[7, 3]</code> = 7 ✓</li>
-<li><strong>At i = 3</strong>: <code>result</code> = max of <code>arr[0:3]</code> = max of <code>[7, 3, 9]</code> = 9 ✓</li>
-</ul>
-<p>The frozen state is <strong>consistent</strong> with the invariant at <code>i = 3</code>.</p>
-</section></section>
-<section>
-<section id="puzzle-2-counting" class="title-slide slide level1 center">
-<h1>Puzzle 2: Counting</h1>
-
-</section>
-<section id="puzzle-2-counting-1" class="slide level2 smaller">
-<h2>Puzzle 2: Counting</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> mystery2(arr):</span>
-<span id="cb2-2"><a></a>    count <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb2-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
-<span id="cb2-4"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&gt;</span> <span class="dv">5</span>:</span>
-<span id="cb2-5"><a></a>            count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb2-6"><a></a>    <span class="cf">return</span> count</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">3</td>
-</tr>
-</tbody>
-</table>
-<p>Variables: <code>count = 2</code></p>
-</div></div>
-<p><strong>Q1</strong>: What iteration is <code>i</code> about to start?</p>
-<p><strong>Q2</strong>: State the invariant.</p>
-<aside class="notes">
-<p>“Which elements &gt; 5 have we seen? 8 at index 1, 7 at index 3. That’s 2 elements. So i = 4.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-solution-1" class="slide level2">
-<h2>The Solution</h2>
-<div id="ae84c884" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_mon_invariants_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="754" height="230"></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li>Elements &gt; 5 in <code>arr[0:4]</code> = <code>[4, 8, 2, 7]</code>: <strong>8</strong> and <strong>7</strong> → count = 2</li>
-<li><code>i = 4</code></li>
-</ul>
-<p><strong>The Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, <code>count</code> equals the number of elements &gt; 5 in <code>arr[0:i]</code>.</p>
-</section></section>
-<section>
-<section id="puzzle-3-partitioning" class="title-slide slide level1 center">
-<h1>Puzzle 3: Partitioning</h1>
-
-</section>
-<section id="puzzle-3-partitioning-1" class="slide level2 smaller">
-<h2>Puzzle 3: Partitioning</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> mystery3(arr):</span>
-<span id="cb3-2"><a></a>    pivot <span class="op">=</span> arr[<span class="dv">0</span>]</span>
-<span id="cb3-3"><a></a>    left <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb3-4"><a></a>    <span class="cf">for</span> right <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb3-5"><a></a>        <span class="cf">if</span> arr[right] <span class="op">&lt;</span> pivot:</span>
-<span id="cb3-6"><a></a>            arr[left], arr[right] <span class="op">=</span> arr[right], arr[left]</span>
-<span id="cb3-7"><a></a>            left <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb3-8"><a></a>    arr[<span class="dv">0</span>], arr[left <span class="op">-</span> <span class="dv">1</span>] <span class="op">=</span> arr[left <span class="op">-</span> <span class="dv">1</span>], arr[<span class="dv">0</span>]</span>
-<span id="cb3-9"><a></a>    <span class="cf">return</span> left <span class="op">-</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:45%;">
-<p>Original: <code>[5, 8, 2, 9, 1, 7, 3]</code></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
-</tr>
-</tbody>
-</table>
-<p><code>pivot = 5</code>, <code>left = 3</code></p>
-</div></div>
-<p><strong>Q1</strong>: What iteration is <code>right</code> about to start?</p>
-<p><strong>Q2</strong>: Describe what’s in <code>arr[1:left]</code> and <code>arr[left:right]</code>.</p>
-<aside class="notes">
-<p>“This is trickier. Notice: arr[1:3] = [2, 1] — both &lt; 5. arr[3:?] = ?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-visualization" class="slide level2">
-<h2>The Visualization</h2>
-<div id="dea20555" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_mon_invariants_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="688" height="278"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="the-solution-2" class="slide level2">
-<h2>The Solution</h2>
-<ul>
-<li><code>right = 5</code> (about to examine index 5, which has value 7)</li>
-<li><code>arr[1:left]</code> = <code>arr[1:3]</code> = <code>[2, 1]</code> — all &lt; pivot (5)</li>
-<li><code>arr[left:right]</code> = <code>arr[3:5]</code> = <code>[9, 8]</code> — all &gt;= pivot (5)</li>
-</ul>
-<p><strong>The Invariant</strong> (at iteration <code>right</code>):</p>
-<ul>
-<li><code>arr[1:left]</code> contains elements &lt; pivot</li>
-<li><code>arr[left:right]</code> contains elements &gt;= pivot</li>
-<li><code>arr[right:]</code> is unexamined</li>
-</ul>
-<aside class="notes">
-<p>“This is the partition step from quicksort! The invariant maintains two regions.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="the-detective-method" class="title-slide slide level1 center">
-<h1>The Detective Method</h1>
-
-</section>
-<section id="how-to-find-invariants" class="slide level2">
-<h2>How to Find Invariants</h2>
-<ol type="1">
-<li><p><strong>Look at the loop variable</strong>: What does <code>i</code> (or <code>right</code>, etc.) represent?</p></li>
-<li><p><strong>Look at the accumulated state</strong>: What has <code>result</code>, <code>count</code>, <code>left</code> captured so far?</p></li>
-<li><p><strong>State the relationship</strong>: “At iteration <span class="math inline">\(i\)</span>, [variable] holds [property of arr[0:i]]”</p></li>
-<li><p><strong>Verify</strong>: Does the frozen state match your invariant?</p></li>
-</ol>
-</section>
-<section id="common-invariant-patterns" class="slide level2">
-<h2>Common Invariant Patterns</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Pattern</th>
-<th>Example Invariant</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Accumulation</strong></td>
-<td>“<code>total</code> = sum of <code>arr[0:i]</code>”</td>
+<td>ATG</td>
+<td>AT</td>
+<td>TG</td>
+<td>AT → TG</td>
 </tr>
 <tr class="even">
-<td><strong>Extremum</strong></td>
-<td>“<code>max_val</code> = maximum of <code>arr[0:i]</code>”</td>
+<td>TGC</td>
+<td>TG</td>
+<td>GC</td>
+<td>TG → GC</td>
 </tr>
 <tr class="odd">
-<td><strong>Counting</strong></td>
-<td>“<code>count</code> = number of X in <code>arr[0:i]</code>”</td>
+<td>GCA</td>
+<td>GC</td>
+<td>CA</td>
+<td>GC → CA</td>
 </tr>
 <tr class="even">
-<td><strong>Search</strong></td>
-<td>“If target exists, it’s in <code>arr[lo:hi+1]</code>”</td>
-</tr>
-<tr class="odd">
-<td><strong>Partition</strong></td>
-<td>“<code>arr[0:left]</code> satisfies P, <code>arr[left:i]</code> doesn’t”</td>
+<td>CAT</td>
+<td>CA</td>
+<td>AT</td>
+<td>CA → AT</td>
 </tr>
 </tbody>
 </table>
-</section></section>
-<section>
-<section id="practice-you-try" class="title-slide slide level1 center">
-<h1>Practice: You Try</h1>
-
+<p>Each fragment becomes an <strong>edge</strong> between its prefix and suffix.</p>
+<aside class="notes">
+<p>This is the de Bruijn graph construction. Named after Nicolaas de Bruijn. The key insight: the overlap structure is captured by the shared (k-1)-mer between consecutive edges.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="puzzle-4" class="slide level2 smaller">
-<h2>Puzzle 4</h2>
+<section id="the-de-bruijn-graph" class="slide level2">
+<h2>The de Bruijn Graph</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> mystery4(arr):</span>
-<span id="cb4-2"><a></a>    total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
-<span id="cb4-4"><a></a>        total <span class="op">+=</span> arr[i] <span class="op">*</span> arr[i]</span>
-<span id="cb4-5"><a></a>    <span class="cf">return</span> total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>k-mer</th>
+<th>edge</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ATG</td>
+<td>AT → TG</td>
+</tr>
+<tr class="even">
+<td>TGC</td>
+<td>TG → GC</td>
+</tr>
+<tr class="odd">
+<td>GCA</td>
+<td>GC → CA</td>
+</tr>
+<tr class="even">
+<td>CAT</td>
+<td>CA → AT</td>
+</tr>
+</tbody>
+</table>
 </div><div class="column" style="width:50%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">1</td>
-</tr>
-</tbody>
-</table>
-<p>Variables: <code>total = 14</code></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<svg width="960" height="480" viewbox="0.00 0.00 375.12 85.39" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 81.39)">
+<title>G</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-81.39 371.12,-81.39 371.12,4 -4,4"></polygon>
+<!-- AT -->
+<g id="node1" class="node">
+<title>AT</title>
+<ellipse fill="#4a90d9" stroke="black" cx="21.5" cy="-21.7" rx="21.5" ry="21.5"></ellipse>
+<text text-anchor="middle" x="21.5" y="-17.5" font-family="Times,serif" font-size="14.00" fill="white">AT</text>
+</g>
+<!-- TG -->
+<g id="node2" class="node">
+<title>TG</title>
+<ellipse fill="#4a90d9" stroke="black" cx="129.27" cy="-55.7" rx="21.5" ry="21.5"></ellipse>
+<text text-anchor="middle" x="129.27" y="-51.5" font-family="Times,serif" font-size="14.00" fill="white">TG</text>
+</g>
+<!-- AT&#45;&gt;TG -->
+<g id="edge1" class="edge">
+<title>AT-&gt;TG</title>
+<path fill="none" stroke="black" d="M42.39,-28.09C58.28,-33.2 80.77,-40.43 98.75,-46.21"></path>
+<polygon fill="black" stroke="black" points="97.88,-49.6 108.47,-49.33 100.02,-42.94 97.88,-49.6"></polygon>
+<text text-anchor="middle" x="75.39" y="-46.9" font-family="Times,serif" font-size="14.00">ATG</text>
+</g>
+<!-- GC -->
+<g id="node3" class="node">
+<title>GC</title>
+<ellipse fill="#4a90d9" stroke="black" cx="236.47" cy="-55.7" rx="21.89" ry="21.89"></ellipse>
+<text text-anchor="middle" x="236.47" y="-51.5" font-family="Times,serif" font-size="14.00" fill="white">GC</text>
+</g>
+<!-- TG&#45;&gt;GC -->
+<g id="edge2" class="edge">
+<title>TG-&gt;GC</title>
+<path fill="none" stroke="black" d="M150.81,-55.7C166.06,-55.7 187.12,-55.7 204.43,-55.7"></path>
+<polygon fill="black" stroke="black" points="204.63,-59.2 214.63,-55.7 204.63,-52.2 204.63,-59.2"></polygon>
+<text text-anchor="middle" x="182.77" y="-59.9" font-family="Times,serif" font-size="14.00">TGC</text>
+</g>
+<!-- CA -->
+<g id="node4" class="node">
+<title>CA</title>
+<ellipse fill="#4a90d9" stroke="black" cx="345.42" cy="-21.7" rx="21.89" ry="21.89"></ellipse>
+<text text-anchor="middle" x="345.42" y="-17.5" font-family="Times,serif" font-size="14.00" fill="white">CA</text>
+</g>
+<!-- GC&#45;&gt;CA -->
+<g id="edge3" class="edge">
+<title>GC-&gt;CA</title>
+<path fill="none" stroke="black" d="M257.33,-49.38C273.44,-44.26 296.39,-36.97 314.68,-31.15"></path>
+<polygon fill="black" stroke="black" points="315.83,-34.46 324.3,-28.09 313.71,-27.79 315.83,-34.46"></polygon>
+<text text-anchor="middle" x="290.94" y="-46.9" font-family="Times,serif" font-size="14.00">GCA</text>
+</g>
+<!-- CA&#45;&gt;AT -->
+<g id="edge4" class="edge">
+<title>CA-&gt;AT</title>
+<path fill="none" stroke="black" d="M323.55,-21.7C268.32,-21.7 118.15,-21.7 53.16,-21.7"></path>
+<polygon fill="black" stroke="black" points="53.13,-18.2 43.13,-21.7 53.13,-25.2 53.13,-18.2"></polygon>
+<text text-anchor="middle" x="182.77" y="-25.9" font-family="Times,serif" font-size="14.00">CAT</text>
+</g>
+</g>
+</svg>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </div></div>
-<p><strong>Q1</strong>: What is <code>i</code>? <strong>Q2</strong>: State the invariant.</p>
+<p>Nodes are 2-mers. Edges are 3-mers (our reads).</p>
+<p><strong>The genome is hidden in this graph — but how do we read it out?</strong></p>
+</section>
+<section id="what-does-traversal-mean-here" class="slide level2">
+<h2>What Does Traversal Mean Here?</h2>
+<p>Assembling the genome = spelling out all four reads <strong>in order</strong>.</p>
+<p>That means visiting every <strong>edge</strong> exactly once.</p>
+<div class="fragment">
+<p><em>What kind of graph traversal visits every edge exactly once?</em></p>
+</div>
+</section>
+<section id="eulers-circuit" class="slide level2" data-background-color="#1a1a2e">
+<h2>Euler’s Circuit</h2>
+<div style="text-align:center; font-size:1.4em; margin-top: 1.5em">
+<p><strong>An Euler circuit visits every edge exactly once.</strong></p>
+</div>
+<div style="text-align:center; margin-top: 1em; color: #aad4f5">
+<p>Leonhard Euler, 1736 — the Königsberg bridge problem.</p>
+</div>
+<div style="text-align:center; margin-top: 1.5em; font-size:1.1em">
+<p>Genome assembly <strong>is</strong> finding an Euler circuit in the de Bruijn graph.</p>
+</div>
 <aside class="notes">
-<p>“Think: 2² + 3² + 1² = 4 + 9 + 1 = 14. So i = 3.”</p>
+<p>Euler proved in 1736 that the Königsberg bridge problem (can you cross each of 7 bridges exactly once?) had no solution, by analysing the degree of each landmass. That paper is widely considered the birth of graph theory. 290 years later, the same idea assembles genomes.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -607,98 +499,49 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="solution-4" class="slide level2">
-<h2>Solution 4</h2>
-<p><span class="math inline">\(2^2 + 3^2 + 1^2 = 4 + 9 + 1 = 14\)</span></p>
-<p>So <code>i = 3</code> (about to process index 3).</p>
-<p><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, <code>total</code> = sum of squares of <code>arr[0:i]</code>.</p>
-</section>
-<section id="puzzle-5" class="slide level2 smaller">
-<h2>Puzzle 5</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> mystery5(arr, target):</span>
-<span id="cb5-2"><a></a>    lo, hi <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(arr) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb5-3"><a></a>    <span class="cf">while</span> lo <span class="op">&lt;=</span> hi:</span>
-<span id="cb5-4"><a></a>        mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">//</span> <span class="dv">2</span></span>
-<span id="cb5-5"><a></a>        <span class="cf">if</span> arr[mid] <span class="op">==</span> target:</span>
-<span id="cb5-6"><a></a>            <span class="cf">return</span> mid</span>
-<span id="cb5-7"><a></a>        <span class="cf">elif</span> arr[mid] <span class="op">&lt;</span> target:</span>
-<span id="cb5-8"><a></a>            lo <span class="op">=</span> mid <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb5-9"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb5-10"><a></a>            hi <span class="op">=</span> mid <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb5-11"><a></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Frozen state: <code>lo = 5</code>, <code>hi = 9</code>, <code>target = 72</code></p>
+<section id="when-does-an-euler-circuit-exist" class="slide level2">
+<h2>When Does an Euler Circuit Exist?</h2>
+<p><strong>Euler’s theorem</strong>: A connected directed graph has an Euler circuit if and only if every node has equal in-degree and out-degree.</p>
+<p>Check our graph:</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">8</th>
-<th style="text-align: center;">9</th>
-<th style="text-align: center;">10</th>
-<th style="text-align: center;">11</th>
-<th style="text-align: center;">12</th>
-<th style="text-align: center;">13</th>
-<th style="text-align: center;">14</th>
-<th style="text-align: center;">15</th>
+<th>Node</th>
+<th>Out</th>
+<th>In</th>
+<th>Balanced?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">12</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">23</td>
-<td style="text-align: center;">38</td>
-<td style="text-align: center;">56</td>
-<td style="text-align: center;">72</td>
-<td style="text-align: center;">91</td>
-<td style="text-align: center;">95</td>
-<td style="text-align: center;">99</td>
-<td style="text-align: center;">103</td>
-<td style="text-align: center;">110</td>
-<td style="text-align: center;">125</td>
-<td style="text-align: center;">142</td>
+<td>AT</td>
+<td>1</td>
+<td>1</td>
+<td>✓</td>
+</tr>
+<tr class="even">
+<td>TG</td>
+<td>1</td>
+<td>1</td>
+<td>✓</td>
+</tr>
+<tr class="odd">
+<td>GC</td>
+<td>1</td>
+<td>1</td>
+<td>✓</td>
+</tr>
+<tr class="even">
+<td>CA</td>
+<td>1</td>
+<td>1</td>
+<td>✓</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Q1</strong>: What just happened? <strong>Q2</strong>: State the invariant.</p>
-</section>
-<section id="solution-5" class="slide level2">
-<h2>Solution 5</h2>
-<ul>
-<li>We’re searching for 72</li>
-<li><code>lo = 5, hi = 9</code> means we’re looking in <code>arr[5:10]</code> = <code>[23, 38, 56, 72, 91]</code></li>
-<li>Previous mid was 4 (value 16 &lt; 72), so we set <code>lo = 5</code></li>
-</ul>
-<p><strong>Invariant</strong>: If <code>target</code> is in <code>arr</code>, then <code>target</code> is in <code>arr[lo:hi+1]</code>.</p>
+<p>Assembly is possible.</p>
 <aside class="notes">
-<p>“We narrowed from the full array to indices 5-9. The invariant says: if 72 exists, it’s in this range. (And it is — at index 8.)”</p>
+<p>For a linear genome (Euler PATH rather than circuit): exactly one node has out − in = 1 (start), exactly one has in − out = 1 (end), all others balanced. Real genomes are linear, so we look for an Euler path. Checking degrees tells you immediately whether assembly is even possible — before you run any algorithm.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -710,51 +553,98 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section></section>
-<section>
-<section id="why-this-matters" class="title-slide slide level1 center">
-<h1>Why This Matters</h1>
-
 </section>
-<section id="debugging-with-invariants" class="slide level2">
-<h2>Debugging with Invariants</h2>
-<p>When your code doesn’t work:</p>
-<ol type="1">
-<li><strong>State your invariant</strong> (what <em>should</em> be true?)</li>
-<li><strong>Print the state</strong> at each iteration</li>
-<li><strong>Find where the invariant breaks</strong></li>
-</ol>
-<p>The bug is where reality diverges from the invariant.</p>
+<section id="euler-path-vs.-euler-circuit" class="slide level2">
+<h2>Euler Path vs.&nbsp;Euler Circuit</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>Circuit</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Start = End?</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Degree condition</td>
+<td>All nodes balanced</td>
+<td>Exactly two unbalanced nodes</td>
+</tr>
+<tr class="odd">
+<td>Genome type</td>
+<td>Circular (bacteria)</td>
+<td>Linear (humans)</td>
+</tr>
+</tbody>
+</table>
+<p>For a linear genome: find the unique node with <span class="math inline">\(\text{out} - \text{in} = 1\)</span>. That’s your start.</p>
+<aside class="notes">
+<p>This is a beautiful pre-check: before running any algorithm, just compute in-degrees and out-degrees. O(E). If the condition fails, assembly from these reads is impossible (there are gaps or errors in your data).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="the-invariant-as-compass" class="slide level2">
-<h2>The Invariant as Compass</h2>
-<blockquote>
-<p>“When lost, check the invariant.”</p>
-</blockquote>
+<section id="from-euler-to-code" class="slide level2">
+<h2>From Euler to Code</h2>
+<p>We know <strong>DFS</strong> from week 6. Here is the classic version:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> dfs(graph, v, visited, path):</span>
+<span id="cb6-2"><a></a>    visited.add(v)</span>
+<span id="cb6-3"><a></a>    path.append(v)          <span class="co"># pre-order: record on arrival</span></span>
+<span id="cb6-4"><a></a>    <span class="cf">for</span> w <span class="kw">in</span> graph[v]:</span>
+<span id="cb6-5"><a></a>        <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="cb6-6"><a></a>            dfs(graph, w, visited, path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This visits each <strong>node</strong> once. We need to visit each <strong>edge</strong> once.</p>
+<p>Two things must change — and the second one is subtle.</p>
+<aside class="notes">
+<p>Don’t reveal the answer yet — this is the bridge to the code task. The two changes: 1. Track consumed edges (pop from adjacency list) instead of visited nodes 2. Move path.append to AFTER recursion (post-order) The second change is what makes the “splicing” work.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-code-task" class="slide level2">
+<h2>The Code Task</h2>
+<p>In the PrairieLearn workspace you’ll find:</p>
 <ul>
-<li>Unsure about an edge case? → Does it maintain the invariant?</li>
-<li>Code gives wrong answer? → Where does the invariant fail?</li>
-<li>Writing new code? → What invariant do I want to maintain?</li>
+<li><code>kmers.csv</code> — reads from a short mystery genome</li>
+<li><code>debruijn.py</code> — builds the de Bruijn graph from the k-mers</li>
+<li><code>dfs_skeleton.py</code> — the classic DFS above, ready to modify</li>
 </ul>
-</section></section>
-<section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
-
-</section>
-<section id="what-we-learned" class="slide level2">
-<h2>What We Learned</h2>
-<ol type="1">
-<li><p><strong>Invariants are discoverable</strong> from frozen states</p></li>
-<li><p><strong>The pattern</strong>: “At iteration <span class="math inline">\(i\)</span>, [variable] holds [property of data seen so far]”</p></li>
-<li><p><strong>Common types</strong>: accumulation, extremum, counting, search range, partition</p></li>
-<li><p><strong>The detective method</strong>: Look at loop variable, look at accumulated state, state the relationship</p></li>
-</ol>
-</section>
-<section id="next-time" class="slide level2">
-<h2>Next Time</h2>
-<p>Recursion: When the function calls itself.</p>
-<p>Spoiler: Recursion has invariants too — we call them <strong>recursive properties</strong>.</p>
+<p><strong>Your task</strong>: modify the DFS to find an Euler path, then read off the assembled sequence.</p>
+<p><em>The genome is a real piece of DNA — can you figure out what organism it’s from?</em></p>
+<aside class="notes">
+<p>The mystery genome is a short fragment of bacteriophage lambda DNA, chosen because it’s well-known, circular, and short enough to assemble quickly. Students can BLAST the assembled sequence on NCBI to confirm.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 <script type="ojs-module-contents">
@@ -771,7 +661,7 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
