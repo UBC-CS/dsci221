@@ -2,6 +2,8 @@
 title: "Reading the Book of Life"
 subtitle: "Week 13, Tuesday — Euler Paths & Genome Assembly"
 date: 2026-03-31
+execute:
+  enabled: false
 ---
 
 ## The Problem
