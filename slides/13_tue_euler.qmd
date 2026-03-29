@@ -207,6 +207,69 @@ the reads can't be assembled into a single sequence — there are gaps or errors
 This is a powerful diagnostic.
 :::
 
+## Assembly Isn't Always Unique
+
+From AT we can take edges in two different orders:
+
+::::: {.columns}
+::: {.column width="50%"}
+**Path 1** — AT→TG first
+
+```
+AT→TG→GA→AT→TC→CA→AT→TG
+```
+Assembles to: `ATGATCATG`
+:::
+::: {.column width="50%"}
+**Path 2** — AT→TC first
+
+```
+AT→TC→CA→AT→TG→GA→AT→TG
+```
+Assembles to: `ATCATGATG`
+:::
+:::::
+
+. . .
+
+Both paths use every edge exactly once. Both are valid Euler paths.
+And both sequences produce the **identical k-mer multiset**.
+
+The k-mers alone cannot tell you which genome is real.
+
+::: notes
+This is the repeat ambiguity problem — the central challenge of genome assembly.
+The Euler path formulation doesn't "fail" here; it correctly identifies all
+assemblies consistent with the data. The ambiguity is in the data itself.
+:::
+
+## How Real Assemblers Resolve It
+
+The ambiguity comes from repeats fitting inside a k-mer.
+
+**Use longer k**: if k > repeat length, the repeat no longer creates a branch.
+
+| k | repeat "ATG" fits in k-mer? | ambiguity? |
+|---|---|---|
+| 3 | yes | ✓ two valid assemblies |
+| 4 | no — "ATGA" ≠ "ATCA" | single assembly |
+
+Trade-off: longer k requires longer reads, and longer reads are harder and
+more expensive to sequence.
+
+*This is why sequencing technology and assembly algorithms co-evolved.*
+
+::: notes
+With k=4 on ATGATCATG: k-mers are ATGA, TGAT, GATC, ATCA, TCATG... wait,
+let me check: ATGATCATG with k=4 → ATGA, TGAT, GATC, ATCA, TCAT, CATG, ATGA (repeat).
+The last k-mer ATGA appears twice — ambiguity persists.
+With k=5: ATGAT, TGATC, GATCA, ATCAT, TCATG, CATGA, ATGAT (still repeated!).
+The repeat is length 3 so we need k > 3+context to fully disambiguate.
+In practice: paired-end reads (sequence both ends of a ~500bp fragment) provide
+the long-range constraints that resolve repeat ambiguity without requiring
+k-mers as long as the repeat.
+:::
+
 ## Euler Path vs. Euler Circuit
 
 | | Path | Circuit |
