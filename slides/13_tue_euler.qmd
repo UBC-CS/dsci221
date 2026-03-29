@@ -27,25 +27,13 @@ Each fragment is a short string of bases — a **k-mer**.
 
 For a toy genome and k=3:
 
-```python
-import pandas as pd
-
+```{pyodide}
 genome = "ATGATCATG"
 k = 3
 
 kmers = [genome[i:i+k] for i in range(len(genome) - k + 1)]
-df = pd.DataFrame({'kmer': kmers})
-```
-
-```
-   kmer
-0   ATG
-1   TGA
-2   GAT
-3   ATC
-4   TCA
-5   CAT
-6   ATG    ← appears again!
+for i, kmer in enumerate(kmers):
+    print(f"{i}  {kmer}")
 ```
 
 In real sequencing: millions of rows, k ≈ 100–300.
