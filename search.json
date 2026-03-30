@@ -3727,7 +3727,7 @@
     "href": "slides/13_tue_euler.html#why-does-it-come-out-backwards",
     "title": "Reading the Book of Life",
     "section": "Why Does It Come Out Backwards?",
-    "text": "Why Does It Come Out Backwards?\n    path.append(v)   # after the while loop — post-order\nThink of it from v’s perspective:\n\n“I only add myself to the path once I’ve explored every edge I can reach. So I appear in the list after everything downstream of me.”\n\nThat means the list comes out in reverse — the last node on the path gets appended first, the first node last.\nWe could fix it by prepending (path.insert(0, v)) — but that’s slow. Instead we just append and reverse at the end:\npath = []\neuler_dfs(graph, start, path)\npath = path[::-1]   # one reversal, O(n)"
+    "text": "Why Does It Come Out Backwards?\ndef euler_dfs(graph, v, path):\n    while graph[v]:\n        w = graph[v].pop()       # consume the edge\n        euler_dfs(graph, w, path)\n    path.append(v)               # post-order: append AFTER recursing\nPost-order means: “I go in the list only after everything still reachable from me.”\nTrace a simple chain A → B → C → D:\n\n\n\ncall returns from\nappends\n\n\n\n\neuler_dfs(D)\nD\n\n\neuler_dfs(C)\nC\n\n\neuler_dfs(B)\nB\n\n\neuler_dfs(A)\nA\n\n\n\npath = [D, C, B, A] → path[::-1] → [A, B, C, D] ✓\nThe reversal is one line in the caller — the function itself only appends.\n\nThe branching case works for the same reason: when we return to a node that still has unused edges, those sub-paths get appended before the node itself. After reversal, the node appears before both sub-paths — correctly spliced. Same trick as post-order tree traversal and topological sort."
   },
   {
     "objectID": "slides/13_tue_euler.html#the-code-task",
