@@ -187,6 +187,188 @@ A tree on n vertices has exactly n-1 edges.
 ::::
 
 
+## MST Structure {.smaller}
+
+:::: {.columns}
+::: {.column width="52%"}
+```{=html}
+<!-- same graph; MST edges bold blue, non-MST dashed gray -->
+<svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg"
+     style="max-width:100%; font-family:sans-serif; font-size:13px">
+
+  <!-- non-MST edges: dashed gray -->
+  <g stroke="#bbb" stroke-width="1.5" stroke-dasharray="5 4" fill="none">
+    <line x1="190" y1="50"  x2="55"  y2="180"/> <!-- A-B 8 -->
+    <line x1="55"  y1="180" x2="190" y2="180"/> <!-- B-C 7 -->
+    <line x1="190" y1="180" x2="265" y2="280"/> <!-- C-F 9 -->
+  </g>
+  <!-- A-D: heaviest on cycle A-C-D, highlighted orange dashed -->
+  <line x1="190" y1="50" x2="325" y2="180"
+        stroke="#e07b20" stroke-width="2.5" stroke-dasharray="6 4" fill="none"/>
+
+  <!-- MST edges: solid blue -->
+  <g stroke="#3c78d8" stroke-width="3" fill="none">
+    <line x1="190" y1="50"  x2="190" y2="180"/> <!-- A-C 2 -->
+    <line x1="55"  y1="180" x2="105" y2="280"/> <!-- B-E 2 -->
+    <line x1="190" y1="180" x2="325" y2="180"/> <!-- C-D 1 -->
+    <line x1="190" y1="180" x2="105" y2="280"/> <!-- C-E 3 -->
+    <line x1="325" y1="180" x2="265" y2="280"/> <!-- D-F 5 -->
+  </g>
+
+  <!-- cycle A-C-D shaded -->
+  <polygon points="190,50 190,180 325,180"
+           fill="#e07b20" opacity="0.08"/>
+
+  <!-- edge weight labels -->
+  <g font-size="12" font-weight="bold">
+    <text x="112" y="108" fill="#bbb">8</text>
+    <text x="195" y="122" fill="#3c78d8">2</text>
+    <text x="265" y="108" fill="#e07b20">4</text>  <!-- A-D, orange -->
+    <text x="118" y="175" fill="#bbb">7</text>
+    <text x="68"  y="240" fill="#3c78d8">2</text>
+    <text x="255" y="175" fill="#3c78d8">1</text>
+    <text x="140" y="245" fill="#3c78d8">3</text>
+    <text x="215" y="250" fill="#bbb">9</text>
+    <text x="308" y="245" fill="#3c78d8">5</text>
+  </g>
+
+  <!-- nodes -->
+  <g fill="white" stroke="#3c78d8" stroke-width="2">
+    <circle cx="190" cy="50"  r="18"/>
+    <circle cx="55"  cy="180" r="18"/>
+    <circle cx="190" cy="180" r="18"/>
+    <circle cx="325" cy="180" r="18"/>
+    <circle cx="105" cy="280" r="18"/>
+    <circle cx="265" cy="280" r="18"/>
+  </g>
+  <g fill="#3c78d8" font-weight="bold" text-anchor="middle" dominant-baseline="central">
+    <text x="190" y="50" >A</text>
+    <text x="55"  y="180">B</text>
+    <text x="190" y="180">C</text>
+    <text x="325" y="180">D</text>
+    <text x="105" y="280">E</text>
+    <text x="265" y="280">F</text>
+  </g>
+
+  <text x="190" y="312" text-anchor="middle" font-size="11" fill="#555"
+        font-style="italic">blue = MST &nbsp;|&nbsp; dashed = not in MST</text>
+</svg>
+```
+:::
+::: {.column width="48%"}
+
+**Cycle property**
+
+On any cycle, the **maximum-weight edge** is never in the MST.
+
+Cycle A–C–D: weights 2, 1, **4**. &nbsp; Edge A–D ∉ MST. ✓
+
+*Why?* If the max-weight edge were in the MST, removing it breaks the tree into two components — but the rest of the cycle still reconnects them at lower cost.
+
+&nbsp;
+
+**Non-MST edge lower bound**
+
+Adding any non-MST edge $X = (u,v)$ to $T$ creates exactly one cycle.
+$X$ must be the **heaviest edge on that cycle**.
+
+*What is the minimum possible weight for edge C–F?*
+
+Path C→F in MST: C–D–F &nbsp; (weights 1, 5). &nbsp; Max = **5**.
+
+So C–F $\geq$ 5 to stay out. &nbsp; Actual C–F = 9 ✓
+
+&nbsp;
+
+**Uniqueness** — if all weights are distinct, the MST is unique.
+
+::: notes
+Cycle property → Kruskal's: sort edges, skip if both endpoints already connected.
+Cut property (not shown): the min-weight edge crossing any partition is always in the MST → Prim's: grow a set S, always pick cheapest edge leaving S.
+C-F lower bound: if C-F were 4, it would replace D-F(5) in the MST.
+:::
+:::
+::::
+
+
+## MST vs. Shortest Paths {.smaller}
+
+:::: {.columns}
+::: {.column width="50%"}
+```{=html}
+<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"
+     style="max-width:100%; font-family:sans-serif; font-size:13px">
+
+  <!-- all edges -->
+  <g stroke="#bbb" stroke-width="1.5" fill="none">
+    <line x1="50"  y1="60"  x2="210" y2="60"/>  <!-- A-B 5 -->
+    <line x1="50"  y1="150" x2="210" y2="150"/> <!-- C-D 5 -->
+  </g>
+  <!-- MST edges blue -->
+  <g stroke="#3c78d8" stroke-width="3" fill="none">
+    <line x1="50"  y1="60"  x2="50"  y2="150"/> <!-- A-C 1 -->
+    <line x1="210" y1="60"  x2="210" y2="150"/> <!-- B-D 1 -->
+    <line x1="50"  y1="60"  x2="210" y2="60"/>  <!-- A-B 5 — part of MST -->
+  </g>
+
+  <!-- weight labels -->
+  <g font-size="12" font-weight="bold">
+    <text x="122" y="52"  fill="#3c78d8">5</text> <!-- A-B -->
+    <text x="122" y="167" fill="#bbb">5</text>     <!-- C-D not in MST -->
+    <text x="28"  y="110" fill="#3c78d8">1</text>  <!-- A-C -->
+    <text x="216" y="110" fill="#3c78d8">1</text>  <!-- B-D -->
+  </g>
+
+  <!-- nodes -->
+  <g fill="white" stroke="#3c78d8" stroke-width="2">
+    <circle cx="50"  cy="60"  r="18"/>
+    <circle cx="210" cy="60"  r="18"/>
+    <circle cx="50"  cy="150" r="18"/>
+    <circle cx="210" cy="150" r="18"/>
+  </g>
+  <g fill="#3c78d8" font-weight="bold" text-anchor="middle" dominant-baseline="central">
+    <text x="50"  y="60" >A</text>
+    <text x="210" y="60" >B</text>
+    <text x="50"  y="150">C</text>
+    <text x="210" y="150">D</text>
+  </g>
+
+  <text x="130" y="192" text-anchor="middle" font-size="11" fill="#555" font-style="italic">
+    blue = MST (total weight 7)
+  </text>
+</svg>
+```
+:::
+::: {.column width="50%"}
+
+**MST minimizes total edge weight** — not trip distance.
+
+&nbsp;
+
+Shortest path C → D: &emsp; direct edge = **5**
+
+Path C → D through MST: &emsp; C–A–B–D = 1+5+1 = **7**
+
+&nbsp;
+
+The MST is longer! It was built to minimize *total infrastructure*, not *any particular journey*.
+
+&nbsp;
+
+| Question | Use |
+|---|---|
+| Connect all nodes cheaply | MST |
+| Shortest route A → B | Dijkstra's |
+
+::: notes
+MST ≠ all-pairs shortest paths.
+The MST C-D path goes "the long way" because C-D wasn't chosen — its weight equals A-B, so we arbitrarily included A-B and got the same total weight.
+A cleaner example: make C-D weight 6 — then MST is {A-C(1), B-D(1), A-B(5)}, MST path C→D = 7 vs. shortest = 6.
+:::
+:::
+::::
+
+
 ## BFS Revisited {.smaller}
 
 ```python
