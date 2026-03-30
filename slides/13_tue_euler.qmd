@@ -6,21 +6,82 @@ execute:
   enabled: false
 ---
 
-## The Problem
+## The Problem {.smaller}
 
-Your genome has **3 billion base pairs** — a sequence of A, T, G, C.
+::::: {.columns}
+::: {.column width="70%"}
+DNA is a **double helix**: two strands, connected at every position by a **base pair**.
+A always bonds with T; G always bonds with C.
 
-No machine can read it all at once.
+The **genome sequence** is the order of bases along **one strand**, read 5'→3':
+`A T G A T C A T G` ...
 
-Instead: shred many copies of the genome into millions of short fragments,
-read each fragment, and **reassemble**.
+The other strand is determined automatically.
 
-This is called **shotgun sequencing**.
+**3 billion base pairs** = 3 billion rungs on this ladder.
+
+No machine reads it all at once. Instead: the lab fragments many copies of the genome into millions of short pieces; a sequencing machine reads each piece and outputs a short string of A, T, G, C. **You receive a file of millions of reads — no positions, no order.** Your job: reassemble. *Shotgun sequencing.*
+:::
+::: {.column width="30%"}
+```{=html}
+<svg viewBox="0 0 280 325" xmlns="http://www.w3.org/2000/svg"
+     font-family="monospace" style="width:100%;max-height:270px">
+  <!-- Backbones -->
+  <rect x="55" y="25" width="20" height="264" fill="#3d78b0" rx="7"/>
+  <rect x="205" y="25" width="20" height="264" fill="#3d78b0" rx="7"/>
+  <!-- Direction labels -->
+  <text x="65"  y="17"  text-anchor="middle" fill="#aaaaaa" font-size="11">5'</text>
+  <text x="65"  y="306" text-anchor="middle" fill="#aaaaaa" font-size="11">3'</text>
+  <text x="215" y="17"  text-anchor="middle" fill="#aaaaaa" font-size="11">3'</text>
+  <text x="215" y="306" text-anchor="middle" fill="#aaaaaa" font-size="11">5'</text>
+  <!-- Rungs (ATGATCATG) -->
+  <rect x="75" y="33"  width="130" height="14" fill="#e07b20" rx="2"/>
+  <rect x="75" y="63"  width="130" height="14" fill="#e07b20" rx="2"/>
+  <rect x="75" y="93"  width="130" height="14" fill="#27ae8c" rx="2"/>
+  <rect x="75" y="123" width="130" height="14" fill="#e07b20" rx="2"/>
+  <rect x="75" y="153" width="130" height="14" fill="#e07b20" rx="2"/>
+  <rect x="75" y="183" width="130" height="14" fill="#27ae8c" rx="2"/>
+  <rect x="75" y="213" width="130" height="14" fill="#e07b20" rx="2"/>
+  <rect x="75" y="243" width="130" height="14" fill="#e07b20" rx="2"/>
+  <rect x="75" y="273" width="130" height="14" fill="#27ae8c" rx="2"/>
+  <!-- Left base labels (genome sequence) -->
+  <text x="48" y="44"  text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="48" y="74"  text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="48" y="104" text-anchor="end" fill="#27ae8c" font-size="13" font-weight="bold">G</text>
+  <text x="48" y="134" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="48" y="164" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="48" y="194" text-anchor="end" fill="#27ae8c" font-size="13" font-weight="bold">C</text>
+  <text x="48" y="224" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="48" y="254" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="48" y="284" text-anchor="end" fill="#27ae8c" font-size="13" font-weight="bold">G</text>
+  <!-- Right base labels (complementary strand) -->
+  <text x="232" y="44"  text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="232" y="74"  text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="232" y="104" text-anchor="start" fill="#27ae8c" font-size="13" font-weight="bold">C</text>
+  <text x="232" y="134" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="232" y="164" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="232" y="194" text-anchor="start" fill="#27ae8c" font-size="13" font-weight="bold">G</text>
+  <text x="232" y="224" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="232" y="254" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="232" y="284" text-anchor="start" fill="#27ae8c" font-size="13" font-weight="bold">C</text>
+  <!-- Legend -->
+  <rect x="58"  y="308" width="11" height="10" fill="#e07b20" rx="1"/>
+  <text x="73"  y="317" fill="#cccccc" font-size="10">A – T</text>
+  <rect x="153" y="308" width="11" height="10" fill="#27ae8c" rx="1"/>
+  <text x="168" y="317" fill="#cccccc" font-size="10">G – C</text>
+</svg>
+```
+:::
+:::::
 
 ::: notes
 Shotgun sequencing is the dominant method since the Human Genome Project (2003).
 The "shotgun" metaphor: randomly blast the genome into tiny pieces, then figure
 out how they fit back together from the overlaps.
+Key biology point: the base pairing (A-T, G-C) is a physical constraint ACROSS the helix, not
+along it. In the 1D sequence we work with, A, T, G, C appear in any order. "Base pairs" just
+means we count positions by the double-stranded structure — 3 billion base pairs = 3 billion
+nucleotides on one strand.
 :::
 
 ## The Fragments Arrive as Data {.smaller}
@@ -56,9 +117,6 @@ ATG  TGA  GAT  ATC  TCA  CAT  ATG
 
 Can you recover the original sequence?
 
-. . .
-
-*Try it. Notice anything tricky?*
 
 ::: notes
 Give students 30 seconds. They'll notice ATG appears twice and creates
@@ -66,30 +124,53 @@ ambiguity — after reading ATG, which next fragment do you pick: TGA or TCA?
 The overlap structure is clear but the repeat makes it non-trivial.
 :::
 
-## The Repeat Problem
+## Naïve Idea: Overlap Graph {.smaller}
 
-Each k-mer overlaps the next by k−1 characters. But ATG appears **twice**:
+Draw a node for each **fragment**, an edge when suffix of one = prefix of next.
 
+```{=html}
+<svg viewBox="185 35 330 265" xmlns="http://www.w3.org/2000/svg"
+     font-family="monospace" style="width:100%;max-height:200px">
+  <defs>
+    <marker id="ov-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#aaaaaa"/>
+    </marker>
+    <marker id="ov-r" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e74c3c"/>
+    </marker>
+    <marker id="ov-o" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f39c12"/>
+    </marker>
+  </defs>
+  <!-- ring edges (clockwise) -->
+  <line x1="254" y1="141" x2="281" y2="94"  stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"/>
+  <line x1="323" y1="70"  x2="377" y2="70"  stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"/>
+  <line x1="419" y1="94"  x2="446" y2="141" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"/>
+  <line x1="446" y1="189" x2="419" y2="236" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"/>
+  <line x1="377" y1="260" x2="323" y2="260" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"/>
+  <line x1="281" y1="236" x2="254" y2="189" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"/>
+  <!-- shortcut edges through interior -->
+  <path d="M 381,84 Q 300,150 264,151"   stroke="#aaaaaa" stroke-width="2" fill="none" marker-end="url(#ov-a)"/>
+  <path d="M 319,246 Q 390,200 436,179"  stroke="#aaaaaa" stroke-width="2" fill="none"  marker-end="url(#ov-a)"/>
+  <!-- nodes -->
+  <circle cx="240" cy="165" r="28" fill="#4a90d9"/>
+  <text x="240" y="170" text-anchor="middle" fill="white" font-size="13" font-weight="bold">ATG</text>
+  <circle cx="295" cy="70"  r="28" fill="#4a90d9"/>
+  <text x="295" y="75"  text-anchor="middle" fill="white" font-size="13" font-weight="bold">TGA</text>
+  <circle cx="405" cy="70"  r="28" fill="#4a90d9"/>
+  <text x="405" y="75"  text-anchor="middle" fill="white" font-size="13" font-weight="bold">GAT</text>
+  <circle cx="460" cy="165" r="28" fill="#4a90d9"/>
+  <text x="460" y="170" text-anchor="middle" fill="white" font-size="13" font-weight="bold">ATC</text>
+  <circle cx="405" cy="260" r="28" fill="#4a90d9"/>
+  <text x="405" y="265" text-anchor="middle" fill="white" font-size="13" font-weight="bold">TCA</text>
+  <circle cx="295" cy="260" r="28" fill="#4a90d9"/>
+  <text x="295" y="265" text-anchor="middle" fill="white" font-size="13" font-weight="bold">CAT</text>
+</svg>
 ```
-ATG → TGA → GAT → ...
-ATG → ?
-```
 
-Which copy of ATG connects to which? You can't tell from the fragments alone.
+Build: Checking all pairs for overlap (edges) costs $O(n^2)$ — trillions of operations for a real genome.
 
-This ambiguity is why assembly is hard — and why we need a systematic approach.
-
-## Naïve Idea: Overlap Graph
-
-Draw a node for each **fragment**, an edge when two fragments overlap.
-
-```
-ATG ──► TGA ──► GAT ──► ATC ──► TCA ──► CAT ──► ATG
- ↑_______________________________________________|
-```
-
-The repeat creates a branching structure. And checking every pair for
-overlap costs $O(n^2)$ — trillions of checks for a real genome.
+Solution: Hamiltonian path (visit every node once). **NP-hard** in general.
 
 We need a smarter graph.
 
@@ -107,11 +188,12 @@ Instead of nodes = k-mers, let **nodes = (k−1)-mers** and **edges = k-mers**.
 | CAT   | CA          | AT          | CA → AT |
 | ATG   | AT          | TG          | AT → TG (again!) |
 
-The repeat k-mer ATG just adds a **second edge** AT → TG. No special case needed.
+```{pyodide}
+#| echo: false
+from collections import defaultdict
+```
 
 ```{pyodide}
-from collections import defaultdict
-
 kmers = ["ATG", "TGA", "GAT", "ATC", "TCA", "CAT", "ATG"]
 graph = defaultdict(list)
 for kmer in kmers:
@@ -129,29 +211,53 @@ doesn't need to treat it differently.
 
 ## The de Bruijn Graph
 
-```{dot}
-digraph G {
-  rankdir=LR
-  node [shape=circle style=filled fillcolor="#4a90d9" fontcolor=white fontsize=14 width=0.7]
-  edge [fontsize=11]
-  AT -> TG [label="ATG" style=bold]
-  AT -> TG [label="ATG" style=bold color="#e74c3c"]
-  AT -> TC [label="ATC"]
-  TG -> GA [label="TGA"]
-  GA -> AT [label="GAT"]
-  TC -> CA [label="TCA"]
-  CA -> AT [label="CAT"]
-}
+::::: {.columns}
+::: {.column width="40%"}
+
+| Vertex | Neighbors |
+|--------|-----------|
+| AT  | TG, TC, TG |
+| CA  | AT |
+| GA  | AT |
+| TC  | CA |
+| TG  | GA |
+
+:::
+::: {.column width="60%"}
+
+```{=html}
+<svg viewBox="40 5 400 275" xmlns="http://www.w3.org/2000/svg"
+     font-family="monospace" style="width:100%;max-height:240px">
+  <defs>
+    <marker id="db-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#aaaaaa"/>
+    </marker>
+    <marker id="db-r" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e74c3c"/>
+    </marker>
+  </defs>
+  
+  <!-- nodes -->
+  <circle cx="80"  cy="140" r="28" fill="#4a90d9"/>
+  <text x="80"  y="145" text-anchor="middle" fill="white" font-size="14" font-weight="bold">AT</text>
+  <circle cx="240" cy="70"  r="28" fill="#4a90d9"/>
+  <text x="240" y="75"  text-anchor="middle" fill="white" font-size="14" font-weight="bold">TG</text>
+  <circle cx="400" cy="70"  r="28" fill="#4a90d9"/>
+  <text x="400" y="75"  text-anchor="middle" fill="white" font-size="14" font-weight="bold">GA</text>
+  <circle cx="240" cy="210" r="28" fill="#4a90d9"/>
+  <text x="240" y="215" text-anchor="middle" fill="white" font-size="14" font-weight="bold">TC</text>
+  <circle cx="400" cy="210" r="28" fill="#4a90d9"/>
+  <text x="400" y="215" text-anchor="middle" fill="white" font-size="14" font-weight="bold">CA</text>
+</svg>
 ```
+:::
+:::::
 
-AT has **3 out-edges** (two to TG, one to TC). TG has **2 in-edges**.
-Not all degrees are equal — this is a linear genome with a repeat.
-
-**The genome is hidden in this graph — but how do we read it out?**
+The genome is hidden in this graph — but how do we read it out?
 
 ## What Does Traversal Mean Here?
 
-Assembling the genome = spelling out all seven reads **in order**.
+Assembling the genome means spelling out all seven fragments **in order**.
 
 That means visiting every **edge** exactly once.
 
@@ -161,19 +267,16 @@ That means visiting every **edge** exactly once.
 
 . . .
 
-## Euler's Path {background-color="#1a1a2e"}
+## Euler Path 
 
-::: {style="text-align:center; font-size:1.4em; margin-top: 1.5em"}
+
 **An Euler path visits every edge exactly once.**
-:::
 
-::: {style="text-align:center; margin-top: 1em; color: #aad4f5"}
-Leonhard Euler, 1736 — the Königsberg bridge problem.
-:::
 
-::: {style="text-align:center; margin-top: 1.5em; font-size:1.1em"}
-Genome assembly **is** finding an Euler path in the de Bruijn graph.
-:::
+> Leonhard Euler, 1736 — the [Königsberg bridge](https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg) problem.
+
+Genome assembly is finding an Euler path in the de Bruijn graph.
+
 
 ::: notes
 Euler proved in 1736 that the Königsberg bridge problem (can you cross each of
@@ -185,10 +288,9 @@ has two unbalanced nodes — one with excess out-degree (start) and one with
 excess in-degree (end).
 :::
 
-## When Does an Euler Path Exist?
+## When Does an Euler Path Exist? {.smaller}
 
-**Euler's theorem**: An Euler path exists iff exactly two nodes are unbalanced —
-one with out − in = 1 (start), one with in − out = 1 (end).
+**Euler's theorem**: An Euler path exists iff exactly two nodes have unequal in and outdegree, one with out − in = 1 (start), one with in − out = 1 (end).
 
 Check our graph:
 
@@ -200,28 +302,6 @@ Check our graph:
 | TC   | 1   | 1  | 0        | ✓ |
 | CA   | 1   | 1  | 0        | ✓ |
 
-Assembly is possible — and we know exactly where to start.
-
-```{pyodide}
-from collections import defaultdict
-
-kmers = ["ATG", "TGA", "GAT", "ATC", "TCA", "CAT", "ATG"]
-graph = defaultdict(list)
-for kmer in kmers:
-    graph[kmer[:-1]].append(kmer[1:])
-
-in_deg = defaultdict(int)
-out_deg = defaultdict(int)
-for v in graph:
-    out_deg[v] += len(graph[v])
-    for w in graph[v]:
-        in_deg[w] += 1
-
-for v in sorted(set(list(out_deg) + list(in_deg))):
-    diff = out_deg[v] - in_deg[v]
-    role = " ← START" if diff == 1 else (" ← END" if diff == -1 else "")
-    print(f"{v}:  out={out_deg[v]}  in={in_deg[v]}  diff={diff:+}{role}")
-```
 
 ::: notes
 This degree check is O(E) and runs before any assembly algorithm.
@@ -353,7 +433,7 @@ The two changes:
 The second change is what makes the "splicing" work.
 :::
 
-## The Code Task
+## The Code Task {.activity}
 
 In the PrairieLearn workspace you'll find:
 
@@ -363,10 +443,12 @@ In the PrairieLearn workspace you'll find:
 
 **Your task**: modify the DFS to find an Euler path, then read off the assembled sequence.
 
-*The genome is a real piece of DNA — can you figure out what organism it's from?*
+*The genome is a real piece of DNA — can you figure out what organism it's from?
+Try your assembled sequence on [NCBI BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi).*
 
 ::: notes
 The mystery genome is the opening 28 bases of bacteriophage phi X174 —
 the first genome ever fully sequenced (Sanger, 1977, Nobel Prize).
+NCBI entry: https://www.ncbi.nlm.nih.gov/nuccore/NC_001422
 Students can BLAST the assembled sequence on NCBI to confirm.
 :::
