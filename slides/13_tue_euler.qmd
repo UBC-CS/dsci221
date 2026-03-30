@@ -395,7 +395,7 @@ Our example is a **path**: start at AT (out − in = +1), end at TG (in − out 
 
 A circuit is just a path where the start and end happen to be the same node.
 
-## From Euler to Code
+## From Euler to Code {.smaller}
 
 We know **DFS** from week 6. Here is the classic version:
 
@@ -433,7 +433,7 @@ The two changes:
 The second change is what makes the "splicing" work.
 :::
 
-## Why Does It Come Out Backwards?
+## Why Does It Come Out Backwards? {.smaller}
 
 ```python
     path.append(v)   # after the while loop — post-order
@@ -458,7 +458,7 @@ path = path[::-1]   # one reversal, O(n)
 
 ## The Code Task {.activity}
 
-[PrairieLearn activity] (https://us.prairielearn.com/pl/course_instance/205477/assessment/2666153)
+[PrairieLearn activity](https://us.prairielearn.com/pl/course_instance/205477/assessment/2666153)
 
 *The genome is a real piece of DNA — can you figure out what organism it's from?
 Try your assembled sequence on [NCBI BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi).*
