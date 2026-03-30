@@ -3723,11 +3723,18 @@
     "text": "From Euler to Code\nWe know DFS from week 6. Here is the classic version:\n\n\n\n\n\n\nThis visits each node once — and gets stuck. We need to visit each edge once.\nTwo things must change — and the second one is subtle.\n\nDon’t reveal the answer yet — this is the bridge to the code task. The two changes: 1. Track consumed edges (pop from adjacency list) instead of visited nodes 2. Move path.append to AFTER recursion (post-order) The second change is what makes the “splicing” work."
   },
   {
+    "objectID": "slides/13_tue_euler.html#why-does-it-come-out-backwards",
+    "href": "slides/13_tue_euler.html#why-does-it-come-out-backwards",
+    "title": "Reading the Book of Life",
+    "section": "Why Does It Come Out Backwards?",
+    "text": "Why Does It Come Out Backwards?\n    path.append(v)   # after the while loop — post-order\nThink of it from v’s perspective:\n\n“I only add myself to the path once I’ve explored every edge I can reach. So I appear in the list after everything downstream of me.”\n\nThat means the list comes out in reverse — the last node on the path gets appended first, the first node last.\nWe could fix it by prepending (path.insert(0, v)) — but that’s slow. Instead we just append and reverse at the end:\npath = []\neuler_dfs(graph, start, path)\npath = path[::-1]   # one reversal, O(n)"
+  },
+  {
     "objectID": "slides/13_tue_euler.html#the-code-task",
     "href": "slides/13_tue_euler.html#the-code-task",
     "title": "Reading the Book of Life",
     "section": "The Code Task",
-    "text": "The Code Task\nOpen the PrairieLearn workspace — you’ll find a Marimo notebook (workbook.py) that walks you through Steps 1–4. Steps 1–4 are given; Step 5 is yours.\nYour task: fill in euler_dfs to find an Euler path, then run Step 6 to read off the assembled sequence.\nThe genome is a real piece of DNA — can you figure out what organism it’s from? Try your assembled sequence on NCBI BLAST.\n\nThe mystery genome is the opening 28 bases of bacteriophage phi X174 — the first genome ever fully sequenced (Sanger, 1977, Nobel Prize). NCBI entry: https://www.ncbi.nlm.nih.gov/nuccore/NC_001422 Students can BLAST the assembled sequence on NCBI to confirm."
+    "text": "The Code Task\n[PrairieLearn activity] (https://us.prairielearn.com/pl/course_instance/205477/assessment/2666153)\nThe genome is a real piece of DNA — can you figure out what organism it’s from? Try your assembled sequence on NCBI BLAST.\n\nThe mystery genome is the opening 28 bases of bacteriophage phi X174 — the first genome ever fully sequenced (Sanger, 1977, Nobel Prize). NCBI entry: https://www.ncbi.nlm.nih.gov/nuccore/NC_001422 Students can BLAST the assembled sequence on NCBI to confirm."
   },
   {
     "objectID": "slides/05_wed_queues.html#recap-stack-adt",
