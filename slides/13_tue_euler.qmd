@@ -435,13 +435,9 @@ The second change is what makes the "splicing" work.
 
 ## The Code Task {.activity}
 
-In the PrairieLearn workspace you'll find:
+Open the PrairieLearn workspace — you'll find a Marimo notebook (`workbook.py`) that walks you through Steps 1–4. Steps 1–4 are given; **Step 5 is yours**.
 
-- `kmers.csv` — reads from a short mystery genome
-- `debruijn.py` — builds the de Bruijn graph from the k-mers
-- `dfs_skeleton.py` — the classic DFS above, ready to modify
-
-**Your task**: modify the DFS to find an Euler path, then read off the assembled sequence.
+**Your task**: fill in `euler_dfs` to find an Euler path, then run Step 6 to read off the assembled sequence.
 
 *The genome is a real piece of DNA — can you figure out what organism it's from?
 Try your assembled sequence on [NCBI BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi).*
