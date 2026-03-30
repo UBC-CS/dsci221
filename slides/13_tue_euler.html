@@ -152,14 +152,64 @@
 
   <p class="date">March 31, 2026</p>
 </section>
-<section id="the-problem" class="slide level2">
+<section id="the-problem" class="slide level2 smaller">
 <h2>The Problem</h2>
-<p>Your genome has <strong>3 billion base pairs</strong> — a sequence of A, T, G, C.</p>
-<p>No machine can read it all at once.</p>
-<p>Instead: shred many copies of the genome into millions of short fragments, read each fragment, and <strong>reassemble</strong>.</p>
-<p>This is called <strong>shotgun sequencing</strong>.</p>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>DNA is a <strong>double helix</strong>: two strands, connected at every position by a <strong>base pair</strong>. A always bonds with T; G always bonds with C.</p>
+<p>The <strong>genome sequence</strong> is the order of bases along <strong>one strand</strong>, read 5’→3’: <code>A T G A T C A T G</code> …</p>
+<p>The other strand is determined automatically.</p>
+<p><strong>3 billion base pairs</strong> = 3 billion rungs on this ladder.</p>
+<p>No machine reads it all at once. Instead: the lab fragments many copies of the genome into millions of short pieces; a sequencing machine reads each piece and outputs a short string of A, T, G, C. <strong>You receive a file of millions of reads — no positions, no order.</strong> Your job: reassemble. <em>Shotgun sequencing.</em></p>
+</div><div class="column" style="width:30%;">
+<svg viewbox="0 0 280 325" xmlns="http://www.w3.org/2000/svg" font-family="monospace" style="width:100%;max-height:270px">
+  <!-- Backbones -->
+  <rect x="55" y="25" width="20" height="264" fill="#3d78b0" rx="7"></rect>
+  <rect x="205" y="25" width="20" height="264" fill="#3d78b0" rx="7"></rect>
+  <!-- Direction labels -->
+  <text x="65" y="17" text-anchor="middle" fill="#aaaaaa" font-size="11">5'</text>
+  <text x="65" y="306" text-anchor="middle" fill="#aaaaaa" font-size="11">3'</text>
+  <text x="215" y="17" text-anchor="middle" fill="#aaaaaa" font-size="11">3'</text>
+  <text x="215" y="306" text-anchor="middle" fill="#aaaaaa" font-size="11">5'</text>
+  <!-- Rungs (ATGATCATG) -->
+  <rect x="75" y="33" width="130" height="14" fill="#e07b20" rx="2"></rect>
+  <rect x="75" y="63" width="130" height="14" fill="#e07b20" rx="2"></rect>
+  <rect x="75" y="93" width="130" height="14" fill="#27ae8c" rx="2"></rect>
+  <rect x="75" y="123" width="130" height="14" fill="#e07b20" rx="2"></rect>
+  <rect x="75" y="153" width="130" height="14" fill="#e07b20" rx="2"></rect>
+  <rect x="75" y="183" width="130" height="14" fill="#27ae8c" rx="2"></rect>
+  <rect x="75" y="213" width="130" height="14" fill="#e07b20" rx="2"></rect>
+  <rect x="75" y="243" width="130" height="14" fill="#e07b20" rx="2"></rect>
+  <rect x="75" y="273" width="130" height="14" fill="#27ae8c" rx="2"></rect>
+  <!-- Left base labels (genome sequence) -->
+  <text x="48" y="44" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="48" y="74" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="48" y="104" text-anchor="end" fill="#27ae8c" font-size="13" font-weight="bold">G</text>
+  <text x="48" y="134" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="48" y="164" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="48" y="194" text-anchor="end" fill="#27ae8c" font-size="13" font-weight="bold">C</text>
+  <text x="48" y="224" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="48" y="254" text-anchor="end" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="48" y="284" text-anchor="end" fill="#27ae8c" font-size="13" font-weight="bold">G</text>
+  <!-- Right base labels (complementary strand) -->
+  <text x="232" y="44" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="232" y="74" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="232" y="104" text-anchor="start" fill="#27ae8c" font-size="13" font-weight="bold">C</text>
+  <text x="232" y="134" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="232" y="164" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="232" y="194" text-anchor="start" fill="#27ae8c" font-size="13" font-weight="bold">G</text>
+  <text x="232" y="224" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">T</text>
+  <text x="232" y="254" text-anchor="start" fill="#e07b20" font-size="13" font-weight="bold">A</text>
+  <text x="232" y="284" text-anchor="start" fill="#27ae8c" font-size="13" font-weight="bold">C</text>
+  <!-- Legend -->
+  <rect x="58" y="308" width="11" height="10" fill="#e07b20" rx="1"></rect>
+  <text x="73" y="317" fill="#cccccc" font-size="10">A – T</text>
+  <rect x="153" y="308" width="11" height="10" fill="#27ae8c" rx="1"></rect>
+  <text x="168" y="317" fill="#cccccc" font-size="10">G – C</text>
+</svg>
+</div></div>
 <aside class="notes">
-<p>Shotgun sequencing is the dominant method since the Human Genome Project (2003). The “shotgun” metaphor: randomly blast the genome into tiny pieces, then figure out how they fit back together from the overlaps.</p>
+<p>Shotgun sequencing is the dominant method since the Human Genome Project (2003). The “shotgun” metaphor: randomly blast the genome into tiny pieces, then figure out how they fit back together from the overlaps. Key biology point: the base pairing (A-T, G-C) is a physical constraint ACROSS the helix, not along it. In the 1D sequence we work with, A, T, G, C appear in any order. “Base pairs” just means we count positions by the double-stranded structure — 3 billion base pairs = 3 billion nucleotides on one strand.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -204,8 +254,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZ2Vub21lID0gXCJBVEdBVENB
 <p>Given only this bag of 3-mers — no positions, no order:</p>
 <pre><code>ATG  TGA  GAT  ATC  TCA  CAT  ATG</code></pre>
 <p>Can you recover the original sequence?</p>
-<div class="fragment">
-<p><em>Try it. Notice anything tricky?</em></p>
 <aside class="notes">
 <p>Give students 30 seconds. They’ll notice ATG appears twice and creates ambiguity — after reading ATG, which next fragment do you pick: TGA or TCA? The overlap structure is clear but the repeat makes it non-trivial.</p>
 <style type="text/css">
@@ -219,22 +267,48 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZ2Vub21lID0gXCJBVEdBVENB
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div>
 </section>
-<section id="the-repeat-problem" class="slide level2">
-<h2>The Repeat Problem</h2>
-<p>Each k-mer overlaps the next by k−1 characters. But ATG appears <strong>twice</strong>:</p>
-<pre><code>ATG → TGA → GAT → ...
-ATG → ?</code></pre>
-<p>Which copy of ATG connects to which? You can’t tell from the fragments alone.</p>
-<p>This ambiguity is why assembly is hard — and why we need a systematic approach.</p>
-</section>
-<section id="naïve-idea-overlap-graph" class="slide level2">
+<section id="naïve-idea-overlap-graph" class="slide level2 smaller">
 <h2>Naïve Idea: Overlap Graph</h2>
-<p>Draw a node for each <strong>fragment</strong>, an edge when two fragments overlap.</p>
-<pre><code>ATG ──► TGA ──► GAT ──► ATC ──► TCA ──► CAT ──► ATG
- ↑_______________________________________________|</code></pre>
-<p>The repeat creates a branching structure. And checking every pair for overlap costs <span class="math inline">\(O(n^2)\)</span> — trillions of checks for a real genome.</p>
+<p>Draw a node for each <strong>fragment</strong>, an edge when suffix of one = prefix of next.</p>
+<svg viewbox="185 35 330 265" xmlns="http://www.w3.org/2000/svg" font-family="monospace" style="width:100%;max-height:200px">
+  <defs>
+    <marker id="ov-a" markerwidth="8" markerheight="6" refx="7" refy="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#aaaaaa"></polygon>
+    </marker>
+    <marker id="ov-r" markerwidth="8" markerheight="6" refx="7" refy="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e74c3c"></polygon>
+    </marker>
+    <marker id="ov-o" markerwidth="8" markerheight="6" refx="7" refy="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f39c12"></polygon>
+    </marker>
+  </defs>
+  <!-- ring edges (clockwise) -->
+  <line x1="254" y1="141" x2="281" y2="94" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"></line>
+  <line x1="323" y1="70" x2="377" y2="70" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"></line>
+  <line x1="419" y1="94" x2="446" y2="141" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"></line>
+  <line x1="446" y1="189" x2="419" y2="236" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"></line>
+  <line x1="377" y1="260" x2="323" y2="260" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"></line>
+  <line x1="281" y1="236" x2="254" y2="189" stroke="#aaaaaa" stroke-width="2" marker-end="url(#ov-a)"></line>
+  <!-- shortcut edges through interior -->
+  <path d="M 381,84 Q 300,150 264,151" stroke="#aaaaaa" stroke-width="2" fill="none" marker-end="url(#ov-a)"></path>
+  <path d="M 319,246 Q 390,200 436,179" stroke="#aaaaaa" stroke-width="2" fill="none" marker-end="url(#ov-a)"></path>
+  <!-- nodes -->
+  <circle cx="240" cy="165" r="28" fill="#4a90d9"></circle>
+  <text x="240" y="170" text-anchor="middle" fill="white" font-size="13" font-weight="bold">ATG</text>
+  <circle cx="295" cy="70" r="28" fill="#4a90d9"></circle>
+  <text x="295" y="75" text-anchor="middle" fill="white" font-size="13" font-weight="bold">TGA</text>
+  <circle cx="405" cy="70" r="28" fill="#4a90d9"></circle>
+  <text x="405" y="75" text-anchor="middle" fill="white" font-size="13" font-weight="bold">GAT</text>
+  <circle cx="460" cy="165" r="28" fill="#4a90d9"></circle>
+  <text x="460" y="170" text-anchor="middle" fill="white" font-size="13" font-weight="bold">ATC</text>
+  <circle cx="405" cy="260" r="28" fill="#4a90d9"></circle>
+  <text x="405" y="265" text-anchor="middle" fill="white" font-size="13" font-weight="bold">TCA</text>
+  <circle cx="295" cy="260" r="28" fill="#4a90d9"></circle>
+  <text x="295" y="265" text-anchor="middle" fill="white" font-size="13" font-weight="bold">CAT</text>
+</svg>
+<p>Build: Checking all pairs for overlap (edges) costs <span class="math inline">\(O(n^2)\)</span> — trillions of operations for a real genome.</p>
+<p>Solution: Hamiltonian path (visit every node once). <strong>NP-hard</strong> in general.</p>
 <p>We need a smarter graph.</p>
 </section>
 <section id="a-different-graph" class="slide level2 smaller">
@@ -294,13 +368,20 @@ ATG → ?</code></pre>
 </tr>
 </tbody>
 </table>
-<p>The repeat k-mer ATG just adds a <strong>second edge</strong> AT → TG. No special case needed.</p>
 <div>
 <div id="pyodide-2" class="exercise-cell">
 
 </div>
 <script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZnJvbSBjb2xsZWN0aW9ucyBpbXBvcnQgZGVmYXVsdGRpY3Rcblxua21lcnMgPSBbXCJBVEdcIiwgXCJUR0FcIiwgXCJHQVRcIiwgXCJBVENcIiwgXCJUQ0FcIiwgXCJDQVRcIiwgXCJBVEdcIl1cbmdyYXBoID0gZGVmYXVsdGRpY3QobGlzdClcbmZvciBrbWVyIGluIGttZXJzOlxuICAgIGdyYXBoW2ttZXJbOi0xXV0uYXBwZW5kKGttZXJbMTpdKVxuXG5mb3Igdiwgd3MgaW4gc29ydGVkKGdyYXBoLml0ZW1zKCkpOlxuICAgIHByaW50KGZcInt2fSAg4oaSICB7d3N9XCIpIn0=
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZX0sImNvZGUiOiJmcm9tIGNvbGxlY3Rpb25zIGltcG9ydCBkZWZhdWx0ZGljdCJ9
+</script>
+</div>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoia21lcnMgPSBbXCJBVEdcIiwgXCJUR0FcIiwgXCJHQVRcIiwgXCJBVENcIiwgXCJUQ0FcIiwgXCJDQVRcIiwgXCJBVEdcIl1cbmdyYXBoID0gZGVmYXVsdGRpY3QobGlzdClcbmZvciBrbWVyIGluIGttZXJzOlxuICAgIGdyYXBoW2ttZXJbOi0xXV0uYXBwZW5kKGttZXJbMTpdKVxuXG5mb3Igdiwgd3MgaW4gc29ydGVkKGdyYXBoLml0ZW1zKCkpOlxuICAgIHByaW50KGZcInt2fSAg4oaSICB7d3N9XCIpIn0=
 </script>
 </div>
 <aside class="notes">
@@ -319,123 +400,79 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZnJvbSBjb2xsZWN0aW9ucyBp
 </section>
 <section id="the-de-bruijn-graph" class="slide level2">
 <h2>The de Bruijn Graph</h2>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<svg width="960" height="480" viewbox="0.00 0.00 275.21 224.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 220)">
-<title>G</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-220 271.21,-220 271.21,4 -4,4"></polygon>
-<!-- AT -->
-<g id="node1" class="node">
-<title>AT</title>
-<ellipse fill="#4a90d9" stroke="black" cx="25" cy="-135" rx="25" ry="25"></ellipse>
-<text text-anchor="middle" x="25" y="-130.8" font-family="Times,serif" font-size="14.00" fill="white">AT</text>
-</g>
-<!-- TG -->
-<g id="node2" class="node">
-<title>TG</title>
-<ellipse fill="#4a90d9" stroke="black" cx="133.61" cy="-191" rx="25" ry="25"></ellipse>
-<text text-anchor="middle" x="133.61" y="-186.8" font-family="Times,serif" font-size="14.00" fill="white">TG</text>
-</g>
-<!-- AT&#45;&gt;TG -->
-<g id="edge1" class="edge">
-<title>AT-&gt;TG</title>
-<path fill="none" stroke="black" stroke-width="2" d="M47.55,-146.24C60.11,-152.81 76.27,-161.26 90.61,-168.8 94.38,-170.79 98.35,-172.88 102.28,-174.95"></path>
-<polygon fill="black" stroke="black" stroke-width="2" points="100.77,-178.11 111.25,-179.69 104.04,-171.92 100.77,-178.11"></polygon>
-<text text-anchor="middle" x="79.3" y="-171.3" font-family="Times,serif" font-size="11.00">ATG</text>
-</g>
-<!-- AT&#45;&gt;TG -->
-<g id="edge2" class="edge">
-<title>AT-&gt;TG</title>
-<path fill="none" stroke="#e74c3c" stroke-width="2" d="M39.52,-155.95C46.79,-165.46 56.61,-175.92 68,-182 77.12,-186.87 87.95,-189.4 98.12,-190.66"></path>
-<polygon fill="#e74c3c" stroke="#e74c3c" stroke-width="2" points="98.1,-194.17 108.36,-191.54 98.7,-187.2 98.1,-194.17"></polygon>
-<text text-anchor="middle" x="79.3" y="-192.3" font-family="Times,serif" font-size="11.00">ATG</text>
-</g>
-<!-- TC -->
-<g id="node3" class="node">
-<title>TC</title>
-<ellipse fill="#4a90d9" stroke="black" cx="133.61" cy="-25" rx="25" ry="25"></ellipse>
-<text text-anchor="middle" x="133.61" y="-20.8" font-family="Times,serif" font-size="14.00" fill="white">TC</text>
-</g>
-<!-- AT&#45;&gt;TC -->
-<g id="edge3" class="edge">
-<title>AT-&gt;TC</title>
-<path fill="none" stroke="black" d="M34.6,-111.7C41.58,-95.3 52.78,-73.7 68,-58.8 77.26,-49.74 89.44,-42.52 100.73,-37.12"></path>
-<polygon fill="black" stroke="black" points="102.22,-40.29 109.92,-33.01 99.36,-33.9 102.22,-40.29"></polygon>
-<text text-anchor="middle" x="79.3" y="-61.3" font-family="Times,serif" font-size="11.00">ATC</text>
-</g>
-<!-- GA -->
-<g id="node4" class="node">
-<title>GA</title>
-<ellipse fill="#4a90d9" stroke="black" cx="242.21" cy="-146" rx="25" ry="25"></ellipse>
-<text text-anchor="middle" x="242.21" y="-141.8" font-family="Times,serif" font-size="14.00" fill="white">GA</text>
-</g>
-<!-- TG&#45;&gt;GA -->
-<g id="edge4" class="edge">
-<title>TG-&gt;GA</title>
-<path fill="none" stroke="black" d="M156.96,-181.57C172.16,-175.15 192.52,-166.55 209.41,-159.42"></path>
-<polygon fill="black" stroke="black" points="211.04,-162.53 218.89,-155.42 208.32,-156.09 211.04,-162.53"></polygon>
-<text text-anchor="middle" x="187.91" y="-175.3" font-family="Times,serif" font-size="11.00">TGA</text>
-</g>
-<!-- CA -->
-<g id="node5" class="node">
-<title>CA</title>
-<ellipse fill="#4a90d9" stroke="black" cx="242.21" cy="-74" rx="25" ry="25"></ellipse>
-<text text-anchor="middle" x="242.21" y="-69.8" font-family="Times,serif" font-size="14.00" fill="white">CA</text>
-</g>
-<!-- TC&#45;&gt;CA -->
-<g id="edge6" class="edge">
-<title>TC-&gt;CA</title>
-<path fill="none" stroke="black" d="M156.7,-35.15C171.99,-42.18 192.58,-51.65 209.61,-59.47"></path>
-<polygon fill="black" stroke="black" points="208.61,-62.86 219.15,-63.86 211.53,-56.5 208.61,-62.86"></polygon>
-<text text-anchor="middle" x="187.91" y="-57.3" font-family="Times,serif" font-size="11.00">TCA</text>
-</g>
-<!-- GA&#45;&gt;AT -->
-<g id="edge5" class="edge">
-<title>GA-&gt;AT</title>
-<path fill="none" stroke="black" d="M217.03,-144.76C178.8,-142.81 104.25,-139 60.44,-136.76"></path>
-<polygon fill="black" stroke="black" points="60.44,-133.26 50.27,-136.24 60.08,-140.25 60.44,-133.26"></polygon>
-<text text-anchor="middle" x="133.61" y="-144.3" font-family="Times,serif" font-size="11.00">GAT</text>
-</g>
-<!-- CA&#45;&gt;AT -->
-<g id="edge7" class="edge">
-<title>CA-&gt;AT</title>
-<path fill="none" stroke="black" d="M217.8,-80.64C179.41,-91.52 102.98,-113.18 59.08,-125.63"></path>
-<polygon fill="black" stroke="black" points="58.11,-122.26 49.44,-128.36 60.02,-129 58.11,-122.26"></polygon>
-<text text-anchor="middle" x="133.61" y="-114.3" font-family="Times,serif" font-size="11.00">CAT</text>
-</g>
-</g>
+<div class="columns">
+<div class="column" style="width:40%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Vertex</th>
+<th>Neighbors</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AT</td>
+<td>TG, TC, TG</td>
+</tr>
+<tr class="even">
+<td>CA</td>
+<td>AT</td>
+</tr>
+<tr class="odd">
+<td>GA</td>
+<td>AT</td>
+</tr>
+<tr class="even">
+<td>TC</td>
+<td>CA</td>
+</tr>
+<tr class="odd">
+<td>TG</td>
+<td>GA</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:60%;">
+<svg viewbox="40 5 400 275" xmlns="http://www.w3.org/2000/svg" font-family="monospace" style="width:100%;max-height:240px">
+  <defs>
+    <marker id="db-a" markerwidth="8" markerheight="6" refx="7" refy="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#aaaaaa"></polygon>
+    </marker>
+    <marker id="db-r" markerwidth="8" markerheight="6" refx="7" refy="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e74c3c"></polygon>
+    </marker>
+  </defs>
+  
+  <!-- nodes -->
+  <circle cx="80" cy="140" r="28" fill="#4a90d9"></circle>
+  <text x="80" y="145" text-anchor="middle" fill="white" font-size="14" font-weight="bold">AT</text>
+  <circle cx="240" cy="70" r="28" fill="#4a90d9"></circle>
+  <text x="240" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">TG</text>
+  <circle cx="400" cy="70" r="28" fill="#4a90d9"></circle>
+  <text x="400" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">GA</text>
+  <circle cx="240" cy="210" r="28" fill="#4a90d9"></circle>
+  <text x="240" y="215" text-anchor="middle" fill="white" font-size="14" font-weight="bold">TC</text>
+  <circle cx="400" cy="210" r="28" fill="#4a90d9"></circle>
+  <text x="400" y="215" text-anchor="middle" fill="white" font-size="14" font-weight="bold">CA</text>
 </svg>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p>AT has <strong>3 out-edges</strong> (two to TG, one to TC). TG has <strong>2 in-edges</strong>. Not all degrees are equal — this is a linear genome with a repeat.</p>
-<p><strong>The genome is hidden in this graph — but how do we read it out?</strong></p>
+</div></div>
+<p>The genome is hidden in this graph — but how do we read it out?</p>
 </section>
 <section id="what-does-traversal-mean-here" class="slide level2">
 <h2>What Does Traversal Mean Here?</h2>
-<p>Assembling the genome = spelling out all seven reads <strong>in order</strong>.</p>
+<p>Assembling the genome means spelling out all seven fragments <strong>in order</strong>.</p>
 <p>That means visiting every <strong>edge</strong> exactly once.</p>
 <div class="fragment">
 <p><em>What kind of graph traversal visits every edge exactly once?</em></p>
 </div>
 </section>
-<section id="eulers-path" class="slide level2" data-background-color="#1a1a2e">
-<h2>Euler’s Path</h2>
-<div style="text-align:center; font-size:1.4em; margin-top: 1.5em">
+<section id="euler-path" class="slide level2">
+<h2>Euler Path</h2>
 <p><strong>An Euler path visits every edge exactly once.</strong></p>
-</div>
-<div style="text-align:center; margin-top: 1em; color: #aad4f5">
-<p>Leonhard Euler, 1736 — the Königsberg bridge problem.</p>
-</div>
-<div style="text-align:center; margin-top: 1.5em; font-size:1.1em">
-<p>Genome assembly <strong>is</strong> finding an Euler path in the de Bruijn graph.</p>
-</div>
+<blockquote>
+<p>Leonhard Euler, 1736 — the <a href="https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg">Königsberg bridge</a> problem.</p>
+</blockquote>
+<p>Genome assembly is finding an Euler path in the de Bruijn graph.</p>
 <aside class="notes">
 <p>Euler proved in 1736 that the Königsberg bridge problem (can you cross each of 7 bridges exactly once?) had no solution, by analysing the degree of each landmass. That paper is widely considered the birth of graph theory. 290 years later, the same idea assembles genomes. A circuit is the special case where start = end (circular genome). A path has two unbalanced nodes — one with excess out-degree (start) and one with excess in-degree (end).</p>
 <style type="text/css">
@@ -450,9 +487,9 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZnJvbSBjb2xsZWN0aW9ucyBp
           display:block!important;
       }</style></aside>
 </section>
-<section id="when-does-an-euler-path-exist" class="slide level2">
+<section id="when-does-an-euler-path-exist" class="slide level2 smaller">
 <h2>When Does an Euler Path Exist?</h2>
-<p><strong>Euler’s theorem</strong>: An Euler path exists iff exactly two nodes are unbalanced — one with out − in = 1 (start), one with in − out = 1 (end).</p>
+<p><strong>Euler’s theorem</strong>: An Euler path exists iff exactly two nodes have unequal in and outdegree, one with out − in = 1 (start), one with in − out = 1 (end).</p>
 <p>Check our graph:</p>
 <table class="caption-top">
 <thead>
@@ -502,15 +539,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZnJvbSBjb2xsZWN0aW9ucyBp
 </tr>
 </tbody>
 </table>
-<p>Assembly is possible — and we know exactly where to start.</p>
-<div>
-<div id="pyodide-3" class="exercise-cell">
-
-</div>
-<script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZnJvbSBjb2xsZWN0aW9ucyBpbXBvcnQgZGVmYXVsdGRpY3Rcblxua21lcnMgPSBbXCJBVEdcIiwgXCJUR0FcIiwgXCJHQVRcIiwgXCJBVENcIiwgXCJUQ0FcIiwgXCJDQVRcIiwgXCJBVEdcIl1cbmdyYXBoID0gZGVmYXVsdGRpY3QobGlzdClcbmZvciBrbWVyIGluIGttZXJzOlxuICAgIGdyYXBoW2ttZXJbOi0xXV0uYXBwZW5kKGttZXJbMTpdKVxuXG5pbl9kZWcgPSBkZWZhdWx0ZGljdChpbnQpXG5vdXRfZGVnID0gZGVmYXVsdGRpY3QoaW50KVxuZm9yIHYgaW4gZ3JhcGg6XG4gICAgb3V0X2RlZ1t2XSArPSBsZW4oZ3JhcGhbdl0pXG4gICAgZm9yIHcgaW4gZ3JhcGhbdl06XG4gICAgICAgIGluX2RlZ1t3XSArPSAxXG5cbmZvciB2IGluIHNvcnRlZChzZXQobGlzdChvdXRfZGVnKSArIGxpc3QoaW5fZGVnKSkpOlxuICAgIGRpZmYgPSBvdXRfZGVnW3ZdIC0gaW5fZGVnW3ZdXG4gICAgcm9sZSA9IFwiIOKGkCBTVEFSVFwiIGlmIGRpZmYgPT0gMSBlbHNlIChcIiDihpAgRU5EXCIgaWYgZGlmZiA9PSAtMSBlbHNlIFwiXCIpXG4gICAgcHJpbnQoZlwie3Z9OiAgb3V0PXtvdXRfZGVnW3ZdfSAgaW49e2luX2RlZ1t2XX0gIGRpZmY9e2RpZmY6K317cm9sZX1cIikifQ==
-</script>
-</div>
 <aside class="notes">
 <p>This degree check is O(E) and runs before any assembly algorithm. If the condition fails (more than two unbalanced nodes, or the wrong counts), the reads can’t be assembled into a single sequence — there are gaps or errors. This is a powerful diagnostic.</p>
 <style type="text/css">
@@ -663,7 +691,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZnJvbSBjb2xsZWN0aW9ucyBp
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-code-task" class="slide level2">
+<section id="the-code-task" class="slide level2 activity">
 <h2>The Code Task</h2>
 <p>In the PrairieLearn workspace you’ll find:</p>
 <ul>
@@ -672,9 +700,9 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZnJvbSBjb2xsZWN0aW9ucyBp
 <li><code>dfs_skeleton.py</code> — the classic DFS above, ready to modify</li>
 </ul>
 <p><strong>Your task</strong>: modify the DFS to find an Euler path, then read off the assembled sequence.</p>
-<p><em>The genome is a real piece of DNA — can you figure out what organism it’s from?</em></p>
+<p><em>The genome is a real piece of DNA — can you figure out what organism it’s from? Try your assembled sequence on <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">NCBI BLAST</a>.</em></p>
 <aside class="notes">
-<p>The mystery genome is the opening 28 bases of bacteriophage phi X174 — the first genome ever fully sequenced (Sanger, 1977, Nobel Prize). Students can BLAST the assembled sequence on NCBI to confirm.</p>
+<p>The mystery genome is the opening 28 bases of bacteriophage phi X174 — the first genome ever fully sequenced (Sanger, 1977, Nobel Prize). NCBI entry: https://www.ncbi.nlm.nih.gov/nuccore/NC_001422 Students can BLAST the assembled sequence on NCBI to confirm.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -692,7 +720,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZnJvbSBjb2xsZWN0aW9ucyBp
 eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfMiA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtMi1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7fSk7XG5cbiAgLy8gRWFybHkgeWllbGQgd2hpbGUgd2Ugd2FpdCBmb3IgdGhlIGZpcnN0IGV2YWx1YXRpb24gYW5kIHJlbmRlclxuICBpZiAob3B0aW9ucy5vdXRwdXQgJiYgIShcIjJcIiBpbiBweW9kaWRlT2pzLnJlbmRlcmVkT2pzKSkge1xuICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG4gICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG5cbiAgICBpZiAob3B0aW9ucy5lY2hvKSB7XG4gICAgICAvLyBTaG93IG91dHB1dCBhcyBoaWdobGlnaHRlZCBzb3VyY2VcbiAgICAgIGNvbnN0IHByZUVsZW0gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwicHJlXCIpO1xuICAgICAgY29udGFpbmVyLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZVwiO1xuICAgICAgcHJlRWxlbS5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGUgcHl0aG9uXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFB5dGhvbihibG9jay5jb2RlKSk7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ncm93IHNwaW5uZXItZ3Jvdy1zbSBtLTIgcG9zaXRpb24tYWJzb2x1dGUgdG9wLTAgZW5kLTBcIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQocHJlRWxlbSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWJvcmRlciBzcGlubmVyLWJvcmRlci1zbVwiO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgIH1cblxuICAgIHlpZWxkIGNvbnRhaW5lcjtcbiAgfVxuXG4gIHB5b2RpZGVPanMucmVuZGVyZWRPanNbXCIyXCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3B5b2RpZGVfZWRpdG9yXzEgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTEtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgcHlvZGlkZS0xLWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFB5b2RpZGVFeGVyY2lzZUVkaXRvcihcbiAgICBweW9kaWRlT2pzLnB5b2RpZGVQcm9taXNlLFxuICAgIGJsb2NrLmNvZGUsXG4gICAgb3B0aW9uc1xuICApO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3B5b2RpZGVfdmFsdWVfMSA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMSwge30pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InB5b2RpZGVPanMgPSB7XG4gIGNvbnN0IHtcbiAgICBQeW9kaWRlRXZhbHVhdG9yLFxuICAgIFB5b2RpZGVFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBQeXRob24sXG4gICAgc3RhcnRQeW9kaWRlV29ya2VyLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGgsXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyBQeW9kaWRlIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIGxldCBweW9kaWRlUHJvbWlzZSA9IChhc3luYyAoKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBQeW9kaWRlYDtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgc3RhcnRQeW9kaWRlV29ya2VyKGRhdGEub3B0aW9ucyk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6IG1pY3JvcGlwYDtcbiAgICBhd2FpdCBweW9kaWRlLmxvYWRQYWNrYWdlKFwibWljcm9waXBcIik7XG4gICAgY29uc3QgbWljcm9waXAgPSBhd2FpdCBweW9kaWRlLnB5aW1wb3J0KFwibWljcm9waXBcIik7XG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gbWljcm9waXAuaW5zdGFsbChwa2cpO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuICAgIGF3YWl0IG1pY3JvcGlwLmRlc3Ryb3koKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICB0cnkge1xuICAgICAgICAgIGF3YWl0IHB5b2RpZGUuRlMubWtkaXIocGF0aCk7XG4gICAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgICBpZiAoZS5lcnJubyAhPT0gMjApIHtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgdHJ5IHtcbiAgICAgICAgcmV0dXJuIGF3YWl0IHB5b2RpZGUuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgUHlvZGlkZSBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBQeXRob24ocHlvZGlkZSk7XG5cbiAgICBzdGF0dXNUZXh0LnJlbW92ZSgpO1xuICAgIGlmIChzdGF0dXNDb250YWluZXIuY2hpbGRyZW4ubGVuZ3RoID09IDApIHtcbiAgICAgIHN0YXR1c0NvbnRhaW5lci5wYXJlbnROb2RlLnJlbW92ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gcHlvZGlkZTtcbiAgfSkoKS5jYXRjaCgoZXJyKSA9PiB7XG4gICAgc3RhdHVzVGV4dC5zdHlsZS5jb2xvciA9IFwidmFyKC0tZXhlcmNpc2UtZWRpdG9yLWhsLWVyLCAjQUQwMDAwKVwiO1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBlcnIubWVzc2FnZTtcbiAgICAvL2luZGljYXRvckNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKFwiLnNwaW5uZXItZ3Jvd1wiKS5jbGFzc0xpc3QuYWRkKFwiZC1ub25lXCIpO1xuICAgIHRocm93IGVycjtcbiAgfSk7XG5cbiAgLy8gS2VlcCB0cmFjayBvZiBpbml0aWFsIE9KUyBibG9jayByZW5kZXJcbiAgY29uc3QgcmVuZGVyZWRPanMgPSB7fTtcblxuICBjb25zdCBwcm9jZXNzID0gYXN5bmMgKGNvbnRleHQsIGlucHV0cykgPT4ge1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBweW9kaWRlUHJvbWlzZTtcbiAgICBjb25zdCBldmFsdWF0b3IgPSBuZXcgUHlvZGlkZUV2YWx1YXRvcihweW9kaWRlLCBjb250ZXh0KTtcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBweW9kaWRlUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgICBwcm9jZXNzLFxuICB9O1xufVxuIn1dfQ==
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
