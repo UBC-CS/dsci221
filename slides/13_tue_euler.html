@@ -730,7 +730,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZGVmIGttZXJzX29mKHNlcSwg
 <p>Our example is a <strong>path</strong>: start at AT (out − in = +1), end at TG (in − out = +1).</p>
 <p>A circuit is just a path where the start and end happen to be the same node.</p>
 </section>
-<section id="from-euler-to-code" class="slide level2">
+<section id="from-euler-to-code" class="slide level2 smaller">
 <h2>From Euler to Code</h2>
 <p>We know <strong>DFS</strong> from week 6. Here is the classic version:</p>
 <div>
@@ -757,60 +757,22 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZnJvbSBjb2xsZWN0aW9ucyBp
           display:block!important;
       }</style></aside>
 </section>
-<section id="why-does-it-come-out-backwards" class="slide level2">
+<section id="why-does-it-come-out-backwards" class="slide level2 smaller">
 <h2>Why Does It Come Out Backwards?</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> euler_dfs(graph, v, path):</span>
-<span id="cb4-2"><a></a>    <span class="cf">while</span> graph[v]:</span>
-<span id="cb4-3"><a></a>        w <span class="op">=</span> graph[v].pop()       <span class="co"># consume the edge</span></span>
-<span id="cb4-4"><a></a>        euler_dfs(graph, w, path)</span>
-<span id="cb4-5"><a></a>    path.append(v)               <span class="co"># post-order: append AFTER recursing</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Post-order</strong> means: <em>“I go in the list only after everything still reachable from me.”</em></p>
-<p>Trace a simple chain <strong>A → B → C → D</strong>:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>call returns from</th>
-<th>appends</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>euler_dfs(D)</code></td>
-<td>D</td>
-</tr>
-<tr class="even">
-<td><code>euler_dfs(C)</code></td>
-<td>C</td>
-</tr>
-<tr class="odd">
-<td><code>euler_dfs(B)</code></td>
-<td>B</td>
-</tr>
-<tr class="even">
-<td><code>euler_dfs(A)</code></td>
-<td>A</td>
-</tr>
-</tbody>
-</table>
-<p><code>path = [D, C, B, A]</code> → <code>path[::-1]</code> → <strong>[A, B, C, D]</strong> ✓</p>
-<p>The reversal is one line in the <strong>caller</strong> — the function itself only appends.</p>
-<aside class="notes">
-<p>The branching case works for the same reason: when we return to a node that still has unused edges, those sub-paths get appended before the node itself. After reversal, the node appears before both sub-paths — correctly spliced. Same trick as post-order tree traversal and topological sort.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>    path.append(v)   <span class="co"># after the while loop — post-order</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Think of it from <code>v</code>’s perspective:</p>
+<blockquote>
+<p><em>“I only add myself to the path once I’ve explored every edge I can reach. So I appear in the list <strong>after</strong> everything downstream of me.”</em></p>
+</blockquote>
+<p>That means the list comes out <strong>in reverse</strong> — the last node on the path gets appended first, the first node last.</p>
+<p>We could fix it by prepending (<code>path.insert(0, v)</code>) — but that’s slow. Instead we just <strong>append and reverse at the end</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>path <span class="op">=</span> []</span>
+<span id="cb5-2"><a></a>euler_dfs(graph, start, path)</span>
+<span id="cb5-3"><a></a>path <span class="op">=</span> path[::<span class="op">-</span><span class="dv">1</span>]   <span class="co"># one reversal, O(n)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="the-code-task" class="slide level2 activity">
 <h2>The Code Task</h2>
-<p>[PrairieLearn activity] (https://us.prairielearn.com/pl/course_instance/205477/assessment/2666153)</p>
+<p><a href="https://us.prairielearn.com/pl/course_instance/205477/assessment/2666153">PrairieLearn activity</a></p>
 <p><em>The genome is a real piece of DNA — can you figure out what organism it’s from? Try your assembled sequence on <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">NCBI BLAST</a>.</em></p>
 <aside class="notes">
 <p>The mystery genome is the opening 28 bases of bacteriophage phi X174 — the first genome ever fully sequenced (Sanger, 1977, Nobel Prize). NCBI entry: https://www.ncbi.nlm.nih.gov/nuccore/NC_001422 Students can BLAST the assembled sequence on NCBI to confirm.</p>
