@@ -144,6 +144,20 @@
     "text": "Minimum Spanning Tree\n\n\n\n\n  \n  \n     \n     \n     \n     \n     \n     \n     \n     \n     \n  \n\n  \n  \n    8   \n    2   \n    4   \n    7   \n    2   \n    1   \n    3   \n    9   \n    5   \n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n\nInput: connected, undirected graph \\(G\\) with edge weights\nOutput: subgraph \\(G'\\) such that:\n\n\\(G'\\) spans \\(G\\) (contains all vertices)\n\\(G'\\) is connected and acyclic (a tree)\n\\(G'\\) has minimum total weight among all spanning trees\n\n \nWhat is the MST of this graph?\nTotal weight = ____\n\nMST edges: C-D(1), A-C(2), B-E(2), C-E(3), D-F(5). Total = 13. A tree on n vertices has exactly n-1 edges."
   },
   {
+    "objectID": "slides/13_wed_mst.html#mst-structure",
+    "href": "slides/13_wed_mst.html#mst-structure",
+    "title": "Minimum Spanning Trees",
+    "section": "MST Structure",
+    "text": "MST Structure\n\n\n\n\n\n  \n  \n     \n     \n     \n  \n  \n  \n\n  \n  \n     \n     \n     \n     \n     \n  \n\n  \n  \n\n  \n  \n    8\n    2\n    4  \n    7\n    2\n    1\n    3\n    9\n    5\n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n  blue = MST  |  dashed = not in MST\n\n\nCycle property\nOn any cycle, the maximum-weight edge is never in the MST.\nCycle A–C–D: weights 2, 1, 4.   Edge A–D ∉ MST. ✓\nWhy? If the max-weight edge were in the MST, removing it breaks the tree into two components — but the rest of the cycle still reconnects them at lower cost.\n \nNon-MST edge lower bound\nAdding any non-MST edge \\(X = (u,v)\\) to \\(T\\) creates exactly one cycle. \\(X\\) must be the heaviest edge on that cycle.\nWhat is the minimum possible weight for edge C–F?\nPath C→F in MST: C–D–F   (weights 1, 5).   Max = 5.\nSo C–F \\(\\geq\\) 5 to stay out.   Actual C–F = 9 ✓\n \nUniqueness — if all weights are distinct, the MST is unique.\n\nCycle property → Kruskal’s: sort edges, skip if both endpoints already connected. Cut property (not shown): the min-weight edge crossing any partition is always in the MST → Prim’s: grow a set S, always pick cheapest edge leaving S. C-F lower bound: if C-F were 4, it would replace D-F(5) in the MST."
+  },
+  {
+    "objectID": "slides/13_wed_mst.html#mst-vs.-shortest-paths",
+    "href": "slides/13_wed_mst.html#mst-vs.-shortest-paths",
+    "title": "Minimum Spanning Trees",
+    "section": "MST vs. Shortest Paths",
+    "text": "MST vs. Shortest Paths\n\n\n\n\n  \n  \n      \n     \n  \n  \n  \n     \n     \n      \n  \n\n  \n  \n    5 \n    5     \n    1  \n    1  \n  \n\n  \n  \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n  \n\n  \n    blue = MST (total weight 7)\n  \n\n\nMST minimizes total edge weight — not trip distance.\n \nShortest path C → D:   direct edge = 5\nPath C → D through MST:   C–A–B–D = 1+5+1 = 7\n \nThe MST is longer! It was built to minimize total infrastructure, not any particular journey.\n \n\n\n\nQuestion\nUse\n\n\n\n\nConnect all nodes cheaply\nMST\n\n\nShortest route A → B\nDijkstra’s\n\n\n\n\nMST ≠ all-pairs shortest paths. The MST C-D path goes “the long way” because C-D wasn’t chosen — its weight equals A-B, so we arbitrarily included A-B and got the same total weight. A cleaner example: make C-D weight 6 — then MST is {A-C(1), B-D(1), A-B(5)}, MST path C→D = 7 vs. shortest = 6."
+  },
+  {
     "objectID": "slides/13_wed_mst.html#bfs-revisited",
     "href": "slides/13_wed_mst.html#bfs-revisited",
     "title": "Minimum Spanning Trees",
