@@ -436,34 +436,25 @@ The second change is what makes the "splicing" work.
 ## Why Does It Come Out Backwards?
 
 ```python
-def euler_dfs(graph, v, path):
-    while graph[v]:
-        w = graph[v].pop()       # consume the edge
-        euler_dfs(graph, w, path)
-    path.append(v)               # post-order: append AFTER recursing
+    path.append(v)   # after the while loop — post-order
 ```
 
-**Post-order** means: *"I go in the list only after everything still reachable from me."*
+Think of it from `v`'s perspective:
 
-Trace a simple chain **A → B → C → D**:
+> *"I only add myself to the path once I've explored every edge I can reach.
+> So I appear in the list **after** everything downstream of me."*
 
-| call returns from | appends |
-|---|---|
-| `euler_dfs(D)` | D |
-| `euler_dfs(C)` | C |
-| `euler_dfs(B)` | B |
-| `euler_dfs(A)` | A |
+That means the list comes out **in reverse** — the last node on the path
+gets appended first, the first node last.
 
-`path = [D, C, B, A]` → `path[::-1]` → **[A, B, C, D]** ✓
+We could fix it by prepending (`path.insert(0, v)`) — but that's slow.
+Instead we just **append and reverse at the end**:
 
-The reversal is one line in the **caller** — the function itself only appends.
-
-::: notes
-The branching case works for the same reason: when we return to a node that
-still has unused edges, those sub-paths get appended before the node itself.
-After reversal, the node appears before both sub-paths — correctly spliced.
-Same trick as post-order tree traversal and topological sort.
-:::
+```python
+path = []
+euler_dfs(graph, start, path)
+path = path[::-1]   # one reversal, O(n)
+```
 
 ## The Code Task {.activity}
 
