@@ -1,0 +1,268 @@
+---
+title: "Minimum Spanning Trees"
+subtitle: "Week 13, Wednesday — Prim's Algorithm"
+date: 2026-04-02
+---
+
+## Announcements
+
+## Muddy City
+
+:::: {.columns}
+::: {.column width="50%"}
+```{=html}
+<svg viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg"
+     style="max-width:100%; font-family:sans-serif">
+
+  <!-- roads (thick, light brown = unpaved) -->
+  <g stroke="#c8a96e" stroke-width="8" stroke-linecap="round" opacity="0.7">
+    <line x1="60"  y1="60"  x2="160" y2="60"/>
+    <line x1="160" y1="60"  x2="260" y2="60"/>
+    <line x1="60"  y1="60"  x2="60"  y2="180"/>
+    <line x1="60"  y1="180" x2="160" y2="180"/>
+    <line x1="160" y1="60"  x2="160" y2="180"/>
+    <line x1="160" y1="180" x2="260" y2="180"/>
+    <line x1="260" y1="60"  x2="260" y2="180"/>
+    <line x1="60"  y1="60"  x2="160" y2="180"/>
+    <line x1="160" y1="60"  x2="260" y2="180"/>
+  </g>
+
+  <!-- houses -->
+  <g fill="#3c78d8">
+    <rect x="45"  y="45"  width="18" height="18" rx="2"/>
+    <rect x="152" y="45"  width="18" height="18" rx="2"/>
+    <rect x="252" y="45"  width="18" height="18" rx="2"/>
+    <rect x="45"  y="165" width="18" height="18" rx="2"/>
+    <rect x="152" y="165" width="18" height="18" rx="2"/>
+    <rect x="252" y="165" width="18" height="18" rx="2"/>
+  </g>
+
+  <!-- mud puddle emoji hint -->
+  <text x="160" y="250" text-anchor="middle" font-size="13" fill="#888">
+    After rain: all roads are muddy 🌧️
+  </text>
+</svg>
+```
+:::
+::: {.column width="50%"}
+**Problem:** After heavy rain, every road is muddy.
+
+You can **pave** road segments to make them passable.
+
+**Goal:** pave the minimum total length of roads so that
+every house can reach every other house.
+
+&nbsp;
+
+*Which roads do you pave?*
+
+::: notes
+Classic CS intro problem — due to Niklaus Wirth.
+Every house must be reachable from every other house.
+Key insight: you never need a cycle — if two houses are already connected,
+adding another road between them wastes pavement.
+So the answer is always a **tree** (connected, acyclic subgraph).
+And you want the tree with minimum total edge weight.
+:::
+:::
+::::
+
+
+## Minimum Spanning Tree
+
+:::: {.columns}
+::: {.column width="54%"}
+```{=html}
+<svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg"
+     style="max-width:100%; font-family:sans-serif; font-size:13px">
+
+  <!-- edges -->
+  <g stroke="#555" stroke-width="1.8" fill="none">
+    <line x1="190" y1="50"  x2="55"  y2="180"/> <!-- A-B 8 -->
+    <line x1="190" y1="50"  x2="190" y2="180"/> <!-- A-C 2 -->
+    <line x1="190" y1="50"  x2="325" y2="180"/> <!-- A-D 4 -->
+    <line x1="55"  y1="180" x2="190" y2="180"/> <!-- B-C 7 -->
+    <line x1="55"  y1="180" x2="105" y2="280"/> <!-- B-E 2 -->
+    <line x1="190" y1="180" x2="325" y2="180"/> <!-- C-D 1 -->
+    <line x1="190" y1="180" x2="105" y2="280"/> <!-- C-E 3 -->
+    <line x1="190" y1="180" x2="265" y2="280"/> <!-- C-F 9 -->
+    <line x1="325" y1="180" x2="265" y2="280"/> <!-- D-F 5 -->
+  </g>
+
+  <!-- edge weight labels -->
+  <g fill="#c0392b" font-size="12" font-weight="bold">
+    <text x="112" y="108">8</text>   <!-- A-B -->
+    <text x="195" y="122">2</text>   <!-- A-C -->
+    <text x="264" y="108">4</text>   <!-- A-D -->
+    <text x="118" y="175">7</text>   <!-- B-C -->
+    <text x="68"  y="240">2</text>   <!-- B-E -->
+    <text x="255" y="175">1</text>   <!-- C-D -->
+    <text x="140" y="245">3</text>   <!-- C-E -->
+    <text x="215" y="250">9</text>   <!-- C-F -->
+    <text x="308" y="245">5</text>   <!-- D-F -->
+  </g>
+
+  <!-- nodes -->
+  <g fill="white" stroke="#3c78d8" stroke-width="2">
+    <circle cx="190" cy="50"  r="18"/>
+    <circle cx="55"  cy="180" r="18"/>
+    <circle cx="190" cy="180" r="18"/>
+    <circle cx="325" cy="180" r="18"/>
+    <circle cx="105" cy="280" r="18"/>
+    <circle cx="265" cy="280" r="18"/>
+  </g>
+  <g fill="#3c78d8" font-weight="bold" text-anchor="middle" dominant-baseline="central">
+    <text x="190" y="50" >A</text>
+    <text x="55"  y="180">B</text>
+    <text x="190" y="180">C</text>
+    <text x="325" y="180">D</text>
+    <text x="105" y="280">E</text>
+    <text x="265" y="280">F</text>
+  </g>
+</svg>
+```
+:::
+::: {.column width="46%"}
+**Input:** connected, undirected graph $G$ with edge weights
+
+**Output:** subgraph $G'$ such that:
+
+- $G'$ **spans** $G$ (contains all vertices)
+- $G'$ is **connected and acyclic** (a tree)
+- $G'$ has **minimum total weight** among all spanning trees
+
+&nbsp;
+
+*What is the MST of this graph?*
+
+*Total weight = \_\_\_\_*
+
+::: notes
+MST edges: C-D(1), A-C(2), B-E(2), C-E(3), D-F(5). Total = 13.
+A tree on n vertices has exactly n-1 edges.
+:::
+:::
+::::
+
+
+## BFS Revisited {.smaller}
+
+```python
+from collections import deque
+
+def bfs(graph, start):
+    visited = {start}
+    queue = deque([start])
+
+    while queue:
+        v = queue.popleft()
+        for w in graph[v]:          # examine each neighbor
+            if w not in visited:
+                visited.add(w)
+                queue.append(w)
+```
+
+&nbsp;
+
+**Running time?** (in terms of $|V|$ and $|E|$)
+
+- Each vertex enters the queue at most \_\_\_\_ time(s).
+- Each edge is examined at most \_\_\_\_ time(s).
+- Total: $O($\_\_\_\_$)$
+
+::: notes
+O(V + E).
+Each vertex enters queue once → O(V) enqueues.
+Each edge (u,v) is examined when u is dequeued (and again when v is dequeued for undirected) → O(E).
+:::
+
+
+## From BFS to Prim's
+
+The **bag** determines what the algorithm optimizes:
+
+| Bag | Explores by | Algorithm |
+|---|---|---|
+| Queue (FIFO) | distance from source (hops) | BFS |
+| Priority queue (min edge weight) | cheapest edge to tree | **Prim's MST** |
+| Priority queue (min total distance) | shortest path from source | Dijkstra's SSSP |
+
+&nbsp;
+
+**One change** turns BFS into Prim's:
+
+> Replace the queue with a **min-heap** keyed by edge weight.
+> Instead of "which node did I discover first?",
+> ask "which unvisited node is cheapest to connect to the tree?"
+
+
+## Prim's Algorithm {.smaller}
+
+```python
+import heapq
+
+def prim(graph, start):
+    """graph: {vertex: [(neighbor, weight), ...]}"""
+    d = {v: float('inf') for v in graph}   # cheapest edge to reach v
+    parent = {v: None for v in graph}
+    d[start] = 0
+    pq = [(0, start)]                       # (edge_weight, vertex)
+    visited = set()
+
+    while pq:
+        cost, v = heapq.heappop(pq)
+        if v in visited:
+            continue
+        visited.add(v)
+
+        for w, weight in graph[v]:
+            if w not in visited and weight < d[w]:
+                d[w] = weight              # just the edge weight (not cumulative!)
+                parent[w] = v
+                heapq.heappush(pq, (weight, w))
+
+    return parent   # MST as parent pointers
+```
+
+::: notes
+Key contrast with Dijkstra's:
+- Dijkstra's: d[w] = d[v] + cost(v,w)  → minimizes total path from source
+- Prim's:     d[w] = cost(v,w)          → minimizes single edge into tree
+
+Both use the same priority-queue skeleton.
+:::
+
+
+## Prim's Running Time {.smaller}
+
+:::: {.columns}
+::: {.column width="55%"}
+Each vertex is extracted from the heap **once**: $O(V \log V)$
+
+Each edge can trigger a heap push: $O(E \log V)$
+
+**Total: $O((V + E) \log V)$**
+
+For a connected graph ($E \geq V-1$): $O(E \log V)$
+
+&nbsp;
+
+| | Adj matrix | Adj list |
+|---|---|---|
+| **heap** | $O(V^2 + E \log V)$ | $O(E \log V)$ |
+| **unsorted array** | $O(V^2)$ | $O(V^2)$ |
+
+:::
+::: {.column width="45%"}
+**Which is better?**
+
+Depends on graph **density** ($E$ vs $V^2$):
+
+- **Sparse** ($E \approx V$): heap + adj list wins → $O(V \log V)$
+- **Dense** ($E \approx V^2$): unsorted array is fine → $O(V^2)$
+
+&nbsp;
+
+*Most real-world graphs (road networks, social networks) are sparse.*
+:::
+::::
