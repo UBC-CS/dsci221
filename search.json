@@ -130,11 +130,18 @@
     "text": "Announcements"
   },
   {
+    "objectID": "slides/13_wed_mst.html#warm-up-graph-representations",
+    "href": "slides/13_wed_mst.html#warm-up-graph-representations",
+    "title": "Minimum Spanning Trees",
+    "section": "Warm-up: Graph Representations",
+    "text": "Warm-up: Graph Representations\n\n\nAdjacency list   (you’ve seen this)\ngraph = {\n  \"A\": [(\"B\",8), (\"C\",2), (\"D\",4)],\n  \"B\": [(\"A\",8), (\"C\",7), (\"E\",2)],\n  \"C\": [(\"A\",2), (\"B\",7), (\"D\",1),\n        (\"E\",3), (\"F\",9)],\n  \"D\": [(\"A\",4), (\"C\",1), (\"F\",5)],\n  \"E\": [(\"B\",2), (\"C\",3)],\n  \"F\": [(\"C\",9), (\"D\",5)],\n}\nSpace: \\(O(V + E)\\)\nIterate neighbors of \\(v\\): \\(O(\\deg(v))\\)\nCheck if edge \\((u,v)\\) exists: \\(O(\\deg(u))\\)\n\nAdjacency matrix   (new today)\n\n\n\n\nA\nB\nC\nD\nE\nF\n\n\n\n\nA\n–\n8\n2\n4\n–\n–\n\n\nB\n8\n–\n7\n–\n2\n–\n\n\nC\n2\n7\n–\n1\n3\n9\n\n\nD\n4\n–\n1\n–\n–\n5\n\n\nE\n–\n2\n3\n–\n–\n–\n\n\nF\n–\n–\n9\n5\n–\n–\n\n\n\nSpace: \\(O(V^2)\\)\nIterate neighbors of \\(v\\): \\(O(V)\\)\nCheck if edge \\((u,v)\\) exists: \\(O(1)\\)"
+  },
+  {
     "objectID": "slides/13_wed_mst.html#muddy-city",
     "href": "slides/13_wed_mst.html#muddy-city",
     "title": "Minimum Spanning Trees",
     "section": "Muddy City",
-    "text": "Muddy City\n\n\n\n\nAfter heavy rain, all roads are muddy.\nYou can pave road segments. Each segment costs a number of paving stones.\nGoal: pave the fewest total stones so every house can reach every other.\n \nWhich roads do you pave?\nHow many stones total?\n \n(CS Unplugged activity)\n\nClassic CS Unplugged activity. Key insight: you never need a cycle. If two houses are already connected, adding another road between them wastes stones. So the answer is always a tree (connected + acyclic). The minimum-weight spanning tree. MST for this graph: edges 2-5(3), 5-8(3), 1-2(4), 3-6(4), 1-4(5), 4-7(5) = total 24."
+    "text": "Muddy City\n\n\n\n\nYou can pave road segments. Each segment costs its number of paving stones.\nGoal: pave the __________ stones so every house can reach every other.\n \nWhich roads do you pave?\nHow many stones total?\n \n(CS Unplugged activity)\n\nClassic CS Unplugged activity. Key insight: you never need a cycle. If two houses are already connected, adding another road between them wastes stones. So the answer is always a tree (connected + acyclic). The minimum-weight spanning tree. MST for this graph: edges 2-5(3), 5-8(3), 1-2(4), 3-6(4), 1-4(5), 4-7(5) = total 24."
   },
   {
     "objectID": "slides/13_wed_mst.html#minimum-spanning-tree",
@@ -144,60 +151,81 @@
     "text": "Minimum Spanning Tree\n\n\n\n\n  \n  \n     \n     \n     \n     \n     \n     \n     \n     \n     \n  \n\n  \n  \n    8   \n    2   \n    4   \n    7   \n    2   \n    1   \n    3   \n    9   \n    5   \n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n\nInput: connected, undirected graph \\(G\\) with edge weights\nOutput: subgraph \\(G'\\) such that:\n\n\\(G'\\) spans \\(G\\) (contains all vertices)\n\\(G'\\) is connected and acyclic (a tree)\n\\(G'\\) has minimum total weight among all spanning trees\n\n \nWhat is the MST of this graph?\nTotal weight = ____\n\nMST edges: C-D(1), A-C(2), B-E(2), C-E(3), D-F(5). Total = 13. A tree on n vertices has exactly n-1 edges."
   },
   {
-    "objectID": "slides/13_wed_mst.html#mst-structure",
-    "href": "slides/13_wed_mst.html#mst-structure",
+    "objectID": "slides/13_wed_mst.html#cycle-property",
+    "href": "slides/13_wed_mst.html#cycle-property",
     "title": "Minimum Spanning Trees",
-    "section": "MST Structure",
-    "text": "MST Structure\n\n\n\n\n\n  \n  \n     \n     \n     \n  \n  \n  \n\n  \n  \n     \n     \n     \n     \n     \n  \n\n  \n  \n\n  \n  \n    8\n    2\n    4  \n    7\n    2\n    1\n    3\n    9\n    5\n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n  blue = MST  |  dashed = not in MST\n\n\nCycle property\nOn any cycle, the maximum-weight edge is never in the MST.\nCycle A–C–D: weights 2, 1, 4.   Edge A–D ∉ MST. ✓\nWhy? If the max-weight edge were in the MST, removing it breaks the tree into two components — but the rest of the cycle still reconnects them at lower cost.\n \nNon-MST edge lower bound\nAdding any non-MST edge \\(X = (u,v)\\) to \\(T\\) creates exactly one cycle. \\(X\\) must be the heaviest edge on that cycle.\nWhat is the minimum possible weight for edge C–F?\nPath C→F in MST: C–D–F   (weights 1, 5).   Max = 5.\nSo C–F \\(\\geq\\) 5 to stay out.   Actual C–F = 9 ✓\n \nUniqueness — if all weights are distinct, the MST is unique.\n\nCycle property → Kruskal’s: sort edges, skip if both endpoints already connected. Cut property (not shown): the min-weight edge crossing any partition is always in the MST → Prim’s: grow a set S, always pick cheapest edge leaving S. C-F lower bound: if C-F were 4, it would replace D-F(5) in the MST."
+    "section": "Cycle Property",
+    "text": "Cycle Property\n\n\n\n\n\n  \n  \n     \n     \n     \n     \n  \n\n  \n  \n     \n     \n     \n     \n     \n  \n\n  \n  \n    8\n    2\n    4\n    7\n    2\n    1\n    3\n    9\n    5\n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n  blue = MST\n\n\nWhat’s true about every cycle in this graph?\n \nTheorem:   ___________________________________\n \n \n \nProof:   ______________________________________\n \n \n \n\nTheorem: On any cycle, the maximum-weight edge is never in the MST. Proof: Suppose the max-weight edge e were in the MST. Removing e splits T into two components — but the rest of the cycle is a path that reconnects them at strictly lower cost. Swapping e for any other cycle edge gives a lighter spanning tree, contradicting minimality. Cycles: A-C-D (weights 2,1,4 → A-D out), A-B-C (8,7,2 → A-B out), C-D-F-C (1,5,9 → C-F out)."
+  },
+  {
+    "objectID": "slides/13_wed_mst.html#non-mst-edge-lower-bound",
+    "href": "slides/13_wed_mst.html#non-mst-edge-lower-bound",
+    "title": "Minimum Spanning Trees",
+    "section": "Non-MST Edge Lower Bound",
+    "text": "Non-MST Edge Lower Bound\n\n\n\n\n\n  \n  \n     \n     \n     \n  \n  \n  \n\n  \n  \n     \n     \n     \n     \n     \n  \n\n  \n  \n    8\n    2\n    4\n    7\n    2\n    1\n    3\n    5\n  \n  ?\n\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n  blue = MST  |  orange = edge under scrutiny\n\n\nEdge C–F is not in the MST. Using the theorem you just derived — what is the minimum possible weight for C–F?\n \nMST path C → F:   _________________\n \nMin weight of C–F:   _____\n \n \nTheorem:   ___________________________________\n(for any non-MST edge)\n \n\nMST path C→F: C–D–F (weights 1, 5). Max = 5. So C–F ≥ 5. Actual C–F = 9 ✓ General theorem: weight(X) ≥ max weight on the unique MST path from u to v. If C–F were 4 — it would replace D–F(5) in the MST."
   },
   {
     "objectID": "slides/13_wed_mst.html#mst-vs.-shortest-paths",
     "href": "slides/13_wed_mst.html#mst-vs.-shortest-paths",
     "title": "Minimum Spanning Trees",
     "section": "MST vs. Shortest Paths",
-    "text": "MST vs. Shortest Paths\n\n\n\n\n  \n  \n      \n     \n  \n  \n  \n     \n     \n      \n  \n\n  \n  \n    5 \n    5     \n    1  \n    1  \n  \n\n  \n  \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n  \n\n  \n    blue = MST (total weight 7)\n  \n\n\nMST minimizes total edge weight — not trip distance.\n \nShortest path C → D:   direct edge = 5\nPath C → D through MST:   C–A–B–D = 1+5+1 = 7\n \nThe MST is longer! It was built to minimize total infrastructure, not any particular journey.\n \n\n\n\nQuestion\nUse\n\n\n\n\nConnect all nodes cheaply\nMST\n\n\nShortest route A → B\nDijkstra’s\n\n\n\n\nMST ≠ all-pairs shortest paths. The MST C-D path goes “the long way” because C-D wasn’t chosen — its weight equals A-B, so we arbitrarily included A-B and got the same total weight. A cleaner example: make C-D weight 6 — then MST is {A-C(1), B-D(1), A-B(5)}, MST path C→D = 7 vs. shortest = 6."
+    "text": "MST vs. Shortest Paths\n\n\n\n\n  \n  \n     \n     \n     \n     \n  \n\n  \n  \n     \n     \n     \n     \n     \n  \n\n  \n  \n    8\n    2\n    4\n    7\n    4\n    1\n    5\n    9\n    5\n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n  blue = MST (total weight 17)\n\n\nMST minimizes total edge weight — the cost of connecting everything.\n \nShortest path minimizes the distance between two specific nodes.\n \nThese are different objectives.\n\nA→D direct edge = 4. MST path A→D = A–C–D = 2+1 = 3. A→B direct edge = 8. MST path A→B = A–C–E–B = 2+3+2 = 7. The MST optimizes global connectivity cost, not any particular route."
   },
   {
     "objectID": "slides/13_wed_mst.html#partition-property-cut-property",
     "href": "slides/13_wed_mst.html#partition-property-cut-property",
     "title": "Minimum Spanning Trees",
     "section": "Partition Property (Cut Property)",
-    "text": "Partition Property (Cut Property)\n\n\n\n\n\n  \n  \n  S = {A}\n\n  \n  \n     \n     \n     \n     \n     \n     \n  \n\n  \n  \n  \n  \n\n  \n  \n    8   \n    2   \n    4   \n    \n    7\n    2\n    1\n    3\n    9\n    5\n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n  green = min crossing edge (always in MST)\n\n\nPartition Property (Cut Property)\nSplit vertices into any two sets \\(S\\) and \\(V \\setminus S\\).\nThe minimum-weight edge crossing the cut is always in the MST.\n \nExample: \\(S = \\{A\\}\\). Crossing edges:\n\n\n\nEdge\nWeight\n\n\n\n\n\nA–C\n2\n✓ in MST\n\n\nA–D\n4\n✗\n\n\nA–B\n8\n✗\n\n\n\n \nThis suggests a greedy algorithm:\n\nStart with \\(S = \\{\\)start\\(\\}\\). Repeatedly add the cheapest edge from \\(S\\) to \\(V \\setminus S\\). Stop when \\(S = V\\).\n\n\nPartition property (cut property) is the theoretical basis for Prim’s algorithm. Proof sketch: suppose the minimum crossing edge e is NOT in the MST T. Add e to T → creates a cycle. That cycle must have another crossing edge e’ with weight ≥ e. Swap e’ for e to get a lighter spanning tree — contradiction.\nContrast with cycle property (used for Kruskal’s): remove the heaviest edge on any cycle. Both properties together characterise the MST.\nThe greedy algorithm described here IS Prim’s — we just need an efficient data structure to find the cheapest crossing edge at each step. A priority queue does it."
-  },
-  {
-    "objectID": "slides/13_wed_mst.html#prims-trace-from-a",
-    "href": "slides/13_wed_mst.html#prims-trace-from-a",
-    "title": "Minimum Spanning Trees",
-    "section": "Prim’s: Trace from A",
-    "text": "Prim’s: Trace from A\n\n\n\n\n  \n  \n  S={A}\n\n  \n  \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n  \n\n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n    2   \n    3   \n    4   \n    4   \n    5   \n    4   \n    2   \n    4   \n    4   \n    3   \n    4   \n    3   \n    2   \n    3   \n    3   \n    3   \n    5   \n    4   \n    3   \n    2   \n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n    G\n    H\n    I\n    J\n  \n\n\nStarting from A, apply the partition property repeatedly:\n\nAt each step, add the cheapest edge from \\(S\\) to \\(V \\setminus S\\).\n\n\n\n\nStep\nEdge\nWt\nNew \\(S\\)\n\n\n\n\n0\n—\n—\n{A}\n\n\n1\n\n\n\n\n\n2\n\n\n\n\n\n3\n\n\n\n\n\n4\n\n\n\n\n\n5\n\n\n\n\n\n6\n\n\n\n\n\n7\n\n\n\n\n\n8\n\n\n\n\n\n9\n\n\n\n\n\n\nMST total weight = ____\n\nPrim’s from A (tie-break by lowest weight): 1. A-B(2) → {A,B} 2. A-C(3) → {A,B,C} 3. C-D(2) → {A,B,C,D} 4. D-E(3) → {A,B,C,D,E} 5. E-H(2) → {A,B,C,D,E,H} 6. E-F(3) → {A,B,C,D,E,H,F} (also F-H=3 and E-I=3 but E-F alphabetically first) 7. F-G(3) → …+G 8. H-J(3) → …+J 9. I-J(2) → …+I (done!) Total = 2+3+2+3+2+3+3+3+2 = 23 MST edges: A-B, A-C, C-D, D-E, E-H, E-F, F-G, H-J, I-J"
-  },
-  {
-    "objectID": "slides/13_wed_mst.html#bfs-revisited",
-    "href": "slides/13_wed_mst.html#bfs-revisited",
-    "title": "Minimum Spanning Trees",
-    "section": "BFS Revisited",
-    "text": "BFS Revisited\nfrom collections import deque\n\ndef bfs(graph, start):\n    visited = {start}\n    queue = deque([start])\n\n    while queue:\n        v = queue.popleft()\n        for w in graph[v]:          # examine each neighbor\n            if w not in visited:\n                visited.add(w)\n                queue.append(w)\n \nRunning time? (in terms of \\(|V|\\) and \\(|E|\\))\n\nEach vertex enters the queue at most ____ time(s).\nEach edge is examined at most ____ time(s).\nTotal: \\(O(\\)____\\()\\)\n\n\nO(V + E). Each vertex enters queue once → O(V) enqueues. Each edge (u,v) is examined when u is dequeued (and again when v is dequeued for undirected) → O(E)."
-  },
-  {
-    "objectID": "slides/13_wed_mst.html#from-bfs-to-prims",
-    "href": "slides/13_wed_mst.html#from-bfs-to-prims",
-    "title": "Minimum Spanning Trees",
-    "section": "From BFS to Prim’s",
-    "text": "From BFS to Prim’s\nThe bag determines what the algorithm optimizes:\n\n\n\n\n\n\n\n\nBag\nExplores by\nAlgorithm\n\n\n\n\nQueue (FIFO)\ndistance from source (hops)\nBFS\n\n\nPriority queue (min edge weight)\ncheapest edge to tree\nPrim’s MST\n\n\nPriority queue (min total distance)\nshortest path from source\nDijkstra’s SSSP\n\n\n\n \nOne change turns BFS into Prim’s:\n\nReplace the queue with a min-heap keyed by edge weight. Instead of “which node did I discover first?”, ask “which unvisited node is cheapest to connect to the tree?”"
+    "text": "Partition Property (Cut Property)\n\n\n\n\n\n  \n  \n  S = {A, C, D}\n\n  \n  \n\n  \n  \n     \n     \n     \n  \n\n  \n  \n     \n     \n     \n     \n  \n  \n  \n\n  \n  \n    8   \n    2   \n    4   \n    7   \n    2   \n    1   \n    3 \n    9   \n    5   \n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n  green = min crossing edge (always in MST)\n\n\nPartition Property (Cut Property)\nSplit vertices into any two sets \\(S\\) and \\(V \\setminus S\\).\nThe minimum-weight edge crossing the cut is always in some MST.\n\nPartition property (cut property) is the theoretical basis for Prim’s algorithm. Proof sketch: suppose the minimum crossing edge e is NOT in the MST T. Add e to T → creates a cycle. That cycle must have another crossing edge e’ with weight ≥ e. Swap e’ for e to get a lighter spanning tree — contradiction.\nContrast with cycle property (used for Kruskal’s): remove the heaviest edge on any cycle. Both properties together characterise the MST.\nThe greedy algorithm described here IS Prim’s — we just need an efficient data structure to find the cheapest crossing edge at each step. A priority queue does it.\nS={A,C,D}: internal edges A-C(2), A-D(4), C-D(1). Crossing: A-B(8), B-C(7), C-E(3)←min, C-F(9), D-F(5)."
   },
   {
     "objectID": "slides/13_wed_mst.html#prims-algorithm",
     "href": "slides/13_wed_mst.html#prims-algorithm",
     "title": "Minimum Spanning Trees",
     "section": "Prim’s Algorithm",
-    "text": "Prim’s Algorithm\nimport heapq\n\ndef prim(graph, start):\n    \"\"\"graph: {vertex: [(neighbor, weight), ...]}\"\"\"\n    d = {v: float('inf') for v in graph}   # cheapest edge to reach v\n    parent = {v: None for v in graph}\n    d[start] = 0\n    pq = [(0, start)]                       # (edge_weight, vertex)\n    visited = set()\n\n    while pq:\n        cost, v = heapq.heappop(pq)\n        if v in visited:\n            continue\n        visited.add(v)\n\n        for w, weight in graph[v]:\n            if w not in visited and weight &lt; d[w]:\n                d[w] = weight              # just the edge weight (not cumulative!)\n                parent[w] = v\n                heapq.heappush(pq, (weight, w))\n\n    return parent   # MST as parent pointers\n\nKey contrast with Dijkstra’s: - Dijkstra’s: d[w] = d[v] + cost(v,w) → minimizes total path from source - Prim’s: d[w] = cost(v,w) → minimizes single edge into tree\nBoth use the same priority-queue skeleton."
+    "text": "Prim’s Algorithm\n\n\n\n\n  \n  \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n      \n  \n\n  \n  \n    2   \n    3   \n    4   \n    4   \n    5   \n    4   \n    2   \n    4   \n    4   \n    3   \n    4   \n    3   \n    2   \n    3   \n    3   \n    3   \n    5   \n    4   \n    3   \n    2   \n  \n\n  \n  \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n    G\n    H\n    I\n    J\n  \n\n\nMST total weight = ____\n\nPrim’s from A (tie-break by lowest weight): 1. A-B(2) → {A,B} 2. A-C(3) → {A,B,C} 3. C-D(2) → {A,B,C,D} 4. D-E(3) → {A,B,C,D,E} 5. E-H(2) → {A,B,C,D,E,H} 6. E-F(3) → {A,B,C,D,E,H,F} (also F-H=3 and E-I=3 but E-F alphabetically first) 7. F-G(3) → …+G 8. H-J(3) → …+J 9. I-J(2) → …+I (done!) Total = 2+3+2+3+2+3+3+3+2 = 23 MST edges: A-B, A-C, C-D, D-E, E-H, E-F, F-G, H-J, I-J"
   },
   {
-    "objectID": "slides/13_wed_mst.html#prims-running-time",
-    "href": "slides/13_wed_mst.html#prims-running-time",
+    "objectID": "slides/13_wed_mst.html#bfs-revisited",
+    "href": "slides/13_wed_mst.html#bfs-revisited",
     "title": "Minimum Spanning Trees",
-    "section": "Prim’s Running Time",
-    "text": "Prim’s Running Time\n\n\nEach vertex is extracted from the heap once: \\(O(V \\log V)\\)\nEach edge can trigger a heap push: \\(O(E \\log V)\\)\nTotal: \\(O((V + E) \\log V)\\)\nFor a connected graph (\\(E \\geq V-1\\)): \\(O(E \\log V)\\)\n \n\n\n\n\nAdj matrix\nAdj list\n\n\n\n\nheap\n\\(O(V^2 + E \\log V)\\)\n\\(O(E \\log V)\\)\n\n\nunsorted array\n\\(O(V^2)\\)\n\\(O(V^2)\\)\n\n\n\n\nWhich is better?\nDepends on graph density (\\(E\\) vs \\(V^2\\)):\n\nSparse (\\(E \\approx V\\)): heap + adj list wins → \\(O(V \\log V)\\)\nDense (\\(E \\approx V^2\\)): unsorted array is fine → \\(O(V^2)\\)\n\n \nMost real-world graphs (road networks, social networks) are sparse."
+    "section": "BFS Revisited",
+    "text": "BFS Revisited\n\n\nfrom collections import deque\n\ndef bfs(graph, start):\n    visited = {start}\n    queue = deque([start])\n\n    while queue:\n        v = queue.popleft()\n        for w in graph[v]:          # examine each neighbor\n            if w not in visited:\n                visited.add(w)\n                queue.append(w)\nWhat type is graph? What type is graph[v]?\nRunning time? (in terms of \\(|V|\\) and \\(|E|\\))\n\nEach vertex enters the queue at most ____ time(s).\nEach edge is examined at most ____ time(s).\nTotal: \\(O(\\)____\\()\\)\n\n\nO(V + E). Each vertex enters queue once → O(V) enqueues. Each edge (u,v) is examined when u is dequeued (and again when v is dequeued for undirected) → O(E). graph is a dict; graph[v] is a list (or any iterable of neighbors).\n\n\n\n\n\ngraph\nneighbors\n\n\n\n\nA\nB, D, E\n\n\nB\nA, E, C\n\n\nC\nB, D\n\n\nD\nA, C\n\n\nE\nA, B"
+  },
+  {
+    "objectID": "slides/13_wed_mst.html#from-bfs-to-prims",
+    "href": "slides/13_wed_mst.html#from-bfs-to-prims",
+    "title": "Minimum Spanning Trees",
+    "section": "From BFS to Prim’s",
+    "text": "From BFS to Prim’s\nThe bag determines what the algorithm optimizes:\n\n\n\n\n\n\n\n\nBag\nExplores by\nAlgorithm\n\n\n\n\nQueue (FIFO)\ndistance from source (hops)\nBFS\n\n\nPriority queue (min edge weight)\ncheapest edge to tree\nPrim’s MST\n\n\nPriority queue (min total distance)\nshortest path from source\nDijkstra’s SSSP\n\n\n\n \nOne change turns BFS into Prim’s:\n\nReplace the queue with a Priority Queue keyed by edge weight. Instead of “which node did I discover first?”, ask “which unvisited node is cheapest to connect to the tree?”"
+  },
+  {
+    "objectID": "slides/13_wed_mst.html#prims-algorithm-pseudocode",
+    "href": "slides/13_wed_mst.html#prims-algorithm-pseudocode",
+    "title": "Minimum Spanning Trees",
+    "section": "Prim’s Algorithm: Pseudocode",
+    "text": "Prim’s Algorithm: Pseudocode\n\n\n\n\nInitialize:\nfor each v:  d[v] ← ∞,  p[v] ← null\nd[s] ← 0\nQ ← min-PQ of all vertices, keyed by d\n\n\nwhile Q not empty:\n\n  v ← Q.removeMin()\n\n  for each neighbor w of v:\n\n    if w ∈ Q and cost(v,w) &lt; d[w]:\n      d[w] ← cost(v,w)\n      p[w] ← v\n      Q.decreaseKey(w, d[w])\n\nreturn p\n\n\n\n\n\n  \n     \n     \n     \n     \n     \n     \n     \n     \n     \n  \n\n  \n    2\n    8\n    7\n    5\n    7\n    9\n    8\n    4\n    3\n  \n\n  \n    \n    \n    \n    \n    \n    \n  \n  \n    A\n    B\n    C\n    D\n    E\n    F\n  \n\n\nd[v] = cheapest known edge weight from the current tree S to vertex v (not cumulative path cost — that’s Dijkstra’s). p[v] = which vertex in S is v’s parent in the MST. Terminates when Q is empty, i.e., all n vertices have been added to S. Key contrast: Dijkstra sets d[w] = d[v] + cost(v,w); Prim sets d[w] = cost(v,w) alone. Prim’s from A: A-B(2), B-C(5)? No — after A,B in S: d[C]=min(8,5)=5, d[D]=7, d[E]=7. Pick C(5). Then from C: d[D]=min(7,9)=7, d[E]=min(7,8)=7. Pick D or E (tie). D(7)→F(4). E(7)→F already reached at 4. Done. MST: A-B(2),B-C(5),B-D(7),D-F(4),A-E(7). Total=25."
+  },
+  {
+    "objectID": "slides/13_wed_mst.html#prims-algorithm-design-choices",
+    "href": "slides/13_wed_mst.html#prims-algorithm-design-choices",
+    "title": "Minimum Spanning Trees",
+    "section": "Prim’s Algorithm: Design Choices",
+    "text": "Prim’s Algorithm: Design Choices\n\n\n\n\nInitialize:\nfor each v:  d[v] ← ∞,  p[v] ← null\nd[s] ← 0\nQ ← min-PQ of all vertices, keyed by d\n\n\nwhile Q not empty:\n  v ← Q.removeMin()\n  for each neighbor w of v:\n    if w ∈ Q and cost(v,w) &lt; d[w]:\n      d[w] ← cost(v,w)\n      p[w] ← v\n      Q.decreaseKey(w, d[w])\n\nreturn p\n\n\n\nWhat design choices do we need to make?\n \nPut a ⭐ by __________________ operations.\n \nPut a 💜 by __________________ operations.\n\n⭐ = priority queue operations: removeMin and decreaseKey. - heap: removeMin O(log n), decreaseKey O(log n) - unsorted array: removeMin O(n), decreaseKey O(1) 💜 = neighbor iteration (“for each neighbor w of v”): depends on graph representation. - adj list: O(deg v) per vertex, O(m) total across all vertices - adj matrix: O(n) per vertex, O(n²) total Students fill in the table on the next slide."
+  },
+  {
+    "objectID": "slides/13_wed_mst.html#prims-algorithm-runtime-analysis",
+    "href": "slides/13_wed_mst.html#prims-algorithm-runtime-analysis",
+    "title": "Minimum Spanning Trees",
+    "section": "Prim’s Algorithm: Runtime Analysis",
+    "text": "Prim’s Algorithm: Runtime Analysis\n\n\n\n\nInitialize:\nfor each v:  d[v] ← ∞,  p[v] ← null\nd[s] ← 0\nQ ← min-PQ of all vertices, keyed by d\n\n\nwhile Q not empty:\n  v ← Q.removeMin()          ⭐\n  for each neighbor w of v:  💜\n    if w ∈ Q and cost(v,w) &lt; d[w]:\n      d[w] ← cost(v,w)\n      p[w] ← v\n      Q.decreaseKey(w, d[w])  ⭐\n\nreturn p\n\n ⭐ \\(n\\) removeMins + \\(\\leq m\\) decreaseKeys 💜 \\(O(m)\\) total (adj list)  |  \\(O(n^2)\\) total (adj matrix)\n\n\n\n\n\n\n\n\n\n\n\nAdj matrix\nAdj list\n\n\n\n\nheap\n\\(O(n^2 + m \\log n)\\)\n\\(O(m \\log n)\\)\n\n\nunsorted array\n\\(O(n^2)\\)\n\\(O(n^2)\\)\n\n\n\n \nWhich is best? Depends on graph density:\n\nSparse (\\(m=O(n)\\)):\nDense (\\(m=O(n^2)\\)):\n\n\nHeap + adj list: n×O(log n) removeMin + m×O(log n) decreaseKey + O(m) neighbor scans = O(m log n). Heap + adj matrix: same PQ cost + O(n) per vertex for neighbor scan = O(n²) + O(m log n). Unsorted array + adj matrix: O(n) removeMin × n = O(n²); decreaseKey O(1); neighbor scan O(n²) total = O(n²). Unsorted array + adj list: O(n²) removeMin dominates = O(n²)."
+  },
+  {
+    "objectID": "slides/13_wed_mst.html#prims-algorithm-python",
+    "href": "slides/13_wed_mst.html#prims-algorithm-python",
+    "title": "Minimum Spanning Trees",
+    "section": "Prim’s Algorithm: Python",
+    "text": "Prim’s Algorithm: Python\nimport heapq\n\ndef prim(graph, start):\n    \"\"\"graph: {vertex: [(neighbor, weight), ...]}\"\"\"\n    d = {v: float('inf') for v in graph}   # cheapest edge to reach v\n    parent = {v: None for v in graph}\n    d[start] = 0\n    pq = [(0, start)]                       # (edge_weight, vertex)\n    visited = set()\n\n    while pq:\n        cost, v = heapq.heappop(pq)\n        if v in visited:\n            continue\n        visited.add(v)\n\n        for w, weight in graph[v]:\n            if w not in visited and weight &lt; d[w]:\n                d[w] = weight              # just the edge weight (not cumulative!)\n                parent[w] = v\n                heapq.heappush(pq, (weight, w))\n\n    return parent   # MST as parent pointers\n\nKey contrast with Dijkstra’s: - Dijkstra’s: d[w] = d[v] + cost(v,w) → minimizes total path from source - Prim’s: d[w] = cost(v,w) → minimizes single edge into tree\nBoth use the same priority-queue skeleton. heapq.heappush approximates decreaseKey (lazy deletion via the visited check)."
   },
   {
     "objectID": "slides/03_tue_binarysearch.html#the-game",
