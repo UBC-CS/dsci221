@@ -12,8 +12,8 @@
 <script src="../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.36">
 
-  <meta name="dcterms.date" content="2026-01-19">
-  <title>DSCI 221: Data Structures and Algorithms for Data Science – The Invariant Detective</title>
+  <meta name="dcterms.date" content="2026-04-08">
+  <title>DSCI 221: Data Structures and Algorithms for Data Science – Minimum Spanning Trees</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -198,11 +198,11 @@
   </style>
   <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta property="og:title" content="The Invariant Detective – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta property="og:description" content="Week 3, Monday">
+<meta property="og:title" content="Minimum Spanning Trees – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta property="og:description" content="Week 14, Monday — Prim’s Algorithm">
 <meta property="og:site_name" content="DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:title" content="The Invariant Detective – DSCI 221: Data Structures and Algorithms for Data Science">
-<meta name="twitter:description" content="Week 3, Monday">
+<meta name="twitter:title" content="Minimum Spanning Trees – DSCI 221: Data Structures and Algorithms for Data Science">
+<meta name="twitter:description" content="Week 14, Monday — Prim’s Algorithm">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -210,83 +210,32 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The Invariant Detective</h1>
-  <p class="subtitle">Week 3, Monday</p>
+  <h1 class="title">Minimum Spanning Trees</h1>
+  <p class="subtitle">Week 14, Monday — Prim’s Algorithm</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">January 19, 2026</p>
+  <p class="date">April 8, 2026</p>
 </section>
-<section>
-<section id="warm-up-a-frozen-algorithm" class="title-slide slide level1 center">
-<h1>Warm-up: A Frozen Algorithm</h1>
-
+<section id="announcements" class="slide level2 smaller">
+<h2>Announcements</h2>
 </section>
-<section id="the-scene" class="slide level2">
-<h2>The Scene</h2>
-<p>An algorithm was running, but we paused it mid-execution.</p>
-<p>Your job: <strong>figure out what it was doing</strong> and <strong>where it stopped</strong>.</p>
-<aside class="notes">
-<p>“Think of this like a crime scene investigation. The clues are in the state.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="puzzle-1-find-maximum" class="title-slide slide level1 center">
-<h1>Puzzle 1: Find Maximum</h1>
-
-</section>
-<section id="puzzle-1-find-maximum-1" class="slide level2 smaller">
-<h2>Puzzle 1: Find Maximum</h2>
+<section id="muddy-city" class="slide level2 smaller">
+<h2>Muddy City</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> mystery1(arr):</span>
-<span id="cb1-2"><a></a>    result <span class="op">=</span> arr[<span class="dv">0</span>]</span>
-<span id="cb1-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb1-4"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&gt;</span> result:</span>
-<span id="cb1-5"><a></a>            result <span class="op">=</span> arr[i]</span>
-<span id="cb1-6"><a></a>    <span class="cf">return</span> result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">8</td>
-</tr>
-</tbody>
-</table>
-<p>Variables: <code>result = 9</code></p>
-</div></div>
-<p><strong>Q1</strong>: What iteration is <code>i</code> about to start?</p>
-<p><strong>Q2</strong>: What does <code>result</code> represent?</p>
+<div class="column" style="width:60%;">
+<p><img data-src="../images/muddycity.png" style="width:100.0%"></p>
+</div><div class="column" style="width:40%;">
+<p>You can pave road segments. Each segment costs its number of paving stones.</p>
+<p><strong>Goal:</strong> pave the __________ stones so every house can reach every other.</p>
+<p>&nbsp;</p>
+<p><em>Which roads do you pave?</em></p>
+<p><em>How many stones total?</em></p>
+<p>&nbsp;</p>
+<p><a href="https://classic.csunplugged.org/documents/activities/minimal-spanning-trees/unplugged-09-minimal_spanning_trees-original.pdf">(CS Unplugged activity)</a></p>
 <aside class="notes">
-<p>“Pause and think. What value of i would give us result = 9?”</p>
+<p>Classic CS Unplugged activity. Key insight: you never need a cycle. If two houses are already connected, adding another road between them wastes stones. So the answer is always a <strong>tree</strong> (connected + acyclic). The minimum-weight spanning tree. MST for this graph: edges 2-5(3), 5-8(3), 1-2(4), 3-6(4), 1-4(5), 4-7(5) = total 24.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -298,80 +247,71 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</div></div>
 </section>
-<section id="the-solution" class="slide level2">
-<h2>The Solution</h2>
-<div id="463c20c6" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_mon_invariants_files/figure-revealjs/cell-2-output-1.png" class="quarto-figure quarto-figure-center" width="756" height="230"></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li><code>i = 3</code> (about to examine index 3)</li>
-<li><code>result = 9</code> = maximum of <code>arr[0:3]</code> = maximum of <code>[7, 3, 9]</code></li>
-</ul>
-<p><strong>The Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, <code>result</code> holds the maximum of <code>arr[0:i]</code>.</p>
-</section>
-<section id="why-this-works" class="slide level2">
-<h2>Why This Works</h2>
-<p>The invariant tells us:</p>
-<ul>
-<li><strong>At i = 1</strong>: <code>result</code> = max of <code>arr[0:1]</code> = max of <code>[7]</code> = 7 ✓</li>
-<li><strong>At i = 2</strong>: <code>result</code> = max of <code>arr[0:2]</code> = max of <code>[7, 3]</code> = 7 ✓</li>
-<li><strong>At i = 3</strong>: <code>result</code> = max of <code>arr[0:3]</code> = max of <code>[7, 3, 9]</code> = 9 ✓</li>
-</ul>
-<p>The frozen state is <strong>consistent</strong> with the invariant at <code>i = 3</code>.</p>
-</section></section>
-<section>
-<section id="puzzle-2-counting" class="title-slide slide level1 center">
-<h1>Puzzle 2: Counting</h1>
-
-</section>
-<section id="puzzle-2-counting-1" class="slide level2 smaller">
-<h2>Puzzle 2: Counting</h2>
+<section id="minimum-spanning-tree" class="slide level2 smaller">
+<h2>Minimum Spanning Tree</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> mystery2(arr):</span>
-<span id="cb2-2"><a></a>    count <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb2-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
-<span id="cb2-4"><a></a>        <span class="cf">if</span> arr[i] <span class="op">&gt;</span> <span class="dv">5</span>:</span>
-<span id="cb2-5"><a></a>            count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb2-6"><a></a>    <span class="cf">return</span> count</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">3</td>
-</tr>
-</tbody>
-</table>
-<p>Variables: <code>count = 2</code></p>
-</div></div>
-<p><strong>Q1</strong>: What iteration is <code>i</code> about to start?</p>
-<p><strong>Q2</strong>: State the invariant.</p>
+<div class="column" style="width:54%;">
+<svg viewbox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; font-family:sans-serif; font-size:13px">
+
+  <!-- edges -->
+  <g stroke="#555" stroke-width="1.8" fill="none">
+    <line x1="190" y1="50" x2="55" y2="180"></line> <!-- A-B 8 -->
+    <line x1="190" y1="50" x2="190" y2="180"></line> <!-- A-C 2 -->
+    <line x1="190" y1="50" x2="325" y2="180"></line> <!-- A-D 4 -->
+    <line x1="55" y1="180" x2="190" y2="180"></line> <!-- B-C 7 -->
+    <line x1="55" y1="180" x2="105" y2="280"></line> <!-- B-E 2 -->
+    <line x1="190" y1="180" x2="325" y2="180"></line> <!-- C-D 1 -->
+    <line x1="190" y1="180" x2="105" y2="280"></line> <!-- C-E 3 -->
+    <line x1="190" y1="180" x2="265" y2="280"></line> <!-- C-F 9 -->
+    <line x1="325" y1="180" x2="265" y2="280"></line> <!-- D-F 5 -->
+  </g>
+
+  <!-- edge weight labels -->
+  <g fill="#c0392b" font-size="12" font-weight="bold">
+    <text x="112" y="108">8</text>   <!-- A-B -->
+    <text x="195" y="122">2</text>   <!-- A-C -->
+    <text x="264" y="108">4</text>   <!-- A-D -->
+    <text x="118" y="175">7</text>   <!-- B-C -->
+    <text x="68" y="240">2</text>   <!-- B-E -->
+    <text x="255" y="175">1</text>   <!-- C-D -->
+    <text x="140" y="245">3</text>   <!-- C-E -->
+    <text x="215" y="250">9</text>   <!-- C-F -->
+    <text x="308" y="245">5</text>   <!-- D-F -->
+  </g>
+
+  <!-- nodes -->
+  <g fill="white" stroke="#3c78d8" stroke-width="2">
+    <circle cx="190" cy="50" r="18"></circle>
+    <circle cx="55" cy="180" r="18"></circle>
+    <circle cx="190" cy="180" r="18"></circle>
+    <circle cx="325" cy="180" r="18"></circle>
+    <circle cx="105" cy="280" r="18"></circle>
+    <circle cx="265" cy="280" r="18"></circle>
+  </g>
+  <g fill="#3c78d8" font-weight="bold" text-anchor="middle" dominant-baseline="central">
+    <text x="190" y="50">A</text>
+    <text x="55" y="180">B</text>
+    <text x="190" y="180">C</text>
+    <text x="325" y="180">D</text>
+    <text x="105" y="280">E</text>
+    <text x="265" y="280">F</text>
+  </g>
+</svg>
+</div><div class="column" style="width:46%;">
+<p><strong>Input:</strong> connected, undirected graph <span class="math inline">\(G\)</span> with edge weights</p>
+<p><strong>Output:</strong> subgraph <span class="math inline">\(G'\)</span> such that:</p>
+<ul>
+<li><span class="math inline">\(G'\)</span> <strong>spans</strong> <span class="math inline">\(G\)</span> (contains all vertices)</li>
+<li><span class="math inline">\(G'\)</span> is <strong>connected and acyclic</strong> (a tree)</li>
+<li><span class="math inline">\(G'\)</span> has <strong>minimum total weight</strong> among all spanning trees</li>
+</ul>
+<p>&nbsp;</p>
+<p><em>What is the MST of this graph?</em></p>
+<p><em>Total weight = ____</em></p>
 <aside class="notes">
-<p>“Which elements &gt; 5 have we seen? 8 at index 1, 7 at index 3. That’s 2 elements. So i = 4.”</p>
+<p>MST edges: C-D(1), A-C(2), B-E(2), C-E(3), D-F(5). Total = 13. A tree on n vertices has exactly n-1 edges.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -383,218 +323,213 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</div></div>
 </section>
-<section id="the-solution-1" class="slide level2">
-<h2>The Solution</h2>
-<div id="56d24d14" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_mon_invariants_files/figure-revealjs/cell-3-output-1.png" class="quarto-figure quarto-figure-center" width="754" height="230"></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li>Elements &gt; 5 in <code>arr[0:4]</code> = <code>[4, 8, 2, 7]</code>: <strong>8</strong> and <strong>7</strong> → count = 2</li>
-<li><code>i = 4</code></li>
-</ul>
-<p><strong>The Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, <code>count</code> equals the number of elements &gt; 5 in <code>arr[0:i]</code>.</p>
-</section></section>
-<section>
-<section id="puzzle-3-partitioning" class="title-slide slide level1 center">
-<h1>Puzzle 3: Partitioning</h1>
+<section id="partition-property-cut-property" class="slide level2 smaller">
+<h2>Partition Property (Cut Property)</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<!-- same graph; S={A,C,D} highlighted; C-E is the min crossing edge -->
+<svg viewbox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; font-family:sans-serif; font-size:13px">
 
+  <!-- partition region around S = {A, C, D} -->
+  <polygon points="158,22 352,22 352,202 158,202" fill="#27ae60" opacity="0.08" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="6 3"></polygon>
+  <text x="218" y="38" fill="#27ae60" font-size="12" font-weight="bold" font-style="italic">S = {A, C, D}</text>
+
+  <!-- B-E: faint (not crossing, not internal) -->
+  <line x1="55" y1="180" x2="105" y2="280" stroke="#ccc" stroke-width="1.5" fill="none"></line>
+
+  <!-- internal edges A-C, A-D, C-D: light gray -->
+  <g stroke="#bbb" stroke-width="1.8" fill="none">
+    <line x1="190" y1="50" x2="190" y2="180"></line> <!-- A-C 2 -->
+    <line x1="190" y1="50" x2="325" y2="180"></line> <!-- A-D 4 -->
+    <line x1="190" y1="180" x2="325" y2="180"></line> <!-- C-D 1 -->
+  </g>
+
+  <!-- crossing edges: gray except C-E (min) -->
+  <g stroke="#999" stroke-width="1.8" fill="none">
+    <line x1="190" y1="50" x2="55" y2="180"></line> <!-- A-B 8 -->
+    <line x1="55" y1="180" x2="190" y2="180"></line> <!-- B-C 7 -->
+    <line x1="190" y1="180" x2="265" y2="280"></line> <!-- C-F 9 -->
+    <line x1="325" y1="180" x2="265" y2="280"></line> <!-- D-F 5 -->
+  </g>
+  <!-- C-E: green bold = minimum crossing edge -->
+  <line x1="190" y1="180" x2="105" y2="280" stroke="#27ae60" stroke-width="3.5" fill="none"></line>
+
+  <!-- edge weight labels -->
+  <g font-size="12" font-weight="bold">
+    <text x="112" y="108" fill="#999">8</text>   <!-- A-B -->
+    <text x="195" y="122" fill="#bbb">2</text>   <!-- A-C internal -->
+    <text x="265" y="108" fill="#bbb">4</text>   <!-- A-D internal -->
+    <text x="118" y="175" fill="#999">7</text>   <!-- B-C -->
+    <text x="68" y="240" fill="#ccc">2</text>   <!-- B-E faint -->
+    <text x="255" y="175" fill="#bbb">1</text>   <!-- C-D internal -->
+    <text x="140" y="245" fill="#27ae60">3</text> <!-- C-E min! -->
+    <text x="215" y="250" fill="#999">9</text>   <!-- C-F -->
+    <text x="308" y="245" fill="#999">5</text>   <!-- D-F -->
+  </g>
+
+  <!-- nodes — A,C,D green (in S), B,E,F blue -->
+  <g fill="white" stroke-width="2">
+    <circle cx="190" cy="50" r="18" stroke="#27ae60"></circle>
+    <circle cx="55" cy="180" r="18" stroke="#3c78d8"></circle>
+    <circle cx="190" cy="180" r="18" stroke="#27ae60"></circle>
+    <circle cx="325" cy="180" r="18" stroke="#27ae60"></circle>
+    <circle cx="105" cy="280" r="18" stroke="#3c78d8"></circle>
+    <circle cx="265" cy="280" r="18" stroke="#3c78d8"></circle>
+  </g>
+  <g font-weight="bold" text-anchor="middle" dominant-baseline="central">
+    <text x="190" y="50" fill="#27ae60">A</text>
+    <text x="55" y="180" fill="#3c78d8">B</text>
+    <text x="190" y="180" fill="#27ae60">C</text>
+    <text x="325" y="180" fill="#27ae60">D</text>
+    <text x="105" y="280" fill="#3c78d8">E</text>
+    <text x="265" y="280" fill="#3c78d8">F</text>
+  </g>
+
+  <text x="190" y="312" text-anchor="middle" font-size="11" fill="#888" font-style="italic">green = min crossing edge (always in MST)</text>
+</svg>
+</div><div class="column" style="width:48%;">
+<p><strong>Partition Property (Cut Property)</strong></p>
+<p>Split vertices into any two sets <span class="math inline">\(S\)</span> and <span class="math inline">\(V \setminus S\)</span>.</p>
+<p>The <strong>minimum-weight edge</strong> crossing the cut is always in some MST.</p>
+<aside class="notes">
+<p>Partition property (cut property) is the theoretical basis for Prim’s algorithm. Proof sketch: suppose the minimum crossing edge e is NOT in the MST T. Add e to T → creates a cycle. That cycle must have another crossing edge e’ with weight ≥ e. Swap e’ for e to get a lighter spanning tree — contradiction.</p>
+<p>Contrast with cycle property (used for Kruskal’s): remove the heaviest edge on any cycle. Both properties together characterise the MST.</p>
+<p>The greedy algorithm described here IS Prim’s — we just need an efficient data structure to find the cheapest crossing edge at each step. A priority queue does it.</p>
+<p>S={A,C,D}: internal edges A-C(2), A-D(4), C-D(1). Crossing: A-B(8), B-C(7), C-E(3)←min, C-F(9), D-F(5).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div></div>
 </section>
-<section id="puzzle-3-partitioning-1" class="slide level2 smaller">
-<h2>Puzzle 3: Partitioning</h2>
+<section id="prims-algorithm-pseudocode" class="slide level2 smaller">
+<h2>Prim’s Algorithm: Pseudocode</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<ol type="1">
+<li><p>Initialize structure:</p>
+<ul>
+<li>For all <code>v</code>: <code>d[v] = INF</code>, <code>p[v] = null</code></li>
+<li>Let <code>d[s] = 0</code></li>
+<li>Initialize PQ by <code>d[v]</code></li>
+</ul></li>
+<li><p>Repeat <code>n</code> times:</p>
+<ul>
+<li>Remove minimum <code>d[]</code> unlabelled vertex: <code>v</code></li>
+<li>Label vertex <code>v</code></li>
+<li>For all unlabelled neighbors <code>w</code> of <code>v</code>:
+<ul>
+<li>If (<code>wt[(v,w)]</code> &lt; <code>d[w]</code>)
+<ul>
+<li><code>d[w] =</code> <code>wt[(v,w)]</code></li>
+<li><code>p[w] = v</code></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ol>
+<p>Where is the solution?</p>
+</div><div class="column" style="width:48%;">
+<svg viewbox="0 0 380 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; font-family:sans-serif">
+
+  <g stroke="#555" stroke-width="1.8" fill="none">
+    <line x1="45" y1="265" x2="85" y2="175"></line> <!-- A-B 2 -->
+    <line x1="45" y1="265" x2="170" y2="215"></line> <!-- A-C 8 -->
+    <line x1="45" y1="265" x2="245" y2="265"></line> <!-- A-E 7 -->
+    <line x1="85" y1="175" x2="170" y2="215"></line> <!-- B-C 5 -->
+    <line x1="85" y1="175" x2="265" y2="120"></line> <!-- B-D 7 -->
+    <line x1="170" y1="215" x2="265" y2="120"></line> <!-- C-D 9 -->
+    <line x1="170" y1="215" x2="245" y2="265"></line> <!-- C-E 8 -->
+    <line x1="265" y1="120" x2="335" y2="185"></line> <!-- D-F 4 -->
+    <line x1="245" y1="265" x2="335" y2="185"></line> <!-- E-F 3 -->
+  </g>
+
+  <g fill="#c0392b" font-size="14" font-weight="bold">
+    <text x="48" y="218">2</text>
+    <text x="94" y="250">8</text>
+    <text x="138" y="278">7</text>
+    <text x="118" y="200">5</text>
+    <text x="162" y="138">7</text>
+    <text x="222" y="160">9</text>
+    <text x="204" y="252">8</text>
+    <text x="308" y="142">4</text>
+    <text x="296" y="240">3</text>
+  </g>
+
+  <g fill="white" stroke="#3c78d8" stroke-width="2">
+    <circle cx="45" cy="265" r="16"></circle>
+    <circle cx="85" cy="175" r="16"></circle>
+    <circle cx="170" cy="215" r="16"></circle>
+    <circle cx="265" cy="120" r="16"></circle>
+    <circle cx="245" cy="265" r="16"></circle>
+    <circle cx="335" cy="185" r="16"></circle>
+  </g>
+  <g fill="#3c78d8" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="central">
+    <text x="45" y="265">A</text>
+    <text x="85" y="175">B</text>
+    <text x="170" y="215">C</text>
+    <text x="265" y="120">D</text>
+    <text x="245" y="265">E</text>
+    <text x="335" y="185">F</text>
+  </g>
+</svg>
+<aside class="notes">
+<p>d[v] = cheapest known edge weight from the current tree S to vertex v (not cumulative path cost — that’s Dijkstra’s). p[v] = which vertex in S is v’s parent in the MST. Terminates when Q is empty, i.e., all n vertices have been added to S. Key contrast: Dijkstra sets d[w] = d[v] + cost(v,w); Prim sets d[w] = cost(v,w) alone. Prim’s from A: A-B(2), B-C(5)? No — after A,B in S: d[C]=min(8,5)=5, d[D]=7, d[E]=7. Pick C(5). Then from C: d[D]=min(7,9)=7, d[E]=min(7,8)=7. Pick D or E (tie). D(7)→F(4). E(7)→F already reached at 4. Done. MST: A-B(2),B-C(5),B-D(7),D-F(4),A-E(7). Total=25.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div></div>
+</section>
+<section id="prims-algorithm-design-choices" class="slide level2 smaller">
+<h2>Prim’s Algorithm: Design Choices</h2>
 <div class="columns">
 <div class="column" style="width:55%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> mystery3(arr):</span>
-<span id="cb3-2"><a></a>    pivot <span class="op">=</span> arr[<span class="dv">0</span>]</span>
-<span id="cb3-3"><a></a>    left <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb3-4"><a></a>    <span class="cf">for</span> right <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(arr)):</span>
-<span id="cb3-5"><a></a>        <span class="cf">if</span> arr[right] <span class="op">&lt;</span> pivot:</span>
-<span id="cb3-6"><a></a>            arr[left], arr[right] <span class="op">=</span> arr[right], arr[left]</span>
-<span id="cb3-7"><a></a>            left <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb3-8"><a></a>    arr[<span class="dv">0</span>], arr[left <span class="op">-</span> <span class="dv">1</span>] <span class="op">=</span> arr[left <span class="op">-</span> <span class="dv">1</span>], arr[<span class="dv">0</span>]</span>
-<span id="cb3-9"><a></a>    <span class="cf">return</span> left <span class="op">-</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:45%;">
-<p>Original: <code>[5, 8, 2, 9, 1, 7, 3]</code></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">9</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">3</td>
-</tr>
-</tbody>
-</table>
-<p><code>pivot = 5</code>, <code>left = 3</code></p>
-</div></div>
-<p><strong>Q1</strong>: What iteration is <code>right</code> about to start?</p>
-<p><strong>Q2</strong>: Describe what’s in <code>arr[1:left]</code> and <code>arr[left:right]</code>.</p>
-<aside class="notes">
-<p>“This is trickier. Notice: arr[1:3] = [2, 1] — both &lt; 5. arr[3:?] = ?”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-visualization" class="slide level2">
-<h2>The Visualization</h2>
-<div id="c5fb4777" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_mon_invariants_files/figure-revealjs/cell-4-output-1.png" class="quarto-figure quarto-figure-center" width="688" height="278"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="the-solution-2" class="slide level2">
-<h2>The Solution</h2>
-<ul>
-<li><code>right = 5</code> (about to examine index 5, which has value 7)</li>
-<li><code>arr[1:left]</code> = <code>arr[1:3]</code> = <code>[2, 1]</code> — all &lt; pivot (5)</li>
-<li><code>arr[left:right]</code> = <code>arr[3:5]</code> = <code>[9, 8]</code> — all &gt;= pivot (5)</li>
-</ul>
-<p><strong>The Invariant</strong> (at iteration <code>right</code>):</p>
-<ul>
-<li><code>arr[1:left]</code> contains elements &lt; pivot</li>
-<li><code>arr[left:right]</code> contains elements &gt;= pivot</li>
-<li><code>arr[right:]</code> is unexamined</li>
-</ul>
-<aside class="notes">
-<p>“This is the partition step from quicksort! The invariant maintains two regions.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="the-detective-method" class="title-slide slide level1 center">
-<h1>The Detective Method</h1>
-
-</section>
-<section id="how-to-find-invariants" class="slide level2">
-<h2>How to Find Invariants</h2>
 <ol type="1">
-<li><p><strong>Look at the loop variable</strong>: What does <code>i</code> (or <code>right</code>, etc.) represent?</p></li>
-<li><p><strong>Look at the accumulated state</strong>: What has <code>result</code>, <code>count</code>, <code>left</code> captured so far?</p></li>
-<li><p><strong>State the relationship</strong>: “At iteration <span class="math inline">\(i\)</span>, [variable] holds [property of arr[0:i]]”</p></li>
-<li><p><strong>Verify</strong>: Does the frozen state match your invariant?</p></li>
+<li><p>Initialize structure:</p>
+<ul>
+<li>For all <code>v</code>: <code>d[v] = INF</code>, <code>p[v] = null</code></li>
+<li>Let <code>d[s] = 0</code></li>
+<li>Initialize PQ by <code>d[v]</code></li>
+</ul></li>
+<li><p>Repeat <code>n</code> times:</p>
+<ul>
+<li>Remove minimum <code>d[]</code> unlabelled vertex: <code>v</code></li>
+<li>Label vertex <code>v</code></li>
+<li>For all unlabelled neighbors <code>w</code> of <code>v</code>:
+<ul>
+<li>If (<code>wt[(v,w)]</code> &lt; <code>d[w]</code>)
+<ul>
+<li><code>d[w] =</code> <code>wt[(v,w)]</code></li>
+<li><code>p[w] = v</code></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>Return <code>p</code></p></li>
 </ol>
-</section>
-<section id="common-invariant-patterns" class="slide level2">
-<h2>Common Invariant Patterns</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Pattern</th>
-<th>Example Invariant</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Accumulation</strong></td>
-<td>“<code>total</code> = sum of <code>arr[0:i]</code>”</td>
-</tr>
-<tr class="even">
-<td><strong>Extremum</strong></td>
-<td>“<code>max_val</code> = maximum of <code>arr[0:i]</code>”</td>
-</tr>
-<tr class="odd">
-<td><strong>Counting</strong></td>
-<td>“<code>count</code> = number of X in <code>arr[0:i]</code>”</td>
-</tr>
-<tr class="even">
-<td><strong>Search</strong></td>
-<td>“If target exists, it’s in <code>arr[lo:hi+1]</code>”</td>
-</tr>
-<tr class="odd">
-<td><strong>Partition</strong></td>
-<td>“<code>arr[0:left]</code> satisfies P, <code>arr[left:i]</code> doesn’t”</td>
-</tr>
-</tbody>
-</table>
-</section></section>
-<section>
-<section id="practice-you-try" class="title-slide slide level1 center">
-<h1>Practice: You Try</h1>
-
-</section>
-<section id="puzzle-4" class="slide level2 smaller">
-<h2>Puzzle 4</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> mystery4(arr):</span>
-<span id="cb4-2"><a></a>    total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-3"><a></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr)):</span>
-<span id="cb4-4"><a></a>        total <span class="op">+=</span> arr[i] <span class="op">*</span> arr[i]</span>
-<span id="cb4-5"><a></a>    <span class="cf">return</span> total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">1</td>
-</tr>
-</tbody>
-</table>
-<p>Variables: <code>total = 14</code></p>
-</div></div>
-<p><strong>Q1</strong>: What is <code>i</code>? <strong>Q2</strong>: State the invariant.</p>
+</div><div class="column" style="width:45%;">
+<p>What design choices do we need to make?</p>
+<p>&nbsp;</p>
+<p>Put a ⭐ by __________________ operations.</p>
+<p>&nbsp;</p>
+<p>Put a 💜 by __________________ operations.</p>
 <aside class="notes">
-<p>“Think: 2² + 3² + 1² = 4 + 9 + 1 = 14. So i = 3.”</p>
+<p>⭐ = priority queue operations: removeMin and decreaseKey. - heap: removeMin O(log n), decreaseKey O(log n) - unsorted array: removeMin O(n), decreaseKey O(1) 💜 = neighbor iteration (“for each neighbor w of v”): depends on graph representation. - adj list: O(deg v) per vertex, O(m) total across all vertices - adj matrix: O(n) per vertex, O(n²) total Students fill in the table on the next slide.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -606,99 +541,70 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</div></div>
 </section>
-<section id="solution-4" class="slide level2">
-<h2>Solution 4</h2>
-<p><span class="math inline">\(2^2 + 3^2 + 1^2 = 4 + 9 + 1 = 14\)</span></p>
-<p>So <code>i = 3</code> (about to process index 3).</p>
-<p><strong>Invariant</strong>: At iteration <span class="math inline">\(i\)</span>, <code>total</code> = sum of squares of <code>arr[0:i]</code>.</p>
-</section>
-<section id="puzzle-5" class="slide level2 smaller">
-<h2>Puzzle 5</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> mystery5(arr, target):</span>
-<span id="cb5-2"><a></a>    lo, hi <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(arr) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb5-3"><a></a>    <span class="cf">while</span> lo <span class="op">&lt;=</span> hi:</span>
-<span id="cb5-4"><a></a>        mid <span class="op">=</span> (lo <span class="op">+</span> hi) <span class="op">//</span> <span class="dv">2</span></span>
-<span id="cb5-5"><a></a>        <span class="cf">if</span> arr[mid] <span class="op">==</span> target:</span>
-<span id="cb5-6"><a></a>            <span class="cf">return</span> mid</span>
-<span id="cb5-7"><a></a>        <span class="cf">elif</span> arr[mid] <span class="op">&lt;</span> target:</span>
-<span id="cb5-8"><a></a>            lo <span class="op">=</span> mid <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb5-9"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb5-10"><a></a>            hi <span class="op">=</span> mid <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb5-11"><a></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Frozen state: <code>lo = 5</code>, <code>hi = 9</code>, <code>target = 72</code></p>
+<section id="prims-algorithm-runtime-analysis" class="slide level2 smaller">
+<h2>Prim’s Algorithm: Runtime Analysis</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ol type="1">
+<li><p>Initialize structure:</p>
+<ul>
+<li>For all <code>v</code>: <code>d[v] = INF</code>, <code>p[v] = null</code></li>
+<li>Let <code>d[s] = 0</code></li>
+<li>Initialize PQ by <code>d[v]</code> ⭐</li>
+</ul></li>
+<li><p>Repeat <code>n</code> times:</p>
+<ul>
+<li>Remove minimum <code>d[]</code> unlabelled vertex: <code>v</code> ⭐</li>
+<li>Label vertex <code>v</code></li>
+<li>For all unlabelled neighbors <code>w</code> of <code>v</code>: 💜
+<ul>
+<li>If (<code>wt[(v,w)]</code> &lt; <code>d[w]</code>)
+<ul>
+<li><code>d[w] =</code> <code>wt[(v,w)]</code> ⭐</li>
+<li><code>p[w] = v</code></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>Return <code>p</code></p></li>
+</ol>
+</div><div class="column" style="width:45%;">
+<p>⭐ <span class="math inline">\(n\)</span> removeMins + <span class="math inline">\(\leq m\)</span> decreaseKeys<br> 💜 <span class="math inline">\(O(m)\)</span> total (adj list) &nbsp;|&nbsp; <span class="math inline">\(O(n^2)\)</span> total (adj matrix)</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">0</th>
-<th style="text-align: center;">1</th>
-<th style="text-align: center;">2</th>
-<th style="text-align: center;">3</th>
-<th style="text-align: center;">4</th>
-<th style="text-align: center;">5</th>
-<th style="text-align: center;">6</th>
-<th style="text-align: center;">7</th>
-<th style="text-align: center;">8</th>
-<th style="text-align: center;">9</th>
-<th style="text-align: center;">10</th>
-<th style="text-align: center;">11</th>
-<th style="text-align: center;">12</th>
-<th style="text-align: center;">13</th>
-<th style="text-align: center;">14</th>
-<th style="text-align: center;">15</th>
+<th></th>
+<th>Adj matrix</th>
+<th>Adj list</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">12</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">23</td>
-<td style="text-align: center;">38</td>
-<td style="text-align: center;">56</td>
-<td style="text-align: center;">72</td>
-<td style="text-align: center;">91</td>
-<td style="text-align: center;">95</td>
-<td style="text-align: center;">99</td>
-<td style="text-align: center;">103</td>
-<td style="text-align: center;">110</td>
-<td style="text-align: center;">125</td>
-<td style="text-align: center;">142</td>
+<td><strong>heap</strong></td>
+<td><span style="color:#3c78d8"><span class="math inline">\(O(n^2 + m \log n)\)</span></span></td>
+<td><span style="color:#3c78d8"><span class="math inline">\(O(m \log n)\)</span></span></td>
+</tr>
+<tr class="even">
+<td><strong>unsorted array</strong></td>
+<td><span style="color:#3c78d8"><span class="math inline">\(O(n^2)\)</span></span></td>
+<td><span style="color:#3c78d8"><span class="math inline">\(O(n^2)\)</span></span></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Q1</strong>: What just happened? <strong>Q2</strong>: State the invariant.</p>
-</section>
-<section id="solution-5" class="slide level2">
-<h2>Solution 5</h2>
+<p>&nbsp;</p>
+<p><strong>Which is best?</strong> Depends on graph <strong>density</strong>:</p>
 <ul>
-<li>We’re searching for 72</li>
-<li><code>lo = 5, hi = 9</code> means we’re looking in <code>arr[5:10]</code> = <code>[23, 38, 56, 72, 91]</code></li>
-<li>Previous mid was 4 (value 16 &lt; 72), so we set <code>lo = 5</code></li>
+<li><strong>Sparse</strong> (<span class="math inline">\(m=O(n)\)</span>):</li>
+<li><strong>Dense</strong> (<span class="math inline">\(m=O(n^2)\)</span>):</li>
 </ul>
-<p><strong>Invariant</strong>: If <code>target</code> is in <code>arr</code>, then <code>target</code> is in <code>arr[lo:hi+1]</code>.</p>
 <aside class="notes">
-<p>“We narrowed from the full array to indices 5-9. The invariant says: if 72 exists, it’s in this range. (And it is — at index 8.)”</p>
+<p>Heap + adj list: n×O(log n) removeMin + m×O(log n) decreaseKey + O(m) neighbor scans = O(m log n). Heap + adj matrix: same PQ cost + O(n) per vertex for neighbor scan = O(n²) + O(m log n). Unsorted array + adj matrix: O(n) removeMin × n = O(n²); decreaseKey O(1); neighbor scan O(n²) total = O(n²). Unsorted array + adj list: O(n²) removeMin dominates = O(n²).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -710,54 +616,153 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section></section>
-<section>
-<section id="why-this-matters" class="title-slide slide level1 center">
-<h1>Why This Matters</h1>
-
+</div></div>
 </section>
-<section id="debugging-with-invariants" class="slide level2">
-<h2>Debugging with Invariants</h2>
-<p>When your code doesn’t work:</p>
-<ol type="1">
-<li><strong>State your invariant</strong> (what <em>should</em> be true?)</li>
-<li><strong>Print the state</strong> at each iteration</li>
-<li><strong>Find where the invariant breaks</strong></li>
-</ol>
-<p>The bug is where reality diverges from the invariant.</p>
+<section id="prims-algorithm-python" class="slide level2 smaller">
+<h2>Prim’s Algorithm: Python</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> heapq</span>
+<span id="cb1-2"><a></a></span>
+<span id="cb1-3"><a></a><span class="kw">def</span> prim(graph, start):</span>
+<span id="cb1-4"><a></a>    <span class="co">"""graph: {vertex: [(neighbor, weight), ...]}"""</span></span>
+<span id="cb1-5"><a></a>    d <span class="op">=</span> {v: <span class="bu">float</span>(<span class="st">'inf'</span>) <span class="cf">for</span> v <span class="kw">in</span> graph}   <span class="co"># cheapest edge to reach v</span></span>
+<span id="cb1-6"><a></a>    parent <span class="op">=</span> {v: <span class="va">None</span> <span class="cf">for</span> v <span class="kw">in</span> graph}</span>
+<span id="cb1-7"><a></a>    d[start] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-8"><a></a>    pq <span class="op">=</span> [(<span class="dv">0</span>, start)]                       <span class="co"># (edge_weight, vertex)</span></span>
+<span id="cb1-9"><a></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb1-10"><a></a></span>
+<span id="cb1-11"><a></a>    <span class="cf">while</span> pq:</span>
+<span id="cb1-12"><a></a>        cost, v <span class="op">=</span> heapq.heappop(pq)</span>
+<span id="cb1-13"><a></a>        <span class="cf">if</span> v <span class="kw">in</span> visited:</span>
+<span id="cb1-14"><a></a>            <span class="cf">continue</span></span>
+<span id="cb1-15"><a></a>        visited.add(v)</span>
+<span id="cb1-16"><a></a></span>
+<span id="cb1-17"><a></a>        <span class="cf">for</span> w, weight <span class="kw">in</span> graph[v]:</span>
+<span id="cb1-18"><a></a>            <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> weight <span class="op">&lt;</span> d[w]:</span>
+<span id="cb1-19"><a></a>                d[w] <span class="op">=</span> weight              <span class="co"># just the edge weight (not cumulative!)</span></span>
+<span id="cb1-20"><a></a>                parent[w] <span class="op">=</span> v</span>
+<span id="cb1-21"><a></a>                heapq.heappush(pq, (weight, w))</span>
+<span id="cb1-22"><a></a></span>
+<span id="cb1-23"><a></a>    <span class="cf">return</span> parent   <span class="co"># MST as parent pointers</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Key contrast with Dijkstra’s: - Dijkstra’s: d[w] = d[v] + cost(v,w) → minimizes total path from source - Prim’s: d[w] = cost(v,w) → minimizes single edge into tree</p>
+<p>Both use the same priority-queue skeleton. heapq.heappush approximates decreaseKey (lazy deletion via the <code>visited</code> check).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="the-invariant-as-compass" class="slide level2">
-<h2>The Invariant as Compass</h2>
-<blockquote>
-<p>“When lost, check the invariant.”</p>
-</blockquote>
+<section id="single-source-shortest-path" class="slide level2" data-background-image="../images/mapssssp.png" data-background-opacity="0.6">
+<h2>Single Source Shortest Path</h2>
+<p>Given a start vertex (source) <span class="math inline">\(s\)</span>, find the path of least total cost from <span class="math inline">\(s\)</span> to every vertex in the graph.</p>
+</section>
+<section id="single-source-shortest-path-1" class="slide level2 smaller">
+<h2>Single Source Shortest Path</h2>
 <ul>
-<li>Unsure about an edge case? → Does it maintain the invariant?</li>
-<li>Code gives wrong answer? → Where does the invariant fail?</li>
-<li>Writing new code? → What invariant do I want to maintain?</li>
+<li>Input: directed graph <span class="math inline">\(G\)</span> with non-negative edge weights, and a start vertex <span class="math inline">\(s\)</span>.</li>
+<li>Output: A subgraph <span class="math inline">\(G’\)</span> consisting of the shortest (minimum total cost) paths from <span class="math inline">\(s\)</span> to every other vertex in the graph.</li>
 </ul>
-</section></section>
-<section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
-
-</section>
-<section id="what-we-learned" class="slide level2">
-<h2>What We Learned</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="../images/maps4sssp.png"></p>
+</div><div class="column">
+<p><em>Dijkstra’s Algorithm (1959)</em></p>
+<p>&nbsp;</p>
+<p>Note:</p>
+<ul>
+<li></li>
+<li></li>
+</ul>
+</div></div>
+<aside class="notes">
 <ol type="1">
-<li><p><strong>Invariants are discoverable</strong> from frozen states</p></li>
-<li><p><strong>The pattern</strong>: “At iteration <span class="math inline">\(i\)</span>, [variable] holds [property of data seen so far]”</p></li>
-<li><p><strong>Common types</strong>: accumulation, extremum, counting, search range, partition</p></li>
-<li><p><strong>The detective method</strong>: Look at loop variable, look at accumulated state, state the relationship</p></li>
+<li>change (d,e) to -2: DIJK may not find shortest path</li>
+<li>change (g,s) to -10: no shortest path exists</li>
 </ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="next-time" class="slide level2">
-<h2>Next Time</h2>
-<p>Recursion: When the function calls itself.</p>
-<p>Spoiler: Recursion has invariants too — we call them <strong>recursive properties</strong>.</p>
+<section id="sssp-algorithm" class="slide level2 smaller">
+<h2>SSSP Algorithm</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="../images/maps4sssp.png"></p>
+</div><div class="column">
+<p>Given a source vertex <span class="math inline">\(s\)</span>, we wish to find the shortest path from <span class="math inline">\(s\)</span> to every other vertex in the graph.</p>
+<ol type="1">
+<li><p>Initialize structure:</p>
+<ul>
+<li><code>d</code>:</li>
+<li><code>p</code>:</li>
+</ul></li>
+<li><p>Repeat these steps:</p>
+<ul>
+<li>Label a new (unlabelled) vertex <span class="math inline">\(v\)</span>, whose shortest distance has been found</li>
+<li>Update <span class="math inline">\(v\)</span>’s neighbors with improved distance and predecessor</li>
+</ul></li>
+</ol>
+</div></div>
+</section>
+<section id="sssp-algorithm-1" class="slide level2 smaller">
+<h2>SSSP Algorithm</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ol type="1">
+<li><p>Initialize structure:</p>
+<ul>
+<li>For all <code>v</code>: <code>d[v] = INF</code>, <code>p[v] = null</code></li>
+<li>Let <code>d[s] = 0</code></li>
+<li>Initialize PQ by <code>d[v]</code></li>
+</ul></li>
+<li><p>Repeat <code>n</code> times:</p>
+<ul>
+<li>Remove minimum <code>d[]</code> unlabelled vertex: <code>v</code></li>
+<li>Label vertex <code>v</code></li>
+<li>For all unlabelled neighbors <code>w</code> of <code>v</code>:
+<ul>
+<li>If (________________ &lt; <code>d[w]</code>)
+<ul>
+<li><code>d[w] =</code> ________________</li>
+<li><code>p[w] = v</code></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>Return <code>p</code></p></li>
+</ol>
+</div><div class="column" style="width:45%;">
+<p><img data-src="../images/maps4sssp.png"></p>
+</div></div>
+</section>
+<section id="three-observations" class="slide level2">
+<h2>Three Observations:</h2>
+<ul>
+<li><p>When a node becomes labeled, its shortest distance is final. It will never improve again.</p></li>
+<li><p><code>d[]</code> values only decrease, never increase.</p></li>
+<li><p>The predecessors <code>p[]</code> form a shortest-path tree.</p></li>
+</ul>
+</section>
+<section id="your-turn" class="slide level2">
+<h2>Your Turn</h2>
+<p>Execute Dijkstra’s algorithm on this graph:</p>
 
 
-<script type="ojs-module-contents">
+
+<img data-src="../images/maps5sssp.png" class="r-stretch"><script type="ojs-module-contents">
 eyJjb250ZW50cyI6W119
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
@@ -771,7 +776,7 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
