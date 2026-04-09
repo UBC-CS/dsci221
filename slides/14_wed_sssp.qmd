@@ -1,0 +1,158 @@
+---
+title: "Single Source Shortest Path"
+subtitle: "Week 14, Wednesday — Dijkstra's"
+date: 2026-04-10
+---
+
+## Announcements {.smaller}
+
+
+## Single Source Shortest Path {background-image="/images/mapssssp.png" background-opacity="0.6"}
+
+Given a start vertex (source) $s$, find the path of least total cost from $s$ to every vertex in the graph.
+
+
+## Single Source Shortest Path {.smaller}
+
+* Input:  directed graph $G$ with non-negative edge weights, and a start vertex $s$.
+* Output: A subgraph $G’$ consisting of the shortest (minimum total cost) paths from $s$ to every other vertex in the graph.
+
+::::: columns
+::: {.column}
+![](/images/maps4sssp.png)
+:::
+::: {.column}
+*Dijkstra's Algorithm (1959)*
+
+\ 
+
+Note:
+
+- 
+
+- 
+:::
+::::: 
+
+::: notes
+1. change (d,e) to -2: DIJK may not find shortest path
+2. change (g,s) to -10: no shortest path exists
+:::
+
+## SSSP Algorithm {.smaller}
+
+::::: columns
+::: {.column}
+![](/images/maps4sssp.png)
+:::
+::: {.column}
+
+Given a source vertex $s$, we wish to find the shortest path from $s$ to every other vertex in the graph.
+
+1. Initialize structure:
+
+   - `d`:
+   - `p`:
+
+2. Repeat these steps:
+   - Label a new (unlabelled) vertex $v$, whose shortest distance has been found
+   - Update $v$’s neighbors with improved distance and predecessor
+:::
+::::: 
+
+## SSSP Algorithm {.smaller}
+
+::::: columns
+::: {.column width="55%"}
+1. Initialize structure:
+
+   - For all `v`: `d[v] = INF`, `p[v] = null`
+   - Let `d[s] = 0`
+   - Initialize PQ by `d[v]`
+
+2. Repeat `n` times:
+
+   - Remove minimum `d[]` unlabelled vertex: `v` 
+   - Label vertex `v`
+   - For all unlabelled neighbors `w` of `v`:  
+     - If (\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ < `d[w]`)
+       - `d[w] =` \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+       - `p[w] = v`
+      
+3. Return `p`
+:::
+::: {.column width="45%"}
+
+![](/images/maps4sssp.png)
+
+:::
+::::: 
+
+## Three Observations:
+
+* When a node becomes labeled, its shortest distance is final. It will never improve again.
+
+* `d[]` values only decrease, never increase.
+
+* The predecessors `p[]` form a shortest-path tree.
+
+## Your Turn
+
+Execute Dijkstra's algorithm on this graph:
+
+![](/images/maps5sssp.png)
+
+
+## Prim's Algorithm: Runtime Analysis {.smaller}
+
+:::: {.columns}
+::: {.column width="55%"}
+1. Initialize structure:
+
+   - For all `v`: `d[v] = INF`, `p[v] = null`
+   - Let `d[s] = 0`
+   - Initialize PQ by `d[v]` ⭐
+
+2. Repeat `n` times:
+
+   - Remove minimum `d[]` unlabelled vertex: `v` ⭐
+   - Label vertex `v`
+   - For all unlabelled neighbors `w` of `v`:  💜
+     - If (`wt[(v,w)]` < `d[w]`)
+       - `d[w] =` `wt[(v,w)]` ⭐
+       - `p[w] = v`
+      
+3. Return `p`
+
+:::
+::: {.column width="45%"}
+⭐ $n$ removeMins + $\leq m$ decreaseKeys<br>
+💜 $O(m)$ total (adj list) &nbsp;|&nbsp; $O(n^2)$ total (adj matrix)
+
+| | Adj matrix | Adj list |
+|---|---|---|
+| **heap** | [$O(n^2 + m \log n)$]{style="color:#3c78d8"} | [$O(m \log n)$]{style="color:#3c78d8"} |
+| **unsorted array** | [$O(n^2)$]{style="color:#3c78d8"} | [$O(n^2)$]{style="color:#3c78d8"} |
+
+&nbsp;
+
+**Which is best?** Depends on graph **density**:
+
+- **Sparse** ($m=O(n)$):
+- **Dense** ($m=O(n^2)$): 
+
+
+
+
+::: notes
+Heap + adj list: n×O(log n) removeMin + m×O(log n) decreaseKey + O(m) neighbor scans = O(m log n).
+Heap + adj matrix: same PQ cost + O(n) per vertex for neighbor scan = O(n²) + O(m log n).
+Unsorted array + adj matrix: O(n) removeMin × n = O(n²); decreaseKey O(1); neighbor scan O(n²) total = O(n²).
+Unsorted array + adj list: O(n²) removeMin dominates = O(n²).
+:::
+:::
+::::
+
+## The End.
+
+Thanks for a fun year! 
