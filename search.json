@@ -1992,6 +1992,624 @@
     "text": "Next Time\nRecursion: When the function calls itself.\nSpoiler: Recursion has invariants too — we call them recursive properties."
   },
   {
+    "objectID": "slides/06_tue_hashing.html#the-dictionary-dream",
+    "href": "slides/06_tue_hashing.html#the-dictionary-dream",
+    "title": "The Magic of O(1) Lookup",
+    "section": "The Dictionary Dream",
+    "text": "The Dictionary Dream\nWhat if we could do this?\n\n\n\nOperation\nTime\n\n\n\n\nInsert\nO(1)\n\n\nFind\nO(1)\n\n\nDelete\nO(1)\n\n\n\nNo searching. No sorting. Just… know where everything is."
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#pythons-dict-and-set",
+    "href": "slides/06_tue_hashing.html#pythons-dict-and-set",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Python’s dict and set",
+    "text": "Python’s dict and set\nYou’ve been using this magic all along:\nseen = set()\nseen.add(\"apple\")      # O(1)\n\"apple\" in seen        # O(1)\n\nages = {}\nages[\"Alice\"] = 25     # O(1)\nages[\"Alice\"]          # O(1) → 25\nHow does this work?"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#a-hash-table",
+    "href": "slides/06_tue_hashing.html#a-hash-table",
+    "title": "The Magic of O(1) Lookup",
+    "section": "A Hash Table",
+    "text": "A Hash Table\n\nI’ll annotate the diagram on the right to show what’s happening as we trace through the code. Bottom line: “we call this setup a hash table.” Other names: associative array (the interface), hashmap, or just map.\ni’ll also point out that everthing is O(1)!\n\n\n\nages = {}\nages[\"Alice\"] = 25\nages[\"Bob\"] = 30\nprint(ages[\"Alice\"])  # → 25\nA hash table consists of:\n\nAn array of slots\nA hash function: key → index\n??"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#whats-a-hash-function",
+    "href": "slides/06_tue_hashing.html#whats-a-hash-function",
+    "title": "The Magic of O(1) Lookup",
+    "section": "What’s a Hash Function?",
+    "text": "What’s a Hash Function?\nA function that turns any key into an integer.\nhash(\"hello\")      # → 8743927429234\nhash(\"world\")      # → -3847293742938\nhash(42)           # → 42\nhash((1, 2, 3))    # → 529344067295497451\nThen we use % m to fit it into our array of size m.\n\nWe discussed hash functions in detail in DSCI 220, but I’ll remind you of the key results."
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#what-makes-a-good-hash-function",
+    "href": "slides/06_tue_hashing.html#what-makes-a-good-hash-function",
+    "title": "The Magic of O(1) Lookup",
+    "section": "What Makes a Good Hash Function?",
+    "text": "What Makes a Good Hash Function?\n\nSpreads data uniformly across the table (SUHA)\nComputed in O(1) time\nDeterministic: if k1 == k2, then h(k1) == h(k2)\n\nBut “spreads uniformly” doesn’t mean two keys won’t land in the same cell…"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#the-adversary-problem",
+    "href": "slides/06_tue_hashing.html#the-adversary-problem",
+    "title": "The Magic of O(1) Lookup",
+    "section": "The Adversary Problem",
+    "text": "The Adversary Problem\n\nUse this to explain why we need universal hashing. A nefarious person who knows our hash function could deliberately choose keys that all hash to the same slot → O(n) worst case!\n\n\nSolution: Universal hashing — randomly choose the hash function at runtime.\nThe adversary can’t predict which keys will collide!"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#the-problem-collisions",
+    "href": "slides/06_tue_hashing.html#the-problem-collisions",
+    "title": "The Magic of O(1) Lookup",
+    "section": "The Problem: Collisions",
+    "text": "The Problem: Collisions\nWhat if two keys hash to the same index?\nhash(\"apple\") % 7  # → 3\nhash(\"grape\") % 7  # → 3  # Uh oh!\nThis is called a collision.\nWith only \\(\\sqrt{m}\\) keys in a table of size \\(m\\), we expect at least one collision.\n(This is the birthday paradox you saw in DSCI 220!)\n\ni’m going to rewrite this in annotation to be with data of size n, even a table of size n^2 isn’t adequate to make collisions rare."
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#collisions-are-inevitable",
+    "href": "slides/06_tue_hashing.html#collisions-are-inevitable",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Collisions Are Inevitable",
+    "text": "Collisions Are Inevitable\nEven with a “good” hash function, collisions happen.\nWhy? Because we’re mapping a huge keyspace into a small array.\n\nPossible strings: practically infinite\nArray size: maybe 1000 slots\n\nWe need a collision resolution strategy.\n\ntwo general approaches, a) use the cells as buckets, or b) put the key in some other cell (turn the hash function into a hash process)"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#strategy-separate-chaining",
+    "href": "slides/06_tue_hashing.html#strategy-separate-chaining",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Strategy: Separate Chaining",
+    "text": "Strategy: Separate Chaining\nEach slot holds a list of items that hash there.\n\n\nInsert {16, 8, 4, 13, 29, 11, 22} with h(k) = k % 7:"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#separate-chaining-analysis",
+    "href": "slides/06_tue_hashing.html#separate-chaining-analysis",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Separate Chaining: Analysis",
+    "text": "Separate Chaining: Analysis\n\n\nTo find a key:\n\nHash to get the slot: O(1)\nSearch the list at that slot: O(length of list)\n\nKey question: How long are the lists?"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#the-load-factor",
+    "href": "slides/06_tue_hashing.html#the-load-factor",
+    "title": "The Magic of O(1) Lookup",
+    "section": "The Load Factor",
+    "text": "The Load Factor\n\n\nLoad factor \\(\\alpha = n/m\\)\n\n\\(n\\) = number of items stored\n\\(m\\) = number of slots (array size)\n\nIf items are spread evenly, each list has length \\(\\approx \\alpha\\).\nUnder uniform hashing assumption:\n\nExpected time to find = \\(O(1 + \\alpha)\\)"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#strategy-linear-probing",
+    "href": "slides/06_tue_hashing.html#strategy-linear-probing",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Strategy: Linear Probing",
+    "text": "Strategy: Linear Probing\nInstead of chaining, store items directly in the array.\nIf slot h(k) is full, try h(k)+1, then h(k)+2, …\ndef insert(key, value):\n    i = hash(key) % m\n    while array[i] is not None:\n        i = (i + 1) % m  # probe next slot\n    array[i] = (key, value)\nAdvantage: No linked lists, better cache performance.\nDisadvantage: Clustering — full regions grow and merge."
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#linear-probing-watch-and-listen",
+    "href": "slides/06_tue_hashing.html#linear-probing-watch-and-listen",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Linear Probing: Watch and Listen",
+    "text": "Linear Probing: Watch and Listen\n\nThis visualization inserts 1000 items into a table of size 1000. Listen for when insertion becomes “too slow.” Students inevitably identify ~2/3 as the threshold — which matches the analytical result!"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#double-hashing-watch-and-listen",
+    "href": "slides/06_tue_hashing.html#double-hashing-watch-and-listen",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Double Hashing: Watch and Listen",
+    "text": "Double Hashing: Watch and Listen\n\nNow let’s try double hashing. Notice it doesn’t slow down as dramatically — the probes stay short even at higher load factors because we avoid clustering."
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#the-secret-to-o1",
+    "href": "slides/06_tue_hashing.html#the-secret-to-o1",
+    "title": "The Magic of O(1) Lookup",
+    "section": "The Secret to O(1)",
+    "text": "The Secret to O(1)\nRemember: \\(\\alpha = n/m\\)\n\n\\(n\\) = number of items\n\\(m\\) = table size\n\nIf we keep \\(\\alpha\\) constant (say, \\(\\alpha \\le 2/3\\)), then:\n\nExpected probes = \\(O(1)\\)\nExpected find time = \\(O(1)\\)\nExpected insert time = \\(O(1)\\)"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#performance-vs-load-factor",
+    "href": "slides/06_tue_hashing.html#performance-vs-load-factor",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Performance vs Load Factor",
+    "text": "Performance vs Load Factor\n\nAs \\(\\alpha\\) increases, expected probes increase. Linear probing degrades faster than double hashing or chaining. The key insight: all strategies blow up as \\(\\alpha \\to 1\\).\n\n\nExpected probes vs load factor for different strategies"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#the-punchline-resizing",
+    "href": "slides/06_tue_hashing.html#the-punchline-resizing",
+    "title": "The Magic of O(1) Lookup",
+    "section": "The Punchline: Resizing",
+    "text": "The Punchline: Resizing\n\nagain, i like the way i did this in old slides.\n\n\n\nThe old message:\n\nWhen the array fills,\nDouble the array size\nCopy all items to the new array\n\nThis single resize costs O(n)…"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#amortized-o1",
+    "href": "slides/06_tue_hashing.html#amortized-o1",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Amortized O(1)",
+    "text": "Amortized O(1)\nYou’ve seen this movie before! (Dynamic arrays, Week 5)\n\nMost inserts: O(1)\nOccasional resize: O(n)\n\nUsing the same accounting trick:\nAmortized cost per insert = O(1)"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#the-full-picture",
+    "href": "slides/06_tue_hashing.html#the-full-picture",
+    "title": "The Magic of O(1) Lookup",
+    "section": "The Full Picture",
+    "text": "The Full Picture\nHash table operations are O(1) expected, amortized:\n\n\n\nOperation\nTime\n\n\n\n\nInsert\nO(1) expected, amortized\n\n\nFind\nO(1) expected\n\n\nDelete\nO(1) expected\n\n\n\n“Expected” = assuming good hash function “Amortized” = averaging over many operations"
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#why-expected",
+    "href": "slides/06_tue_hashing.html#why-expected",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Why “Expected”?",
+    "text": "Why “Expected”?\nThe O(1) relies on:\n\nA good hash function that spreads keys uniformly\nNo adversary choosing keys to cause collisions\n\nIn practice, Python’s built-in hash functions are excellent.\nWorst case (all keys collide): O(n) — but this almost never happens."
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#pythons-implementation",
+    "href": "slides/06_tue_hashing.html#pythons-implementation",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Python’s Implementation",
+    "text": "Python’s Implementation\nPython dict uses:\n\nOpen addressing (not chaining) — items stored directly in array\nResizes at \\(\\alpha \\approx 2/3\\)\nSophisticated probing to handle collisions\n\nYou don’t need to know the details — just that it’s O(1)!\n\nPython doesn’t use linear probing — it uses a variant called “pseudo-random probing” or more specifically, a technique based on the full hash value. The probe sequence uses the formula: j = ((5*j) + 1 + perturb) % 2**i where perturb starts as the full hash and gets shifted right each iteration.\nThis avoids linear probing’s clustering problem while maintaining good cache behavior. The key insight: it visits every slot eventually (guaranteed by math), but in a scattered pattern that depends on the full hash value, not just hash % m."
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#summary",
+    "href": "slides/06_tue_hashing.html#summary",
+    "title": "The Magic of O(1) Lookup",
+    "section": "Summary",
+    "text": "Summary\nHash tables give O(1) lookup by:\n\nUsing a hash function to map keys → array indices\nHandling collisions (e.g., with chaining)\nResizing (double, copy, re-hash) to keep load factor constant\n\nThis is the magic behind Python’s dict and set."
+  },
+  {
+    "objectID": "slides/06_tue_hashing.html#whats-next",
+    "href": "slides/06_tue_hashing.html#whats-next",
+    "title": "The Magic of O(1) Lookup",
+    "section": "What’s Next",
+    "text": "What’s Next\nWednesday: The dictionary trick in action!\n\nTwo-Sum: O(n²) → O(n)\nAnagram detection\nFrequency counting\n\nThe pattern: “Have I seen this before?” = dictionary lookup"
+  },
+  {
+    "objectID": "slides/jotto_deck.html#the-16-words",
+    "href": "slides/jotto_deck.html#the-16-words",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "The 16 Words",
+    "text": "The 16 Words\nDEW  FOX  GEL  INK\nJOG  MOB  NAP  NIP\nNOR  NUT  OAT  OIL\nPUG  SOY  WOO  YAK\nWhy this set? Different heuristics produce DIFFERENT decision trees! - Greedy Minimax: first guess MOB, depth 8 - Information Gain: first guess NIP, depth 7 - Min Average: first guess NAP, depth 6 (same as optimal!)\nNo anagram pairs in this set."
+  },
+  {
+    "objectID": "slides/jotto_deck.html#rules",
+    "href": "slides/jotto_deck.html#rules",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Rules",
+    "text": "Rules\n\nOne player draws a secret card\nOther player(s) have the remaining 15 cards visible\nGuess a word; response is count of matching letters (position doesn’t matter)\n\nFOX vs JOG → 1 (O matches)\nDEW vs YAK → 0 (no letters in common)\nNIP vs INK → 2 (I and N match)\n\nHard mode constraint: You may only guess words that are consistent with all previous responses (i.e., words that could still be the secret)\nGoal: identify the secret word in fewest guesses"
+  },
+  {
+    "objectID": "slides/jotto_deck.html#deck-design",
+    "href": "slides/jotto_deck.html#deck-design",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Deck Design",
+    "text": "Deck Design\nWords with O (tend to overlap — harder to discriminate): - FOX, JOG, MOB, NOR, OAT, OIL, SOY, WOO\nProbe words (more distinct letter patterns): - DEW, GEL, INK, NAP, NIP, NUT, PUG, YAK"
+  },
+  {
+    "objectID": "slides/jotto_deck.html#jotto-score-matrix",
+    "href": "slides/jotto_deck.html#jotto-score-matrix",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Jotto Score Matrix",
+    "text": "Jotto Score Matrix\n    DEW FOX GEL INK JOG MOB NAP NIP NOR NUT OAT OIL PUG SOY WOO YAK\nDEW  3   0   1   0   0   0   0   0   0   0   0   0   0   0   1   0\nFOX  0   3   0   0   1   1   0   0   1   0   1   1   0   1   1   0\nGEL  1   0   3   0   1   0   0   0   0   0   0   1   1   0   0   0\nINK  0   0   0   3   0   0   1   2   1   1   0   1   0   0   0   1\nJOG  0   1   1   0   3   1   0   0   1   0   1   1   1   1   1   0\nMOB  0   1   0   0   1   3   0   0   1   0   1   1   0   1   1   0\nNAP  0   0   0   1   0   0   3   2   1   1   1   0   1   0   0   1\nNIP  0   0   0   2   0   0   2   3   1   1   0   1   1   0   0   0\nNOR  0   1   0   1   1   1   1   1   3   1   1   1   0   1   1   0\nNUT  0   0   0   1   0   0   1   1   1   3   1   0   1   0   0   0\nOAT  0   1   0   0   1   1   1   0   1   1   3   1   0   1   1   1\nOIL  0   1   1   1   1   1   0   1   1   0   1   3   0   1   1   0\nPUG  0   0   1   0   1   0   1   1   0   1   0   0   3   0   0   0\nSOY  0   1   0   0   1   1   0   0   1   0   1   1   0   3   1   1\nWOO  1   1   0   0   1   1   0   0   1   0   1   1   0   1   2   0\nYAK  0   0   0   1   0   0   1   0   0   0   1   0   0   1   0   3"
+  },
+  {
+    "objectID": "slides/jotto_deck.html#first-guess-analysis",
+    "href": "slides/jotto_deck.html#first-guess-analysis",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "First Guess Analysis",
+    "text": "First Guess Analysis\nHow many distinct Jotto scores does each word produce against the other 15?\n\n\n\nWord\nScore distribution\nDistinct outcomes\n\n\n\n\nDEW\n0:13, 1:2\n2\n\n\nFOX\n0:8, 1:7\n2\n\n\nGEL\n0:11, 1:4\n2\n\n\nINK\n0:9, 1:5, 2:1\n3\n\n\nJOG\n0:6, 1:9\n2\n\n\nMOB\n0:8, 1:7\n2\n\n\nNAP\n0:8, 1:6, 2:1\n3\n\n\nNIP\n0:9, 1:4, 2:2\n3\n\n\nNOR\n0:4, 1:11\n2\n\n\nNUT\n0:9, 1:6\n2\n\n\nOAT\n0:5, 1:10\n2\n\n\nOIL\n0:5, 1:10\n2\n\n\nPUG\n0:10, 1:5\n2\n\n\nSOY\n0:7, 1:8\n2\n\n\nWOO\n0:7, 1:8\n2\n\n\nYAK\n0:11, 1:4\n2"
+  },
+  {
+    "objectID": "slides/jotto_deck.html#physical-setup",
+    "href": "slides/jotto_deck.html#physical-setup",
+    "title": "Data Structures and Algorithms for Data Science",
+    "section": "Physical Setup",
+    "text": "Physical Setup\n\n17 cards per deck (16 words + 1 rules card or blank)\n3 decks from a standard 52-card deck\nWrite words with sharpie"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#pacing-overview-80-min-total",
+    "href": "slides/08_mon_trees.html#pacing-overview-80-min-total",
+    "title": "Trees as Recursive Structures",
+    "section": "PACING OVERVIEW (80 min total)",
+    "text": "PACING OVERVIEW (80 min total)\nPart 1: Wordle Hook (10 min)\n\nPlay 1-2 rounds of Wordle as a class\nBrief discussion: what makes a good guess?\nIntroduce the idea that strategy = decision tree\n\nPart 2: Jotto Activity (25 min)\n\nExplain rules and scoring (5 min)\nHand out card decks, groups design strategies (15 min)\nDebrief: what first guess did you choose? why? (5 min)\n\nPart 3: Tree Definitions (15 min)\n\n“Why Trees?” slide - quick tour of applications\nKnuth quote + “what’s special?” (connected, acyclic)\nTree Terminology discovery questions (students answer)\nVocabulary reference slide (skim - definitions are intuitive)\n\nPart 4: Binary Trees & Recursion (20 min)\n\nBinary tree definition and recursive structure\nHeight/node count relationship\nWhy height matters for efficiency\nConnect back to Wordle/Jotto: height = worst-case guesses\n\nPart 5: Wrap-up (10 min)\n\nBack to Wordle: decision tree perspective\nSummary slide\nPreview BSTs (Wednesday)"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#lets-play-wordle",
+    "href": "slides/08_mon_trees.html#lets-play-wordle",
+    "title": "Trees as Recursive Structures",
+    "section": "Let’s Play Wordle!",
+    "text": "Let’s Play Wordle!\nI’m thinking of a 5-letter word.\nYou have 6 guesses.\nAfter each guess, I’ll tell you:\n\n🟩 Green: Right letter, right position\n🟨 Yellow: Right letter, wrong position\n⬜ Gray: Letter not in word\n\nLet’s play as a class!\n\nActually play 2-3 rounds with the class. Pick words ahead of time. Have students suggest guesses, vote on which to try. Track remaining possibilities on the board. Good words to use: CRANE, SLATE, MOIST, CHARM, PLUMB (words with common letters for game 1, then trickier ones)."
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#section-1",
+    "href": "slides/08_mon_trees.html#section-1",
+    "title": "Trees as Recursive Structures",
+    "section": "",
+    "text": "If you have internet, you can play the actual game. Otherwise, run it manually on the board."
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#what-strategy-did-we-use",
+    "href": "slides/08_mon_trees.html#what-strategy-did-we-use",
+    "title": "Trees as Recursive Structures",
+    "section": "What Strategy Did We Use?",
+    "text": "What Strategy Did We Use?\nThink about how we played:\n\nWhat made a guess “good”?\nHow did we narrow down possibilities?\nDid we have a system, or was it intuition?"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#the-strategy-question",
+    "href": "slides/08_mon_trees.html#the-strategy-question",
+    "title": "Trees as Recursive Structures",
+    "section": "The Strategy Question",
+    "text": "The Strategy Question\nEvery guess splits the remaining possibilities.\n\n\n\nGuess\nFeedback\nWords eliminated\n\n\n\n\nCRANE\n⬜🟨⬜⬜🟩\nMost words without R and E in those spots\n\n\nSTORE\n🟩⬜🟩🟨🟩\nNow we know S, O, E positions + R somewhere\n\n\n…\n…\n…\n\n\n\nGood guesses split possibilities evenly."
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#visualizing-the-strategy",
+    "href": "slides/08_mon_trees.html#visualizing-the-strategy",
+    "title": "Trees as Recursive Structures",
+    "section": "Visualizing the Strategy",
+    "text": "Visualizing the Strategy\nWhat if we drew every possible game?\n                         SALET (first guess)\n                        /       |        \\        ...\n                 🟩⬜⬜⬜⬜    🟨⬜⬜⬜⬜    🟩🟩⬜⬜⬜     ...\n                    /           |            \\\n      SHIRK, SHOWY, SPICY   CRISP, MUSIC   SAPPY, SANDY\n      SWORN, SNOWY, ...     PRISM, ...     SAUCY, ...\nEach follow-up guess is consistent with prior feedback.\nEach path from top to bottom is one game. This is a tree!"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#the-wordle-decision-tree",
+    "href": "slides/08_mon_trees.html#the-wordle-decision-tree",
+    "title": "Trees as Recursive Structures",
+    "section": "The Wordle Decision Tree",
+    "text": "The Wordle Decision Tree\nThis structure has a name: a decision tree.\n\nRoot: First guess\nBranches: Possible feedback patterns (there are _______)\nInternal nodes: Follow-up guesses\nLeaves: The answer (game over!)\n\nThe height of this tree = worst-case guesses needed."
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#the-optimal-strategy-question",
+    "href": "slides/08_mon_trees.html#the-optimal-strategy-question",
+    "title": "Trees as Recursive Structures",
+    "section": "The Optimal Strategy Question",
+    "text": "The Optimal Strategy Question\nQuestion: What first guess gives the best tree?\nWhat does best mean?\nResearch answer: SALET, REAST, CRATE, TRACE"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#letter-jotto-lets-build-a-strategy",
+    "href": "slides/08_mon_trees.html#letter-jotto-lets-build-a-strategy",
+    "title": "Trees as Recursive Structures",
+    "section": "3-Letter Jotto: Let’s Build a Strategy",
+    "text": "3-Letter Jotto: Let’s Build a Strategy\nThe setup:\n\nThere are 16 possible secret words\nYou guess a word; the response is the count of letters in common (0, 1, 2, or 3)\nYou can only guess words that are still consistent with previous responses\n\nYour task: Design a strategy — an algorithm that tells you what to guess in every situation, for any secret word.\nSpecify your strategy:\n\nWhat’s your first guess?\nFor each possible response (0, 1, 2, or 3), what do you guess next?\nAnd so on, until you’ve identified the secret word."
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#jotto-scoring-examples",
+    "href": "slides/08_mon_trees.html#jotto-scoring-examples",
+    "title": "Trees as Recursive Structures",
+    "section": "Jotto Scoring Examples",
+    "text": "Jotto Scoring Examples\n\n\n\nSecret\nGuess\nScore\nWhy\n\n\n\n\nFOX\nJOG\n1\nO matches\n\n\nDEW\nYAK\n0\nNo letters in common\n\n\nNIP\nINK\n2\nI and N match\n\n\nWOO\nMOB\n1\nO matches (counted once)"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#the-16-words",
+    "href": "slides/08_mon_trees.html#the-16-words",
+    "title": "Trees as Recursive Structures",
+    "section": "The 16 Words",
+    "text": "The 16 Words\nDEW  FOX  GEL  INK\nJOG  MOB  NAP  NIP\nNOR  NUT  OAT  OIL\nPUG  SOY  WOO  YAK"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#example-first-guess-nip",
+    "href": "slides/08_mon_trees.html#example-first-guess-nip",
+    "title": "Trees as Recursive Structures",
+    "section": "Example: First Guess NIP",
+    "text": "Example: First Guess NIP\n\n  \n  \n  \n  \n  \n\n  \n  0\n  1\n  2\n  3\n\n  \n  \n  NIP\n\n  \n  \n  DEW  FOX  GEL\n  JOG  MOB  OAT\n  SOY  WOO  YAK\n  (9 words)\n\n  \n  \n  NOR  NUT\n  OIL  PUG\n  (4 words)\n\n  \n  \n  INK  NAP\n  (2 words)\n\n  \n  \n  NIP\n  (done!)\n\nEach pile contains words consistent with that score.\n\nHand out card decks. Give students 5-7 minutes to play a few rounds, then regroup to discuss strategy.\nKey questions to seed: - What’s a good first guess? Why? - Did anyone try guessing similar words in a row (CAT, BAT, HAT)? How did that go? - What’s the worst case — how many guesses could it take?"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#what-strategy-did-you-discover",
+    "href": "slides/08_mon_trees.html#what-strategy-did-you-discover",
+    "title": "Trees as Recursive Structures",
+    "section": "What Strategy Did You Discover?",
+    "text": "What Strategy Did You Discover?\nDiscussion questions:\n\nWhat makes a “good” first guess?\nWhat happens if you guess CAT, then BAT, then HAT?\nCan you always win in 2 guesses? Why or why not?\n\n\nLead into: the strategy IS a tree! Each guess partitions the remaining words by their Jotto score (0, 1, 2, or 3). Good guesses split evenly. Bad guesses leave big partitions.\nLower bound discussion: With 4 outcomes per guess and 16 words, theoretically log₄(16) = 2 guesses should suffice. But no word achieves a perfect 4-way split!"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#why-trees",
+    "href": "slides/08_mon_trees.html#why-trees",
+    "title": "Trees as Recursive Structures",
+    "section": "Why Trees?",
+    "text": "Why Trees?\nTrees appear everywhere in computer science:\n\n\n\nDomain\nTree Structure\n\n\n\n\nFile systems\nDirectories contain subdirectories\n\n\nHTML/DOM\nElements contain child elements\n\n\nDecision making\nEach choice leads to sub-choices\n\n\nClassification\n“Is it X? If yes, go left…”\n\n\nGame AI\nPossible moves branch into more moves"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#trees-the-most-important-nonlinear-structure",
+    "href": "slides/08_mon_trees.html#trees-the-most-important-nonlinear-structure",
+    "title": "Trees as Recursive Structures",
+    "section": "Trees: The Most Important Nonlinear Structure",
+    "text": "Trees: The Most Important Nonlinear Structure\n\n“Trees are the most important nonlinear structure in computer science.”\n— Donald Knuth, The Art of Computer Programming\n\nWhat’s special about this structure? ________________________\n\n\n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  1\n\n  \n  2\n\n  \n  3\n\n  \n  4\n\n  \n  5\n\n  \n  6"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#tree-terminology",
+    "href": "slides/08_mon_trees.html#tree-terminology",
+    "title": "Trees as Recursive Structures",
+    "section": "Tree Terminology",
+    "text": "Tree Terminology\n\n\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  a\n\n  \n  b\n\n  \n  c\n\n  \n  d\n\n  \n  e\n\n  \n  f\n\n  \n  g\n\n  \n  h\n\n  \n  i\n\n  \n  j\n\n\n\nOne of the vertices is called the root of the tree. Guess which one it is.\nMake an English word containing the names of the vertices that have a parent but no sibling.\nHow many parents does each vertex have?\nWhich vertex has the fewest children?\nWhich vertex has the most ancestors? descendants?\nWhat is d’s depth? What is d’s height?\nList all the vertices in b’s left subtree.\nList all the leaves in the tree."
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#tree-vocabulary-reference",
+    "href": "slides/08_mon_trees.html#tree-vocabulary-reference",
+    "title": "Trees as Recursive Structures",
+    "section": "Tree Vocabulary (reference)",
+    "text": "Tree Vocabulary (reference)\n\n\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  a\n  \n  b\n  \n  c\n  \n  d\n  \n  e\n  \n  f\n  \n  g\n  \n  h\n  \n  i\n  \n  j\n\n\n\nroot: the single node with no parent\nleaf: a node with no children\nchild: a node pointed to by me\nparent: the node that points to me\nsibling: another child of my parent\nancestor: my parent or my parent’s ancestor\ndescendant: my child or my child’s descendant\nsubtree: a node and its descendants\ndepth of node x: number of edges on path from root to x\nheight of node x: number of edges on longest path from x to a leaf"
+  },
+  {
+    "objectID": "slides/08_mon_trees.html#d-ary-tree-definition",
+    "href": "slides/08_mon_trees.html#d-ary-tree-definition",
+    "title": "Trees as Recursive Structures",
+    "section": "d-ary Tree Definition",
+    "text": "d-ary Tree Definition\n\n\nA d-ary tree T is either:\n\n_______________________________________\n\nOR\n\n_______________________________________\n\n\n\n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n\n  \n  \n  \n\n  \n  \n  \n  \n\n  \n  \n\n  \n  \n\n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n\n  \n  \n  \n\n\n\nFill in via annotation: - Empty (no nodes) - A root node with up to d subtrees (each a d-ary tree)\nBinary tree = d-ary tree with d=2\nThe tree shown has d=3 (ternary). Each subtree of the root is colored differently to emphasize the recursive structure."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "index.html#weekly-announcement",
+    "href": "index.html#weekly-announcement",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "Weekly announcement",
+    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      ...15\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\n\nHW3",
+    "crumbs": [
+      "Course information",
+      "Schedule"
+    ]
+  },
+  {
+    "objectID": "data/pa1_wildlife/PA1_CONCEPT.html",
+    "href": "data/pa1_wildlife/PA1_CONCEPT.html",
+    "title": "PA1: Wildlife Encounters",
+    "section": "",
+    "text": "You’re a wildlife biologist studying wolf pack territories in the Alberta-BC border region. Wolf packs are highly territorial - when wolves from different packs encounter each other, conflicts can be deadly.\nUsing GPS collar data from 19 wolves across 5 packs, your job is to detect potential encounter events - moments when wolves from different packs came dangerously close to each other.\nWith 3,420 GPS readings, checking all pairs naively would require 5.8 million distance calculations. Your algorithm needs to be smarter.\n\n\n\n\nwolf_tracking.csv - 30 days of GPS data (June 2024) - 19 wolves across 5 packs (Yellowhead, Smoky, Jasper, Willmore, Kakwa) - ~180 GPS pings per wolf (every 4 hours) - Columns: wolf_id, pack_id, timestamp, latitude, longitude\nwolf_tracking_small.csv - 4 wolves for testing (720 records)\n\n\n\n\nImplement haversine_distance(lat1, lon1, lat2, lon2) to calculate the distance in kilometers between two GPS coordinates.\ndef haversine_distance(lat1, lon1, lat2, lon2):\n    \"\"\"\n    Calculate the great-circle distance between two points on Earth.\n\n    Args:\n        lat1, lon1: Coordinates of first point (degrees)\n        lat2, lon2: Coordinates of second point (degrees)\n\n    Returns:\n        Distance in kilometers\n    \"\"\"\nThis is the foundation - you’ll use this in every subsequent part.\n\n\n\n\nImplement closest_pair_brute(points) that finds the two closest points using the naive O(n²) approach.\ndef closest_pair_brute(points):\n    \"\"\"\n    Find the closest pair of points using brute force.\n\n    Args:\n        points: List of (x, y) tuples\n\n    Returns:\n        ((x1, y1), (x2, y2), distance) - the two closest points and their distance\n    \"\"\"\nTest it on the small dataset. Time it. Feel the pain.\n\n\n\n\nNow implement the O(n log n) recursive algorithm:\ndef closest_pair_recursive(points):\n    \"\"\"\n    Find the closest pair of points using divide-and-conquer.\n\n    The algorithm:\n    1. Base case: if n &lt;= 3, use brute force\n    2. Sort points by x-coordinate\n    3. Divide into left and right halves\n    4. Recursively find closest pair in each half\n    5. The tricky part: check the \"strip\" near the dividing line\n\n    Returns:\n        ((x1, y1), (x2, y2), distance)\n    \"\"\"\nThe key insight: after finding the minimum distance d in both halves, you only need to check points within distance d of the dividing line. And for each point in this strip, you only need to check at most 7 other points (sorted by y-coordinate).\n\n\n\n\nNow apply your algorithm to the real problem:\ndef find_inter_pack_encounters(df, distance_threshold_km=2.0):\n    \"\"\"\n    Find all instances where wolves from DIFFERENT packs came within\n    the threshold distance of each other.\n\n    Args:\n        df: DataFrame with wolf tracking data\n        distance_threshold_km: Distance that counts as an \"encounter\"\n\n    Returns:\n        List of encounter events: [\n            {\n                'wolf1': 'W001', 'pack1': 'Yellowhead',\n                'wolf2': 'W013', 'pack2': 'Willmore',\n                'timestamp1': '2024-06-15T08:00:00',\n                'timestamp2': '2024-06-15T12:00:00',\n                'distance_km': 1.3,\n                'location': (54.12, -119.87)\n            },\n            ...\n        ]\n    \"\"\"\nThe challenge: you need to consider both space AND time. A “close call” means wolves were close in space at approximately the same time.\n\n\n\n\n\nTime your brute-force algorithm on datasets of size 100, 500, 1000, 2000, 3420\nTime your divide-and-conquer algorithm on the same datasets\nPlot both on the same graph\nFit the theoretical curves O(n²) and O(n log n) to your data\nAnswer: At what size n does divide-and-conquer become 10x faster?\n\n\n\n\n\nCreate a visualization showing: - Wolf territories (as convex hulls or heat maps) - Movement paths colored by pack - Detected encounters highlighted with markers - A timeline showing when encounters occurred\n\n\n\n\nThis isn’t just an academic exercise. Real wildlife biologists use exactly these techniques to: - Study territorial dynamics - Predict conflict zones for conservation - Plan wildlife corridors - Understand disease transmission between populations\nThe closest-pair algorithm is also used in: - Collision detection in physics simulations - Finding duplicate records in databases - Cluster analysis in machine learning - Computer graphics and computational geometry\n\n\n\n\n\n\n\nPart\nPoints\nFocus\n\n\n\n\n1. Haversine distance\n10\nCorrectness\n\n\n2. Brute force\n15\nCorrectness\n\n\n3. Divide-and-conquer\n30\nCorrectness + Recursion\n\n\n4. Wolf encounters\n20\nApplication + Edge cases\n\n\n5. Performance analysis\n15\nAnalysis + Plotting\n\n\n6. Visualization\n10\nCreativity + Clarity\n\n\nTotal\n100\n\n\n\n\n\n\n\n\nThe wolf tracking data is synthetically generated based on realistic movement patterns from published studies of wolf packs in Alberta and British Columbia. Real wolf tracking data is available from Movebank, a free database hosted by the Max Planck Institute of Animal Behavior.\n\n\n\n\nSee pa1_starter.py for function signatures and test cases."
+  },
+  {
+    "objectID": "data/pa1_wildlife/PA1_CONCEPT.html#detecting-close-calls-in-wolf-gps-tracking-data",
+    "href": "data/pa1_wildlife/PA1_CONCEPT.html#detecting-close-calls-in-wolf-gps-tracking-data",
+    "title": "PA1: Wildlife Encounters",
+    "section": "",
+    "text": "You’re a wildlife biologist studying wolf pack territories in the Alberta-BC border region. Wolf packs are highly territorial - when wolves from different packs encounter each other, conflicts can be deadly.\nUsing GPS collar data from 19 wolves across 5 packs, your job is to detect potential encounter events - moments when wolves from different packs came dangerously close to each other.\nWith 3,420 GPS readings, checking all pairs naively would require 5.8 million distance calculations. Your algorithm needs to be smarter.\n\n\n\n\nwolf_tracking.csv - 30 days of GPS data (June 2024) - 19 wolves across 5 packs (Yellowhead, Smoky, Jasper, Willmore, Kakwa) - ~180 GPS pings per wolf (every 4 hours) - Columns: wolf_id, pack_id, timestamp, latitude, longitude\nwolf_tracking_small.csv - 4 wolves for testing (720 records)\n\n\n\n\nImplement haversine_distance(lat1, lon1, lat2, lon2) to calculate the distance in kilometers between two GPS coordinates.\ndef haversine_distance(lat1, lon1, lat2, lon2):\n    \"\"\"\n    Calculate the great-circle distance between two points on Earth.\n\n    Args:\n        lat1, lon1: Coordinates of first point (degrees)\n        lat2, lon2: Coordinates of second point (degrees)\n\n    Returns:\n        Distance in kilometers\n    \"\"\"\nThis is the foundation - you’ll use this in every subsequent part.\n\n\n\n\nImplement closest_pair_brute(points) that finds the two closest points using the naive O(n²) approach.\ndef closest_pair_brute(points):\n    \"\"\"\n    Find the closest pair of points using brute force.\n\n    Args:\n        points: List of (x, y) tuples\n\n    Returns:\n        ((x1, y1), (x2, y2), distance) - the two closest points and their distance\n    \"\"\"\nTest it on the small dataset. Time it. Feel the pain.\n\n\n\n\nNow implement the O(n log n) recursive algorithm:\ndef closest_pair_recursive(points):\n    \"\"\"\n    Find the closest pair of points using divide-and-conquer.\n\n    The algorithm:\n    1. Base case: if n &lt;= 3, use brute force\n    2. Sort points by x-coordinate\n    3. Divide into left and right halves\n    4. Recursively find closest pair in each half\n    5. The tricky part: check the \"strip\" near the dividing line\n\n    Returns:\n        ((x1, y1), (x2, y2), distance)\n    \"\"\"\nThe key insight: after finding the minimum distance d in both halves, you only need to check points within distance d of the dividing line. And for each point in this strip, you only need to check at most 7 other points (sorted by y-coordinate).\n\n\n\n\nNow apply your algorithm to the real problem:\ndef find_inter_pack_encounters(df, distance_threshold_km=2.0):\n    \"\"\"\n    Find all instances where wolves from DIFFERENT packs came within\n    the threshold distance of each other.\n\n    Args:\n        df: DataFrame with wolf tracking data\n        distance_threshold_km: Distance that counts as an \"encounter\"\n\n    Returns:\n        List of encounter events: [\n            {\n                'wolf1': 'W001', 'pack1': 'Yellowhead',\n                'wolf2': 'W013', 'pack2': 'Willmore',\n                'timestamp1': '2024-06-15T08:00:00',\n                'timestamp2': '2024-06-15T12:00:00',\n                'distance_km': 1.3,\n                'location': (54.12, -119.87)\n            },\n            ...\n        ]\n    \"\"\"\nThe challenge: you need to consider both space AND time. A “close call” means wolves were close in space at approximately the same time.\n\n\n\n\n\nTime your brute-force algorithm on datasets of size 100, 500, 1000, 2000, 3420\nTime your divide-and-conquer algorithm on the same datasets\nPlot both on the same graph\nFit the theoretical curves O(n²) and O(n log n) to your data\nAnswer: At what size n does divide-and-conquer become 10x faster?\n\n\n\n\n\nCreate a visualization showing: - Wolf territories (as convex hulls or heat maps) - Movement paths colored by pack - Detected encounters highlighted with markers - A timeline showing when encounters occurred\n\n\n\n\nThis isn’t just an academic exercise. Real wildlife biologists use exactly these techniques to: - Study territorial dynamics - Predict conflict zones for conservation - Plan wildlife corridors - Understand disease transmission between populations\nThe closest-pair algorithm is also used in: - Collision detection in physics simulations - Finding duplicate records in databases - Cluster analysis in machine learning - Computer graphics and computational geometry\n\n\n\n\n\n\n\nPart\nPoints\nFocus\n\n\n\n\n1. Haversine distance\n10\nCorrectness\n\n\n2. Brute force\n15\nCorrectness\n\n\n3. Divide-and-conquer\n30\nCorrectness + Recursion\n\n\n4. Wolf encounters\n20\nApplication + Edge cases\n\n\n5. Performance analysis\n15\nAnalysis + Plotting\n\n\n6. Visualization\n10\nCreativity + Clarity\n\n\nTotal\n100\n\n\n\n\n\n\n\n\nThe wolf tracking data is synthetically generated based on realistic movement patterns from published studies of wolf packs in Alberta and British Columbia. Real wolf tracking data is available from Movebank, a free database hosted by the Max Planck Institute of Animal Behavior.\n\n\n\n\nSee pa1_starter.py for function signatures and test cases."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "about.html#about",
+    "href": "about.html#about",
+    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
+    "section": "",
+    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "Welcome to DSCI 221, where we study the fundamental data structures and algorithms that power modern computing. Building on your foundation in discrete mathematics, you’ll learn to analyze algorithms rigorously, prove correctness, and understand the tradeoffs between different approaches to organizing and processing data. Along the way, you’ll implement classic data structures in Python and see how these ideas apply to problems in data science.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#introduction",
+    "href": "syllabus.html#introduction",
+    "title": "Syllabus",
+    "section": "",
+    "text": "Welcome to DSCI 221, where we study the fundamental data structures and algorithms that power modern computing. Building on your foundation in discrete mathematics, you’ll learn to analyze algorithms rigorously, prove correctness, and understand the tradeoffs between different approaches to organizing and processing data. Along the way, you’ll implement classic data structures in Python and see how these ideas apply to problems in data science.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#instructor-information",
+    "href": "syllabus.html#instructor-information",
+    "title": "Syllabus",
+    "section": "Instructor Information",
+    "text": "Instructor Information\n\nProf: Cinda Heeren 📧 cheeren@cs.ubc.ca ⏰ Mon 2–4pm · 🏢 ICCS 233 · \nTA: Joel Gunawan 📧  ⏰ TBD · 🏢 TBD\nTA: Oscar Cheng 📧 oscar.cheng@ubc.ca ⏰ Thu · 🏢 ICICS x150 DLC table 6",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#communication",
+    "href": "syllabus.html#communication",
+    "title": "Syllabus",
+    "section": "Communication",
+    "text": "Communication\n\nPiazza: piazza.com/ubc.ca/winterterm22025/dsci221 — Use Piazza for all course-related questions. You’ll get faster responses here than via email, and your classmates benefit from seeing the answers too.\nCanvas: canvas.ubc.ca/courses/182082 — Grades, announcements, and course materials.\nEmail: Reserve email for private matters (accommodations, personal circumstances). For course content questions, use Piazza.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#course-description-and-learning-objectives",
+    "href": "syllabus.html#course-description-and-learning-objectives",
+    "title": "Syllabus",
+    "section": "Course Description and Learning Objectives",
+    "text": "Course Description and Learning Objectives\nBy the end of this course, students will be able to:\n\nDefine and articulate the functionality of classic data structures such as Stacks, Queues, Dictionaries, Priority Queues, etc. by their Abstract Data Type (ADT).\nDesign algorithms and structures to implement novel ADTs based on properties of the data and intended use of the data, using object-oriented problem decomposition.\nImplement classic and novel data structures in modern Python, based upon lists, dictionaries, trees, and graphs.\nAnalyze the efficiency (time and space) of algorithms and data structures using asymptotic notation.\nJustify algorithmic choices using iterative and recursive proofs of correctness.\nEvaluate asymptotic time and space trade-offs between implementation options.\nIdentify the structures and algorithms necessary for solving complex problems.\nSynthesize and apply algorithmic and analytical design choices to form complete software solutions of classic problems.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#lecture-material-and-course-content",
+    "href": "syllabus.html#lecture-material-and-course-content",
+    "title": "Syllabus",
+    "section": "Lecture Material and Course Content",
+    "text": "Lecture Material and Course Content\nDSCI 221 meets officially MWF at 11am in MacMillan 158. After the first week, the schedule shifts:\n\nMonday: In-person lecture (MCML 158)\nTuesday: Online video lecture (asynchronous)\nWednesday: In-person lecture (MCML 158)\nFriday: No class (after week 1)\n\nClass meetings will be a mixture of theoretical narrative, worked examples, and problem-solving exercises. You will learn about algorithmic efficiency, correctness proofs, and the design of data structures—applying these ideas to problems that arise in data science contexts.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#course-requirements",
+    "href": "syllabus.html#course-requirements",
+    "title": "Syllabus",
+    "section": "Course Requirements",
+    "text": "Course Requirements\nDeliverables for the course include the following components:\n\nProgramming Assignments (PAs) — Three significant programming projects where you’ll implement data structures and algorithms. Due approximately every 4-5 weeks.\nHomework (HWs) — Three written assignments focusing on algorithm analysis, correctness proofs, and problem-solving. Due approximately every 4-5 weeks.\nLabs — Ten weekly lab exercises providing hands-on practice with the concepts from lecture. Labs are completed on PrairieLearn.\nExamlets — Five 50-minute assessments completed in the Computer-Based Testing Facility (CBTF). These are self-scheduled within a window and cover both conceptual and coding questions.\nFinal Exam — A comprehensive exam, self-scheduled in the CBTF during the final exam period.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#grading",
+    "href": "syllabus.html#grading",
+    "title": "Syllabus",
+    "section": "Grading",
+    "text": "Grading\n\n\n\nItem\nWeight\n\n\n\n\nProgramming Assignments\n6% (2 × 3%)\n\n\nHomework\n6% (2 × 3%)\n\n\nLabs\n5% (10 × 0.5%)\n\n\nExamlets\n55% (5 × 11%)\n\n\nFinal Exam\n28%\n\n\n\nYou must pass the final exam (50%) to pass the course.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#accessibility",
+    "href": "syllabus.html#accessibility",
+    "title": "Syllabus",
+    "section": "Accessibility",
+    "text": "Accessibility\nIf you have a disability or ongoing medical condition that may require accommodations, please contact the UBC Centre for Accessibility accessibility@ubc.ca to determine your eligibility and receive an accommodation letter.\nIf you have a specific concern about accessing course materials or if you would like to suggest improvements to the accessibility of this course, please do not hesitate to speak with me.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#academic-misconduct",
+    "href": "syllabus.html#academic-misconduct",
+    "title": "Syllabus",
+    "section": "Academic Misconduct",
+    "text": "Academic Misconduct\nAll instances of academic misconduct will be handled in a manner consistent with UBC policies. This includes reporting to the appropriate Associate Head and Faculty Associate Dean. No credit will be given for any assignment completed with inappropriate collaboration.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "syllabus.html#land-acknowledgement",
+    "href": "syllabus.html#land-acknowledgement",
+    "title": "Syllabus",
+    "section": "Land Acknowledgement",
+    "text": "Land Acknowledgement\nUBC’s Point Grey Campus is located on the traditional, ancestral, and unceded territory of the xʷməθkʷəy̓əm (Musqueam) people. The land it is situated on has always been a place of learning for the Musqueam people, who for millennia have passed on their culture, history, and traditions from one generation to the next on this site.",
+    "crumbs": [
+      "Course information",
+      "Syllabus"
+    ]
+  },
+  {
+    "objectID": "TODO.html",
+    "href": "TODO.html",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory\n\n\n\n\n\n\n\nSchedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\nCreate midterm survey\n\n\n\n\n\n\n\nCreate labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic\n\n\n\n\n\n\nSet up testing framework within marimo\nSet up autograder for PL programming assignments"
+  },
+  {
+    "objectID": "TODO.html#completed-setup-reference-for-future-terms",
+    "href": "TODO.html#completed-setup-reference-for-future-terms",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory"
+  },
+  {
+    "objectID": "TODO.html#course-setup-canvasinfrastructure",
+    "href": "TODO.html#course-setup-canvasinfrastructure",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Schedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\nCreate midterm survey"
+  },
+  {
+    "objectID": "TODO.html#assessments",
+    "href": "TODO.html#assessments",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Create labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic"
+  },
+  {
+    "objectID": "TODO.html#technical-infrastructure",
+    "href": "TODO.html#technical-infrastructure",
+    "title": "DSCI 221 TODO",
+    "section": "",
+    "text": "Set up testing framework within marimo\nSet up autograder for PL programming assignments"
+  },
+  {
+    "objectID": "data/05_wed_candy_hearts_script.html",
+    "href": "data/05_wed_candy_hearts_script.html",
+    "title": "Candy Hearts",
+    "section": "",
+    "text": "Candy Hearts\nA story about finding your one true love\n\nIt was the night before Valentine’s Day.\nYou were working the late shift at the candy heart factory.\nEveryone else had gone home to their valentines.\n\nYour friend Aron rushed in from the cold.\n“I have discovered something amazing,” said Aron.\n“The candy hearts can reveal your One True Love.”\n\n“Look at the conveyor belts,” said Aron.\n(show starting configuration)\n“Follow my instructions exactly, and your One True Love will be revealed.”\n\n“First,” said Aron, “move two hearts from belt 3 to belt 2.”\n\nYou picked up the U and put it on belt 2.\nThen you picked up the O and put it on belt 2.\n(show after move 1)\n\n“Now,” said Aron, “move one heart from belt 2 to belt 1.”\n\nYou picked up the O and put it on belt 1.\n(show after move 2)\n\n“Finally,” said Aron, “move two hearts from belt 1 to belt 3.”\n\nYou picked up the O and put it on belt 3.\nThen you picked up the M and put it on belt 3.\n(show Part 1 final - YUM highlighted)\n\n“Now read the top hearts,” said Aron.\nY… U… M…\n“YUM?” you said.\n“That doesn’t seem right,” said Aron.\n\nSophia looked up from her work.\n“Did you move the hearts one at a time?” she asked.\n“Yes,” you said.\n“There’s your problem,” said Sophia.\n“The machine moves them all at once.”\n\nYou put all the hearts back.\n(show starting configuration again)\n\n“Move two from belt 3 to belt 2 — together.”\nYou picked up the O and U together, keeping their order.\n(show Part 2 move 1 - bracket showing together)\n\n“Move one from belt 2 to belt 1.”\nYou moved the U to belt 1.\n(show Part 2 move 2)\n\n“Move two from belt 1 to belt 3 — together.”\nYou picked up the M and U together, keeping their order.\n(show Part 2 final - YOU highlighted)\n\nYou read the top hearts.\nY… O… U…\n\n“My one true love,” you said, “is me.”\nSophia nodded. “Happy Valentine’s Day.”\nThe End"
+  },
+  {
+    "objectID": "memorymar18.html",
+    "href": "memorymar18.html",
+    "title": "Shape Angles Groups Notes",
+    "section": "",
+    "text": "we were working on Kali, and had arrived at a list of symmetries that made sense in the context of the problem. There are working implementations, but many of them are broken. I wonder if our whole recent context is lost. It’s going to be difficult to reconstruct the next steps that you suggested. Let me check the memory files and the current working directories for context on the Kali project.\nGlobpattern: “**/*” Found 2 files Bash List contents of talks repo and KJ server directories IN ls /Users/cheeren/Repos/talks/ 2&gt;/dev/null && ls /tmp/KJ/server/ 2&gt;/dev/null && ls /private/tmp/KJ/server/ 2&gt;/dev/null\nOUT KJ kali references spiro spirograph wccce2026 wids2026 gizmoapp_server gizmoapp_server Bash List kali directory contents IN ls /Users/cheeren/Repos/talks/kali/ && echo “—” && ls /tmp/KJ/server/ 2&gt;/dev/null\nOUT images index.html sketch_kali.js slides.qmd theme.scss wildflowers.jpg — gizmoapp_server Read sketch_kali.js Good - I can see the full current state of the code. Let me also check the slides for context on what was being discussed.\nRead slides.qmd Read index.html there are no slides for this project. The previous conversation context is indeed gone. But I’ve read the current sketch_kali.js in full, so let me reconstruct an honest assessment of where things stand.\nCurrent state of the 6 groups:\nGroup n reflect slices Likely status p6m 6 true 12 (×30°) Probably working (the original) p6 6 false 6 (×60°) Probably working (same hex geometry) p4m 4 true 8 (×45°) Probably working (sq lattice, full coverage) p4 4 false 4 (×90°) Probably working (sq lattice, full coverage) p3m1 3 true 6 (×60°) Suspect — hex lattice spacing may be wrong for 3-fold period p3 3 false 3 (×120°) Suspect — same hex grid spacing issue The two specific things I’d flag without seeing it run:\nLattice period for p3/p3m1: the translation lattice for a 3-fold group is larger than for 6-fold. The hex grid uses the same dx = 1.5 * triSize for all hex groups — this is correct for p6/p6m but may produce visible gaps or wrong-scale tiling for p3/p3m1.\nUV flip logic for p3m1: the mirror = g.reflect && (k % 2 === 1) alternation may not produce the correct reflection symmetry for p3m1 (as opposed to p31m, which has reflections in different positions).\nCan you tell me:\nWhich specific groups look broken when you open it in a browser? What the visual artifact is (gaps? wrong pattern? seams)? That will let me quickly reconstruct the plan rather than guess at it. Alternatively, if you remember any of the groups we were adding (beyond the current 6), that would help too.\nGot it — the slides.qmd is just a placeholder. This is a standalone interactive demo, not a talk. Let me save that to memory.\nWrite kali.md 15 lines Edit MEMORY.md Edit failed Read MEMORY.md Edit MEMORY.md Added 7 lines Noted and saved. So — back to the question: do you want to open it in the browser and describe what looks wrong, or should I work through the code to identify the likely bugs in the broken groups?\nsketch_kali.js i think i can almost recreate the list of tilings i’d like you to recreate: 1) 60-60-60: p3, p31m, p3m1 2) 30-60-90: p6, p6m 3) 45-45-90: p4? p4m? idk 4) 120 - 30-30: center to 2 vertices of an equilateral triangle 5) kite: center to 2-medians and a vertex of an equilateral triangle.\nred triangle on the base image determines the colors of the tilings. This is a good foundation to reconstruct from. Let me map it out clearly:\nWhat you’re describing is 5 source triangle shapes, each producing different symmetry groups.\n\nShape Angles Groups Notes\n1 Equilateral 60-60-60 p3, p31m, p3m1 Current code has p3m1 but not p31m 2 Right 30-60-90 p6, p6m In code but wrong source triangle shape (currently 30-75-75 isoceles) 3 Right isoceles 45-45-90 p4, p4m Same issue — isoceles not right-angle 4 Obtuse isoceles 120-30-30 ??? Current p3 uses this fan angle — but which group did we assign? 5 Kite quadrilateral ??? Not in current code Two things I can confirm from the code:\np31m is missing — the GROUPS object has p3m1 but not p31m (they differ in which 3-fold centers lie on mirror lines) Source triangles are all isoceles — the code always uses texRadius for both P1 and P2, so the red triangle is always isoceles. For 30-60-90 and 45-45-90 you need P1 and P2 at different distances from texCenter The murkier ones are items 4 and 5. For item 4, did we decide that was p3 (pure 3-fold rotation, no mirrors, obtuse pie-slice source)? And for item 5 (the kite) — do you remember which wallpaper group or what the symmetry operation was? That one seems to require a fundamentally different tile-drawing approach.\nfor p3, why were we using the obtuse triangles at all? We weren’t — it’s an artifact of the fan implementation.\nThe fan approach always produces an isoceles source triangle with the apex at the tile center and apex angle = 360°/n. For p3, n=3, so 360°/3 = 120°. The code just mechanically does that, producing the obtuse 120-30-30 triangle.\nBut p3’s actual fundamental domain is equilateral (60-60-60). The obtuse version was never a deliberate choice — it fell out of reusing the same drawing code for all groups.\nSo the right fix for p3 (and p31m, p3m1) is to use a 60-60-60 equilateral source triangle, which means the tile center is not a vertex of the source triangle — it’s outside it. That breaks the current assumption where texCenter is always the apex of the fan. For those groups, the source triangle parameterization needs to change entirely.\nthe algorithm should always be to tile space using the chosen shape and symmetry, and then texture the shapes based on what’s in the red triangle. Yes — that’s the right way to think about it. It makes the algorithm clean and consistent:\nTile space with the chosen shape (equilateral, 30-60-90, etc.) using the symmetry group’s lattice and operations Texture each tile by mapping its vertices to the corresponding points of the red triangle in the source image The consequence: the red triangle’s shape should always match the tile shape. For p3/p31m/p3m1, the red triangle is equilateral. For p6/p6m it’s a 30-60-90 right triangle. For p4/p4m it’s a 45-45-90 right triangle.\nThe current code breaks this principle. It uses texCenter as a fan apex and texRadius for both P1 and P2 — so the red triangle is always isoceles regardless of group. That’s the root bug.\nThe fix is to reparameterize the source triangle as three independent control points (not apex + two equidistant radial points), where the shape of those three points matches the tile shape for the active group. Then UV mapping is just barycentric: canonical tile vertices → red triangle vertices.\nThis also resolves the grid spacing issue naturally — once you know the tile shape and size, the lattice vectors follow from geometry, not from the current one-size-fits-all triSize.\nShall I start with this rearchitecting? The most logical order would be:\nReparameterize the source triangle per group Fix drawTile() to use correct vertex UVs per group Fix grid spacing per group Add the missing p31m just an addendum: the 30/30/120 triangle and kite are also just tilings inside the equilateral grid. I don’t think we have too much freedom w symmetry there – they are all sort of like p3, right? Right — because the 120-30-30 and kite are both subdivisions of the equilateral triangle:\n1 equilateral = 3 × (120-30-30) — connect centroid to each vertex 1 equilateral = 6 × kites — connect centroid to each vertex AND each edge midpoint So they live on the same hexagonal lattice. The 120-30-30 tiles with 3-fold rotation (essentially p3 — the geometry doesn’t allow anything richer without mirrors). The kite has one axis of bilateral symmetry baked in, so it behaves like p3 with a single reflection — but the reflection is determined by the kite’s geometry, not a free choice.\nSo the full taxonomy collapses to something like:\nLattice Tile shape Modes Hex 60-60-60 equilateral p3, p31m, p3m1 Hex 120-30-30 (⅓ equilateral) p3 only Hex kite (⅙ equilateral) p3 + forced reflection Hex 30-60-90 p6, p6m Square 45-45-90 p4, p4m Items 4 and 5 don’t need separate group names — they’re just different source triangle shapes that happen to live on the hex grid with constrained symmetry.\nDoes that match your intuition? If so, the implementation plan is clear: 5 tile shapes, 9 modes total.\nyes, except i was imagining that the kite was a quadrilateral (which is what’s interesting) – center to median to vertex to median to center. Got it — the kite is:\nO → M₁ → V → M₂ → O Where O is the equilateral centroid, V is a vertex, M₁ and M₂ are the midpoints of the two sides meeting at V.\nThat’s what makes it interesting — it’s the only non-triangular tile in your set. Six kites fill the equilateral, and the kite has a built-in mirror axis (the O→V diagonal), so the two triangular halves of the kite are reflections of each other.\nFor implementation this means:\nThe red shape on the source image is a quadrilateral, not a triangle Drawing it requires splitting into 2 triangles (O, M₁, V) and (O, V, M₂) — but the UV mapping ties them together across the shared O→V edge so the reflection is seamless The tiling is still the same hex lattice, just with 6 kites per equilateral instead of 1 equilateral or 3 obtuse triangles So the updated taxonomy:\nTile shape Type Modes 60-60-60 equilateral triangle p3, p31m, p3m1 120-30-30 (⅓ equilateral) triangle p3-only kite (⅙ equilateral) quadrilateral p3 + forced mirror 30-60-90 triangle p6, p6m 45-45-90 triangle p4, p4m Ready to start implementing when you are.\n3 kites fill the equilateral You’re right, sorry. The equilateral has 3 vertices, each gives one kite (O, M₁, V, M₂), so 3 kites = 1 equilateral. Same area as the 120-30-30 triangle — just a different shape for the same ⅓ subdivision.\nUpdated:\nTile shape Fraction of equilateral Modes 60-60-60 equilateral 1 p3, p31m, p3m1 120-30-30 (centroid + 2 vertices) ⅓ p3-only kite (centroid + vertex + 2 edge midpoints) ⅓ p3 + forced mirror 30-60-90 — (different lattice scale) p6, p6m 45-45-90 — p4, p4m The 120-30-30 and kite are the same ⅓ subdivision of the equilateral, just cut differently — one along vertex-to-vertex lines, the other along vertex-to-midpoint lines.\nidk what you mean by “forced mirror” for the kite – the red shape will be a kite whose coloring is asymmetric Right — the kite is just the tile shape, not a constraint on the symmetry. The coloring is whatever the source image has in that kite region, no reflection applied. So it’s the same as the 120-30-30 case: pure 3-fold rotation, p3-only.\nSimplified:\nTile shape Symmetry Modes 60-60-60 equilateral hex p3, p31m, p3m1 120-30-30 triangle hex p3 kite hex p3 30-60-90 triangle hex p6, p6m 45-45-90 triangle square p4, p4m The only distinction between 120-30-30 and kite is the tile shape — both are p3, both are ⅓ of the equilateral. The kite is interesting purely because the quadrilateral source region samples the image differently.\nok, now i think i understand – for the kite and obtuse, we COULD use any of the p3 symmetries because they’re really just different ways of creating the original 60/60/60. SO, i’d like for the kite to be p3m1 and the obtuse to be p3. That makes sense — since all three (equilateral, kite, obtuse) reconstruct the same equilateral grid, you can freely assign which p3-family symmetry each uses. The final list:\nTile shape Symmetry 60-60-60 equilateral p3, p31m, p3m1 120-30-30 obtuse p3 kite p3m1 30-60-90 right p6, p6m 45-45-90 right isoceles p4, p4m 9 modes total across 5 tile shapes. Ready to start rewriting sketch_kali.js?\nYES! do we need to do that a little at a time so you don’t go over on tokens? yes please implement API Error: Claude’s response exceeded the 32000 output token maximum. To configure this behavior, set the CLAUDE_CODE_MAX_OUTPUT_TOKENS environment variable."
+  },
+  {
+    "objectID": "slides/12_tue_pathcompression.html#announcements",
+    "href": "slides/12_tue_pathcompression.html#announcements",
+    "title": "Disjoint Sets Continued",
+    "section": "Announcements",
+    "text": "Announcements\n\nPA3 due Week 12\nPEX5 this week!"
+  },
+  {
+    "objectID": "slides/12_tue_pathcompression.html#example-partition-of-elements-into-disjoint-sets",
+    "href": "slides/12_tue_pathcompression.html#example-partition-of-elements-into-disjoint-sets",
+    "title": "Disjoint Sets Continued",
+    "section": "Example: Partition of Elements into Disjoint Sets",
+    "text": "Example: Partition of Elements into Disjoint Sets\n\n\n  \n  \n  2\n  5\n  9\n\n  \n  7\n\n  \n  0\n  1\n  4\n  8\n\n  \n  6\n  3\n\n\n\n\n  \n  \n  \n  \n  5\n  \n  9\n  \n  2\n\n  \n  \n  7\n\n  \n  \n  \n  \n  \n  4\n  \n  0\n  \n  8\n  \n  1\n\n  \n  \n  \n  3\n  \n  6\n\n  \n  \n  0\n  1\n  2\n  3\n  4\n  5\n  6\n  7\n  8\n  9\n\n  \n  \n  4\n  \n  8\n  \n  5\n  \n  6\n  \n  -1\n  \n  -1\n  \n  -1\n  \n  -1\n  \n  4\n  \n  5\n\n\n\nRoots store -1. Non-roots store the index of their parent. find(1) → s[1]=8 → s[8]=4 → s[4]=-1 → return 4. find(3) → s[3]=6 → s[6]=-1 → return 6."
+  },
+  {
+    "objectID": "slides/12_tue_pathcompression.html#uptree-implementation",
+    "href": "slides/12_tue_pathcompression.html#uptree-implementation",
+    "title": "Disjoint Sets Continued",
+    "section": "UpTree Implementation",
+    "text": "UpTree Implementation\ndef find(self, i):\n    if self.s[i] &lt; 0:\n        return i\n    else:\n        return self.find(self.s[i])\n\n\nRunning time depends on ___________.\nWorst case? ___________\nWhat’s an ideal tree? ___________\n\n\ndef union(self, root1, root2):\n    self.s[root2] = root1\n\nRunning time of find depends on the height of the tree. Worst case is O(n) — a degenerate chain. Ideal tree is short and wide (star-shaped). Union as shown is naive — it can create tall trees."
+  },
+  {
+    "objectID": "slides/12_tue_pathcompression.html#smart-unions",
+    "href": "slides/12_tue_pathcompression.html#smart-unions",
+    "title": "Disjoint Sets Continued",
+    "section": "Smart Unions",
+    "text": "Smart Unions\n\n\n  \n    \n      \n    \n  \n\n  \n  \n\n  \n  \n  \n\n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n\n  \n  \n  7\n\n  \n  6\n  \n  8\n  \n  9\n\n  \n  0\n  \n  1\n  \n  2\n  \n  3\n\n  \n  \n  \n\n  \n  \n  \n  \n\n  \n  \n  4\n  \n  10\n  \n  5\n  \n  11\n\n  \n  Union by ____________:\n\n  \n  0\n  6\n\n  1\n  6\n\n  2\n  6\n\n  3\n  8\n\n  4\n  \n\n  5\n  10\n\n  6\n  7\n\n  7\n  \n\n  8\n  7\n\n  9\n  7\n\n  10\n  4\n\n  11\n  5\n\n  \n  Keeps overall height of\n  tree as small as possible.\n\n  \n  Union by ____________:\n\n  \n  0\n  6\n\n  1\n  6\n\n  2\n  6\n\n  3\n  8\n\n  4\n  \n\n  5\n  10\n\n  6\n  7\n\n  7\n  \n\n  8\n  7\n\n  9\n  7\n\n  10\n  4\n\n  11\n  5\n\n  \n  Increases distance to\n  root for fewest nodes.\n\n\n\nBoth of these schemes for Union guarantee the height of the tree is ________.\n\nBoth guarantee O(log n) height. Union by height: attach shorter tree under taller tree’s root. Union by size: attach smaller tree under larger tree’s root. Both yield O(log n) for find."
+  },
+  {
+    "objectID": "slides/12_tue_pathcompression.html#smart-unions-implementation",
+    "href": "slides/12_tue_pathcompression.html#smart-unions-implementation",
+    "title": "Disjoint Sets Continued",
+    "section": "Smart Unions: Implementation",
+    "text": "Smart Unions: Implementation\ndef find(self, i):\n    if self.s[i] &lt; 0:\n        return i\n    else:\n        return self.find(self.s[i])\n\n\ndef union_by_size(self, root1, root2):\n    new_size = self.s[root1] + self.s[root2]\n    if self.s[root1] &lt;= self.s[root2]:   # root1 is bigger (more negative)\n        self.s[root2] = root1\n        self.s[root1] = new_size\n    else:\n        self.s[root1] = root2\n        self.s[root2] = new_size\n\nRoots store the negative of the set size (e.g., -3 means 3 elements). When merging, the smaller tree becomes a child of the larger tree’s root. The new root updates its size to the combined total."
+  },
+  {
+    "objectID": "slides/12_tue_pathcompression.html#summary",
+    "href": "slides/12_tue_pathcompression.html#summary",
+    "title": "Disjoint Sets Continued",
+    "section": "Summary",
+    "text": "Summary\nUpTree implementation of ADT Disjoint Sets with smart Union gives:\n\nFind: \\(O(\\log n)\\)\nUnion: \\(O(1)\\)\n\n \nCan we do better?"
+  },
+  {
+    "objectID": "slides/12_tue_pathcompression.html#path-compression",
+    "href": "slides/12_tue_pathcompression.html#path-compression",
+    "title": "Disjoint Sets Continued",
+    "section": "Path Compression",
+    "text": "Path Compression\n\n\n  \n    \n      \n    \n  \n\n  \n  \n\n  \n  \n\n  \n    \n   \n     \n     \n     \n     \n     \n     \n     \n     \n\n  \n  \n  10\n\n  \n  9\n  \n  11\n\n  \n  1\n  \n  7\n\n  \n  2\n  \n  8\n\n  \n  3\n  \n  4\n\n  \n  5\n  \n  6\n\n\n\nPath compression: when Find(i) traverses the path to the root, set every node along that path to point directly to the root. This flattens the tree, making all future finds faster. E.g., after Find(5), nodes 5, 4, 2, 7, 9 all point directly to root 10."
+  },
+  {
+    "objectID": "slides/12_tue_pathcompression.html#analysis",
+    "href": "slides/12_tue_pathcompression.html#analysis",
+    "title": "Disjoint Sets Continued",
+    "section": "Analysis",
+    "text": "Analysis\nSomething we’ll need — Iterated log:\n\\[\\log^* (n) = \\begin{cases} 0 & \\text{if } n \\leq 1 \\\\ 1 + \\log^*(\\log n) & \\text{if } n &gt; 1 \\end{cases}\\]\nExample: \\(\\log^* (2^{65536})\\)\nRelevant result: In an upTree implementation of Disjoint Sets using smart union and find with path compression…\nany sequence of \\(m\\) union and find operations results in worst case running time of \\(O(\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_)\\), where \\(n\\) is the number of items.\nhttp://research.cs.vt.edu/AVresearch/UF/\n\nlog(n) is the iterated logarithm — the number of times you apply log before the value drops to ≤ 1. For n = 2^65536 (an astronomically large number), log(n) = 5. So log* is effectively constant for all practical n. The result: any m union+find operations with path compression + smart union run in O(m log* n) total — essentially O(m) amortized."
+  },
+  {
+    "objectID": "slides/12_tue_pathcompression.html#summary-1",
+    "href": "slides/12_tue_pathcompression.html#summary-1",
+    "title": "Disjoint Sets Continued",
+    "section": "Summary",
+    "text": "Summary\nUpTree implementation of ADT Disjoint Sets with smart Union gives:\n\nFind = O(log n)\nUnion = O(1)\n\n \nIf we add path compression we achieve nearly constant time for both operations."
+  },
+  {
     "objectID": "slides/04_wed_sorting_lowerbound.html#two-methods-of-speculating",
     "href": "slides/04_wed_sorting_lowerbound.html#two-methods-of-speculating",
     "title": "The Sorting Lower Bound",
@@ -2181,622 +2799,67 @@
     "text": "Questions?\n\nGood luck on EX1!"
   },
   {
-    "objectID": "slides/12_tue_pathcompression.html#announcements",
-    "href": "slides/12_tue_pathcompression.html#announcements",
-    "title": "Disjoint Sets Continued",
+    "objectID": "slides/14_wed_sssp.html#announcements",
+    "href": "slides/14_wed_sssp.html#announcements",
+    "title": "Single Source Shortest Path",
     "section": "Announcements",
-    "text": "Announcements\n\nPA3 due Week 12\nPEX5 this week!"
+    "text": "Announcements"
   },
   {
-    "objectID": "slides/12_tue_pathcompression.html#example-partition-of-elements-into-disjoint-sets",
-    "href": "slides/12_tue_pathcompression.html#example-partition-of-elements-into-disjoint-sets",
-    "title": "Disjoint Sets Continued",
-    "section": "Example: Partition of Elements into Disjoint Sets",
-    "text": "Example: Partition of Elements into Disjoint Sets\n\n\n  \n  \n  2\n  5\n  9\n\n  \n  7\n\n  \n  0\n  1\n  4\n  8\n\n  \n  6\n  3\n\n\n\n\n  \n  \n  \n  \n  5\n  \n  9\n  \n  2\n\n  \n  \n  7\n\n  \n  \n  \n  \n  \n  4\n  \n  0\n  \n  8\n  \n  1\n\n  \n  \n  \n  3\n  \n  6\n\n  \n  \n  0\n  1\n  2\n  3\n  4\n  5\n  6\n  7\n  8\n  9\n\n  \n  \n  4\n  \n  8\n  \n  5\n  \n  6\n  \n  -1\n  \n  -1\n  \n  -1\n  \n  -1\n  \n  4\n  \n  5\n\n\n\nRoots store -1. Non-roots store the index of their parent. find(1) → s[1]=8 → s[8]=4 → s[4]=-1 → return 4. find(3) → s[3]=6 → s[6]=-1 → return 6."
+    "objectID": "slides/14_wed_sssp.html#single-source-shortest-path",
+    "href": "slides/14_wed_sssp.html#single-source-shortest-path",
+    "title": "Single Source Shortest Path",
+    "section": "Single Source Shortest Path",
+    "text": "Single Source Shortest Path\nGiven a start vertex (source) \\(s\\), find the path of least total cost from \\(s\\) to every vertex in the graph."
   },
   {
-    "objectID": "slides/12_tue_pathcompression.html#uptree-implementation",
-    "href": "slides/12_tue_pathcompression.html#uptree-implementation",
-    "title": "Disjoint Sets Continued",
-    "section": "UpTree Implementation",
-    "text": "UpTree Implementation\ndef find(self, i):\n    if self.s[i] &lt; 0:\n        return i\n    else:\n        return self.find(self.s[i])\n\n\nRunning time depends on ___________.\nWorst case? ___________\nWhat’s an ideal tree? ___________\n\n\ndef union(self, root1, root2):\n    self.s[root2] = root1\n\nRunning time of find depends on the height of the tree. Worst case is O(n) — a degenerate chain. Ideal tree is short and wide (star-shaped). Union as shown is naive — it can create tall trees."
+    "objectID": "slides/14_wed_sssp.html#single-source-shortest-path-1",
+    "href": "slides/14_wed_sssp.html#single-source-shortest-path-1",
+    "title": "Single Source Shortest Path",
+    "section": "Single Source Shortest Path",
+    "text": "Single Source Shortest Path\n\nInput: directed graph \\(G\\) with non-negative edge weights, and a start vertex \\(s\\).\nOutput: A subgraph \\(G’\\) consisting of the shortest (minimum total cost) paths from \\(s\\) to every other vertex in the graph.\n\n\n\n\n\nDijkstra’s Algorithm (1959)\n \nNote:\n\n\n\n\n\n\n\nchange (d,e) to -2: DIJK may not find shortest path\nchange (g,s) to -10: no shortest path exists"
   },
   {
-    "objectID": "slides/12_tue_pathcompression.html#smart-unions",
-    "href": "slides/12_tue_pathcompression.html#smart-unions",
-    "title": "Disjoint Sets Continued",
-    "section": "Smart Unions",
-    "text": "Smart Unions\n\n\n  \n    \n      \n    \n  \n\n  \n  \n\n  \n  \n  \n\n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n\n  \n  \n  7\n\n  \n  6\n  \n  8\n  \n  9\n\n  \n  0\n  \n  1\n  \n  2\n  \n  3\n\n  \n  \n  \n\n  \n  \n  \n  \n\n  \n  \n  4\n  \n  10\n  \n  5\n  \n  11\n\n  \n  Union by ____________:\n\n  \n  0\n  6\n\n  1\n  6\n\n  2\n  6\n\n  3\n  8\n\n  4\n  \n\n  5\n  10\n\n  6\n  7\n\n  7\n  \n\n  8\n  7\n\n  9\n  7\n\n  10\n  4\n\n  11\n  5\n\n  \n  Keeps overall height of\n  tree as small as possible.\n\n  \n  Union by ____________:\n\n  \n  0\n  6\n\n  1\n  6\n\n  2\n  6\n\n  3\n  8\n\n  4\n  \n\n  5\n  10\n\n  6\n  7\n\n  7\n  \n\n  8\n  7\n\n  9\n  7\n\n  10\n  4\n\n  11\n  5\n\n  \n  Increases distance to\n  root for fewest nodes.\n\n\n\nBoth of these schemes for Union guarantee the height of the tree is ________.\n\nBoth guarantee O(log n) height. Union by height: attach shorter tree under taller tree’s root. Union by size: attach smaller tree under larger tree’s root. Both yield O(log n) for find."
+    "objectID": "slides/14_wed_sssp.html#sssp-algorithm",
+    "href": "slides/14_wed_sssp.html#sssp-algorithm",
+    "title": "Single Source Shortest Path",
+    "section": "SSSP Algorithm",
+    "text": "SSSP Algorithm\n\n\n\n\nGiven a source vertex \\(s\\), we wish to find the shortest path from \\(s\\) to every other vertex in the graph.\n\nInitialize structure:\n\nd:\np:\n\nRepeat these steps:\n\nLabel a new (unlabelled) vertex \\(v\\), whose shortest distance has been found\nUpdate \\(v\\)’s neighbors with improved distance and predecessor"
   },
   {
-    "objectID": "slides/12_tue_pathcompression.html#smart-unions-implementation",
-    "href": "slides/12_tue_pathcompression.html#smart-unions-implementation",
-    "title": "Disjoint Sets Continued",
-    "section": "Smart Unions: Implementation",
-    "text": "Smart Unions: Implementation\ndef find(self, i):\n    if self.s[i] &lt; 0:\n        return i\n    else:\n        return self.find(self.s[i])\n\n\ndef union_by_size(self, root1, root2):\n    new_size = self.s[root1] + self.s[root2]\n    if self.s[root1] &lt;= self.s[root2]:   # root1 is bigger (more negative)\n        self.s[root2] = root1\n        self.s[root1] = new_size\n    else:\n        self.s[root1] = root2\n        self.s[root2] = new_size\n\nRoots store the negative of the set size (e.g., -3 means 3 elements). When merging, the smaller tree becomes a child of the larger tree’s root. The new root updates its size to the combined total."
+    "objectID": "slides/14_wed_sssp.html#sssp-algorithm-1",
+    "href": "slides/14_wed_sssp.html#sssp-algorithm-1",
+    "title": "Single Source Shortest Path",
+    "section": "SSSP Algorithm",
+    "text": "SSSP Algorithm\n\n\n\nInitialize structure:\n\nFor all v: d[v] = INF, p[v] = null\nLet d[s] = 0\nInitialize PQ by d[v]\n\nRepeat n times:\n\nRemove minimum d[] unlabelled vertex: v\nLabel vertex v\nFor all unlabelled neighbors w of v:\n\nIf (________________ &lt; d[w])\n\nd[w] = ________________\np[w] = v\n\n\n\nReturn p"
   },
   {
-    "objectID": "slides/12_tue_pathcompression.html#summary",
-    "href": "slides/12_tue_pathcompression.html#summary",
-    "title": "Disjoint Sets Continued",
-    "section": "Summary",
-    "text": "Summary\nUpTree implementation of ADT Disjoint Sets with smart Union gives:\n\nFind: \\(O(\\log n)\\)\nUnion: \\(O(1)\\)\n\n \nCan we do better?"
+    "objectID": "slides/14_wed_sssp.html#three-observations",
+    "href": "slides/14_wed_sssp.html#three-observations",
+    "title": "Single Source Shortest Path",
+    "section": "Three Observations:",
+    "text": "Three Observations:\n\nWhen a node becomes labeled, its shortest distance is final. It will never improve again.\nd[] values only decrease, never increase.\nThe predecessors p[] form a shortest-path tree."
   },
   {
-    "objectID": "slides/12_tue_pathcompression.html#path-compression",
-    "href": "slides/12_tue_pathcompression.html#path-compression",
-    "title": "Disjoint Sets Continued",
-    "section": "Path Compression",
-    "text": "Path Compression\n\n\n  \n    \n      \n    \n  \n\n  \n  \n\n  \n  \n\n  \n    \n   \n     \n     \n     \n     \n     \n     \n     \n     \n\n  \n  \n  10\n\n  \n  9\n  \n  11\n\n  \n  1\n  \n  7\n\n  \n  2\n  \n  8\n\n  \n  3\n  \n  4\n\n  \n  5\n  \n  6\n\n\n\nPath compression: when Find(i) traverses the path to the root, set every node along that path to point directly to the root. This flattens the tree, making all future finds faster. E.g., after Find(5), nodes 5, 4, 2, 7, 9 all point directly to root 10."
+    "objectID": "slides/14_wed_sssp.html#your-turn",
+    "href": "slides/14_wed_sssp.html#your-turn",
+    "title": "Single Source Shortest Path",
+    "section": "Your Turn",
+    "text": "Your Turn\nExecute Dijkstra’s algorithm on this graph:"
   },
   {
-    "objectID": "slides/12_tue_pathcompression.html#analysis",
-    "href": "slides/12_tue_pathcompression.html#analysis",
-    "title": "Disjoint Sets Continued",
-    "section": "Analysis",
-    "text": "Analysis\nSomething we’ll need — Iterated log:\n\\[\\log^* (n) = \\begin{cases} 0 & \\text{if } n \\leq 1 \\\\ 1 + \\log^*(\\log n) & \\text{if } n &gt; 1 \\end{cases}\\]\nExample: \\(\\log^* (2^{65536})\\)\nRelevant result: In an upTree implementation of Disjoint Sets using smart union and find with path compression…\nany sequence of \\(m\\) union and find operations results in worst case running time of \\(O(\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_)\\), where \\(n\\) is the number of items.\nhttp://research.cs.vt.edu/AVresearch/UF/\n\nlog(n) is the iterated logarithm — the number of times you apply log before the value drops to ≤ 1. For n = 2^65536 (an astronomically large number), log(n) = 5. So log* is effectively constant for all practical n. The result: any m union+find operations with path compression + smart union run in O(m log* n) total — essentially O(m) amortized."
+    "objectID": "slides/14_wed_sssp.html#prims-algorithm-runtime-analysis",
+    "href": "slides/14_wed_sssp.html#prims-algorithm-runtime-analysis",
+    "title": "Single Source Shortest Path",
+    "section": "Prim’s Algorithm: Runtime Analysis",
+    "text": "Prim’s Algorithm: Runtime Analysis\n\n\n\nInitialize structure:\n\nFor all v: d[v] = INF, p[v] = null\nLet d[s] = 0\nInitialize PQ by d[v] ⭐\n\nRepeat n times:\n\nRemove minimum d[] unlabelled vertex: v ⭐\nLabel vertex v\nFor all unlabelled neighbors w of v: 💜\n\nIf (wt[(v,w)] &lt; d[w])\n\nd[w] = wt[(v,w)] ⭐\np[w] = v\n\n\n\nReturn p\n\n\n⭐ \\(n\\) removeMins + \\(\\leq m\\) decreaseKeys 💜 \\(O(m)\\) total (adj list)  |  \\(O(n^2)\\) total (adj matrix)\n\n\n\n\n\n\n\n\n\nAdj matrix\nAdj list\n\n\n\n\nheap\n\\(O(n^2 + m \\log n)\\)\n\\(O(m \\log n)\\)\n\n\nunsorted array\n\\(O(n^2)\\)\n\\(O(n^2)\\)\n\n\n\n \nWhich is best? Depends on graph density:\n\nSparse (\\(m=O(n)\\)):\nDense (\\(m=O(n^2)\\)):\n\n\nHeap + adj list: n×O(log n) removeMin + m×O(log n) decreaseKey + O(m) neighbor scans = O(m log n). Heap + adj matrix: same PQ cost + O(n) per vertex for neighbor scan = O(n²) + O(m log n). Unsorted array + adj matrix: O(n) removeMin × n = O(n²); decreaseKey O(1); neighbor scan O(n²) total = O(n²). Unsorted array + adj list: O(n²) removeMin dominates = O(n²)."
   },
   {
-    "objectID": "slides/12_tue_pathcompression.html#summary-1",
-    "href": "slides/12_tue_pathcompression.html#summary-1",
-    "title": "Disjoint Sets Continued",
-    "section": "Summary",
-    "text": "Summary\nUpTree implementation of ADT Disjoint Sets with smart Union gives:\n\nFind = O(log n)\nUnion = O(1)\n\n \nIf we add path compression we achieve nearly constant time for both operations."
-  },
-  {
-    "objectID": "memorymar18.html",
-    "href": "memorymar18.html",
-    "title": "Shape Angles Groups Notes",
-    "section": "",
-    "text": "we were working on Kali, and had arrived at a list of symmetries that made sense in the context of the problem. There are working implementations, but many of them are broken. I wonder if our whole recent context is lost. It’s going to be difficult to reconstruct the next steps that you suggested. Let me check the memory files and the current working directories for context on the Kali project.\nGlobpattern: “**/*” Found 2 files Bash List contents of talks repo and KJ server directories IN ls /Users/cheeren/Repos/talks/ 2&gt;/dev/null && ls /tmp/KJ/server/ 2&gt;/dev/null && ls /private/tmp/KJ/server/ 2&gt;/dev/null\nOUT KJ kali references spiro spirograph wccce2026 wids2026 gizmoapp_server gizmoapp_server Bash List kali directory contents IN ls /Users/cheeren/Repos/talks/kali/ && echo “—” && ls /tmp/KJ/server/ 2&gt;/dev/null\nOUT images index.html sketch_kali.js slides.qmd theme.scss wildflowers.jpg — gizmoapp_server Read sketch_kali.js Good - I can see the full current state of the code. Let me also check the slides for context on what was being discussed.\nRead slides.qmd Read index.html there are no slides for this project. The previous conversation context is indeed gone. But I’ve read the current sketch_kali.js in full, so let me reconstruct an honest assessment of where things stand.\nCurrent state of the 6 groups:\nGroup n reflect slices Likely status p6m 6 true 12 (×30°) Probably working (the original) p6 6 false 6 (×60°) Probably working (same hex geometry) p4m 4 true 8 (×45°) Probably working (sq lattice, full coverage) p4 4 false 4 (×90°) Probably working (sq lattice, full coverage) p3m1 3 true 6 (×60°) Suspect — hex lattice spacing may be wrong for 3-fold period p3 3 false 3 (×120°) Suspect — same hex grid spacing issue The two specific things I’d flag without seeing it run:\nLattice period for p3/p3m1: the translation lattice for a 3-fold group is larger than for 6-fold. The hex grid uses the same dx = 1.5 * triSize for all hex groups — this is correct for p6/p6m but may produce visible gaps or wrong-scale tiling for p3/p3m1.\nUV flip logic for p3m1: the mirror = g.reflect && (k % 2 === 1) alternation may not produce the correct reflection symmetry for p3m1 (as opposed to p31m, which has reflections in different positions).\nCan you tell me:\nWhich specific groups look broken when you open it in a browser? What the visual artifact is (gaps? wrong pattern? seams)? That will let me quickly reconstruct the plan rather than guess at it. Alternatively, if you remember any of the groups we were adding (beyond the current 6), that would help too.\nGot it — the slides.qmd is just a placeholder. This is a standalone interactive demo, not a talk. Let me save that to memory.\nWrite kali.md 15 lines Edit MEMORY.md Edit failed Read MEMORY.md Edit MEMORY.md Added 7 lines Noted and saved. So — back to the question: do you want to open it in the browser and describe what looks wrong, or should I work through the code to identify the likely bugs in the broken groups?\nsketch_kali.js i think i can almost recreate the list of tilings i’d like you to recreate: 1) 60-60-60: p3, p31m, p3m1 2) 30-60-90: p6, p6m 3) 45-45-90: p4? p4m? idk 4) 120 - 30-30: center to 2 vertices of an equilateral triangle 5) kite: center to 2-medians and a vertex of an equilateral triangle.\nred triangle on the base image determines the colors of the tilings. This is a good foundation to reconstruct from. Let me map it out clearly:\nWhat you’re describing is 5 source triangle shapes, each producing different symmetry groups.\n\nShape Angles Groups Notes\n1 Equilateral 60-60-60 p3, p31m, p3m1 Current code has p3m1 but not p31m 2 Right 30-60-90 p6, p6m In code but wrong source triangle shape (currently 30-75-75 isoceles) 3 Right isoceles 45-45-90 p4, p4m Same issue — isoceles not right-angle 4 Obtuse isoceles 120-30-30 ??? Current p3 uses this fan angle — but which group did we assign? 5 Kite quadrilateral ??? Not in current code Two things I can confirm from the code:\np31m is missing — the GROUPS object has p3m1 but not p31m (they differ in which 3-fold centers lie on mirror lines) Source triangles are all isoceles — the code always uses texRadius for both P1 and P2, so the red triangle is always isoceles. For 30-60-90 and 45-45-90 you need P1 and P2 at different distances from texCenter The murkier ones are items 4 and 5. For item 4, did we decide that was p3 (pure 3-fold rotation, no mirrors, obtuse pie-slice source)? And for item 5 (the kite) — do you remember which wallpaper group or what the symmetry operation was? That one seems to require a fundamentally different tile-drawing approach.\nfor p3, why were we using the obtuse triangles at all? We weren’t — it’s an artifact of the fan implementation.\nThe fan approach always produces an isoceles source triangle with the apex at the tile center and apex angle = 360°/n. For p3, n=3, so 360°/3 = 120°. The code just mechanically does that, producing the obtuse 120-30-30 triangle.\nBut p3’s actual fundamental domain is equilateral (60-60-60). The obtuse version was never a deliberate choice — it fell out of reusing the same drawing code for all groups.\nSo the right fix for p3 (and p31m, p3m1) is to use a 60-60-60 equilateral source triangle, which means the tile center is not a vertex of the source triangle — it’s outside it. That breaks the current assumption where texCenter is always the apex of the fan. For those groups, the source triangle parameterization needs to change entirely.\nthe algorithm should always be to tile space using the chosen shape and symmetry, and then texture the shapes based on what’s in the red triangle. Yes — that’s the right way to think about it. It makes the algorithm clean and consistent:\nTile space with the chosen shape (equilateral, 30-60-90, etc.) using the symmetry group’s lattice and operations Texture each tile by mapping its vertices to the corresponding points of the red triangle in the source image The consequence: the red triangle’s shape should always match the tile shape. For p3/p31m/p3m1, the red triangle is equilateral. For p6/p6m it’s a 30-60-90 right triangle. For p4/p4m it’s a 45-45-90 right triangle.\nThe current code breaks this principle. It uses texCenter as a fan apex and texRadius for both P1 and P2 — so the red triangle is always isoceles regardless of group. That’s the root bug.\nThe fix is to reparameterize the source triangle as three independent control points (not apex + two equidistant radial points), where the shape of those three points matches the tile shape for the active group. Then UV mapping is just barycentric: canonical tile vertices → red triangle vertices.\nThis also resolves the grid spacing issue naturally — once you know the tile shape and size, the lattice vectors follow from geometry, not from the current one-size-fits-all triSize.\nShall I start with this rearchitecting? The most logical order would be:\nReparameterize the source triangle per group Fix drawTile() to use correct vertex UVs per group Fix grid spacing per group Add the missing p31m just an addendum: the 30/30/120 triangle and kite are also just tilings inside the equilateral grid. I don’t think we have too much freedom w symmetry there – they are all sort of like p3, right? Right — because the 120-30-30 and kite are both subdivisions of the equilateral triangle:\n1 equilateral = 3 × (120-30-30) — connect centroid to each vertex 1 equilateral = 6 × kites — connect centroid to each vertex AND each edge midpoint So they live on the same hexagonal lattice. The 120-30-30 tiles with 3-fold rotation (essentially p3 — the geometry doesn’t allow anything richer without mirrors). The kite has one axis of bilateral symmetry baked in, so it behaves like p3 with a single reflection — but the reflection is determined by the kite’s geometry, not a free choice.\nSo the full taxonomy collapses to something like:\nLattice Tile shape Modes Hex 60-60-60 equilateral p3, p31m, p3m1 Hex 120-30-30 (⅓ equilateral) p3 only Hex kite (⅙ equilateral) p3 + forced reflection Hex 30-60-90 p6, p6m Square 45-45-90 p4, p4m Items 4 and 5 don’t need separate group names — they’re just different source triangle shapes that happen to live on the hex grid with constrained symmetry.\nDoes that match your intuition? If so, the implementation plan is clear: 5 tile shapes, 9 modes total.\nyes, except i was imagining that the kite was a quadrilateral (which is what’s interesting) – center to median to vertex to median to center. Got it — the kite is:\nO → M₁ → V → M₂ → O Where O is the equilateral centroid, V is a vertex, M₁ and M₂ are the midpoints of the two sides meeting at V.\nThat’s what makes it interesting — it’s the only non-triangular tile in your set. Six kites fill the equilateral, and the kite has a built-in mirror axis (the O→V diagonal), so the two triangular halves of the kite are reflections of each other.\nFor implementation this means:\nThe red shape on the source image is a quadrilateral, not a triangle Drawing it requires splitting into 2 triangles (O, M₁, V) and (O, V, M₂) — but the UV mapping ties them together across the shared O→V edge so the reflection is seamless The tiling is still the same hex lattice, just with 6 kites per equilateral instead of 1 equilateral or 3 obtuse triangles So the updated taxonomy:\nTile shape Type Modes 60-60-60 equilateral triangle p3, p31m, p3m1 120-30-30 (⅓ equilateral) triangle p3-only kite (⅙ equilateral) quadrilateral p3 + forced mirror 30-60-90 triangle p6, p6m 45-45-90 triangle p4, p4m Ready to start implementing when you are.\n3 kites fill the equilateral You’re right, sorry. The equilateral has 3 vertices, each gives one kite (O, M₁, V, M₂), so 3 kites = 1 equilateral. Same area as the 120-30-30 triangle — just a different shape for the same ⅓ subdivision.\nUpdated:\nTile shape Fraction of equilateral Modes 60-60-60 equilateral 1 p3, p31m, p3m1 120-30-30 (centroid + 2 vertices) ⅓ p3-only kite (centroid + vertex + 2 edge midpoints) ⅓ p3 + forced mirror 30-60-90 — (different lattice scale) p6, p6m 45-45-90 — p4, p4m The 120-30-30 and kite are the same ⅓ subdivision of the equilateral, just cut differently — one along vertex-to-vertex lines, the other along vertex-to-midpoint lines.\nidk what you mean by “forced mirror” for the kite – the red shape will be a kite whose coloring is asymmetric Right — the kite is just the tile shape, not a constraint on the symmetry. The coloring is whatever the source image has in that kite region, no reflection applied. So it’s the same as the 120-30-30 case: pure 3-fold rotation, p3-only.\nSimplified:\nTile shape Symmetry Modes 60-60-60 equilateral hex p3, p31m, p3m1 120-30-30 triangle hex p3 kite hex p3 30-60-90 triangle hex p6, p6m 45-45-90 triangle square p4, p4m The only distinction between 120-30-30 and kite is the tile shape — both are p3, both are ⅓ of the equilateral. The kite is interesting purely because the quadrilateral source region samples the image differently.\nok, now i think i understand – for the kite and obtuse, we COULD use any of the p3 symmetries because they’re really just different ways of creating the original 60/60/60. SO, i’d like for the kite to be p3m1 and the obtuse to be p3. That makes sense — since all three (equilateral, kite, obtuse) reconstruct the same equilateral grid, you can freely assign which p3-family symmetry each uses. The final list:\nTile shape Symmetry 60-60-60 equilateral p3, p31m, p3m1 120-30-30 obtuse p3 kite p3m1 30-60-90 right p6, p6m 45-45-90 right isoceles p4, p4m 9 modes total across 5 tile shapes. Ready to start rewriting sketch_kali.js?\nYES! do we need to do that a little at a time so you don’t go over on tokens? yes please implement API Error: Claude’s response exceeded the 32000 output token maximum. To configure this behavior, set the CLAUDE_CODE_MAX_OUTPUT_TOKENS environment variable."
-  },
-  {
-    "objectID": "data/05_wed_candy_hearts_script.html",
-    "href": "data/05_wed_candy_hearts_script.html",
-    "title": "Candy Hearts",
-    "section": "",
-    "text": "Candy Hearts\nA story about finding your one true love\n\nIt was the night before Valentine’s Day.\nYou were working the late shift at the candy heart factory.\nEveryone else had gone home to their valentines.\n\nYour friend Aron rushed in from the cold.\n“I have discovered something amazing,” said Aron.\n“The candy hearts can reveal your One True Love.”\n\n“Look at the conveyor belts,” said Aron.\n(show starting configuration)\n“Follow my instructions exactly, and your One True Love will be revealed.”\n\n“First,” said Aron, “move two hearts from belt 3 to belt 2.”\n\nYou picked up the U and put it on belt 2.\nThen you picked up the O and put it on belt 2.\n(show after move 1)\n\n“Now,” said Aron, “move one heart from belt 2 to belt 1.”\n\nYou picked up the O and put it on belt 1.\n(show after move 2)\n\n“Finally,” said Aron, “move two hearts from belt 1 to belt 3.”\n\nYou picked up the O and put it on belt 3.\nThen you picked up the M and put it on belt 3.\n(show Part 1 final - YUM highlighted)\n\n“Now read the top hearts,” said Aron.\nY… U… M…\n“YUM?” you said.\n“That doesn’t seem right,” said Aron.\n\nSophia looked up from her work.\n“Did you move the hearts one at a time?” she asked.\n“Yes,” you said.\n“There’s your problem,” said Sophia.\n“The machine moves them all at once.”\n\nYou put all the hearts back.\n(show starting configuration again)\n\n“Move two from belt 3 to belt 2 — together.”\nYou picked up the O and U together, keeping their order.\n(show Part 2 move 1 - bracket showing together)\n\n“Move one from belt 2 to belt 1.”\nYou moved the U to belt 1.\n(show Part 2 move 2)\n\n“Move two from belt 1 to belt 3 — together.”\nYou picked up the M and U together, keeping their order.\n(show Part 2 final - YOU highlighted)\n\nYou read the top hearts.\nY… O… U…\n\n“My one true love,” you said, “is me.”\nSophia nodded. “Happy Valentine’s Day.”\nThe End"
-  },
-  {
-    "objectID": "TODO.html",
-    "href": "TODO.html",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory\n\n\n\n\n\n\n\nSchedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\nCreate midterm survey\n\n\n\n\n\n\n\nCreate labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic\n\n\n\n\n\n\nSet up testing framework within marimo\nSet up autograder for PL programming assignments"
-  },
-  {
-    "objectID": "TODO.html#completed-setup-reference-for-future-terms",
-    "href": "TODO.html#completed-setup-reference-for-future-terms",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Update README.md with course info (DSCI 221, not CPSC 203)\nFix GitHub Actions workflow to install R packages directly (renv had macOS-specific binaries that failed on Linux runners)\nInstall R dependencies: tidyverse, gt, gtExtras, fontawesome, here, conflicted, glue\nAdd knitr and rmarkdown to R dependencies\nSet R_LIBS_USER for Quarto to find packages\nUse R --vanilla to bypass renv activation\n\n\n\n\n\nUpdate _variables.yml with course details (code, title, term, instructor, URLs)\nUpdate _quarto.yml with correct repo URL and site URL\nUpdate about.qmd with course description\nUpdate syllabus.qmd with policies and grading\nCreate welcome announcement in posts/00_welcome/index.qmd\n\n\n\n\n\nFix deprecated cur_data() → pick(everything()) (dplyr 1.1.0+)\nAdd explicit column types to read_csv() to avoid parsing warnings\nEnsure schedule.csv has correct number of fields per row (14 columns)\nConvert schedule.csv to Unix line endings (LF, not CRLF)\n\n\n\n\n\nCreate detailed curriculum plan in ~/.claude/plans/ with:\n\n12-week course arc\nWeekly puzzles and themes\nSlide-by-slide outline for Week 1\nLab/PA/HW alignment\nRigor checklist matching CPSC 221 depth\n\nCreate Week 1 slides (Mon/Tue/Wed) in slides/ directory"
-  },
-  {
-    "objectID": "TODO.html#course-setup-canvasinfrastructure",
-    "href": "TODO.html#course-setup-canvasinfrastructure",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Schedule class Zoom meetings in Canvas\nSet up appointment service for office hours (also in Canvas)\nCreate midterm survey"
-  },
-  {
-    "objectID": "TODO.html#assessments",
-    "href": "TODO.html#assessments",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Create labs (major project)\n\nWeek 1: Timing experiments — predict, measure, explain\nWeek 2: Binary search implementation with invariant debugging\nWeek 3: Fractal image generation (Koch snowflake, Sierpinski)\nWeek 4: DFS vs BFS maze visualization\nWeek 5: Dictionary “aha!” puzzles\nWeek 6: Closest pair / sorting applications\nWeek 8: Wordle decision tree analysis\nWeek 9: Trending hashtags tracker\nWeek 10: Kevin Bacon oracle + Union-Find connectivity\nWeek 11: Cheapest flights with Dijkstra\nWeek 12: Exam scheduler with graph coloring\n\n\n\n\n\n\nCreate programming assignments\n\nPA1 (Week 5): Recursive art generator (L-systems or fractal landscapes)\nPA2 (Week 9): Real-time event ranking system\nPA3 (Week 12): Graph algorithms (BFS/Dijkstra application)\n\n\n\n\n\n\nCreate homework assignments\n\nHW1 (Week 3): Big-O proofs, loop invariants\nHW2 (Week 6): Recurrences, dictionary puzzles, sorting analysis\nHW3 (Week 14): Graph proofs, Dijkstra analysis\n\n\n\n\n\n\nCreate examlets\n\nPEX1-5: Practice examlets\nEX1-5: Examlets\nPEXF: Final practice examlet\n\n\n\n\n\n\nCreate practice problems for each topic"
-  },
-  {
-    "objectID": "TODO.html#technical-infrastructure",
-    "href": "TODO.html#technical-infrastructure",
-    "title": "DSCI 221 TODO",
-    "section": "",
-    "text": "Set up testing framework within marimo\nSet up autograder for PL programming assignments"
-  },
-  {
-    "objectID": "syllabus.html",
-    "href": "syllabus.html",
-    "title": "Syllabus",
-    "section": "",
-    "text": "Welcome to DSCI 221, where we study the fundamental data structures and algorithms that power modern computing. Building on your foundation in discrete mathematics, you’ll learn to analyze algorithms rigorously, prove correctness, and understand the tradeoffs between different approaches to organizing and processing data. Along the way, you’ll implement classic data structures in Python and see how these ideas apply to problems in data science.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#introduction",
-    "href": "syllabus.html#introduction",
-    "title": "Syllabus",
-    "section": "",
-    "text": "Welcome to DSCI 221, where we study the fundamental data structures and algorithms that power modern computing. Building on your foundation in discrete mathematics, you’ll learn to analyze algorithms rigorously, prove correctness, and understand the tradeoffs between different approaches to organizing and processing data. Along the way, you’ll implement classic data structures in Python and see how these ideas apply to problems in data science.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#instructor-information",
-    "href": "syllabus.html#instructor-information",
-    "title": "Syllabus",
-    "section": "Instructor Information",
-    "text": "Instructor Information\n\nProf: Cinda Heeren 📧 cheeren@cs.ubc.ca ⏰ Mon 2–4pm · 🏢 ICCS 233 · \nTA: Joel Gunawan 📧  ⏰ TBD · 🏢 TBD\nTA: Oscar Cheng 📧 oscar.cheng@ubc.ca ⏰ Thu · 🏢 ICICS x150 DLC table 6",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#communication",
-    "href": "syllabus.html#communication",
-    "title": "Syllabus",
-    "section": "Communication",
-    "text": "Communication\n\nPiazza: piazza.com/ubc.ca/winterterm22025/dsci221 — Use Piazza for all course-related questions. You’ll get faster responses here than via email, and your classmates benefit from seeing the answers too.\nCanvas: canvas.ubc.ca/courses/182082 — Grades, announcements, and course materials.\nEmail: Reserve email for private matters (accommodations, personal circumstances). For course content questions, use Piazza.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#course-description-and-learning-objectives",
-    "href": "syllabus.html#course-description-and-learning-objectives",
-    "title": "Syllabus",
-    "section": "Course Description and Learning Objectives",
-    "text": "Course Description and Learning Objectives\nBy the end of this course, students will be able to:\n\nDefine and articulate the functionality of classic data structures such as Stacks, Queues, Dictionaries, Priority Queues, etc. by their Abstract Data Type (ADT).\nDesign algorithms and structures to implement novel ADTs based on properties of the data and intended use of the data, using object-oriented problem decomposition.\nImplement classic and novel data structures in modern Python, based upon lists, dictionaries, trees, and graphs.\nAnalyze the efficiency (time and space) of algorithms and data structures using asymptotic notation.\nJustify algorithmic choices using iterative and recursive proofs of correctness.\nEvaluate asymptotic time and space trade-offs between implementation options.\nIdentify the structures and algorithms necessary for solving complex problems.\nSynthesize and apply algorithmic and analytical design choices to form complete software solutions of classic problems.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#lecture-material-and-course-content",
-    "href": "syllabus.html#lecture-material-and-course-content",
-    "title": "Syllabus",
-    "section": "Lecture Material and Course Content",
-    "text": "Lecture Material and Course Content\nDSCI 221 meets officially MWF at 11am in MacMillan 158. After the first week, the schedule shifts:\n\nMonday: In-person lecture (MCML 158)\nTuesday: Online video lecture (asynchronous)\nWednesday: In-person lecture (MCML 158)\nFriday: No class (after week 1)\n\nClass meetings will be a mixture of theoretical narrative, worked examples, and problem-solving exercises. You will learn about algorithmic efficiency, correctness proofs, and the design of data structures—applying these ideas to problems that arise in data science contexts.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#course-requirements",
-    "href": "syllabus.html#course-requirements",
-    "title": "Syllabus",
-    "section": "Course Requirements",
-    "text": "Course Requirements\nDeliverables for the course include the following components:\n\nProgramming Assignments (PAs) — Three significant programming projects where you’ll implement data structures and algorithms. Due approximately every 4-5 weeks.\nHomework (HWs) — Three written assignments focusing on algorithm analysis, correctness proofs, and problem-solving. Due approximately every 4-5 weeks.\nLabs — Ten weekly lab exercises providing hands-on practice with the concepts from lecture. Labs are completed on PrairieLearn.\nExamlets — Five 50-minute assessments completed in the Computer-Based Testing Facility (CBTF). These are self-scheduled within a window and cover both conceptual and coding questions.\nFinal Exam — A comprehensive exam, self-scheduled in the CBTF during the final exam period.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#grading",
-    "href": "syllabus.html#grading",
-    "title": "Syllabus",
-    "section": "Grading",
-    "text": "Grading\n\n\n\nItem\nWeight\n\n\n\n\nProgramming Assignments\n6% (2 × 3%)\n\n\nHomework\n6% (2 × 3%)\n\n\nLabs\n5% (10 × 0.5%)\n\n\nExamlets\n55% (5 × 11%)\n\n\nFinal Exam\n28%\n\n\n\nYou must pass the final exam (50%) to pass the course.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#accessibility",
-    "href": "syllabus.html#accessibility",
-    "title": "Syllabus",
-    "section": "Accessibility",
-    "text": "Accessibility\nIf you have a disability or ongoing medical condition that may require accommodations, please contact the UBC Centre for Accessibility accessibility@ubc.ca to determine your eligibility and receive an accommodation letter.\nIf you have a specific concern about accessing course materials or if you would like to suggest improvements to the accessibility of this course, please do not hesitate to speak with me.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#academic-misconduct",
-    "href": "syllabus.html#academic-misconduct",
-    "title": "Syllabus",
-    "section": "Academic Misconduct",
-    "text": "Academic Misconduct\nAll instances of academic misconduct will be handled in a manner consistent with UBC policies. This includes reporting to the appropriate Associate Head and Faculty Associate Dean. No credit will be given for any assignment completed with inappropriate collaboration.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "syllabus.html#land-acknowledgement",
-    "href": "syllabus.html#land-acknowledgement",
-    "title": "Syllabus",
-    "section": "Land Acknowledgement",
-    "text": "Land Acknowledgement\nUBC’s Point Grey Campus is located on the traditional, ancestral, and unceded territory of the xʷməθkʷəy̓əm (Musqueam) people. The land it is situated on has always been a place of learning for the Musqueam people, who for millennia have passed on their culture, history, and traditions from one generation to the next on this site.",
-    "crumbs": [
-      "Course information",
-      "Syllabus"
-    ]
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "about.html#about",
-    "href": "about.html#about",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "DSCI 221 is a new course developed by Dr. Cinda Heeren. The website is built with Quarto, adapted from the CPSC 203 course website by Dr. Stephan Koenig.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "data/pa1_wildlife/PA1_CONCEPT.html",
-    "href": "data/pa1_wildlife/PA1_CONCEPT.html",
-    "title": "PA1: Wildlife Encounters",
-    "section": "",
-    "text": "You’re a wildlife biologist studying wolf pack territories in the Alberta-BC border region. Wolf packs are highly territorial - when wolves from different packs encounter each other, conflicts can be deadly.\nUsing GPS collar data from 19 wolves across 5 packs, your job is to detect potential encounter events - moments when wolves from different packs came dangerously close to each other.\nWith 3,420 GPS readings, checking all pairs naively would require 5.8 million distance calculations. Your algorithm needs to be smarter.\n\n\n\n\nwolf_tracking.csv - 30 days of GPS data (June 2024) - 19 wolves across 5 packs (Yellowhead, Smoky, Jasper, Willmore, Kakwa) - ~180 GPS pings per wolf (every 4 hours) - Columns: wolf_id, pack_id, timestamp, latitude, longitude\nwolf_tracking_small.csv - 4 wolves for testing (720 records)\n\n\n\n\nImplement haversine_distance(lat1, lon1, lat2, lon2) to calculate the distance in kilometers between two GPS coordinates.\ndef haversine_distance(lat1, lon1, lat2, lon2):\n    \"\"\"\n    Calculate the great-circle distance between two points on Earth.\n\n    Args:\n        lat1, lon1: Coordinates of first point (degrees)\n        lat2, lon2: Coordinates of second point (degrees)\n\n    Returns:\n        Distance in kilometers\n    \"\"\"\nThis is the foundation - you’ll use this in every subsequent part.\n\n\n\n\nImplement closest_pair_brute(points) that finds the two closest points using the naive O(n²) approach.\ndef closest_pair_brute(points):\n    \"\"\"\n    Find the closest pair of points using brute force.\n\n    Args:\n        points: List of (x, y) tuples\n\n    Returns:\n        ((x1, y1), (x2, y2), distance) - the two closest points and their distance\n    \"\"\"\nTest it on the small dataset. Time it. Feel the pain.\n\n\n\n\nNow implement the O(n log n) recursive algorithm:\ndef closest_pair_recursive(points):\n    \"\"\"\n    Find the closest pair of points using divide-and-conquer.\n\n    The algorithm:\n    1. Base case: if n &lt;= 3, use brute force\n    2. Sort points by x-coordinate\n    3. Divide into left and right halves\n    4. Recursively find closest pair in each half\n    5. The tricky part: check the \"strip\" near the dividing line\n\n    Returns:\n        ((x1, y1), (x2, y2), distance)\n    \"\"\"\nThe key insight: after finding the minimum distance d in both halves, you only need to check points within distance d of the dividing line. And for each point in this strip, you only need to check at most 7 other points (sorted by y-coordinate).\n\n\n\n\nNow apply your algorithm to the real problem:\ndef find_inter_pack_encounters(df, distance_threshold_km=2.0):\n    \"\"\"\n    Find all instances where wolves from DIFFERENT packs came within\n    the threshold distance of each other.\n\n    Args:\n        df: DataFrame with wolf tracking data\n        distance_threshold_km: Distance that counts as an \"encounter\"\n\n    Returns:\n        List of encounter events: [\n            {\n                'wolf1': 'W001', 'pack1': 'Yellowhead',\n                'wolf2': 'W013', 'pack2': 'Willmore',\n                'timestamp1': '2024-06-15T08:00:00',\n                'timestamp2': '2024-06-15T12:00:00',\n                'distance_km': 1.3,\n                'location': (54.12, -119.87)\n            },\n            ...\n        ]\n    \"\"\"\nThe challenge: you need to consider both space AND time. A “close call” means wolves were close in space at approximately the same time.\n\n\n\n\n\nTime your brute-force algorithm on datasets of size 100, 500, 1000, 2000, 3420\nTime your divide-and-conquer algorithm on the same datasets\nPlot both on the same graph\nFit the theoretical curves O(n²) and O(n log n) to your data\nAnswer: At what size n does divide-and-conquer become 10x faster?\n\n\n\n\n\nCreate a visualization showing: - Wolf territories (as convex hulls or heat maps) - Movement paths colored by pack - Detected encounters highlighted with markers - A timeline showing when encounters occurred\n\n\n\n\nThis isn’t just an academic exercise. Real wildlife biologists use exactly these techniques to: - Study territorial dynamics - Predict conflict zones for conservation - Plan wildlife corridors - Understand disease transmission between populations\nThe closest-pair algorithm is also used in: - Collision detection in physics simulations - Finding duplicate records in databases - Cluster analysis in machine learning - Computer graphics and computational geometry\n\n\n\n\n\n\n\nPart\nPoints\nFocus\n\n\n\n\n1. Haversine distance\n10\nCorrectness\n\n\n2. Brute force\n15\nCorrectness\n\n\n3. Divide-and-conquer\n30\nCorrectness + Recursion\n\n\n4. Wolf encounters\n20\nApplication + Edge cases\n\n\n5. Performance analysis\n15\nAnalysis + Plotting\n\n\n6. Visualization\n10\nCreativity + Clarity\n\n\nTotal\n100\n\n\n\n\n\n\n\n\nThe wolf tracking data is synthetically generated based on realistic movement patterns from published studies of wolf packs in Alberta and British Columbia. Real wolf tracking data is available from Movebank, a free database hosted by the Max Planck Institute of Animal Behavior.\n\n\n\n\nSee pa1_starter.py for function signatures and test cases."
-  },
-  {
-    "objectID": "data/pa1_wildlife/PA1_CONCEPT.html#detecting-close-calls-in-wolf-gps-tracking-data",
-    "href": "data/pa1_wildlife/PA1_CONCEPT.html#detecting-close-calls-in-wolf-gps-tracking-data",
-    "title": "PA1: Wildlife Encounters",
-    "section": "",
-    "text": "You’re a wildlife biologist studying wolf pack territories in the Alberta-BC border region. Wolf packs are highly territorial - when wolves from different packs encounter each other, conflicts can be deadly.\nUsing GPS collar data from 19 wolves across 5 packs, your job is to detect potential encounter events - moments when wolves from different packs came dangerously close to each other.\nWith 3,420 GPS readings, checking all pairs naively would require 5.8 million distance calculations. Your algorithm needs to be smarter.\n\n\n\n\nwolf_tracking.csv - 30 days of GPS data (June 2024) - 19 wolves across 5 packs (Yellowhead, Smoky, Jasper, Willmore, Kakwa) - ~180 GPS pings per wolf (every 4 hours) - Columns: wolf_id, pack_id, timestamp, latitude, longitude\nwolf_tracking_small.csv - 4 wolves for testing (720 records)\n\n\n\n\nImplement haversine_distance(lat1, lon1, lat2, lon2) to calculate the distance in kilometers between two GPS coordinates.\ndef haversine_distance(lat1, lon1, lat2, lon2):\n    \"\"\"\n    Calculate the great-circle distance between two points on Earth.\n\n    Args:\n        lat1, lon1: Coordinates of first point (degrees)\n        lat2, lon2: Coordinates of second point (degrees)\n\n    Returns:\n        Distance in kilometers\n    \"\"\"\nThis is the foundation - you’ll use this in every subsequent part.\n\n\n\n\nImplement closest_pair_brute(points) that finds the two closest points using the naive O(n²) approach.\ndef closest_pair_brute(points):\n    \"\"\"\n    Find the closest pair of points using brute force.\n\n    Args:\n        points: List of (x, y) tuples\n\n    Returns:\n        ((x1, y1), (x2, y2), distance) - the two closest points and their distance\n    \"\"\"\nTest it on the small dataset. Time it. Feel the pain.\n\n\n\n\nNow implement the O(n log n) recursive algorithm:\ndef closest_pair_recursive(points):\n    \"\"\"\n    Find the closest pair of points using divide-and-conquer.\n\n    The algorithm:\n    1. Base case: if n &lt;= 3, use brute force\n    2. Sort points by x-coordinate\n    3. Divide into left and right halves\n    4. Recursively find closest pair in each half\n    5. The tricky part: check the \"strip\" near the dividing line\n\n    Returns:\n        ((x1, y1), (x2, y2), distance)\n    \"\"\"\nThe key insight: after finding the minimum distance d in both halves, you only need to check points within distance d of the dividing line. And for each point in this strip, you only need to check at most 7 other points (sorted by y-coordinate).\n\n\n\n\nNow apply your algorithm to the real problem:\ndef find_inter_pack_encounters(df, distance_threshold_km=2.0):\n    \"\"\"\n    Find all instances where wolves from DIFFERENT packs came within\n    the threshold distance of each other.\n\n    Args:\n        df: DataFrame with wolf tracking data\n        distance_threshold_km: Distance that counts as an \"encounter\"\n\n    Returns:\n        List of encounter events: [\n            {\n                'wolf1': 'W001', 'pack1': 'Yellowhead',\n                'wolf2': 'W013', 'pack2': 'Willmore',\n                'timestamp1': '2024-06-15T08:00:00',\n                'timestamp2': '2024-06-15T12:00:00',\n                'distance_km': 1.3,\n                'location': (54.12, -119.87)\n            },\n            ...\n        ]\n    \"\"\"\nThe challenge: you need to consider both space AND time. A “close call” means wolves were close in space at approximately the same time.\n\n\n\n\n\nTime your brute-force algorithm on datasets of size 100, 500, 1000, 2000, 3420\nTime your divide-and-conquer algorithm on the same datasets\nPlot both on the same graph\nFit the theoretical curves O(n²) and O(n log n) to your data\nAnswer: At what size n does divide-and-conquer become 10x faster?\n\n\n\n\n\nCreate a visualization showing: - Wolf territories (as convex hulls or heat maps) - Movement paths colored by pack - Detected encounters highlighted with markers - A timeline showing when encounters occurred\n\n\n\n\nThis isn’t just an academic exercise. Real wildlife biologists use exactly these techniques to: - Study territorial dynamics - Predict conflict zones for conservation - Plan wildlife corridors - Understand disease transmission between populations\nThe closest-pair algorithm is also used in: - Collision detection in physics simulations - Finding duplicate records in databases - Cluster analysis in machine learning - Computer graphics and computational geometry\n\n\n\n\n\n\n\nPart\nPoints\nFocus\n\n\n\n\n1. Haversine distance\n10\nCorrectness\n\n\n2. Brute force\n15\nCorrectness\n\n\n3. Divide-and-conquer\n30\nCorrectness + Recursion\n\n\n4. Wolf encounters\n20\nApplication + Edge cases\n\n\n5. Performance analysis\n15\nAnalysis + Plotting\n\n\n6. Visualization\n10\nCreativity + Clarity\n\n\nTotal\n100\n\n\n\n\n\n\n\n\nThe wolf tracking data is synthetically generated based on realistic movement patterns from published studies of wolf packs in Alberta and British Columbia. Real wolf tracking data is available from Movebank, a free database hosted by the Max Planck Institute of Animal Behavior.\n\n\n\n\nSee pa1_starter.py for function signatures and test cases."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "",
-    "text": "Instructor: Dr. Cinda Heeren (She, Her)",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
-  },
-  {
-    "objectID": "index.html#weekly-announcement",
-    "href": "index.html#weekly-announcement",
-    "title": "DSCI 221: Data Structures and Algorithms for Data Science",
-    "section": "Weekly announcement",
-    "text": "Weekly announcement\n\n\n\n\n\n\n\n\n\n\nWelcome to DSCI 221!\n\n\n\n\n\nData Structures for Data Science\n\n\n\n\n\nJan 5, 2026\n\n1 min\n\n\n\n\nNo matching items\n\n\n\n\n\n\n  \n    \n      Week\n      Mon\n      \n        Mon\n      \n      \n        Tue\n      \n      \n        Wed\n      \n      Lab\n      ...15\n      Due Sun\n      Examlet\n    \n    \n      S\n      A\n      V\n      S\n      V\n      S\n      A\n      V\n    \n  \n  \n    01 \nJan 5\n\n\n\n\n\n\n\n\n\n\n\n\n    02\nJan 12\n\n\n\n\n\n\n\n\n\n\n\n\n    03\nJan 19\n\n\n\n\n\n\n\n\n\n\nHW1\n\n    04\nJan 26\n\n\n\n\n\n\n\n\n\n\n\nEX1\n    05\nFeb 2\n\n\n\n\n\n\n\n\n\n\nPA1\n\n    06\nFeb 9\n\n\n\n\n\n\n\n\n\n\nHW2\nEX2\n    07\nFeb 16\n\n\n\n\n\n\n\n\n\n\n\n\n    08\nFeb 23\n\n\n\n\n\n\n\n\n\n\n\n\n    09\nMar 2\n\n\n\n\n\n\n\n\n\n\nPA2\nEX3\n    10\nMar 9\n\n\n\n\n\n\n\n\n\n\n\n\n    11\nMar 16\n\n\n\n\n\n\n\n\n\n\n\nEX4\n    12\nMar 23\n\n\n\n\n\n\n\n\n\n\nPA3\n\n    13\nMar 30\n\n\n\n\n\n\n\n\n\n\n\nEX5\n    14\nApr 6\n\n\n\n\n\n\n\n\n\n\nHW3",
-    "crumbs": [
-      "Course information",
-      "Schedule"
-    ]
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#pacing-overview-80-min-total",
-    "href": "slides/08_mon_trees.html#pacing-overview-80-min-total",
-    "title": "Trees as Recursive Structures",
-    "section": "PACING OVERVIEW (80 min total)",
-    "text": "PACING OVERVIEW (80 min total)\nPart 1: Wordle Hook (10 min)\n\nPlay 1-2 rounds of Wordle as a class\nBrief discussion: what makes a good guess?\nIntroduce the idea that strategy = decision tree\n\nPart 2: Jotto Activity (25 min)\n\nExplain rules and scoring (5 min)\nHand out card decks, groups design strategies (15 min)\nDebrief: what first guess did you choose? why? (5 min)\n\nPart 3: Tree Definitions (15 min)\n\n“Why Trees?” slide - quick tour of applications\nKnuth quote + “what’s special?” (connected, acyclic)\nTree Terminology discovery questions (students answer)\nVocabulary reference slide (skim - definitions are intuitive)\n\nPart 4: Binary Trees & Recursion (20 min)\n\nBinary tree definition and recursive structure\nHeight/node count relationship\nWhy height matters for efficiency\nConnect back to Wordle/Jotto: height = worst-case guesses\n\nPart 5: Wrap-up (10 min)\n\nBack to Wordle: decision tree perspective\nSummary slide\nPreview BSTs (Wednesday)"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#lets-play-wordle",
-    "href": "slides/08_mon_trees.html#lets-play-wordle",
-    "title": "Trees as Recursive Structures",
-    "section": "Let’s Play Wordle!",
-    "text": "Let’s Play Wordle!\nI’m thinking of a 5-letter word.\nYou have 6 guesses.\nAfter each guess, I’ll tell you:\n\n🟩 Green: Right letter, right position\n🟨 Yellow: Right letter, wrong position\n⬜ Gray: Letter not in word\n\nLet’s play as a class!\n\nActually play 2-3 rounds with the class. Pick words ahead of time. Have students suggest guesses, vote on which to try. Track remaining possibilities on the board. Good words to use: CRANE, SLATE, MOIST, CHARM, PLUMB (words with common letters for game 1, then trickier ones)."
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#section-1",
-    "href": "slides/08_mon_trees.html#section-1",
-    "title": "Trees as Recursive Structures",
-    "section": "",
-    "text": "If you have internet, you can play the actual game. Otherwise, run it manually on the board."
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#what-strategy-did-we-use",
-    "href": "slides/08_mon_trees.html#what-strategy-did-we-use",
-    "title": "Trees as Recursive Structures",
-    "section": "What Strategy Did We Use?",
-    "text": "What Strategy Did We Use?\nThink about how we played:\n\nWhat made a guess “good”?\nHow did we narrow down possibilities?\nDid we have a system, or was it intuition?"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#the-strategy-question",
-    "href": "slides/08_mon_trees.html#the-strategy-question",
-    "title": "Trees as Recursive Structures",
-    "section": "The Strategy Question",
-    "text": "The Strategy Question\nEvery guess splits the remaining possibilities.\n\n\n\nGuess\nFeedback\nWords eliminated\n\n\n\n\nCRANE\n⬜🟨⬜⬜🟩\nMost words without R and E in those spots\n\n\nSTORE\n🟩⬜🟩🟨🟩\nNow we know S, O, E positions + R somewhere\n\n\n…\n…\n…\n\n\n\nGood guesses split possibilities evenly."
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#visualizing-the-strategy",
-    "href": "slides/08_mon_trees.html#visualizing-the-strategy",
-    "title": "Trees as Recursive Structures",
-    "section": "Visualizing the Strategy",
-    "text": "Visualizing the Strategy\nWhat if we drew every possible game?\n                         SALET (first guess)\n                        /       |        \\        ...\n                 🟩⬜⬜⬜⬜    🟨⬜⬜⬜⬜    🟩🟩⬜⬜⬜     ...\n                    /           |            \\\n      SHIRK, SHOWY, SPICY   CRISP, MUSIC   SAPPY, SANDY\n      SWORN, SNOWY, ...     PRISM, ...     SAUCY, ...\nEach follow-up guess is consistent with prior feedback.\nEach path from top to bottom is one game. This is a tree!"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#the-wordle-decision-tree",
-    "href": "slides/08_mon_trees.html#the-wordle-decision-tree",
-    "title": "Trees as Recursive Structures",
-    "section": "The Wordle Decision Tree",
-    "text": "The Wordle Decision Tree\nThis structure has a name: a decision tree.\n\nRoot: First guess\nBranches: Possible feedback patterns (there are _______)\nInternal nodes: Follow-up guesses\nLeaves: The answer (game over!)\n\nThe height of this tree = worst-case guesses needed."
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#the-optimal-strategy-question",
-    "href": "slides/08_mon_trees.html#the-optimal-strategy-question",
-    "title": "Trees as Recursive Structures",
-    "section": "The Optimal Strategy Question",
-    "text": "The Optimal Strategy Question\nQuestion: What first guess gives the best tree?\nWhat does best mean?\nResearch answer: SALET, REAST, CRATE, TRACE"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#letter-jotto-lets-build-a-strategy",
-    "href": "slides/08_mon_trees.html#letter-jotto-lets-build-a-strategy",
-    "title": "Trees as Recursive Structures",
-    "section": "3-Letter Jotto: Let’s Build a Strategy",
-    "text": "3-Letter Jotto: Let’s Build a Strategy\nThe setup:\n\nThere are 16 possible secret words\nYou guess a word; the response is the count of letters in common (0, 1, 2, or 3)\nYou can only guess words that are still consistent with previous responses\n\nYour task: Design a strategy — an algorithm that tells you what to guess in every situation, for any secret word.\nSpecify your strategy:\n\nWhat’s your first guess?\nFor each possible response (0, 1, 2, or 3), what do you guess next?\nAnd so on, until you’ve identified the secret word."
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#jotto-scoring-examples",
-    "href": "slides/08_mon_trees.html#jotto-scoring-examples",
-    "title": "Trees as Recursive Structures",
-    "section": "Jotto Scoring Examples",
-    "text": "Jotto Scoring Examples\n\n\n\nSecret\nGuess\nScore\nWhy\n\n\n\n\nFOX\nJOG\n1\nO matches\n\n\nDEW\nYAK\n0\nNo letters in common\n\n\nNIP\nINK\n2\nI and N match\n\n\nWOO\nMOB\n1\nO matches (counted once)"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#the-16-words",
-    "href": "slides/08_mon_trees.html#the-16-words",
-    "title": "Trees as Recursive Structures",
-    "section": "The 16 Words",
-    "text": "The 16 Words\nDEW  FOX  GEL  INK\nJOG  MOB  NAP  NIP\nNOR  NUT  OAT  OIL\nPUG  SOY  WOO  YAK"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#example-first-guess-nip",
-    "href": "slides/08_mon_trees.html#example-first-guess-nip",
-    "title": "Trees as Recursive Structures",
-    "section": "Example: First Guess NIP",
-    "text": "Example: First Guess NIP\n\n  \n  \n  \n  \n  \n\n  \n  0\n  1\n  2\n  3\n\n  \n  \n  NIP\n\n  \n  \n  DEW  FOX  GEL\n  JOG  MOB  OAT\n  SOY  WOO  YAK\n  (9 words)\n\n  \n  \n  NOR  NUT\n  OIL  PUG\n  (4 words)\n\n  \n  \n  INK  NAP\n  (2 words)\n\n  \n  \n  NIP\n  (done!)\n\nEach pile contains words consistent with that score.\n\nHand out card decks. Give students 5-7 minutes to play a few rounds, then regroup to discuss strategy.\nKey questions to seed: - What’s a good first guess? Why? - Did anyone try guessing similar words in a row (CAT, BAT, HAT)? How did that go? - What’s the worst case — how many guesses could it take?"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#what-strategy-did-you-discover",
-    "href": "slides/08_mon_trees.html#what-strategy-did-you-discover",
-    "title": "Trees as Recursive Structures",
-    "section": "What Strategy Did You Discover?",
-    "text": "What Strategy Did You Discover?\nDiscussion questions:\n\nWhat makes a “good” first guess?\nWhat happens if you guess CAT, then BAT, then HAT?\nCan you always win in 2 guesses? Why or why not?\n\n\nLead into: the strategy IS a tree! Each guess partitions the remaining words by their Jotto score (0, 1, 2, or 3). Good guesses split evenly. Bad guesses leave big partitions.\nLower bound discussion: With 4 outcomes per guess and 16 words, theoretically log₄(16) = 2 guesses should suffice. But no word achieves a perfect 4-way split!"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#why-trees",
-    "href": "slides/08_mon_trees.html#why-trees",
-    "title": "Trees as Recursive Structures",
-    "section": "Why Trees?",
-    "text": "Why Trees?\nTrees appear everywhere in computer science:\n\n\n\nDomain\nTree Structure\n\n\n\n\nFile systems\nDirectories contain subdirectories\n\n\nHTML/DOM\nElements contain child elements\n\n\nDecision making\nEach choice leads to sub-choices\n\n\nClassification\n“Is it X? If yes, go left…”\n\n\nGame AI\nPossible moves branch into more moves"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#trees-the-most-important-nonlinear-structure",
-    "href": "slides/08_mon_trees.html#trees-the-most-important-nonlinear-structure",
-    "title": "Trees as Recursive Structures",
-    "section": "Trees: The Most Important Nonlinear Structure",
-    "text": "Trees: The Most Important Nonlinear Structure\n\n“Trees are the most important nonlinear structure in computer science.”\n— Donald Knuth, The Art of Computer Programming\n\nWhat’s special about this structure? ________________________\n\n\n\n  \n  \n  \n  \n  \n  \n\n  \n  \n  1\n\n  \n  2\n\n  \n  3\n\n  \n  4\n\n  \n  5\n\n  \n  6"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#tree-terminology",
-    "href": "slides/08_mon_trees.html#tree-terminology",
-    "title": "Trees as Recursive Structures",
-    "section": "Tree Terminology",
-    "text": "Tree Terminology\n\n\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n\n  \n  \n  a\n\n  \n  b\n\n  \n  c\n\n  \n  d\n\n  \n  e\n\n  \n  f\n\n  \n  g\n\n  \n  h\n\n  \n  i\n\n  \n  j\n\n\n\nOne of the vertices is called the root of the tree. Guess which one it is.\nMake an English word containing the names of the vertices that have a parent but no sibling.\nHow many parents does each vertex have?\nWhich vertex has the fewest children?\nWhich vertex has the most ancestors? descendants?\nWhat is d’s depth? What is d’s height?\nList all the vertices in b’s left subtree.\nList all the leaves in the tree."
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#tree-vocabulary-reference",
-    "href": "slides/08_mon_trees.html#tree-vocabulary-reference",
-    "title": "Trees as Recursive Structures",
-    "section": "Tree Vocabulary (reference)",
-    "text": "Tree Vocabulary (reference)\n\n\n\n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  \n  a\n  \n  b\n  \n  c\n  \n  d\n  \n  e\n  \n  f\n  \n  g\n  \n  h\n  \n  i\n  \n  j\n\n\n\nroot: the single node with no parent\nleaf: a node with no children\nchild: a node pointed to by me\nparent: the node that points to me\nsibling: another child of my parent\nancestor: my parent or my parent’s ancestor\ndescendant: my child or my child’s descendant\nsubtree: a node and its descendants\ndepth of node x: number of edges on path from root to x\nheight of node x: number of edges on longest path from x to a leaf"
-  },
-  {
-    "objectID": "slides/08_mon_trees.html#d-ary-tree-definition",
-    "href": "slides/08_mon_trees.html#d-ary-tree-definition",
-    "title": "Trees as Recursive Structures",
-    "section": "d-ary Tree Definition",
-    "text": "d-ary Tree Definition\n\n\nA d-ary tree T is either:\n\n_______________________________________\n\nOR\n\n_______________________________________\n\n\n\n  \n  \n  \n  \n  \n\n  \n  \n  \n  \n\n  \n  \n  \n\n  \n  \n  \n  \n\n  \n  \n\n  \n  \n\n  \n  \n  \n  \n\n  \n  \n  \n  \n  \n\n  \n  \n  \n\n\n\nFill in via annotation: - Empty (no nodes) - A root node with up to d subtrees (each a d-ary tree)\nBinary tree = d-ary tree with d=2\nThe tree shown has d=3 (ternary). Each subtree of the root is colored differently to emphasize the recursive structure."
-  },
-  {
-    "objectID": "slides/jotto_deck.html#the-16-words",
-    "href": "slides/jotto_deck.html#the-16-words",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "The 16 Words",
-    "text": "The 16 Words\nDEW  FOX  GEL  INK\nJOG  MOB  NAP  NIP\nNOR  NUT  OAT  OIL\nPUG  SOY  WOO  YAK\nWhy this set? Different heuristics produce DIFFERENT decision trees! - Greedy Minimax: first guess MOB, depth 8 - Information Gain: first guess NIP, depth 7 - Min Average: first guess NAP, depth 6 (same as optimal!)\nNo anagram pairs in this set."
-  },
-  {
-    "objectID": "slides/jotto_deck.html#rules",
-    "href": "slides/jotto_deck.html#rules",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Rules",
-    "text": "Rules\n\nOne player draws a secret card\nOther player(s) have the remaining 15 cards visible\nGuess a word; response is count of matching letters (position doesn’t matter)\n\nFOX vs JOG → 1 (O matches)\nDEW vs YAK → 0 (no letters in common)\nNIP vs INK → 2 (I and N match)\n\nHard mode constraint: You may only guess words that are consistent with all previous responses (i.e., words that could still be the secret)\nGoal: identify the secret word in fewest guesses"
-  },
-  {
-    "objectID": "slides/jotto_deck.html#deck-design",
-    "href": "slides/jotto_deck.html#deck-design",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Deck Design",
-    "text": "Deck Design\nWords with O (tend to overlap — harder to discriminate): - FOX, JOG, MOB, NOR, OAT, OIL, SOY, WOO\nProbe words (more distinct letter patterns): - DEW, GEL, INK, NAP, NIP, NUT, PUG, YAK"
-  },
-  {
-    "objectID": "slides/jotto_deck.html#jotto-score-matrix",
-    "href": "slides/jotto_deck.html#jotto-score-matrix",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Jotto Score Matrix",
-    "text": "Jotto Score Matrix\n    DEW FOX GEL INK JOG MOB NAP NIP NOR NUT OAT OIL PUG SOY WOO YAK\nDEW  3   0   1   0   0   0   0   0   0   0   0   0   0   0   1   0\nFOX  0   3   0   0   1   1   0   0   1   0   1   1   0   1   1   0\nGEL  1   0   3   0   1   0   0   0   0   0   0   1   1   0   0   0\nINK  0   0   0   3   0   0   1   2   1   1   0   1   0   0   0   1\nJOG  0   1   1   0   3   1   0   0   1   0   1   1   1   1   1   0\nMOB  0   1   0   0   1   3   0   0   1   0   1   1   0   1   1   0\nNAP  0   0   0   1   0   0   3   2   1   1   1   0   1   0   0   1\nNIP  0   0   0   2   0   0   2   3   1   1   0   1   1   0   0   0\nNOR  0   1   0   1   1   1   1   1   3   1   1   1   0   1   1   0\nNUT  0   0   0   1   0   0   1   1   1   3   1   0   1   0   0   0\nOAT  0   1   0   0   1   1   1   0   1   1   3   1   0   1   1   1\nOIL  0   1   1   1   1   1   0   1   1   0   1   3   0   1   1   0\nPUG  0   0   1   0   1   0   1   1   0   1   0   0   3   0   0   0\nSOY  0   1   0   0   1   1   0   0   1   0   1   1   0   3   1   1\nWOO  1   1   0   0   1   1   0   0   1   0   1   1   0   1   2   0\nYAK  0   0   0   1   0   0   1   0   0   0   1   0   0   1   0   3"
-  },
-  {
-    "objectID": "slides/jotto_deck.html#first-guess-analysis",
-    "href": "slides/jotto_deck.html#first-guess-analysis",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "First Guess Analysis",
-    "text": "First Guess Analysis\nHow many distinct Jotto scores does each word produce against the other 15?\n\n\n\nWord\nScore distribution\nDistinct outcomes\n\n\n\n\nDEW\n0:13, 1:2\n2\n\n\nFOX\n0:8, 1:7\n2\n\n\nGEL\n0:11, 1:4\n2\n\n\nINK\n0:9, 1:5, 2:1\n3\n\n\nJOG\n0:6, 1:9\n2\n\n\nMOB\n0:8, 1:7\n2\n\n\nNAP\n0:8, 1:6, 2:1\n3\n\n\nNIP\n0:9, 1:4, 2:2\n3\n\n\nNOR\n0:4, 1:11\n2\n\n\nNUT\n0:9, 1:6\n2\n\n\nOAT\n0:5, 1:10\n2\n\n\nOIL\n0:5, 1:10\n2\n\n\nPUG\n0:10, 1:5\n2\n\n\nSOY\n0:7, 1:8\n2\n\n\nWOO\n0:7, 1:8\n2\n\n\nYAK\n0:11, 1:4\n2"
-  },
-  {
-    "objectID": "slides/jotto_deck.html#physical-setup",
-    "href": "slides/jotto_deck.html#physical-setup",
-    "title": "Data Structures and Algorithms for Data Science",
-    "section": "Physical Setup",
-    "text": "Physical Setup\n\n17 cards per deck (16 words + 1 rules card or blank)\n3 decks from a standard 52-card deck\nWrite words with sharpie"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#the-dictionary-dream",
-    "href": "slides/06_tue_hashing.html#the-dictionary-dream",
-    "title": "The Magic of O(1) Lookup",
-    "section": "The Dictionary Dream",
-    "text": "The Dictionary Dream\nWhat if we could do this?\n\n\n\nOperation\nTime\n\n\n\n\nInsert\nO(1)\n\n\nFind\nO(1)\n\n\nDelete\nO(1)\n\n\n\nNo searching. No sorting. Just… know where everything is."
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#pythons-dict-and-set",
-    "href": "slides/06_tue_hashing.html#pythons-dict-and-set",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Python’s dict and set",
-    "text": "Python’s dict and set\nYou’ve been using this magic all along:\nseen = set()\nseen.add(\"apple\")      # O(1)\n\"apple\" in seen        # O(1)\n\nages = {}\nages[\"Alice\"] = 25     # O(1)\nages[\"Alice\"]          # O(1) → 25\nHow does this work?"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#a-hash-table",
-    "href": "slides/06_tue_hashing.html#a-hash-table",
-    "title": "The Magic of O(1) Lookup",
-    "section": "A Hash Table",
-    "text": "A Hash Table\n\nI’ll annotate the diagram on the right to show what’s happening as we trace through the code. Bottom line: “we call this setup a hash table.” Other names: associative array (the interface), hashmap, or just map.\ni’ll also point out that everthing is O(1)!\n\n\n\nages = {}\nages[\"Alice\"] = 25\nages[\"Bob\"] = 30\nprint(ages[\"Alice\"])  # → 25\nA hash table consists of:\n\nAn array of slots\nA hash function: key → index\n??"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#whats-a-hash-function",
-    "href": "slides/06_tue_hashing.html#whats-a-hash-function",
-    "title": "The Magic of O(1) Lookup",
-    "section": "What’s a Hash Function?",
-    "text": "What’s a Hash Function?\nA function that turns any key into an integer.\nhash(\"hello\")      # → 8743927429234\nhash(\"world\")      # → -3847293742938\nhash(42)           # → 42\nhash((1, 2, 3))    # → 529344067295497451\nThen we use % m to fit it into our array of size m.\n\nWe discussed hash functions in detail in DSCI 220, but I’ll remind you of the key results."
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#what-makes-a-good-hash-function",
-    "href": "slides/06_tue_hashing.html#what-makes-a-good-hash-function",
-    "title": "The Magic of O(1) Lookup",
-    "section": "What Makes a Good Hash Function?",
-    "text": "What Makes a Good Hash Function?\n\nSpreads data uniformly across the table (SUHA)\nComputed in O(1) time\nDeterministic: if k1 == k2, then h(k1) == h(k2)\n\nBut “spreads uniformly” doesn’t mean two keys won’t land in the same cell…"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#the-adversary-problem",
-    "href": "slides/06_tue_hashing.html#the-adversary-problem",
-    "title": "The Magic of O(1) Lookup",
-    "section": "The Adversary Problem",
-    "text": "The Adversary Problem\n\nUse this to explain why we need universal hashing. A nefarious person who knows our hash function could deliberately choose keys that all hash to the same slot → O(n) worst case!\n\n\nSolution: Universal hashing — randomly choose the hash function at runtime.\nThe adversary can’t predict which keys will collide!"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#the-problem-collisions",
-    "href": "slides/06_tue_hashing.html#the-problem-collisions",
-    "title": "The Magic of O(1) Lookup",
-    "section": "The Problem: Collisions",
-    "text": "The Problem: Collisions\nWhat if two keys hash to the same index?\nhash(\"apple\") % 7  # → 3\nhash(\"grape\") % 7  # → 3  # Uh oh!\nThis is called a collision.\nWith only \\(\\sqrt{m}\\) keys in a table of size \\(m\\), we expect at least one collision.\n(This is the birthday paradox you saw in DSCI 220!)\n\ni’m going to rewrite this in annotation to be with data of size n, even a table of size n^2 isn’t adequate to make collisions rare."
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#collisions-are-inevitable",
-    "href": "slides/06_tue_hashing.html#collisions-are-inevitable",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Collisions Are Inevitable",
-    "text": "Collisions Are Inevitable\nEven with a “good” hash function, collisions happen.\nWhy? Because we’re mapping a huge keyspace into a small array.\n\nPossible strings: practically infinite\nArray size: maybe 1000 slots\n\nWe need a collision resolution strategy.\n\ntwo general approaches, a) use the cells as buckets, or b) put the key in some other cell (turn the hash function into a hash process)"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#strategy-separate-chaining",
-    "href": "slides/06_tue_hashing.html#strategy-separate-chaining",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Strategy: Separate Chaining",
-    "text": "Strategy: Separate Chaining\nEach slot holds a list of items that hash there.\n\n\nInsert {16, 8, 4, 13, 29, 11, 22} with h(k) = k % 7:"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#separate-chaining-analysis",
-    "href": "slides/06_tue_hashing.html#separate-chaining-analysis",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Separate Chaining: Analysis",
-    "text": "Separate Chaining: Analysis\n\n\nTo find a key:\n\nHash to get the slot: O(1)\nSearch the list at that slot: O(length of list)\n\nKey question: How long are the lists?"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#the-load-factor",
-    "href": "slides/06_tue_hashing.html#the-load-factor",
-    "title": "The Magic of O(1) Lookup",
-    "section": "The Load Factor",
-    "text": "The Load Factor\n\n\nLoad factor \\(\\alpha = n/m\\)\n\n\\(n\\) = number of items stored\n\\(m\\) = number of slots (array size)\n\nIf items are spread evenly, each list has length \\(\\approx \\alpha\\).\nUnder uniform hashing assumption:\n\nExpected time to find = \\(O(1 + \\alpha)\\)"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#strategy-linear-probing",
-    "href": "slides/06_tue_hashing.html#strategy-linear-probing",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Strategy: Linear Probing",
-    "text": "Strategy: Linear Probing\nInstead of chaining, store items directly in the array.\nIf slot h(k) is full, try h(k)+1, then h(k)+2, …\ndef insert(key, value):\n    i = hash(key) % m\n    while array[i] is not None:\n        i = (i + 1) % m  # probe next slot\n    array[i] = (key, value)\nAdvantage: No linked lists, better cache performance.\nDisadvantage: Clustering — full regions grow and merge."
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#linear-probing-watch-and-listen",
-    "href": "slides/06_tue_hashing.html#linear-probing-watch-and-listen",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Linear Probing: Watch and Listen",
-    "text": "Linear Probing: Watch and Listen\n\nThis visualization inserts 1000 items into a table of size 1000. Listen for when insertion becomes “too slow.” Students inevitably identify ~2/3 as the threshold — which matches the analytical result!"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#double-hashing-watch-and-listen",
-    "href": "slides/06_tue_hashing.html#double-hashing-watch-and-listen",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Double Hashing: Watch and Listen",
-    "text": "Double Hashing: Watch and Listen\n\nNow let’s try double hashing. Notice it doesn’t slow down as dramatically — the probes stay short even at higher load factors because we avoid clustering."
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#the-secret-to-o1",
-    "href": "slides/06_tue_hashing.html#the-secret-to-o1",
-    "title": "The Magic of O(1) Lookup",
-    "section": "The Secret to O(1)",
-    "text": "The Secret to O(1)\nRemember: \\(\\alpha = n/m\\)\n\n\\(n\\) = number of items\n\\(m\\) = table size\n\nIf we keep \\(\\alpha\\) constant (say, \\(\\alpha \\le 2/3\\)), then:\n\nExpected probes = \\(O(1)\\)\nExpected find time = \\(O(1)\\)\nExpected insert time = \\(O(1)\\)"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#performance-vs-load-factor",
-    "href": "slides/06_tue_hashing.html#performance-vs-load-factor",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Performance vs Load Factor",
-    "text": "Performance vs Load Factor\n\nAs \\(\\alpha\\) increases, expected probes increase. Linear probing degrades faster than double hashing or chaining. The key insight: all strategies blow up as \\(\\alpha \\to 1\\).\n\n\nExpected probes vs load factor for different strategies"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#the-punchline-resizing",
-    "href": "slides/06_tue_hashing.html#the-punchline-resizing",
-    "title": "The Magic of O(1) Lookup",
-    "section": "The Punchline: Resizing",
-    "text": "The Punchline: Resizing\n\nagain, i like the way i did this in old slides.\n\n\n\nThe old message:\n\nWhen the array fills,\nDouble the array size\nCopy all items to the new array\n\nThis single resize costs O(n)…"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#amortized-o1",
-    "href": "slides/06_tue_hashing.html#amortized-o1",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Amortized O(1)",
-    "text": "Amortized O(1)\nYou’ve seen this movie before! (Dynamic arrays, Week 5)\n\nMost inserts: O(1)\nOccasional resize: O(n)\n\nUsing the same accounting trick:\nAmortized cost per insert = O(1)"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#the-full-picture",
-    "href": "slides/06_tue_hashing.html#the-full-picture",
-    "title": "The Magic of O(1) Lookup",
-    "section": "The Full Picture",
-    "text": "The Full Picture\nHash table operations are O(1) expected, amortized:\n\n\n\nOperation\nTime\n\n\n\n\nInsert\nO(1) expected, amortized\n\n\nFind\nO(1) expected\n\n\nDelete\nO(1) expected\n\n\n\n“Expected” = assuming good hash function “Amortized” = averaging over many operations"
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#why-expected",
-    "href": "slides/06_tue_hashing.html#why-expected",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Why “Expected”?",
-    "text": "Why “Expected”?\nThe O(1) relies on:\n\nA good hash function that spreads keys uniformly\nNo adversary choosing keys to cause collisions\n\nIn practice, Python’s built-in hash functions are excellent.\nWorst case (all keys collide): O(n) — but this almost never happens."
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#pythons-implementation",
-    "href": "slides/06_tue_hashing.html#pythons-implementation",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Python’s Implementation",
-    "text": "Python’s Implementation\nPython dict uses:\n\nOpen addressing (not chaining) — items stored directly in array\nResizes at \\(\\alpha \\approx 2/3\\)\nSophisticated probing to handle collisions\n\nYou don’t need to know the details — just that it’s O(1)!\n\nPython doesn’t use linear probing — it uses a variant called “pseudo-random probing” or more specifically, a technique based on the full hash value. The probe sequence uses the formula: j = ((5*j) + 1 + perturb) % 2**i where perturb starts as the full hash and gets shifted right each iteration.\nThis avoids linear probing’s clustering problem while maintaining good cache behavior. The key insight: it visits every slot eventually (guaranteed by math), but in a scattered pattern that depends on the full hash value, not just hash % m."
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#summary",
-    "href": "slides/06_tue_hashing.html#summary",
-    "title": "The Magic of O(1) Lookup",
-    "section": "Summary",
-    "text": "Summary\nHash tables give O(1) lookup by:\n\nUsing a hash function to map keys → array indices\nHandling collisions (e.g., with chaining)\nResizing (double, copy, re-hash) to keep load factor constant\n\nThis is the magic behind Python’s dict and set."
-  },
-  {
-    "objectID": "slides/06_tue_hashing.html#whats-next",
-    "href": "slides/06_tue_hashing.html#whats-next",
-    "title": "The Magic of O(1) Lookup",
-    "section": "What’s Next",
-    "text": "What’s Next\nWednesday: The dictionary trick in action!\n\nTwo-Sum: O(n²) → O(n)\nAnagram detection\nFrequency counting\n\nThe pattern: “Have I seen this before?” = dictionary lookup"
+    "objectID": "slides/14_wed_sssp.html#the-end.",
+    "href": "slides/14_wed_sssp.html#the-end.",
+    "title": "Single Source Shortest Path",
+    "section": "The End.",
+    "text": "The End.\nThanks for a fun year!"
   },
   {
     "objectID": "slides/01_mon_intro.html#where-to-start",
