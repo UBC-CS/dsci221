@@ -60,6 +60,10 @@
     .delete-btn:hover { background: #c9302c; }
     .clear-btn { background: #f0ad4e; color: white; }
     .clear-btn:hover { background: #ec971f; }
+    .step-btn { background: #6c757d; color: white; }
+    .step-btn:hover:not(:disabled) { background: #5a6268; }
+    .step-btn:disabled { opacity: 0.4; cursor: default; }
+    .step-toggle { font-size: 14px; color: #444; display: inline-flex; align-items: center; gap: 4px; margin-left: 6px; }
     .random-btn { background: #9b59b6; color: white; }
     .random-btn:hover { background: #8e44ad; }
     #canvas-container {
@@ -122,6 +126,8 @@
     <button class="delete-btn" id="deleteBtn">Delete</button>
     <button class="random-btn" id="randomBtn">Random Tree</button>
     <button class="clear-btn" id="clearBtn">Clear</button>
+    <label class="step-toggle"><input type="checkbox" id="stepMode"> Step mode</label>
+    <button class="step-btn" id="stepBtn" disabled>Step &#9656;</button>
   </div>
   <div class="traversal-controls">
     <button class="traversal-btn" id="inorderBtn">Inorder</button>
@@ -671,6 +677,8 @@
         removeState.progress += animSpeed * 1.2;
 
         if (removeState.progress >= 1) {
+          removeState.progress = 1;
+          if (holdForStep(removeState)) return;
           removeState.pathIndex++;
           removeState.progress = 0;
 
@@ -716,6 +724,8 @@
         removeState.progress += animSpeed * 1.2;
 
         if (removeState.progress >= 1) {
+          removeState.progress = 1;
+          if (holdForStep(removeState)) return;
           removeState.pathIndex++;
           removeState.progress = 0;
 
@@ -969,6 +979,8 @@
       animatePositions(bst.root);
       updateBounce();
       updateRemoval();
+      updateFind();
+      document.getElementById('stepBtn').disabled = !waitingState();
 
       if (bst.root) {
         drawEdges(bst.root);
@@ -978,6 +990,11 @@
       // Draw bouncing node (insert)
       if (bounceState) {
         draw3DNode(bounceState.x, bounceState.y, bounceState.value, bounceState.scale, bounceState.color);
+      }
+
+      // Draw find highlight ring
+      if (findState) {
+        drawHighlightRing(findState.highlightX, findState.highlightY);
       }
 
       // Draw removal highlight ring
@@ -1077,10 +1094,91 @@
     }
 
     // ============================================
+    // STEP MODE
+    // ============================================
+    // With "Step mode" on, Find and the search part of Delete stop each time
+    // the ring reaches a node, until the Step button is pressed.
+    function holdForStep(st) {   // true = stay at this node for now
+      if (!document.getElementById('stepMode').checked) return false;
+      if (st.stepped) { st.stepped = false; return false; }
+      st.waiting = true;
+      return true;
+    }
+
+    function waitingState() {
+      if (findState && findState.waiting) return findState;
+      if (removeState && removeState.waiting) return removeState;
+      return null;
+    }
+
+    // ============================================
+    // FIND ANIMATION STATE
+    // ============================================
+    // The highlight ring walks down from above the root, one node per step,
+    // like the search half of a removal. A missing key runs off the tree on
+    // the side where it would have been.
+    let findState = null;
+
+    function startFind(value) {
+      const result = bst.find(value);
+      if (!bst.root) { showInfo('Tree is empty', 'error'); return; }
+      const rootVis = getNodeVisual(bst.root);
+      const waypoints = [{ x: rootVis.x, y: -50 }];
+      for (const node of result.path) {
+        const vis = getNodeVisual(node);
+        waypoints.push({ x: vis.x, y: vis.y });
+      }
+      if (!result.found) {
+        const last = result.path[result.path.length - 1];
+        const vis = getNodeVisual(last);
+        const dx = value < last.value ? -45 : 45;
+        waypoints.push({ x: vis.x + dx, y: vis.y + 60 });
+      }
+      findState = {
+        value: value, result: result, waypoints: waypoints,
+        pathIndex: 0, progress: 0,
+        highlightX: waypoints[0].x, highlightY: waypoints[0].y
+      };
+      showInfo(`Looking for ${value}...`);
+    }
+
+    function updateFind() {
+      if (!findState) return;
+      findState.progress += animSpeed * 1.2;
+      if (findState.progress >= 1) {
+        findState.progress = 1;
+        if (holdForStep(findState)) return;
+        findState.pathIndex++;
+        findState.progress = 0;
+        if (findState.pathIndex >= findState.waypoints.length - 1) {
+          const result = findState.result;
+          const steps = result.path.length;
+          if (result.found) {
+            const vis = getNodeVisual(result.node);
+            vis.color = { r: 255, g: 220, b: 100 };
+            setTimeout(() => { vis.color = { r: 100, g: 180, b: 255 }; }, 1200);
+            showInfo(`Found ${findState.value}: ${steps} node${steps === 1 ? '' : 's'} visited`, 'success');
+          } else {
+            showInfo(`${findState.value} not found: fell off the tree after ${steps} node${steps === 1 ? '' : 's'}`, 'error');
+          }
+          findState = null;
+          return;
+        }
+        playBoop(500 - findState.pathIndex * 40, 0.06);
+      }
+      const from = findState.waypoints[findState.pathIndex];
+      const to = findState.waypoints[findState.pathIndex + 1];
+      const t = findState.progress;
+      const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      findState.highlightX = lerp(from.x, to.x, ease);
+      findState.highlightY = lerp(from.y, to.y, ease);
+    }
+
+    // ============================================
     // EVENT HANDLERS
     // ============================================
     document.getElementById('insertBtn').addEventListener('click', () => {
-      if (bounceState || removeState) return;
+      if (bounceState || removeState || findState) return;
       const input = document.getElementById('valueInput');
       const value = parseInt(input.value);
       if (isNaN(value)) {
@@ -1093,27 +1191,19 @@
     });
 
     document.getElementById('findBtn').addEventListener('click', () => {
+      if (bounceState || removeState || findState) return;
       const input = document.getElementById('valueInput');
       const value = parseInt(input.value);
       if (isNaN(value)) {
         showInfo('Please enter a valid number', 'error');
         return;
       }
-      const result = bst.find(value);
-      if (result.found) {
-        showInfo(`Found ${value}!`, 'success');
-        // Briefly highlight the node
-        const vis = getNodeVisual(result.node);
-        vis.color = { r: 255, g: 220, b: 100 };
-        setTimeout(() => { vis.color = { r: 100, g: 180, b: 255 }; }, 1000);
-      } else {
-        showInfo(`${value} not found`, 'error');
-      }
+      startFind(value);
       input.value = '';
     });
 
     document.getElementById('deleteBtn').addEventListener('click', () => {
-      if (bounceState || removeState) return;
+      if (bounceState || removeState || findState) return;
       const input = document.getElementById('valueInput');
       const value = parseInt(input.value);
       if (isNaN(value)) {
@@ -1124,11 +1214,23 @@
       input.value = '';
     });
 
+    document.getElementById('stepBtn').addEventListener('click', () => {
+      const st = waitingState();
+      if (st) { st.waiting = false; st.stepped = true; }
+    });
+
+    document.getElementById('stepMode').addEventListener('change', (e) => {
+      // Turning step mode off lets a paused animation carry on by itself.
+      const st = waitingState();
+      if (!e.target.checked && st) { st.waiting = false; st.stepped = true; }
+    });
+
     document.getElementById('clearBtn').addEventListener('click', () => {
       bst.clear();
       clearVisuals();
       bounceState = null;
       removeState = null;
+      findState = null;
       showInfo('Tree cleared');
       document.getElementById('traversalOutput').textContent = '';
     });
